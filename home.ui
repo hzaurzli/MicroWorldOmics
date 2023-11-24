@@ -47,7 +47,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>0</y>
+          <y>-312</y>
           <width>198</width>
           <height>719</height>
          </rect>
@@ -137,7 +137,7 @@ QComboBox {
           <string>Blast</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_4">
+        <widget class="QLabel" name="label_2">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -164,7 +164,7 @@ QComboBox {
           <string>Alignment</string>
          </property>
         </widget>
-        <widget class="QComboBox" name="comboBox_5">
+        <widget class="QComboBox" name="comboBox_2">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -208,7 +208,7 @@ QComboBox {
           </property>
          </item>
         </widget>
-        <widget class="QComboBox" name="comboBox_4">
+        <widget class="QComboBox" name="comboBox_3">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -243,7 +243,7 @@ QComboBox {
           </property>
          </item>
         </widget>
-        <widget class="QLabel" name="label_5">
+        <widget class="QLabel" name="label_3">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -270,7 +270,7 @@ QComboBox {
           <string>Phage Lysins/Peptides</string>
          </property>
         </widget>
-        <widget class="QComboBox" name="comboBox_6">
+        <widget class="QComboBox" name="comboBox_4">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -319,7 +319,7 @@ QComboBox {
           </property>
          </item>
         </widget>
-        <widget class="QLabel" name="label_6">
+        <widget class="QLabel" name="label_4">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -346,7 +346,7 @@ QComboBox {
           <string>Phylogenetic tree</string>
          </property>
         </widget>
-        <widget class="QComboBox" name="comboBox_7">
+        <widget class="QComboBox" name="comboBox_5">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -385,7 +385,7 @@ QComboBox {
           </property>
          </item>
         </widget>
-        <widget class="QLabel" name="label_7">
+        <widget class="QLabel" name="label_5">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -412,7 +412,7 @@ QComboBox {
           <string>Tree visualization</string>
          </property>
         </widget>
-        <widget class="QComboBox" name="comboBox_8">
+        <widget class="QComboBox" name="comboBox_6">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -450,7 +450,7 @@ QComboBox {
           </property>
          </item>
         </widget>
-        <widget class="QLabel" name="label_8">
+        <widget class="QLabel" name="label_6">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -474,10 +474,10 @@ QComboBox {
           </font>
          </property>
          <property name="text">
-          <string> PCR amplification</string>
+          <string>PCR amplification</string>
          </property>
         </widget>
-        <widget class="QComboBox" name="comboBox_11">
+        <widget class="QComboBox" name="comboBox_8">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -530,7 +530,7 @@ QComboBox {
           </property>
          </item>
         </widget>
-        <widget class="QLabel" name="label_9">
+        <widget class="QLabel" name="label_8">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -557,7 +557,7 @@ QComboBox {
           <string>Annotation</string>
          </property>
         </widget>
-        <widget class="QComboBox" name="comboBox_12">
+        <widget class="QComboBox" name="comboBox_9">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -595,7 +595,7 @@ QComboBox {
           </property>
          </item>
         </widget>
-        <widget class="QLabel" name="label_11">
+        <widget class="QLabel" name="label_9">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -622,73 +622,7 @@ QComboBox {
           <string>Plaque recognition</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_10">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>360</y>
-           <width>199</width>
-           <height>17</height>
-          </rect>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="font">
-          <font>
-           <family>Times New Roman</family>
-           <pointsize>11</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>ORF prediction</string>
-         </property>
-        </widget>
-        <widget class="QComboBox" name="comboBox_9">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>380</y>
-           <width>147</width>
-           <height>18</height>
-          </rect>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">/* 未下拉时，QComboBox的样式 */
-QComboBox {
-    border: 1px solid gray;   /* 边框 */
-    border-radius:2px;   /* 圆角 */
-    padding: 0px 0px 0px 10px; /* 上内边距、右内边距、下内边距、左内边距 */
-    color: rgba(51,51,51,1);
-    /*font: normal normal 15px &quot;Microsoft YaHei&quot;;*/
-    text-align: AlignHCenter;
- 
-    color:rgb(123,123,123);/*字体颜色*/
-    background-color: transparent;
-}
-</string>
-         </property>
-         <item>
-          <property name="text">
-           <string>Prodigal</string>
-          </property>
-         </item>
-        </widget>
-        <widget class="QComboBox" name="comboBox_13">
+        <widget class="QComboBox" name="comboBox_10">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -742,7 +676,7 @@ QComboBox {
           </property>
          </item>
         </widget>
-        <widget class="QLabel" name="label_12">
+        <widget class="QLabel" name="label_10">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -769,7 +703,7 @@ QComboBox {
           <string>Phage classification</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_13">
+        <widget class="QLabel" name="label_11">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -796,7 +730,7 @@ QComboBox {
           <string>Phage deeplearning tools</string>
          </property>
         </widget>
-        <widget class="QComboBox" name="comboBox_14">
+        <widget class="QComboBox" name="comboBox_11">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -849,7 +783,7 @@ QComboBox {
           </property>
          </item>
         </widget>
-        <widget class="QLabel" name="label_14">
+        <widget class="QLabel" name="label_12">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -876,7 +810,7 @@ QComboBox {
           <string>Useful tools</string>
          </property>
         </widget>
-        <widget class="QComboBox" name="comboBox_15">
+        <widget class="QComboBox" name="comboBox_12">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -959,12 +893,77 @@ QComboBox {
           </property>
          </item>
         </widget>
+        <widget class="QComboBox" name="comboBox_7">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>380</y>
+           <width>147</width>
+           <height>18</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">/* 未下拉时，QComboBox的样式 */
+QComboBox {
+    border: 1px solid gray;   /* 边框 */
+    border-radius:2px;   /* 圆角 */
+    padding: 0px 0px 0px 10px; /* 上内边距、右内边距、下内边距、左内边距 */
+    color: rgba(51,51,51,1);
+    /*font: normal normal 15px &quot;Microsoft YaHei&quot;;*/
+    text-align: AlignHCenter;
+ 
+    color:rgb(123,123,123);/*字体颜色*/
+    background-color: transparent;
+}</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>Prodigal</string>
+          </property>
+         </item>
+        </widget>
+        <widget class="QLabel" name="label_7">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>360</y>
+           <width>147</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>Times New Roman</family>
+           <pointsize>11</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>ORF prediction</string>
+         </property>
+        </widget>
        </widget>
       </widget>
      </item>
     </layout>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
       <x>600</x>
@@ -1032,7 +1031,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;  yun_act@163.com&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QLabel" name="label_14">
     <property name="geometry">
      <rect>
       <x>700</x>
@@ -1095,8 +1094,8 @@ p, li { white-space: pre-wrap; }
    </widget>
    <zorder>verticalLayoutWidget</zorder>
    <zorder>textBrowser</zorder>
-   <zorder>label_2</zorder>
-   <zorder>label_3</zorder>
+   <zorder>label_13</zorder>
+   <zorder>label_14</zorder>
    <zorder>textBrowser_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">

@@ -204,61 +204,63 @@ class tBlastX_Form(QWidget):
         self.textBrowser_5.setText(openfile_name)
 
     def tblastx(self):
-        ## toPlainText read path of files
-        ref = self.textBrowser_2.toPlainText()
-        query = self.textBrowser_3.toPlainText()
-        blastdb = self.textBrowser_4.toPlainText()
-        out = self.textBrowser_5.toPlainText()
-        evalue = self.textEdit.toPlainText()
-        format = self.textEdit_2.toPlainText()
-        print(ref, query, blastdb, out, evalue, format)
+        try:
+            ## toPlainText read path of files
+            ref = self.textBrowser_2.toPlainText()
+            query = self.textBrowser_3.toPlainText()
+            blastdb = self.textBrowser_4.toPlainText()
+            out = self.textBrowser_5.toPlainText()
+            evalue = self.textEdit.toPlainText()
+            format = self.textEdit_2.toPlainText()
+            print(ref, query, blastdb, out, evalue, format)
 
-        path = os.getcwd()
-        path = '/'.join(path.split('\\'))
+            path = os.getcwd()
+            path = '/'.join(path.split('\\'))
 
-        def is_fasta(filename):
-            with open(filename, "r") as handle:
-                fasta = SeqIO.parse(handle, "fasta")
-                return any(fasta)  # False when `fasta` is empty, i.e. wasn't a FASTA file
+            def is_fasta(filename):
+                with open(filename, "r") as handle:
+                    fasta = SeqIO.parse(handle, "fasta")
+                    return any(fasta)  # False when `fasta` is empty, i.e. wasn't a FASTA file
 
-        if any([len(ref), len(query), len(blastdb), len(format)]) == False:
-            QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
-        else:
-            try:
-                if is_fasta(ref) == False or is_fasta(query) == False:
-                    QMessageBox.critical(self, "error", "check fasta file format!")
-                else:
-                    if len(evalue) == 0:
-                        evalue = 0.000001
+            if any([len(ref), len(query), len(blastdb), len(format)]) == False:
+                QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
+            else:
+                try:
+                    if is_fasta(ref) == False or is_fasta(query) == False:
+                        QMessageBox.critical(self, "error", "check fasta file format!")
                     else:
-                        evalue = evalue
+                        if len(evalue) == 0:
+                            evalue = 0.000001
+                        else:
+                            evalue = evalue
 
-                    if len(format) == 0:
-                        format = 6
-                    else:
-                        format = format
+                        if len(format) == 0:
+                            format = 6
+                        else:
+                            format = format
 
-                    self.textBrowser.setText('Running! please wait')
-                    QApplication.processEvents()  # 逐条打印状态
+                        self.textBrowser.setText('Running! please wait')
+                        QApplication.processEvents()  # 逐条打印状态
 
-                    makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
-                                                        dbtype='nucl',
-                                                        input_file=ref,
-                                                        out=blastdb)
-                    makedb()
+                        makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
+                                                            dbtype='nucl',
+                                                            input_file=ref,
+                                                            out=blastdb)
+                        makedb()
 
-                    tblastx = NcbitblastxCommandline(path + "/blast-BLAST_VERSION+/bin/tblastn.exe",
-                                                     query=query,
-                                                     db=blastdb,
-                                                     outfmt=format,
-                                                     evalue=float(evalue),
-                                                     out=out)
+                        tblastx = NcbitblastxCommandline(path + "/blast-BLAST_VERSION+/bin/tblastn.exe",
+                                                         query=query,
+                                                         db=blastdb,
+                                                         outfmt=format,
+                                                         evalue=float(evalue),
+                                                         out=out)
 
-                    tblastx()
-                    self.textBrowser.setText('Finished!!!')
-            except:
-                QMessageBox.critical(self, "error", "check fasta file format!")
-
+                        tblastx()
+                        self.textBrowser.setText('Finished!!!')
+                except:
+                    QMessageBox.critical(self, "error", "Check fasta file format!")
+        except:
+            QMessageBox.critical(self, "error", "Check files path!")
 
 if __name__ == "__main__":
     import sys
