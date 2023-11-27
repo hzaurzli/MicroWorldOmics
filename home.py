@@ -22,16 +22,16 @@ from Clustal import Clustal_Form
 from Muscle import Muscle_Form
 import JSalignment
 import Treevis
+from Dots_counting import Dots_counting_Form,Dialog
 
 
 class MyWindow(QtWidgets.QPushButton):
     def __init__(self):
         QtWidgets.QPushButton.__init__(self)
-
     def load_data(self, sp):
         for i in range(1, 11):              #模拟主程序加载过程
             time.sleep(2)                   # 加载数据
-            sp.showMessage("loading... {0}%".format(i * 10), QtCore.Qt.AlignHCenter |QtCore.Qt.AlignBottom, QtCore.Qt.black)
+            sp.showMessage("Loading... {0}%".format(i * 10), QtCore.Qt.AlignHCenter |QtCore.Qt.AlignBottom, QtCore.Qt.black)
             QtWidgets.qApp.processEvents()  # 允许主进程处理事件
 
 class Ui_MainWindow(object):
@@ -59,7 +59,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -300, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -353,8 +353,6 @@ class Ui_MainWindow(object):
         self.comboBox_9.setObjectName("comboBox_9")
         self.comboBox_9.addItem("")
         self.comboBox_9.addItem("")
-        self.comboBox_9.addItem("")
-        self.comboBox_9.setItemText(2, "")
         self.label_9 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_9.setGeometry(QtCore.QRect(0, 480, 147, 17))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -769,11 +767,15 @@ class Ui_MainWindow(object):
 
         self.actionPhy_tree.triggered.connect(self.treevis_show)
 
+        self.actionPlaque_recognition.triggered.connect(self.plaque_show)
+
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
         self.comboBox_2.currentIndexChanged.connect(self.selectionchange_comboBox_2)
 
         self.comboBox_5.currentIndexChanged.connect(self.selectionchange_comboBox_5)
+
+        self.comboBox_9.currentIndexChanged.connect(self.selectionchange_comboBox_9)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -920,7 +922,6 @@ class Ui_MainWindow(object):
         self.actionIGV.setText(_translate("MainWindow", "IGV"))
         self.actionJSalignment.setText(_translate("MainWindow", "JSalignment"))
 
-
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
         # currentText()：返回选中选项的文本
@@ -956,6 +957,15 @@ class Ui_MainWindow(object):
         print(label_item)
         if label_item == 'Phy_tree':
             self.treevis_show()
+
+
+    def selectionchange_comboBox_9(self):
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
+        label_item = self.comboBox_9.currentText()
+        print(label_item)
+        if label_item == 'Plaque count':
+            self.plaque_show()
 
     # pages
     ## click to new window BlastN,BlastN_Form is object in BlastN.py
@@ -1014,8 +1024,18 @@ class Ui_MainWindow(object):
         self.winTable = Treevis.Treevis_Form()
         self.winTable.show()
 
+
+    def plaque_show(self):
+        self.form = QtWidgets.QWidget()
+        self.Dialog = Dialog()
+        self.ui = Dots_counting_Form()
+        self.ui.setupUi(self.Dialog)
+        self.Dialog.show()
+
+
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     # 启动预加载
     splash = QtWidgets.QSplashScreen(QtGui.QPixmap("D:/Documents/Desktop/logo.png"))
