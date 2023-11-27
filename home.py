@@ -18,6 +18,11 @@ from BlastP import BlastP_Form
 from BlastX import BlastX_Form
 from tBlastN import tBlastN_Form
 from tBlastX import tBlastX_Form
+from Clustal import Clustal_Form
+from Muscle import Muscle_Form
+import JSalignment
+import Treevis
+
 
 class MyWindow(QtWidgets.QPushButton):
     def __init__(self):
@@ -29,7 +34,7 @@ class MyWindow(QtWidgets.QPushButton):
             sp.showMessage("loading... {0}%".format(i * 10), QtCore.Qt.AlignHCenter |QtCore.Qt.AlignBottom, QtCore.Qt.black)
             QtWidgets.qApp.processEvents()  # 允许主进程处理事件
 
-class Ui_MainWindow(QMainWindow):
+class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(850, 486)
@@ -54,7 +59,7 @@ class Ui_MainWindow(QMainWindow):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -312, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -77,6 +82,7 @@ class Ui_MainWindow(QMainWindow):
 "    background-color: transparent;\n"
 "}")
         self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -134,6 +140,8 @@ class Ui_MainWindow(QMainWindow):
         self.comboBox_2.setObjectName("comboBox_2")
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
         self.comboBox_3 = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox_3.setGeometry(QtCore.QRect(0, 140, 147, 18))
         self.comboBox_3.setStyleSheet("/* 未下拉时，QComboBox的样式 */\n"
@@ -150,6 +158,7 @@ class Ui_MainWindow(QMainWindow):
 "}\n"
 "")
         self.comboBox_3.setObjectName("comboBox_3")
+        self.comboBox_3.addItem("")
         self.comboBox_3.addItem("")
         self.comboBox_3.addItem("")
         self.label_3 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
@@ -191,6 +200,7 @@ class Ui_MainWindow(QMainWindow):
         self.comboBox_4.addItem("")
         self.comboBox_4.addItem("")
         self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
         self.label_4 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_4.setGeometry(QtCore.QRect(0, 180, 147, 17))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -228,6 +238,7 @@ class Ui_MainWindow(QMainWindow):
 "")
         self.comboBox_5.setObjectName("comboBox_5")
         self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
         self.label_5 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_5.setGeometry(QtCore.QRect(0, 240, 147, 17))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -263,6 +274,7 @@ class Ui_MainWindow(QMainWindow):
 "    background-color: transparent;\n"
 "}")
         self.comboBox_6.setObjectName("comboBox_6")
+        self.comboBox_6.addItem("")
         self.comboBox_6.addItem("")
         self.label_6 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_6.setGeometry(QtCore.QRect(0, 300, 147, 17))
@@ -303,6 +315,7 @@ class Ui_MainWindow(QMainWindow):
         self.comboBox_8.addItem("")
         self.comboBox_8.addItem("")
         self.comboBox_8.addItem("")
+        self.comboBox_8.addItem("")
         self.label_8 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_8.setGeometry(QtCore.QRect(0, 420, 147, 17))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -339,6 +352,9 @@ class Ui_MainWindow(QMainWindow):
 "}")
         self.comboBox_9.setObjectName("comboBox_9")
         self.comboBox_9.addItem("")
+        self.comboBox_9.addItem("")
+        self.comboBox_9.addItem("")
+        self.comboBox_9.setItemText(2, "")
         self.label_9 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_9.setGeometry(QtCore.QRect(0, 480, 147, 17))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -375,6 +391,7 @@ class Ui_MainWindow(QMainWindow):
 "}\n"
 "")
         self.comboBox_10.setObjectName("comboBox_10")
+        self.comboBox_10.addItem("")
         self.comboBox_10.addItem("")
         self.comboBox_10.addItem("")
         self.comboBox_10.addItem("")
@@ -432,6 +449,7 @@ class Ui_MainWindow(QMainWindow):
         self.comboBox_11.addItem("")
         self.comboBox_11.addItem("")
         self.comboBox_11.addItem("")
+        self.comboBox_11.addItem("")
         self.label_12 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_12.setGeometry(QtCore.QRect(0, 660, 171, 17))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -477,6 +495,7 @@ class Ui_MainWindow(QMainWindow):
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
+        self.comboBox_12.addItem("")
         self.comboBox_7 = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox_7.setEnabled(True)
         self.comboBox_7.setGeometry(QtCore.QRect(0, 380, 147, 18))
@@ -498,6 +517,7 @@ class Ui_MainWindow(QMainWindow):
 "    background-color: transparent;\n"
 "}")
         self.comboBox_7.setObjectName("comboBox_7")
+        self.comboBox_7.addItem("")
         self.comboBox_7.addItem("")
         self.label_7 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_7.setGeometry(QtCore.QRect(0, 360, 147, 17))
@@ -677,6 +697,8 @@ class Ui_MainWindow(QMainWindow):
         self.actionShiny3Dprotein.setObjectName("actionShiny3Dprotein")
         self.actionIGV = QtWidgets.QAction(MainWindow)
         self.actionIGV.setObjectName("actionIGV")
+        self.actionJSalignment = QtWidgets.QAction(MainWindow)
+        self.actionJSalignment.setObjectName("actionJSalignment")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -684,6 +706,7 @@ class Ui_MainWindow(QMainWindow):
         self.menuBlast.addAction(self.actiontBlastX)
         self.menuAlignment.addAction(self.actionClustal)
         self.menuAlignment.addAction(self.actionMuscle)
+        self.menuAlignment.addAction(self.actionJSalignment)
         self.menuActivity.addAction(self.actionLysin_activity)
         self.menuActivity.addAction(self.actionPeptides_activity)
         self.menuPhylogeneticTree.addAction(self.actionIQtree)
@@ -740,67 +763,89 @@ class Ui_MainWindow(QMainWindow):
         self.actiontBlastN.triggered.connect(self.tblastn_show)
         self.actiontBlastX.triggered.connect(self.tblastx_show)
 
+        self.actionClustal.triggered.connect(self.clustal_show)
+        self.actionMuscle.triggered.connect(self.muscle_show)
+        self.actionJSalignment.triggered.connect(self.JSalignment_show)
+
+        self.actionPhy_tree.triggered.connect(self.treevis_show)
+
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
+        self.comboBox_2.currentIndexChanged.connect(self.selectionchange_comboBox_2)
+
+        self.comboBox_5.currentIndexChanged.connect(self.selectionchange_comboBox_5)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MicroWorldOmics"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "BlastN"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "BlastP"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "BlastX"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "tBlastN"))
-        self.comboBox.setItemText(4, _translate("MainWindow", "tBlastX"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "<Default>"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "BlastN"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "BlastP"))
+        self.comboBox.setItemText(3, _translate("MainWindow", "BlastX"))
+        self.comboBox.setItemText(4, _translate("MainWindow", "tBlastN"))
+        self.comboBox.setItemText(5, _translate("MainWindow", "tBlastX"))
         self.label.setText(_translate("MainWindow", "Blast"))
         self.label_2.setText(_translate("MainWindow", "Alignment"))
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "Clustal"))
-        self.comboBox_2.setItemText(1, _translate("MainWindow", "Muscle"))
-        self.comboBox_3.setItemText(0, _translate("MainWindow", "For Lysins"))
-        self.comboBox_3.setItemText(1, _translate("MainWindow", "For Peptides"))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "<Default>"))
+        self.comboBox_2.setItemText(1, _translate("MainWindow", "Clustal"))
+        self.comboBox_2.setItemText(2, _translate("MainWindow", "Muscle"))
+        self.comboBox_2.setItemText(3, _translate("MainWindow", "JSalignment"))
+        self.comboBox_3.setItemText(0, _translate("MainWindow", "<Default>"))
+        self.comboBox_3.setItemText(1, _translate("MainWindow", "For Lysins"))
+        self.comboBox_3.setItemText(2, _translate("MainWindow", "For Peptides"))
         self.label_3.setText(_translate("MainWindow", "Phage Lysins/Peptides"))
-        self.comboBox_4.setItemText(0, _translate("MainWindow", "IQtree"))
-        self.comboBox_4.setItemText(1, _translate("MainWindow", "Raxml"))
-        self.comboBox_4.setItemText(2, _translate("MainWindow", "Fasttree"))
+        self.comboBox_4.setItemText(0, _translate("MainWindow", "<Default>"))
+        self.comboBox_4.setItemText(1, _translate("MainWindow", "IQtree"))
+        self.comboBox_4.setItemText(2, _translate("MainWindow", "Raxml"))
+        self.comboBox_4.setItemText(3, _translate("MainWindow", "Fasttree"))
         self.label_4.setText(_translate("MainWindow", "Phylogenetic tree"))
-        self.comboBox_5.setItemText(0, _translate("MainWindow", "Phy-tree"))
+        self.comboBox_5.setItemText(0, _translate("MainWindow", "<Default>"))
+        self.comboBox_5.setItemText(1, _translate("MainWindow", "Phy_tree"))
         self.label_5.setText(_translate("MainWindow", "Tree visualization"))
-        self.comboBox_6.setItemText(0, _translate("MainWindow", "PCR"))
+        self.comboBox_6.setItemText(0, _translate("MainWindow", "<Default>"))
+        self.comboBox_6.setItemText(1, _translate("MainWindow", "PCR"))
         self.label_6.setText(_translate("MainWindow", "PCR amplification"))
-        self.comboBox_8.setItemText(0, _translate("MainWindow", "Circos annotation"))
-        self.comboBox_8.setItemText(1, _translate("MainWindow", "Blast visualization"))
-        self.comboBox_8.setItemText(2, _translate("MainWindow", "Gene structure visualization"))
-        self.comboBox_8.setItemText(3, _translate("MainWindow", "Protvista"))
+        self.comboBox_8.setItemText(0, _translate("MainWindow", "<Default>"))
+        self.comboBox_8.setItemText(1, _translate("MainWindow", "Circos annotation"))
+        self.comboBox_8.setItemText(2, _translate("MainWindow", "Blast visualization"))
+        self.comboBox_8.setItemText(3, _translate("MainWindow", "Gene structure visualization"))
+        self.comboBox_8.setItemText(4, _translate("MainWindow", "Protvista"))
         self.label_8.setText(_translate("MainWindow", "Annotation"))
-        self.comboBox_9.setItemText(0, _translate("MainWindow", "Plaque count"))
+        self.comboBox_9.setItemText(0, _translate("MainWindow", "<Default>"))
+        self.comboBox_9.setItemText(1, _translate("MainWindow", "Plaque count"))
         self.label_9.setText(_translate("MainWindow", "Plaque recognition"))
-        self.comboBox_10.setItemText(0, _translate("MainWindow", "Step1 VipTree"))
-        self.comboBox_10.setItemText(1, _translate("MainWindow", "Step2 VIRIDIC"))
-        self.comboBox_10.setItemText(2, _translate("MainWindow", "Step3 Alignment"))
-        self.comboBox_10.setItemText(3, _translate("MainWindow", "Step4 Phylogeny"))
+        self.comboBox_10.setItemText(0, _translate("MainWindow", "<Default>"))
+        self.comboBox_10.setItemText(1, _translate("MainWindow", "Step1 VipTree"))
+        self.comboBox_10.setItemText(2, _translate("MainWindow", "Step2 VIRIDIC"))
+        self.comboBox_10.setItemText(3, _translate("MainWindow", "Step3 Alignment"))
+        self.comboBox_10.setItemText(4, _translate("MainWindow", "Step4 Phylogeny"))
         self.label_10.setText(_translate("MainWindow", "Phage classification"))
         self.label_11.setText(_translate("MainWindow", "Phage deeplearning tools"))
-        self.comboBox_11.setItemText(0, _translate("MainWindow", "PhaMer"))
-        self.comboBox_11.setItemText(1, _translate("MainWindow", "PhaGCN"))
-        self.comboBox_11.setItemText(2, _translate("MainWindow", "PhaTYP"))
-        self.comboBox_11.setItemText(3, _translate("MainWindow", "CHERRY"))
+        self.comboBox_11.setItemText(0, _translate("MainWindow", "<Default>"))
+        self.comboBox_11.setItemText(1, _translate("MainWindow", "PhaMer"))
+        self.comboBox_11.setItemText(2, _translate("MainWindow", "PhaGCN"))
+        self.comboBox_11.setItemText(3, _translate("MainWindow", "PhaTYP"))
+        self.comboBox_11.setItemText(4, _translate("MainWindow", "CHERRY"))
         self.label_12.setText(_translate("MainWindow", "Useful tools"))
-        self.comboBox_12.setItemText(0, _translate("MainWindow", "ShinyDiff"))
-        self.comboBox_12.setItemText(1, _translate("MainWindow", "ShinyVolc"))
-        self.comboBox_12.setItemText(2, _translate("MainWindow", "ShinyGenomicPCA"))
-        self.comboBox_12.setItemText(3, _translate("MainWindow", "MLST"))
-        self.comboBox_12.setItemText(4, _translate("MainWindow", "Serotype"))
-        self.comboBox_12.setItemText(5, _translate("MainWindow", "ARGs identification"))
-        self.comboBox_12.setItemText(6, _translate("MainWindow", "Virulence gene finder"))
-        self.comboBox_12.setItemText(7, _translate("MainWindow", "MicroWGCNA"))
-        self.comboBox_12.setItemText(8, _translate("MainWindow", "Shiny3Dprotein"))
-        self.comboBox_12.setItemText(9, _translate("MainWindow", "IGV"))
-        self.comboBox_7.setItemText(0, _translate("MainWindow", "Prodigal"))
+        self.comboBox_12.setItemText(0, _translate("MainWindow", "<Default>"))
+        self.comboBox_12.setItemText(1, _translate("MainWindow", "ShinyDiff"))
+        self.comboBox_12.setItemText(2, _translate("MainWindow", "ShinyVolc"))
+        self.comboBox_12.setItemText(3, _translate("MainWindow", "ShinyGenomicPCA"))
+        self.comboBox_12.setItemText(4, _translate("MainWindow", "MLST"))
+        self.comboBox_12.setItemText(5, _translate("MainWindow", "Serotype"))
+        self.comboBox_12.setItemText(6, _translate("MainWindow", "ARGs identification"))
+        self.comboBox_12.setItemText(7, _translate("MainWindow", "Virulence gene finder"))
+        self.comboBox_12.setItemText(8, _translate("MainWindow", "MicroWGCNA"))
+        self.comboBox_12.setItemText(9, _translate("MainWindow", "Shiny3Dprotein"))
+        self.comboBox_12.setItemText(10, _translate("MainWindow", "IGV"))
+        self.comboBox_7.setItemText(0, _translate("MainWindow", "<Default>"))
+        self.comboBox_7.setItemText(1, _translate("MainWindow", "Prodigal"))
         self.label_7.setText(_translate("MainWindow", "ORF prediction"))
         self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Times New Roman\'; font-size:9pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">Micro-worldOmic V1.2</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">Micro-worldOmics V1.2</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);\">Github</span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">: </span></p>\n"
@@ -812,7 +857,7 @@ class Ui_MainWindow(QMainWindow):
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);\">Email</span><span style=\" font-family:\'SimSun\'; font-size:10pt; font-weight:400; font-style:italic;\">: </span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">  yun_act@163.com</span></p></body></html>"))
         self.label_14.setToolTip(_translate("MainWindow", "<html><head/><body><p>dad</p></body></html>"))
-        self.label_14.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; font-style:italic;\">Maintainer</span><span style=\" font-size:12pt;\"> : </span></p><p align=\"center\"><span style=\" font-size:12pt;\">Small Runze</span></p></body></html>"))
+        self.label_14.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; font-style:italic;\">Maintainer</span><span style=\" font-size:12pt;\">: </span></p><p align=\"center\"><span style=\" font-size:12pt;\">Small Runze</span></p></body></html>"))
         self.textBrowser_2.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -847,7 +892,7 @@ class Ui_MainWindow(QMainWindow):
         self.actionIQtree.setText(_translate("MainWindow", "IQtree"))
         self.actionFasttree.setText(_translate("MainWindow", "Fasttree"))
         self.actionRaxml.setText(_translate("MainWindow", "Raxml"))
-        self.actionPhy_tree.setText(_translate("MainWindow", "Phy-tree"))
+        self.actionPhy_tree.setText(_translate("MainWindow", "Phy_tree"))
         self.actionPCR.setText(_translate("MainWindow", "PCR"))
         self.actionProdigal.setText(_translate("MainWindow", "Prodigal"))
         self.actionCircos.setText(_translate("MainWindow", "Circos"))
@@ -873,12 +918,12 @@ class Ui_MainWindow(QMainWindow):
         self.actionMicroWGCNA.setText(_translate("MainWindow", "MicroWGCNA"))
         self.actionShiny3Dprotein.setText(_translate("MainWindow", "Shiny3Dprotein"))
         self.actionIGV.setText(_translate("MainWindow", "IGV"))
+        self.actionJSalignment.setText(_translate("MainWindow", "JSalignment"))
 
 
-    # combobox show selected item
     def selectionchange_comboBox(self):
-        #标签用来显示选中的文本
-        #currentText()：返回选中选项的文本
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
         label_item = self.comboBox.currentText()
         print(label_item)
         if label_item == 'BlastN':
@@ -889,21 +934,34 @@ class Ui_MainWindow(QMainWindow):
             self.blastx_show()
         elif label_item == 'tBlastN':
             self.tblastn_show()
-        else:
+        elif label_item == 'tBlastX':
             self.tblastx_show()
+
+    def selectionchange_comboBox_2(self):
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
+        label_item = self.comboBox_2.currentText()
+        print(label_item)
+        if label_item == 'Clustal':
+            self.clustal_show()
+        elif label_item == 'Muscle':
+            self.muscle_show()
+        elif label_item == 'JSalignment':
+            self.JSalignment_show()
+
+    def selectionchange_comboBox_5(self):
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
+        label_item = self.comboBox_5.currentText()
+        print(label_item)
+        if label_item == 'Phy_tree':
+            self.treevis_show()
 
     # pages
     ## click to new window BlastN,BlastN_Form is object in BlastN.py
     def blastn_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = BlastN_Form()
-        self.ui.setupUi(self.form)
-        self.form.show()
-
-    ## click to new window BlastP,BlastP_Form is object in BlastP.py
-    def blastp_show(self):
-        self.form = QtWidgets.QMainWindow()
-        self.ui = BlastP_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
@@ -935,13 +993,34 @@ class Ui_MainWindow(QMainWindow):
         self.ui.setupUi(self.form)
         self.form.show()
 
+    def clustal_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = Clustal_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
+    ## click to new window BlastP,BlastP_Form is object in BlastP.py
+    def muscle_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = Muscle_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
+    def JSalignment_show(self):
+        self.winTable = JSalignment.JSalignment_Form()
+        self.winTable.show()
+
+    def treevis_show(self):
+        self.winTable = Treevis.Treevis_Form()
+        self.winTable.show()
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     # 启动预加载
     splash = QtWidgets.QSplashScreen(QtGui.QPixmap("D:/Documents/Desktop/logo.png"))
     splash.setFont(QFont('微软雅黑', 30))
-    splash.showMessage("loading... 0%", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.black)
+    splash.showMessage("Loading... 0%", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.black)
     splash.show()  # 显示启动界面
     QtWidgets.qApp.processEvents()  # 处理主进程事件
     window = MyWindow()
@@ -955,4 +1034,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
