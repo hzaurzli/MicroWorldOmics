@@ -98,21 +98,13 @@ class Fasttree_Form(QWidget):
         self.label_7.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_7.setObjectName("label_7")
         self.radioButton = QtWidgets.QRadioButton(Clustal)
-        self.radioButton.setGeometry(QtCore.QRect(410, 150, 111, 31))
+        self.radioButton.setGeometry(QtCore.QRect(410, 150, 251, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.radioButton.setFont(font)
         self.radioButton.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.radioButton.setObjectName("radioButton")
-        self.radioButton_2 = QtWidgets.QRadioButton(Clustal)
-        self.radioButton_2.setGeometry(QtCore.QRect(550, 150, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(13)
-        self.radioButton_2.setFont(font)
-        self.radioButton_2.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
-        self.radioButton_2.setObjectName("radioButton_2")
         self.label_8 = QtWidgets.QLabel(Clustal)
         self.label_8.setGeometry(QtCore.QRect(570, 100, 101, 31))
         font = QtGui.QFont()
@@ -121,14 +113,6 @@ class Fasttree_Form(QWidget):
         self.label_8.setFont(font)
         self.label_8.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_8.setObjectName("label_8")
-        self.radioButton_3 = QtWidgets.QRadioButton(Clustal)
-        self.radioButton_3.setGeometry(QtCore.QRect(410, 300, 61, 31))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(13)
-        self.radioButton_3.setFont(font)
-        self.radioButton_3.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
-        self.radioButton_3.setObjectName("radioButton_3")
         self.label_9 = QtWidgets.QLabel(Clustal)
         self.label_9.setGeometry(QtCore.QRect(410, 250, 161, 31))
         font = QtGui.QFont()
@@ -145,16 +129,16 @@ class Fasttree_Form(QWidget):
         self.label_10.setFont(font)
         self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_10.setObjectName("label_10")
-        self.radioButton_4 = QtWidgets.QRadioButton(Clustal)
-        self.radioButton_4.setGeometry(QtCore.QRect(500, 300, 61, 31))
+        self.radioButton_2 = QtWidgets.QRadioButton(Clustal)
+        self.radioButton_2.setGeometry(QtCore.QRect(410, 300, 131, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(13)
-        self.radioButton_4.setFont(font)
-        self.radioButton_4.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
-        self.radioButton_4.setObjectName("radioButton_4")
+        self.radioButton_2.setFont(font)
+        self.radioButton_2.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
+        self.radioButton_2.setObjectName("radioButton_2")
         self.radioButton_6 = QtWidgets.QRadioButton(Clustal)
-        self.radioButton_6.setGeometry(QtCore.QRect(600, 300, 71, 31))
+        self.radioButton_6.setGeometry(QtCore.QRect(540, 300, 141, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(13)
@@ -183,15 +167,12 @@ class Fasttree_Form(QWidget):
         self.label_4.setText(_translate("Clustal", "Status"))
         self.pushButton.setText(_translate("Clustal", "Run"))
         self.label_7.setText(_translate("Clustal", "Nucleotide models"))
-        self.radioButton.setText(_translate("Clustal", "JC"))
-        self.radioButton_2.setText(_translate("Clustal", "GTR"))
+        self.radioButton.setText(_translate("Clustal", "GTR"))
         self.label_8.setText(_translate("Clustal", "(Protein invalid)"))
-        self.radioButton_3.setText(_translate("Clustal", "JTT"))
         self.label_9.setText(_translate("Clustal", "Protein models"))
         self.label_10.setText(_translate("Clustal", "(Nucleotid invalid)"))
-        self.radioButton_4.setText(_translate("Clustal", "LG"))
+        self.radioButton_2.setText(_translate("Clustal", "LG"))
         self.radioButton_6.setText(_translate("Clustal", "WAG"))
-
 
     def read_file1(self):
         openfile_name = QtWidgets.QFileDialog.getOpenFileName(self, 'choose file', '')[0]
@@ -216,15 +197,6 @@ class Fasttree_Form(QWidget):
                         return True
                 return False
 
-            try:
-                bootstrap = self.textEdit.text()
-                if isinstance(bootstrap, int) == True:
-                    bootstrap = bootstrap
-                else:
-                    QMessageBox.critical(self, "error", "Bootstrap value error!")
-            except:
-                bootstrap = 1000
-
             if any([len(fasta), len(out)]) == False:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
@@ -232,18 +204,12 @@ class Fasttree_Form(QWidget):
                 QApplication.processEvents()  # 逐条打印状态
 
                 if self.radioButton.isChecked():
-                    os.popen(r".\tools\fastTree\FastTree.exe -nt -jc %s > %s"
-                             % (fasta, out,bootstrap))
-                elif self.radioButton_2.isChecked():
                     os.popen(r".\tools\fastTree\FastTree.exe -nt -gtr %s > %s"
-                             % (fasta, out,bootstrap))
-                elif self.radioButton_3.isChecked():
-                    os.popen(r".\tools\fastTree\FastTree.exe -jtt %s > %s"
-                             % (fasta, out,bootstrap))
-                elif self.radioButton_4.isChecked():
+                             % (fasta, out))
+                elif self.radioButton_2.isChecked():
                     os.popen(r".\tools\fastTree\FastTree.exe -lg %s > %s"
                              % (fasta, out))
-                elif self.radioButton_4.isChecked():
+                elif self.radioButton_3.isChecked():
                     os.popen(r".\tools\fastTree\FastTree.exe -wag %s > %s"
                              % (fasta, out))
                 else:
@@ -262,6 +228,7 @@ class Fasttree_Form(QWidget):
                         break
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
+
 
 
 if __name__ == "__main__":
