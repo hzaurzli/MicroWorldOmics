@@ -15,6 +15,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from Bio import SeqIO
+import psutil
 
 
 class Muscle_Form(QWidget):
@@ -124,6 +125,12 @@ class Muscle_Form(QWidget):
             out = self.textBrowser_3.toPlainText()
             path = os.path.dirname(out)
 
+            def check_process_running(process_name): # 检查进程是否运行
+                for process in psutil.process_iter(['name']):
+                    if process.info['name'] == process_name:
+                        return True
+                return False
+
             def is_fasta(filename):
                 with open(filename, "r") as handle:
                     fasta = SeqIO.parse(handle, "fasta")
@@ -141,9 +148,17 @@ class Muscle_Form(QWidget):
                     os.popen(r".\tools\muscle\muscle5.exe -align %s -output %s"
                              % (fasta, out))
                     time.sleep(3)
-
-                    self.textBrowser.setText('Finished!!!')
-
+                    process_name = 'muscle5.exe'
+                    time.sleep(3)
+                    while True:  # 判断 iqtree.exe 是否运行完成
+                        if check_process_running(process_name):
+                            print(f"The process {process_name} is running.")
+                            time.sleep(10)
+                            continue
+                        else:
+                            print(f"The process {process_name} is not running.")
+                            self.textBrowser.setText('Finished!!!')
+                            break
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
 
