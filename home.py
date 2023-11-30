@@ -23,6 +23,11 @@ from Muscle import Muscle_Form
 import JSalignment
 import Treevis
 from Dots_counting import Dots_counting_Form,Dialog
+from IQtree import IQtree_Form
+from Fasttree import Fasttree_Form
+from Raxml import Raxml_Form
+from PCR import PCR_Form
+from Prodigal import Prodigal_Form
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -765,7 +770,15 @@ class Ui_MainWindow(object):
         self.actionMuscle.triggered.connect(self.muscle_show)
         self.actionJSalignment.triggered.connect(self.JSalignment_show)
 
+        self.actionIQtree.triggered.connect(self.iqtree_show)
+        self.actionFasttree.triggered.connect(self.fasttree_show)
+        self.actionRaxml.triggered.connect(self.raxml_show)
+
         self.actionPhy_tree.triggered.connect(self.treevis_show)
+
+        self.actionPCR.triggered.connect(self.pcr_show)
+
+        self.actionProdigal.triggered.connect(self.prodigal_show)
 
         self.actionPlaque_recognition.triggered.connect(self.plaque_show)
 
@@ -773,7 +786,10 @@ class Ui_MainWindow(object):
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
         self.comboBox_2.currentIndexChanged.connect(self.selectionchange_comboBox_2)
 
+        self.comboBox_4.currentIndexChanged.connect(self.selectionchange_comboBox_4)
         self.comboBox_5.currentIndexChanged.connect(self.selectionchange_comboBox_5)
+        self.comboBox_6.currentIndexChanged.connect(self.selectionchange_comboBox_6)
+        self.comboBox_7.currentIndexChanged.connect(self.selectionchange_comboBox_7)
 
         self.comboBox_9.currentIndexChanged.connect(self.selectionchange_comboBox_9)
 
@@ -950,6 +966,19 @@ class Ui_MainWindow(object):
         elif label_item == 'JSalignment':
             self.JSalignment_show()
 
+
+    def selectionchange_comboBox_4(self):
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
+        label_item = self.comboBox_4.currentText()
+        print(label_item)
+        if label_item == 'IQtree':
+            self.iqtree_show()
+        elif label_item == 'Fasttree':
+            self.fasttree_show()
+        elif label_item == 'Raxml':
+            self.raxml_show()
+
     def selectionchange_comboBox_5(self):
         # 标签用来显示选中的文本
         # currentText()：返回选中选项的文本
@@ -958,6 +987,21 @@ class Ui_MainWindow(object):
         if label_item == 'Phy_tree':
             self.treevis_show()
 
+    def selectionchange_comboBox_6(self):
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
+        label_item = self.comboBox_6.currentText()
+        print(label_item)
+        if label_item == 'PCR':
+            self.pcr_show()
+
+    def selectionchange_comboBox_7(self):
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
+        label_item = self.comboBox_7.currentText()
+        print(label_item)
+        if label_item == 'Prodigal':
+            self.prodigal_show()
 
     def selectionchange_comboBox_9(self):
         # 标签用来显示选中的文本
@@ -1020,10 +1064,39 @@ class Ui_MainWindow(object):
         self.winTable = JSalignment.JSalignment_Form()
         self.winTable.show()
 
+    def iqtree_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = IQtree_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
+    def fasttree_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = Fasttree_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
+    def raxml_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = Raxml_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
     def treevis_show(self):
         self.winTable = Treevis.Treevis_Form()
         self.winTable.show()
 
+    def pcr_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = PCR_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
+    def prodigal_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = Prodigal_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
 
     def plaque_show(self):
         self.form = QtWidgets.QWidget()

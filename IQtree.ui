@@ -230,7 +230,7 @@
     <rect>
      <x>40</x>
      <y>390</y>
-     <width>71</width>
+     <width>91</width>
      <height>31</height>
     </rect>
    </property>
@@ -274,7 +274,7 @@
     <rect>
      <x>220</x>
      <y>390</y>
-     <width>111</width>
+     <width>141</width>
      <height>31</height>
     </rect>
    </property>
@@ -296,7 +296,7 @@
     <rect>
      <x>130</x>
      <y>390</y>
-     <width>71</width>
+     <width>91</width>
      <height>31</height>
     </rect>
    </property>
@@ -348,6 +348,23 @@
     <string>Simple</string>
    </property>
   </widget>
+  <zorder>label</zorder>
+  <zorder>label_2</zorder>
+  <zorder>textBrowser_2</zorder>
+  <zorder>label_3</zorder>
+  <zorder>textBrowser_3</zorder>
+  <zorder>pushButton_2</zorder>
+  <zorder>pushButton_3</zorder>
+  <zorder>textBrowser</zorder>
+  <zorder>label_4</zorder>
+  <zorder>pushButton</zorder>
+  <zorder>label_5</zorder>
+  <zorder>radioButton</zorder>
+  <zorder>label_6</zorder>
+  <zorder>textEdit</zorder>
+  <zorder>radioButton_3</zorder>
+  <zorder>radioButton_2</zorder>
+  <zorder>radioButton_4</zorder>
  </widget>
  <resources/>
  <connections/>

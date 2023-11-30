@@ -98,7 +98,7 @@ class IQtree_Form(QWidget):
         self.label_5.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_5.setObjectName("label_5")
         self.radioButton = QtWidgets.QRadioButton(Clustal)
-        self.radioButton.setGeometry(QtCore.QRect(40, 390, 71, 31))
+        self.radioButton.setGeometry(QtCore.QRect(40, 390, 91, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(13)
@@ -114,7 +114,7 @@ class IQtree_Form(QWidget):
         self.label_6.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_6.setObjectName("label_6")
         self.radioButton_2 = QtWidgets.QRadioButton(Clustal)
-        self.radioButton_2.setGeometry(QtCore.QRect(220, 390, 111, 31))
+        self.radioButton_2.setGeometry(QtCore.QRect(220, 390, 141, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(13)
@@ -122,7 +122,7 @@ class IQtree_Form(QWidget):
         self.radioButton_2.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.radioButton_2.setObjectName("radioButton_2")
         self.radioButton_3 = QtWidgets.QRadioButton(Clustal)
-        self.radioButton_3.setGeometry(QtCore.QRect(130, 390, 71, 31))
+        self.radioButton_3.setGeometry(QtCore.QRect(130, 390, 91, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(13)
@@ -141,6 +141,23 @@ class IQtree_Form(QWidget):
         self.radioButton_4.setFont(font)
         self.radioButton_4.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.radioButton_4.setObjectName("radioButton_4")
+        self.label.raise_()
+        self.label_2.raise_()
+        self.textBrowser_2.raise_()
+        self.label_3.raise_()
+        self.textBrowser_3.raise_()
+        self.pushButton_2.raise_()
+        self.pushButton_3.raise_()
+        self.textBrowser.raise_()
+        self.label_4.raise_()
+        self.pushButton.raise_()
+        self.label_5.raise_()
+        self.radioButton.raise_()
+        self.label_6.raise_()
+        self.textEdit.raise_()
+        self.radioButton_3.raise_()
+        self.radioButton_2.raise_()
+        self.radioButton_4.raise_()
 
         self.retranslateUi(Clustal)
         QtCore.QMetaObject.connectSlotsByName(Clustal)
@@ -155,7 +172,7 @@ class IQtree_Form(QWidget):
 
     def retranslateUi(self, Clustal):
         _translate = QtCore.QCoreApplication.translate
-        Clustal.setWindowTitle(_translate("Clustal", "Form"))
+        Clustal.setWindowTitle(_translate("Clustal", "IQtree"))
         self.label.setText(_translate("Clustal", "IQtree"))
         self.label_2.setText(_translate("Clustal", "Input fasta file"))
         self.label_3.setText(_translate("Clustal", "Output fasta file"))
@@ -169,7 +186,6 @@ class IQtree_Form(QWidget):
         self.radioButton_2.setText(_translate("Clustal", "TIM2+I+G"))
         self.radioButton_3.setText(_translate("Clustal", "MF"))
         self.radioButton_4.setText(_translate("Clustal", "Simple"))
-
 
     def read_file1(self):
         openfile_name = QtWidgets.QFileDialog.getOpenFileName(self, 'choose file', '')[0]
@@ -237,7 +253,6 @@ class IQtree_Form(QWidget):
                         break
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
-
 
 
 if __name__ == "__main__":
