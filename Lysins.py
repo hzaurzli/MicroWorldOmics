@@ -169,61 +169,9 @@ class Lysins_Form(QWidget):
         try:
             global fasta
             global out
-            global path
 
             fasta = self.textBrowser_2.toPlainText()
             out = self.textBrowser_3.toPlainText()
-
-            global path
-            global AAC_ERT, AAC_ANN, AAC_XGB, AAC_KNN, AAC_LR
-            global BPNC_ERT, BPNC_ANN, BPNC_XGB, BPNC_KNN, BPNC_LR
-            global CTD_ERT, CTD_ANN, CTD_XGB, CTD_KNN, CTD_LR
-            global AAE_ERT, AAE_ANN, AAE_XGB, AAE_KNN, AAE_LR
-            global AAI_ERT, AAI_ANN, AAI_XGB, AAI_KNN, AAI_LR
-            global GAAC_ERT, GAAC_ANN, GAAC_XGB, GAAC_KNN, GAAC_LR
-
-            path_1 = '.'
-            path_1 = os.path.abspath(path_1)
-            path_1 = path_1.split('\\')
-            path_1 = '/'.join(path_1)
-            path = path_1 + '/models/Lysins/Models'
-            print(path)
-            AAC_ERT = joblib.load(path + '/base/AAC_ERT.m')
-            AAC_ANN = joblib.load(path + '/base/AAC_ANN.m')
-            AAC_XGB = joblib.load(path + '/base/AAC_XGB.m')
-            AAC_KNN = joblib.load(path + '/base/AAC_KNN.m')
-            AAC_LR = joblib.load(path + '/base/AAC_LR.m')
-
-            BPNC_ERT = joblib.load(path + '/base/BPNC_ERT.m')
-            BPNC_ANN = joblib.load(path + '/base/BPNC_ANN.m')
-            BPNC_XGB = joblib.load(path + '/base/BPNC_XGB.m')
-            BPNC_KNN = joblib.load(path + '/base/BPNC_KNN.m')
-            BPNC_LR = joblib.load(path + '/base/BPNC_LR.m')
-
-            CTD_ERT = joblib.load(path + '/base/CTD_ERT.m')
-            CTD_ANN = joblib.load(path + '/base/CTD_ANN.m')
-            CTD_XGB = joblib.load(path + '/base/CTD_XGB.m')
-            CTD_KNN = joblib.load(path + '/base/CTD_KNN.m')
-            CTD_LR = joblib.load(path + '/base/CTD_LR.m')
-
-            AAE_ERT = joblib.load(path + '/base/AAE_ERT.m')
-            AAE_ANN = joblib.load(path + '/base/AAE_ANN.m')
-            AAE_XGB = joblib.load(path + '/base/AAE_XGB.m')
-            AAE_KNN = joblib.load(path + '/base/AAE_KNN.m')
-            AAE_LR = joblib.load(path + '/base/AAE_LR.m')
-
-            AAI_ERT = joblib.load(path + '/base/AAI_ERT.m')
-            AAI_ANN = joblib.load(path + '/base/AAI_ANN.m')
-            AAI_XGB = joblib.load(path + '/base/AAI_XGB.m')
-            AAI_KNN = joblib.load(path + '/base/AAI_KNN.m')
-            AAI_LR = joblib.load(path + '/base/AAI_LR.m')
-
-            GAAC_ERT = joblib.load(path + '/base/GAAC_ERT.m')
-            GAAC_ANN = joblib.load(path + '/base/GAAC_ANN.m')
-            GAAC_XGB = joblib.load(path + '/base/GAAC_XGB.m')
-            GAAC_KNN = joblib.load(path + '/base/GAAC_KNN.m')
-            GAAC_LR = joblib.load(path + '/base/GAAC_LR.m')
-
 
             def is_fasta(filename):
                 with open(filename, "r") as handle:
@@ -278,6 +226,57 @@ class Lysins_Form(QWidget):
                 else:
                     self.textBrowser.setText('Running! please wait')
                     QApplication.processEvents()  # 逐条打印状态
+
+                    # 加载模型
+                    global path
+                    global AAC_ERT, AAC_ANN, AAC_XGB, AAC_KNN, AAC_LR
+                    global BPNC_ERT, BPNC_ANN, BPNC_XGB, BPNC_KNN, BPNC_LR
+                    global CTD_ERT, CTD_ANN, CTD_XGB, CTD_KNN, CTD_LR
+                    global AAE_ERT, AAE_ANN, AAE_XGB, AAE_KNN, AAE_LR
+                    global AAI_ERT, AAI_ANN, AAI_XGB, AAI_KNN, AAI_LR
+                    global GAAC_ERT, GAAC_ANN, GAAC_XGB, GAAC_KNN, GAAC_LR
+
+                    path_1 = '.'
+                    path_1 = os.path.abspath(path_1)
+                    path_1 = path_1.split('\\')
+                    path_1 = '/'.join(path_1)
+                    path = path_1 + '/models/Lysins/Models'
+                    print(path)
+                    AAC_ERT = joblib.load(path + '/base/AAC_ERT.m')
+                    AAC_ANN = joblib.load(path + '/base/AAC_ANN.m')
+                    AAC_XGB = joblib.load(path + '/base/AAC_XGB.m')
+                    AAC_KNN = joblib.load(path + '/base/AAC_KNN.m')
+                    AAC_LR = joblib.load(path + '/base/AAC_LR.m')
+
+                    BPNC_ERT = joblib.load(path + '/base/BPNC_ERT.m')
+                    BPNC_ANN = joblib.load(path + '/base/BPNC_ANN.m')
+                    BPNC_XGB = joblib.load(path + '/base/BPNC_XGB.m')
+                    BPNC_KNN = joblib.load(path + '/base/BPNC_KNN.m')
+                    BPNC_LR = joblib.load(path + '/base/BPNC_LR.m')
+
+                    CTD_ERT = joblib.load(path + '/base/CTD_ERT.m')
+                    CTD_ANN = joblib.load(path + '/base/CTD_ANN.m')
+                    CTD_XGB = joblib.load(path + '/base/CTD_XGB.m')
+                    CTD_KNN = joblib.load(path + '/base/CTD_KNN.m')
+                    CTD_LR = joblib.load(path + '/base/CTD_LR.m')
+
+                    AAE_ERT = joblib.load(path + '/base/AAE_ERT.m')
+                    AAE_ANN = joblib.load(path + '/base/AAE_ANN.m')
+                    AAE_XGB = joblib.load(path + '/base/AAE_XGB.m')
+                    AAE_KNN = joblib.load(path + '/base/AAE_KNN.m')
+                    AAE_LR = joblib.load(path + '/base/AAE_LR.m')
+
+                    AAI_ERT = joblib.load(path + '/base/AAI_ERT.m')
+                    AAI_ANN = joblib.load(path + '/base/AAI_ANN.m')
+                    AAI_XGB = joblib.load(path + '/base/AAI_XGB.m')
+                    AAI_KNN = joblib.load(path + '/base/AAI_KNN.m')
+                    AAI_LR = joblib.load(path + '/base/AAI_LR.m')
+
+                    GAAC_ERT = joblib.load(path + '/base/GAAC_ERT.m')
+                    GAAC_ANN = joblib.load(path + '/base/GAAC_ANN.m')
+                    GAAC_XGB = joblib.load(path + '/base/GAAC_XGB.m')
+                    GAAC_KNN = joblib.load(path + '/base/GAAC_KNN.m')
+                    GAAC_LR = joblib.load(path + '/base/GAAC_LR.m')
 
                     model_calculation(fasta=fasta, out=path + '/tmpLysinActivity.txt', path=path)
 
