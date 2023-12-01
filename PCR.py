@@ -148,6 +148,10 @@ class PCR_Form(QWidget):
         self.pushButton_2.clicked.connect(self.read_file1)
         self.pushButton_3.clicked.connect(self.read_file2)
 
+        self.textEdit.setPlaceholderText(" Maximum amplicon length(bp): 0")
+        self.textEdit_2.setPlaceholderText("Mismatch base(bp): 0")
+        self.textEdit_3.setPlaceholderText("Indel base(bp): 0")
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "In silico PCR"))

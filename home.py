@@ -28,6 +28,8 @@ from Fasttree import Fasttree_Form
 from Raxml import Raxml_Form
 from PCR import PCR_Form
 from Prodigal import Prodigal_Form
+from Peptides import Peptides_Form
+from Lysins import Lysins_Form
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -770,6 +772,9 @@ class Ui_MainWindow(object):
         self.actionMuscle.triggered.connect(self.muscle_show)
         self.actionJSalignment.triggered.connect(self.JSalignment_show)
 
+        self.actionLysin_activity.triggered.connect(self.lysins_show)
+        self.actionPeptides_activity.triggered.connect(self.peptides_show)
+
         self.actionIQtree.triggered.connect(self.iqtree_show)
         self.actionFasttree.triggered.connect(self.fasttree_show)
         self.actionRaxml.triggered.connect(self.raxml_show)
@@ -785,7 +790,7 @@ class Ui_MainWindow(object):
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
         self.comboBox_2.currentIndexChanged.connect(self.selectionchange_comboBox_2)
-
+        self.comboBox_3.currentIndexChanged.connect(self.selectionchange_comboBox_3)
         self.comboBox_4.currentIndexChanged.connect(self.selectionchange_comboBox_4)
         self.comboBox_5.currentIndexChanged.connect(self.selectionchange_comboBox_5)
         self.comboBox_6.currentIndexChanged.connect(self.selectionchange_comboBox_6)
@@ -966,6 +971,15 @@ class Ui_MainWindow(object):
         elif label_item == 'JSalignment':
             self.JSalignment_show()
 
+    def selectionchange_comboBox_3(self):
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
+        label_item = self.comboBox_3.currentText()
+        print(label_item)
+        if label_item == 'For Lysins':
+            self.lysins_show()
+        elif label_item == 'For Peptides':
+            self.peptides_show()
 
     def selectionchange_comboBox_4(self):
         # 标签用来显示选中的文本
@@ -1063,6 +1077,19 @@ class Ui_MainWindow(object):
     def JSalignment_show(self):
         self.winTable = JSalignment.JSalignment_Form()
         self.winTable.show()
+
+
+    def lysins_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = Lysins_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
+    def peptides_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = Peptides_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
 
     def iqtree_show(self):
         self.form = QtWidgets.QMainWindow()
