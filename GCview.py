@@ -88,39 +88,36 @@ class GCview_Form(QWidget):
         self.winTable.show()
 
 
-
-class MainWindow(QWidget):
+class MainWindow(QMainWindow):
     def __init__(self,content):
         super().__init__()
         self.setWindowTitle('My Browser')
         self.showMaximized()
-        self.aaa(content)
 
         #####放入WebEngineView
-        # self.webview = WebEngineView()
-        # self.webview.load(QUrl("D:/Documents/Desktop/xgb/test.html"))
-        # self.setCentralWidget(self.webview)
-
+        self.webview = WebEngineView()
+        self.webview.load(QUrl("D:/Documents/Desktop/xgb/test.html"))
+        self.setCentralWidget(self.webview)
 
         #####web页面加载完毕，调用函数
-        # self.webview.page().loadFinished.connect(self.run_js)
-    def aaa(self,content):
-        print(content)
+        self.webview.page().loadFinished.connect(lambda: self.run_js(content))
 
-    ########运行js脚本，没有回调########
-    def run_js(self):
-        js_string = '''
+    def run_js(self,content):
+        js_string_1 = '''
         function myFunction()
         {
-            var test = 'kkk';
+            var test = "'''
+
+        js_string_2 = '''
             $("#test").html('<p>' + test + '</p>');
         }
 
         myFunction();
         '''
-        self.webview.page().runJavaScript(js_string)
 
-        # 连接信号和槽函数
+        js_string = js_string_1 + content + '";' + '\n' + js_string_2
+        print(js_string)
+        self.webview.page().runJavaScript(js_string)
 
 class WebEngineView(QWebEngineView):
     windowList = []
@@ -129,8 +126,8 @@ class WebEngineView(QWebEngineView):
         new_webview = WebEngineView()
         new_window = MainWindow()
         new_window.setCentralWidget(new_webview)
-        # new_window.show()
-        self.windowList.append(new_window)  # 注：没有这句会崩溃
+        #new_window.show()
+        self.windowList.append(new_window)  #注：没有这句会崩溃
         return new_webview
 
 
