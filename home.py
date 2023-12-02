@@ -28,8 +28,6 @@ from Fasttree import Fasttree_Form
 from Raxml import Raxml_Form
 from PCR import PCR_Form
 from Prodigal import Prodigal_Form
-from Peptides import Peptides_Form
-from Lysins import Lysins_Form
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -1146,6 +1144,10 @@ if __name__ == "__main__":
     window = MyWindow()
     window.setWindowTitle("QSplashScreen类使用")
     window.resize(500, 50)
+
+    from Peptides import Peptides_Form
+    from Lysins import Lysins_Form
+
     window.load_data(splash)  # 加载数据
     splash.finish(window)  # 隐藏启动界面
 
