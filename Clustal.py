@@ -145,8 +145,11 @@ class Clustal_Form(QWidget):
                     self.textBrowser.setText('Running! please wait')
                     QApplication.processEvents()  # 逐条打印状态
 
-                    os.popen(r".\tools\clustalo\clustal_omega\clustalo.exe -i %s > %s"
-                             % (fasta, out))
+                    myobj = subprocess.Popen(r".\tools\clinker\clinker.exe %s -o %s -p" %
+                                             (bb,
+                                              "D:/Documents/Desktop/test/aa.csv"))
+
+                    myobj.wait()
                     time.sleep(3)
                     process_name = 'clustalo.exe'
                     time.sleep(3)
