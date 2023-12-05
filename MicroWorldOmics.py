@@ -28,6 +28,7 @@ from Fasttree import Fasttree_Form
 from Raxml import Raxml_Form
 from PCR import PCR_Form
 from Prodigal import Prodigal_Form
+from GCview import GCview_Form
 from Clinker import Clinker_Form
 
 
@@ -784,6 +785,7 @@ class Ui_MainWindow(object):
 
         self.actionProdigal.triggered.connect(self.prodigal_show)
 
+        self.actionCircos.triggered.connect(self.circos_show)
         self.actionGene_structure_visualization.triggered.connect(self.collinearity_show)
 
         self.actionPlaque_recognition.triggered.connect(self.plaque_show)
@@ -1025,7 +1027,11 @@ class Ui_MainWindow(object):
         # currentText()：返回选中选项的文本
         label_item = self.comboBox_8.currentText()
         print(label_item)
-        if label_item == 'Collinearity':
+        if label_item == 'Circos annotation':
+            self.circos_show()
+        elif label_item == 'Blast visualization':
+            self.blastvisualization_show()
+        elif label_item == 'Collinearity':
             self.collinearity_show()
 
 
@@ -1134,6 +1140,13 @@ class Ui_MainWindow(object):
     def prodigal_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = Prodigal_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
+
+    def circos_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = GCview_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 

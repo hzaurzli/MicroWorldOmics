@@ -194,7 +194,7 @@ class BlastX_Form(QWidget):
         self.textBrowser_3.setText(openfile_name)
 
     def read_file3(self):
-        openfile_name = QtWidgets.QFileDialog.getOpenFileName(self, 'choose file', '')[0]
+        openfile_name = QtWidgets.QFileDialog.getSaveFileName(self, 'choose file', '')[0]
         print(openfile_name)
         self.textBrowser_4.setText(openfile_name)
 
@@ -212,7 +212,7 @@ class BlastX_Form(QWidget):
             out = self.textBrowser_5.toPlainText()
             evalue = self.textEdit.toPlainText()
             format = self.textEdit_2.toPlainText()
-            print(ref, query, blastdb, out, evalue, format)
+            print(ref, query, blastdb, out)
 
             path = os.getcwd()
             path = '/'.join(path.split('\\'))
