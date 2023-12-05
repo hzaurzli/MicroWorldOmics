@@ -157,7 +157,6 @@ class MainWindow(QMainWindow):
 
     def run_js(self, content):
         js_string_1 = '''
-        window.onload = function() {
             var yourDiv = document.getElementById('yourDiv');
             var ProtVista = require('ProtVista');
             var instance = new ProtVista({
@@ -172,7 +171,6 @@ class MainWindow(QMainWindow):
                 useExtension: true
                 }
             });
-        }
         '''
         content_path = os.path.dirname(content)
         content = content_path + '/external_'
