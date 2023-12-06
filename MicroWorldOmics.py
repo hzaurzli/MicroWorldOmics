@@ -30,6 +30,8 @@ from PCR import PCR_Form
 from Prodigal import Prodigal_Form
 from GCview import GCview_Form
 from Clinker import Clinker_Form
+from ProtVista import Provista_Form, winTest
+import Blasterjs
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -786,7 +788,9 @@ class Ui_MainWindow(object):
         self.actionProdigal.triggered.connect(self.prodigal_show)
 
         self.actionCircos.triggered.connect(self.circos_show)
+        self.actionBlast_visualization.triggered.connect(self.blasterjs_show)
         self.actionGene_structure_visualization.triggered.connect(self.collinearity_show)
+        self.actionProtvista.triggered.connect(self.protvista_show)
 
         self.actionPlaque_recognition.triggered.connect(self.plaque_show)
 
@@ -1030,10 +1034,11 @@ class Ui_MainWindow(object):
         if label_item == 'Circos annotation':
             self.circos_show()
         elif label_item == 'Blast visualization':
-            self.blastvisualization_show()
+            self.blasterjs_show()
         elif label_item == 'Collinearity':
             self.collinearity_show()
-
+        elif label_item == 'Protvista':
+            self.protvista_show()
 
     def selectionchange_comboBox_9(self):
         # 标签用来显示选中的文本
@@ -1150,11 +1155,25 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.form)
         self.form.show()
 
+
+    def blasterjs_show(self):
+        self.winTable = Blasterjs.Blasterjs_Form()
+        self.winTable.show()
+
+
     def collinearity_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = Clinker_Form()
         self.ui.setupUi(self.form)
         self.form.show()
+
+
+    def protvista_show(self):
+        self.form = QtWidgets.QWidget()
+        self.winTest = winTest()
+        self.ui = Provista_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
 
     def plaque_show(self):
         self.form = QtWidgets.QWidget()

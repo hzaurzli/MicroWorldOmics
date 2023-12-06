@@ -15,9 +15,9 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtWebEngineWidgets import *
 
 
-class blasterjs_Form(QMainWindow):
+class Blasterjs_Form(QMainWindow):
     def __init__(self):
-        super(blasterjs_Form, self).__init__()
+        super(Blasterjs_Form, self).__init__()
         self.setWindowTitle('Blasterjs')  # 窗口标题
         self.setGeometry(5, 30, 700, 600)  # 窗口的大小和位置设置
         self.browser = QWebEngineView()
@@ -32,6 +32,6 @@ class blasterjs_Form(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = blasterjs_Form()
+    win = Blasterjs_Form()
     win.show()
     app.exit(app.exec_())
