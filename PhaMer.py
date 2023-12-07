@@ -32,6 +32,29 @@ import pandas as pd
 import pickle as pkl
 
 
+class winTest(QtWidgets.QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('My Browser')
+        self.setStyleSheet("background-image: url(D:/Documents/Desktop/bb.png)")
+
+    """对QDialog类重写，实现一些功能"""
+
+    def closeEvent(self, event):
+        """
+        重写closeEvent方法，实现dialog窗体关闭时执行一些代码
+        :param event: close()触发的事件
+        :return: None
+        """
+        try:
+            if os.path.exists(out_tmp):
+                os.remove(out_tmp)
+            else:
+                event.ignore()  # 设置正常退出
+        except:
+            return None  # 设置正常退出
+
+
 class PhaMer_Form(QWidget):
     def setupUi(self, Clustal):
         Clustal.setObjectName("Clustal")
@@ -243,7 +266,7 @@ class PhaMer_Form(QWidget):
                 if is_fasta(contigs) == False:
                     QMessageBox.critical(self, "error", "Check fasta file format!")
                 else:
-                    self.textBrowser.setText('Running! please wait')
+                    self.textBrowser.setText('Running! please wait(5-8mins)' + '\n' + 'If no response,never close window!!!')
                     QApplication.processEvents()  # 逐条打印状态
 
                     if not os.path.isdir(out_fn):
@@ -442,26 +465,11 @@ class PhaMer_Form(QWidget):
 
                     pred_csv = pd.DataFrame({"Contig": id2contig.values(), "Pred": all_pred, "Score": all_score})
 
-                    out_p = os.path.dirname(out)
-                    global out_tmp
-                    out_tmp = out_p + '/example_prediction_tmp.csv'
-                    if os.path.exists(out_tmp):
-                        os.remove(out_tmp)
-                        pred_csv.to_csv(out_tmp, index=False)
+                    if os.path.exists(out):
+                        os.remove(out)
+                        pred_csv.to_csv(out, index=False)
                     else:
-                        pred_csv.to_csv(out_tmp, index=False)
-
-                    with open(out, 'w') as w:
-                        f = open(out_tmp)
-                        count = 0
-                        for line in f:
-                            if count == 0:
-                                print('1')
-                            else:
-                                w.write(line)
-                                print(line)
-                            count = count + 1
-                    w.close()
+                        pred_csv.to_csv(out, index=False)
 
                     self.textBrowser.setText('Finished!!!')
         except:
@@ -469,10 +477,24 @@ class PhaMer_Form(QWidget):
 
 
     def table_read(self):
-        if os.path.exists(out_tmp):
-            os.remove(out_tmp)
         try:
-            f = open(out)
+            global out_tmp
+            out_p = os.path.dirname(out)
+            out_tmp = out_p + '/example_prediction_tmp.csv'
+
+            with open(out_tmp, 'w') as w:
+                f = open(out)
+                count = 0
+                for line in f:
+                    if count == 0:
+                        print('1')
+                    else:
+                        w.write(line)
+                        print(line)
+                    count = count + 1
+            w.close()
+
+            f = open(out_tmp)
             count = 0
             for line in f:
                 count = count + 1
@@ -483,7 +505,7 @@ class PhaMer_Form(QWidget):
             self.tableWidget.setRowCount(nrows)  # 设置行数
             self.tableWidget.setColumnCount(ncols)
 
-            f = open(out)
+            f = open(out_tmp)
             row_num = 0
             for line in f:
                 print(line)
@@ -496,17 +518,17 @@ class PhaMer_Form(QWidget):
                     print(row_num,col_num)
                     col_num = col_num + 1
                 row_num = row_num + 1
+
         except:
             QMessageBox.critical(self, "error", "Please run program first!!!")
-
-
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Clustal = QtWidgets.QWidget()
+    # Clustal = QtWidgets.QWidget()
+    WT = winTest()
     ui = PhaMer_Form()
-    ui.setupUi(Clustal)
-    Clustal.show()
+    ui.setupUi(WT)
+    WT.show()
     sys.exit(app.exec_())

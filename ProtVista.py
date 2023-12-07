@@ -197,8 +197,8 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     # Form = QtWidgets.QWidget()
-    NW = winTest()
+    WT = winTest()
     ui = Provista_Form()
-    ui.setupUi(NW)
-    NW.show()
+    ui.setupUi(WT)
+    WT.show()
     sys.exit(app.exec_())

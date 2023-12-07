@@ -10,7 +10,7 @@
 
 import sys,os
 import time
-from Feature import all_feature, readFasta
+from models.Lysins.Feature import all_feature, readFasta
 from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
