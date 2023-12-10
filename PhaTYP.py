@@ -243,8 +243,10 @@ class PhaTYP_Form(QWidget):
                         return True
                 return False
 
-            self.textBrowser.setText('Running! please wait(5-8mins)' + '\n' + 'If no response,never close window!!!')
-            QApplication.processEvents()  # 逐条打印状态
+            def is_fasta(filename):
+                with open(filename, "r") as handle:
+                    fasta = SeqIO.parse(handle, "fasta")
+                    return any(fasta)
 
             contigs = self.textBrowser_2.toPlainText()
             out_fn = self.textBrowser_3.toPlainText()
@@ -253,217 +255,227 @@ class PhaTYP_Form(QWidget):
             global out
             out = out_fn + '/lysogen_prediction.csv'
 
-            try:
-                length = int(self.textEdit.toPlainText())
-            except:
-                length = 3000
+            if any([len(contigs), len(out_fn)]) == False:
+                QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
+            else:
+                if is_fasta(contigs) == False:
+                    QMessageBox.critical(self, "error", "Check fasta file format!")
+                else:
+                    self.textBrowser.setText(
+                        'Running! please wait(5-8mins)' + '\n' + 'If no response,never close window!!!')
+                    QApplication.processEvents()  # 逐条打印状态
 
-
-            if not os.path.isdir(out_fn):
-                os.makedirs(out_fn)
-
-            if not os.path.isdir(transformer_fn):
-                os.makedirs(transformer_fn)
-
-            rec = []
-            for record in SeqIO.parse(contigs, 'fasta'):
-                if len(record.seq) > int(length):
-                    rec.append(record)
-            SeqIO.write(rec, out_fn + '/filtered_contigs.fa', 'fasta')
-
-            try:
-                p = sub.Popen(
-                    r'.\tools\prodigal\prodigal.exe -i ' + out_fn + '/filtered_contigs.fa -a ' + out_fn + '/test_protein.fa -f gff -p meta')
-                p.wait()
-            except:
-                QMessageBox.critical(self, "error", "check fasta file format!")
-
-            try:
-                # create database
-                p = sub.Popen(
-                    r'.\tools\diamond\diamond.exe makedb --threads 2 --in ./models/PhaTYP/database/database.fa -d ' + out_fn + '/database.dmnd',
-                    shell=False)
-                p.wait()
-                # running alignment
-                p = sub.Popen(
-                    r'.\tools\diamond\diamond.exe blastp --threads 2 --sensitive -d ' + out_fn + '/database.dmnd -q ' + out_fn + '/test_protein.fa -o ' + out_fn + '/results.tab -k 1',
-                    shell=False)
-                p.wait()
-
-                read_abc(out_fn + '/results.tab', out_fn + '/results.abc')
-            except:
-                QMessageBox.critical(self, "error", "check fasta file format!")
-
-            # Load dictonary and BLAST results D:\tools\Pycharm\pyqt\models\PhaTYP\database
-            proteins_df = pd.read_csv('./models/PhaTYP/database/proteins.csv')
-            proteins_df.dropna(axis=0, how='any', inplace=True)
-            pc2wordsid = {pc: idx for idx, pc in enumerate(sorted(set(proteins_df['cluster'].values)))}
-            protein2pc = {protein: pc for protein, pc in
-                          zip(proteins_df['protein_id'].values, proteins_df['cluster'].values)}
-            blast_df = pd.read_csv(out_fn + "/results.abc", sep='\t', names=['query', 'ref', 'evalue'])
-
-            # Parse the DIAMOND results
-            contig2pcs = {}
-            for query, ref, evalue in zip(blast_df['query'].values, blast_df['ref'].values, blast_df['evalue'].values):
-                conitg = query.rsplit('_', 1)[0]
-                idx = query.rsplit('_', 1)[1]
-                pc = pc2wordsid[protein2pc[ref]]
-                try:
-                    contig2pcs[conitg].append((idx, pc, evalue))
-                except:
-                    contig2pcs[conitg] = [(idx, pc, evalue)]
-
-            # Sorted by position
-            for contig in contig2pcs:
-                contig2pcs[contig] = sorted(contig2pcs[contig], key=lambda tup: tup[0])
-
-            # Contigs2sentence
-            contig2id = {contig: idx for idx, contig in enumerate(contig2pcs.keys())}
-            id2contig = {idx: contig for idx, contig in enumerate(contig2pcs.keys())}
-            sentence = np.zeros((len(contig2id.keys()), 300))
-            sentence_weight = np.ones((len(contig2id.keys()), 300))
-            for row in range(sentence.shape[0]):
-                contig = id2contig[row]
-                pcs = contig2pcs[contig]
-                for col in range(len(pcs)):
                     try:
-                        _, sentence[row][col], sentence_weight[row][col] = pcs[col]
-                        sentence[row][col] += 1
+                        length = int(self.textEdit.toPlainText())
                     except:
-                        break
+                        length = 3000
 
-            # propostion
-            rec = []
-            for key in blast_df['query'].values:
-                name = key.rsplit('_', 1)[0]
-                rec.append(name)
-            counter = Counter(rec)
-            mapped_num = np.array([counter[item] for item in id2contig.values()])
+                    if not os.path.isdir(out_fn):
+                        os.makedirs(out_fn)
 
-            rec = []
-            for record in SeqIO.parse(out_fn + '/test_protein.fa', 'fasta'):
-                name = record.id
-                name = name.rsplit('_', 1)[0]
-                rec.append(name)
-            counter = Counter(rec)
-            total_num = np.array([counter[item] for item in id2contig.values()])
-            proportion = mapped_num / total_num
+                    if not os.path.isdir(transformer_fn):
+                        os.makedirs(transformer_fn)
 
-            # Store the parameters
-            pkl.dump(sentence, open(transformer_fn + '/sentence.feat', 'wb'))
-            pkl.dump(id2contig, open(transformer_fn + '/sentence_id2contig.dict', 'wb'))
-            pkl.dump(proportion, open(transformer_fn + '/sentence_proportion.feat', 'wb'))
-            pkl.dump(pc2wordsid, open(transformer_fn + '/pc2wordsid.dict', 'wb'))
+                    rec = []
+                    for record in SeqIO.parse(contigs, 'fasta'):
+                        if len(record.seq) > int(length):
+                            rec.append(record)
+                    SeqIO.write(rec, out_fn + '/filtered_contigs.fa', 'fasta')
 
-            feat = pkl.load(open(transformer_fn + '/sentence.feat', 'rb'))
-            pcs = pkl.load(open('./models/PhaTYP/database/pc2wordsid.dict', 'rb'))
-            id2pcs = {item: key for key, item in pcs.items()}
-            text = []
-            label = []
-            for line in feat:
-                sentence = ""
-                flag = 0
-                for i in range(len(line) - 2):
-                    if line[i] - 1 == -1:
-                        flag = 1
-                        sentence = sentence[:-1]
-                        break
-                    sentence = sentence + id2pcs[line[i] - 1] + ' '
-                if flag == 0:
-                    sentence = sentence[:-1]
-                text.append(sentence)
-                label.append(1)
+                    try:
+                        p = sub.Popen(
+                            r'.\tools\prodigal\prodigal.exe -i ' + out_fn + '/filtered_contigs.fa -a ' + out_fn + '/test_protein.fa -f gff -p meta')
+                        p.wait()
+                    except:
+                        QMessageBox.critical(self, "error", "check fasta file format!")
 
-            feat_df = pd.DataFrame({'label': label, 'text': text})
-            feat_df.to_csv(transformer_fn + '/bert_feat.csv', index=None)
+                    try:
+                        # create database
+                        p = sub.Popen(
+                            r'.\tools\diamond\diamond.exe makedb --threads 2 --in ./models/PhaTYP/database/database.fa -d ' + out_fn + '/database.dmnd',
+                            shell=False)
+                        p.wait()
+                        # running alignment
+                        p = sub.Popen(
+                            r'.\tools\diamond\diamond.exe blastp --threads 2 --sensitive -d ' + out_fn + '/database.dmnd -q ' + out_fn + '/test_protein.fa -o ' + out_fn + '/results.tab -k 1',
+                            shell=False)
+                        p.wait()
 
-            out_dir = os.path.dirname(out)
-            if out_dir != '':
-                if not os.path.isdir(out_dir):
-                    os.makedirs(out_dir)
+                        read_abc(out_fn + '/results.tab', out_fn + '/results.abc')
+                    except:
+                        QMessageBox.critical(self, "error", "check fasta file format!")
 
-            id2contig = pkl.load(open(transformer_fn + '/sentence_id2contig.dict', 'rb'))
-            bert_feat = pd.read_csv(transformer_fn + '/bert_feat.csv')
+                    # Load dictonary and BLAST results D:\tools\Pycharm\pyqt\models\PhaTYP\database
+                    proteins_df = pd.read_csv('./models/PhaTYP/database/proteins.csv')
+                    proteins_df.dropna(axis=0, how='any', inplace=True)
+                    pc2wordsid = {pc: idx for idx, pc in enumerate(sorted(set(proteins_df['cluster'].values)))}
+                    protein2pc = {protein: pc for protein, pc in
+                                  zip(proteins_df['protein_id'].values, proteins_df['cluster'].values)}
+                    blast_df = pd.read_csv(out_fn + "/results.abc", sep='\t', names=['query', 'ref', 'evalue'])
 
-            SENTENCE_LEN = 300  # len
-            NUM_TOKEN = 45583  # PC
+                    # Parse the DIAMOND results
+                    contig2pcs = {}
+                    for query, ref, evalue in zip(blast_df['query'].values, blast_df['ref'].values,
+                                                  blast_df['evalue'].values):
+                        conitg = query.rsplit('_', 1)[0]
+                        idx = query.rsplit('_', 1)[1]
+                        pc = pc2wordsid[protein2pc[ref]]
+                        try:
+                            contig2pcs[conitg].append((idx, pc, evalue))
+                        except:
+                            contig2pcs[conitg] = [(idx, pc, evalue)]
 
-            CONFIG_DIR = "./models/PhaTYP/config"
-            OUTPUT_DIR = "finetune"
+                    # Sorted by position
+                    for contig in contig2pcs:
+                        contig2pcs[contig] = sorted(contig2pcs[contig], key=lambda tup: tup[0])
 
-            # load the token configuration
-            tokenizer = BertTokenizer.from_pretrained(CONFIG_DIR, do_basic_tokenize=False)
+                    # Contigs2sentence
+                    contig2id = {contig: idx for idx, contig in enumerate(contig2pcs.keys())}
+                    id2contig = {idx: contig for idx, contig in enumerate(contig2pcs.keys())}
+                    sentence = np.zeros((len(contig2id.keys()), 300))
+                    sentence_weight = np.ones((len(contig2id.keys()), 300))
+                    for row in range(sentence.shape[0]):
+                        contig = id2contig[row]
+                        pcs = contig2pcs[contig]
+                        for col in range(len(pcs)):
+                            try:
+                                _, sentence[row][col], sentence_weight[row][col] = pcs[col]
+                                sentence[row][col] += 1
+                            except:
+                                break
 
-            def preprocess_function(examples):
-                return tokenizer(examples["text"], truncation=True)
+                    # propostion
+                    rec = []
+                    for key in blast_df['query'].values:
+                        name = key.rsplit('_', 1)[0]
+                        rec.append(name)
+                    counter = Counter(rec)
+                    mapped_num = np.array([counter[item] for item in id2contig.values()])
 
-            train = pa.Table.from_pandas(bert_feat)
-            test = pa.Table.from_pandas(bert_feat)
-            train = Dataset(train)
-            test = Dataset(test)
+                    rec = []
+                    for record in SeqIO.parse(out_fn + '/test_protein.fa', 'fasta'):
+                        name = record.id
+                        name = name.rsplit('_', 1)[0]
+                        rec.append(name)
+                    counter = Counter(rec)
+                    total_num = np.array([counter[item] for item in id2contig.values()])
+                    proportion = mapped_num / total_num
 
-            data = DatasetDict({"train": train, "test": test})
+                    # Store the parameters
+                    pkl.dump(sentence, open(transformer_fn + '/sentence.feat', 'wb'))
+                    pkl.dump(id2contig, open(transformer_fn + '/sentence_id2contig.dict', 'wb'))
+                    pkl.dump(proportion, open(transformer_fn + '/sentence_proportion.feat', 'wb'))
+                    pkl.dump(pc2wordsid, open(transformer_fn + '/pc2wordsid.dict', 'wb'))
 
-            tokenized_data = data.map(preprocess_function, batched=True)
-            data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
-            model = AutoModelForSequenceClassification.from_pretrained("./models/PhaTYP/model/", num_labels=2)
+                    feat = pkl.load(open(transformer_fn + '/sentence.feat', 'rb'))
+                    pcs = pkl.load(open('./models/PhaTYP/database/pc2wordsid.dict', 'rb'))
+                    id2pcs = {item: key for key, item in pcs.items()}
+                    text = []
+                    label = []
+                    for line in feat:
+                        sentence = ""
+                        flag = 0
+                        for i in range(len(line) - 2):
+                            if line[i] - 1 == -1:
+                                flag = 1
+                                sentence = sentence[:-1]
+                                break
+                            sentence = sentence + id2pcs[line[i] - 1] + ' '
+                        if flag == 0:
+                            sentence = sentence[:-1]
+                        text.append(sentence)
+                        label.append(1)
 
-            training_args = TrainingArguments(
-                output_dir='./models/PhaTYP/results',
-                overwrite_output_dir=False,
-                do_train=True,
-                do_eval=True,
-                learning_rate=2e-5,
-                num_train_epochs=10,
-                per_device_train_batch_size=32,
-                per_device_eval_batch_size=32,
-                weight_decay=0.01,
-            )
+                    feat_df = pd.DataFrame({'label': label, 'text': text})
+                    feat_df.to_csv(transformer_fn + '/bert_feat.csv', index=None)
 
-            trainer = Trainer(
-                model=model,
-                args=training_args,
-                train_dataset=tokenized_data["train"],
-                eval_dataset=tokenized_data["test"],
-                tokenizer=tokenizer,
-                data_collator=data_collator,
-            )
+                    out_dir = os.path.dirname(out)
+                    if out_dir != '':
+                        if not os.path.isdir(out_dir):
+                            os.makedirs(out_dir)
 
-            with torch.no_grad():
-                pred, label, metric = trainer.predict(tokenized_data["test"])
+                    id2contig = pkl.load(open(transformer_fn + '/sentence_id2contig.dict', 'rb'))
+                    bert_feat = pd.read_csv(transformer_fn + '/bert_feat.csv')
 
-            prediction_value = []
-            for item in pred:
-                prediction_value.append(softmax(item))
-            prediction_value = np.array(prediction_value)
+                    SENTENCE_LEN = 300  # len
+                    NUM_TOKEN = 45583  # PC
 
-            all_pred = []
-            all_score = []
-            for score in prediction_value:
-                pred = np.argmax(score)
-                if pred == 1:
-                    all_pred.append('temperate')
-                    all_score.append(score[1])
-                else:
-                    all_pred.append('virulent')
-                    all_score.append(score[0])
+                    CONFIG_DIR = "./models/PhaTYP/config"
+                    OUTPUT_DIR = "finetune"
 
-            pred_csv = pd.DataFrame({"Contig": id2contig.values(), "Pred": all_pred, "Score": all_score})
-            pred_csv.to_csv(out, index=False)
+                    # load the token configuration
+                    tokenizer = BertTokenizer.from_pretrained(CONFIG_DIR, do_basic_tokenize=False)
 
-            process_name = 'diamond.exe'
-            time.sleep(3)
-            while True:  # 判断 iqtree.exe 是否运行完成
-                if check_process_running(process_name):
-                    print(f"The process {process_name} is running.")
-                    time.sleep(10)
-                    continue
-                else:
-                    print(f"The process {process_name} is not running.")
+                    def preprocess_function(examples):
+                        return tokenizer(examples["text"], truncation=True)
+
+                    train = pa.Table.from_pandas(bert_feat)
+                    test = pa.Table.from_pandas(bert_feat)
+                    train = Dataset(train)
+                    test = Dataset(test)
+
+                    data = DatasetDict({"train": train, "test": test})
+
+                    tokenized_data = data.map(preprocess_function, batched=True)
+                    data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
+                    model = AutoModelForSequenceClassification.from_pretrained("./models/PhaTYP/model/", num_labels=2)
+
+                    training_args = TrainingArguments(
+                        output_dir='./models/PhaTYP/results',
+                        overwrite_output_dir=False,
+                        do_train=True,
+                        do_eval=True,
+                        learning_rate=2e-5,
+                        num_train_epochs=10,
+                        per_device_train_batch_size=32,
+                        per_device_eval_batch_size=32,
+                        weight_decay=0.01,
+                    )
+
+                    trainer = Trainer(
+                        model=model,
+                        args=training_args,
+                        train_dataset=tokenized_data["train"],
+                        eval_dataset=tokenized_data["test"],
+                        tokenizer=tokenizer,
+                        data_collator=data_collator,
+                    )
+
+                    with torch.no_grad():
+                        pred, label, metric = trainer.predict(tokenized_data["test"])
+
+                    prediction_value = []
+                    for item in pred:
+                        prediction_value.append(softmax(item))
+                    prediction_value = np.array(prediction_value)
+
+                    all_pred = []
+                    all_score = []
+                    for score in prediction_value:
+                        pred = np.argmax(score)
+                        if pred == 1:
+                            all_pred.append('temperate')
+                            all_score.append(score[1])
+                        else:
+                            all_pred.append('virulent')
+                            all_score.append(score[0])
+
+                    pred_csv = pd.DataFrame({"Contig": id2contig.values(), "Pred": all_pred, "Score": all_score})
+                    pred_csv.to_csv(out, index=False)
+
+                    process_name = 'diamond.exe'
+                    time.sleep(3)
+                    while True:  # 判断 iqtree.exe 是否运行完成
+                        if check_process_running(process_name):
+                            print(f"The process {process_name} is running.")
+                            time.sleep(10)
+                            continue
+                        else:
+                            print(f"The process {process_name} is not running.")
+                            self.textBrowser.setText('Finished!!!'+'\n'+'lysogen_prediction.csv is your result!!!')
+                            break
+
                     self.textBrowser.setText('Finished!!!')
-                    break
-
-            self.textBrowser.setText('Finished!!!')
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
 

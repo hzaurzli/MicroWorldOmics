@@ -471,7 +471,7 @@ class PhaMer_Form(QWidget):
                     else:
                         pred_csv.to_csv(out, index=False)
 
-                    self.textBrowser.setText('Finished!!!')
+                    self.textBrowser.setText('Finished!!!'+'\n'+'example_prediction.csv is your result!!!')
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
 
