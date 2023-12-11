@@ -944,6 +944,7 @@ class WorkThread(QThread):
         self.trigger.emit('Finished!!!' + '\n' + 'phagcn_prediction.csv is your result!!!')
 
 
+
 class PhaGCN_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -1038,7 +1039,7 @@ class PhaGCN_Form(QWidget):
         self.tableWidget.setGeometry(QtCore.QRect(355, 70, 321, 241))
         self.tableWidget.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(3)
+        self.tableWidget.setColumnCount(4)
         self.tableWidget.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
@@ -1046,6 +1047,8 @@ class PhaGCN_Form(QWidget):
         self.tableWidget.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(3, item)
         self.label_5 = QtWidgets.QLabel(Clustal)
         self.label_5.setGeometry(QtCore.QRect(60, 200, 161, 31))
         font = QtGui.QFont()
@@ -1061,7 +1064,6 @@ class PhaGCN_Form(QWidget):
 
         self.retranslateUi(Clustal)
         QtCore.QMetaObject.connectSlotsByName(Clustal)
-
 
         # button action
         self.pushButton.clicked.connect(self.calculation)
@@ -1084,10 +1086,12 @@ class PhaGCN_Form(QWidget):
         self.pushButton_4.setText(_translate("Clustal", "Table"))
         self.label_6.setText(_translate("Clustal", "If the program is finished, click \'Table\' to display the result"))
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("Clustal", "Contig"))
+        item.setText(_translate("Clustal", "Accession"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("Clustal", "Pred"))
+        item.setText(_translate("Clustal", "Length"))
         item = self.tableWidget.horizontalHeaderItem(2)
+        item.setText(_translate("Clustal", "Pred"))
+        item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("Clustal", "Score"))
         self.label_5.setText(_translate("Clustal", "Contig length"))
 
@@ -1191,6 +1195,7 @@ class PhaGCN_Form(QWidget):
 
         except:
             QMessageBox.critical(self, "error", "Please run program first!!!")
+
 
 
 if __name__ == "__main__":

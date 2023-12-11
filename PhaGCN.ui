@@ -258,7 +258,12 @@
    </property>
    <column>
     <property name="text">
-     <string>Contig</string>
+     <string>Accession</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Length</string>
     </property>
    </column>
    <column>
