@@ -19,7 +19,89 @@ import psutil
 import shutil
 
 
+class WorkThread(QThread):
+    # 自定义信号对象
+    trigger = pyqtSignal(str)
+
+    def __int__(self):
+        # 初始化函数
+        super(WorkThread, self).__init__()
+
+    def run(self):
+        def check_process_running(process_name):  # 检查进程是否运行
+            for process in psutil.process_iter(['name']):
+                if process.info['name'] == process_name:
+                    return True
+            return False
+
+        if type == 'A':
+            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m ASC_GTRCAT"
+                     % (fasta, bootstrap))
+
+        elif type == 'B':
+            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRGAMMAI"
+                     % (fasta, bootstrap))
+
+        elif type == 'C':
+            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRGAMMA"
+                     % (fasta, bootstrap))
+
+        elif type == 'D':
+            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRCAT"
+                     % (fasta, bootstrap))
+
+        elif type == 'E':
+            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRCATI"
+                     % (fasta, bootstrap))
+
+        elif type == 'F':
+            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m ASC_GTRGAMMA"
+                     % (fasta, bootstrap))
+
+        elif type == 'G':
+            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGAMMALGF"
+                     % (fasta, bootstrap))
+
+        elif type == 'H':
+            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGAMMAILGX"
+                     % (fasta, bootstrap))
+
+        elif type == 'I':
+            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGTRGAMMA"
+                     % (fasta, bootstrap))
+
+        elif type == 'J':
+            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m  PROTGAMMAAUTO"
+                     % (fasta, bootstrap))
+
+        elif type == 'K':
+            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m  PROTGAMMAWAG"
+                     % (fasta, bootstrap))
+
+        process_name = 'raxmlHPC.exe'
+        time.sleep(5)
+        while True:  # 判断 iqtree.exe 是否运行完成
+            if check_process_running(process_name):
+                print(f"The process {process_name} is running.")
+                time.sleep(30)
+                continue
+            else:
+                print(f"The process {process_name} is not running.")
+                relevant_path = "."
+                included_extensions = ['ex']
+                file_names = [fn for fn in os.listdir(relevant_path)
+                              if any(fn.endswith(ext) for ext in included_extensions)]
+                for i in file_names:
+                    shutil.move(i, path)
+                break
+
+        self.trigger.emit('Finished!!!')
+
 class Raxml_Form(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.work = WorkThread()
+
     def setupUi(self, Clustal):
         Clustal.setObjectName("Clustal")
         Clustal.resize(715, 457)
@@ -279,18 +361,16 @@ class Raxml_Form(QWidget):
         print(openfile_name)
         self.textBrowser_3.setText(openfile_name)
 
+    def finished(self, str):
+        self.textBrowser.setText(str)
 
     def build_tree(self):
         try:
+            global fasta, out, path, type, bootstrap
             fasta = self.textBrowser_2.toPlainText()
             out = self.textBrowser_3.toPlainText()
             path = os.path.dirname(out)
 
-            def check_process_running(process_name): # 检查进程是否运行
-                for process in psutil.process_iter(['name']):
-                    if process.info['name'] == process_name:
-                        return True
-                return False
 
             try:
                 bootstrap = self.textEdit.text()
@@ -308,59 +388,85 @@ class Raxml_Form(QWidget):
                 QApplication.processEvents()  # 逐条打印状态
 
                 if self.radioButton.isChecked():
-                    os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m ASC_GTRCAT"
-                             % (fasta, bootstrap))
+                    type = 'A'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_2.isChecked():
-                    os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRGAMMAI"
-                             % (fasta, bootstrap))
+                    type = 'B'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_3.isChecked():
-                    os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRGAMMA"
-                             % (fasta, bootstrap))
+                    type = 'C'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_4.isChecked():
-                    os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRCAT"
-                             % (fasta, bootstrap))
+                    type = 'D'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_5.isChecked():
-                    os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRCATI"
-                             % (fasta, bootstrap))
+                    type = 'E'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_6.isChecked():
-                    os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m ASC_GTRGAMMA"
-                             % (fasta, bootstrap))
+                    type = 'F'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_7.isChecked():
-                    os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGAMMALGF"
-                             % (fasta, bootstrap))
+                    type = 'G'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_8.isChecked():
-                    os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGAMMAILGX"
-                             % (fasta, bootstrap))
+                    type = 'H'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_9.isChecked():
-                    os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGTRGAMMA"
-                             % (fasta, bootstrap))
+                    type = 'I'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_10.isChecked():
-                    os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m  PROTGAMMAAUTO"
-                             % (fasta, bootstrap))
+                    type = 'J'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_11.isChecked():
-                    os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m  PROTGAMMAWAG"
-                             % (fasta, bootstrap))
+                    type = 'K'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 else:
                     QMessageBox.critical(self, "error", "Please choose Substitution model!")
 
-                process_name = 'raxmlHPC.exe'
-                time.sleep(5)
-                while True: # 判断 iqtree.exe 是否运行完成
-                    if check_process_running(process_name):
-                        print(f"The process {process_name} is running.")
-                        time.sleep(30)
-                        continue
-                    else:
-                        print(f"The process {process_name} is not running.")
-                        relevant_path = "."
-                        included_extensions = ['ex']
-                        file_names = [fn for fn in os.listdir(relevant_path)
-                                      if any(fn.endswith(ext) for ext in included_extensions)]
-                        for i in file_names:
-                            shutil.move(i, path)
-                            
-                        self.textBrowser.setText('Finished!!!')
-                        break
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
 

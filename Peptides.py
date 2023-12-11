@@ -20,7 +20,82 @@ import os,psutil
 from Bio import SeqIO
 
 
+class WorkThread(QThread):
+    # 自定义信号对象
+    trigger = pyqtSignal(str)
+
+    def __int__(self):
+        # 初始化函数
+        super(WorkThread, self).__init__()
+
+    def run(self):
+        global out
+
+        def check_process_running(process_name):  # 检查进程是否运行
+            for process in psutil.process_iter(['name']):
+                if process.info['name'] == process_name:
+                    return True
+            return False
+
+        os.popen(r".\perl\bin\perl.exe .\perl\format.pl %s none > %s"
+                 % (fasta, path + '/tmp.txt'))
+        time.sleep(3)
+        process_name = 'perl.exe'
+        while True:  # 判断 perl.exe 是否运行完成
+            if check_process_running(process_name):
+                print(f"The process {process_name} is running.")
+                time.sleep(10)
+                continue
+            else:
+                print(f"The process {process_name} is not running.")
+                break
+
+        model = load_model('./models/Activity/lstm.h5')
+        x = loadtxt(path + '/tmp.txt', delimiter=",")
+        preds = model.predict(x)
+        savetxt(path + '/tmpActivity.txt', preds, fmt="%.8f", delimiter=",")
+
+        with open(fasta) as fa:
+            fa_dict = {}
+            for line in fa:
+                line = line.replace('\n', '')
+                if line.startswith('>'):
+                    seq_name = line[1:]
+                    fa_dict[seq_name] = ''
+                else:
+                    fa_dict[seq_name] += line.replace('\n', '')
+        fa.close()
+
+        lis = []
+        with open(path + '/tmpActivity.txt') as ac:
+            for i in ac:
+                i = i.replace('\n', '')
+                lis.append(i)
+        ac.close()
+
+        for i_1 in range(0, len(lis)):
+            key = list(fa_dict.keys())[i_1]
+            val = [fa_dict.get(key, [])] + [lis[i_1]]
+            fa_dict[key] = val
+
+        with open(out, 'w') as f:
+            for key in fa_dict:
+                lines = key + '\t' + fa_dict[key][0] + '\t' + fa_dict[key][1] + '\n'
+                print(lines)
+                f.write(lines)
+        f.close()
+
+        os.remove(path + '/tmp.txt')
+        os.remove(path + '/tmpActivity.txt')
+
+        self.trigger.emit('Finished!!!')
+
+
 class Peptides_Form(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.work = WorkThread()
+
     def setupUi(self, Clustal):
         Clustal.setObjectName("Clustal")
         Clustal.resize(702, 467)
@@ -157,6 +232,9 @@ class Peptides_Form(QWidget):
         print(openfile_name)
         self.textBrowser_3.setText(openfile_name)
 
+    def finished(self, str):
+        self.textBrowser.setText(str)
+
     def calculation(self):
         try:
             global fasta
@@ -172,11 +250,6 @@ class Peptides_Form(QWidget):
                     fasta = SeqIO.parse(handle, "fasta")
                     return any(fasta)
 
-            def check_process_running(process_name):  # 检查进程是否运行
-                for process in psutil.process_iter(['name']):
-                    if process.info['name'] == process_name:
-                        return True
-                return False
 
             if any([len(fasta), len(out)]) == False:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
@@ -187,57 +260,11 @@ class Peptides_Form(QWidget):
                     self.textBrowser.setText('Running! please wait')
                     QApplication.processEvents()  # 逐条打印状态
 
-                    os.popen(r".\perl\bin\perl.exe .\perl\format.pl %s none > %s"
-                             % (fasta, path + '/tmp.txt'))
-                    time.sleep(3)
-                    process_name = 'perl.exe'
-                    while True:  # 判断 perl.exe 是否运行完成
-                        if check_process_running(process_name):
-                            print(f"The process {process_name} is running.")
-                            time.sleep(10)
-                            continue
-                        else:
-                            print(f"The process {process_name} is not running.")
-                            break
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
 
-                    model = load_model('./models/Activity/lstm.h5')
-                    x = loadtxt(path + '/tmp.txt', delimiter=",")
-                    preds = model.predict(x)
-                    savetxt(path + '/tmpActivity.txt', preds, fmt="%.8f", delimiter=",")
-
-                    with open(fasta) as fa:
-                        fa_dict = {}
-                        for line in fa:
-                            line = line.replace('\n', '')
-                            if line.startswith('>'):
-                                seq_name = line[1:]
-                                fa_dict[seq_name] = ''
-                            else:
-                                fa_dict[seq_name] += line.replace('\n', '')
-                    fa.close()
-
-                    lis = []
-                    with open(path + '/tmpActivity.txt') as ac:
-                        for i in ac:
-                            i = i.replace('\n', '')
-                            lis.append(i)
-                    ac.close()
-
-                    for i_1 in range(0, len(lis)):
-                        key = list(fa_dict.keys())[i_1]
-                        val = [fa_dict.get(key, [])] + [lis[i_1]]
-                        fa_dict[key] = val
-
-                    with open(out, 'w') as f:
-                        for key in fa_dict:
-                            lines = key + '\t' + fa_dict[key][0] + '\t' + fa_dict[key][1] + '\n'
-                            print(lines)
-                            f.write(lines)
-                    f.close()
-
-                    os.remove(path + '/tmp.txt')
-                    os.remove(path + '/tmpActivity.txt')
-                    self.textBrowser.setText('Finished!!!')
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
 

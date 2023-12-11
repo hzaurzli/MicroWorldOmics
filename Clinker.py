@@ -43,7 +43,30 @@ class WebEngineView(QWebEngineView):
         self.windowList.append(new_window)  #注：没有这句会崩溃
         return new_webview
 
+class WorkThread(QThread):
+    # 自定义信号对象
+    trigger = pyqtSignal(str)
+
+    def __int__(self):
+        # 初始化函数
+        super(WorkThread, self).__init__()
+
+    def run(self):
+        myobj = subprocess.Popen(r".\tools\clinker\clinker.exe %s -o %s -p %s" %
+                                 (gbk_path,
+                                  out,
+                                  html))
+
+        myobj.communicate()
+        time.sleep(3)
+
+        self.trigger.emit('Finished!!!')
+
 class Clinker_Form(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.work = WorkThread()
+
     def setupUi(self, Clustal):
         Clustal.setObjectName("Clustal")
         Clustal.resize(702, 467)
@@ -196,10 +219,13 @@ class Clinker_Form(QWidget):
         print(openfile_name)
         self.textBrowser_4.setText(openfile_name)
 
+    def finished(self, str):
+        self.textBrowser.setText(str)
+
 
     def calculation(self):
         try:
-            global gbk
+            global gbk, gbk_path
             global out
             global html
 
@@ -218,14 +244,10 @@ class Clinker_Form(QWidget):
                 gbk_path = ' '.join(gbk)
                 print(gbk_path)
 
-                myobj = subprocess.Popen(r".\tools\clinker\clinker.exe %s -o %s -p %s" %
-                                         (gbk_path,
-                                          out,
-                                          html))
-
-                myobj.communicate()
-                time.sleep(3)
-                self.textBrowser.setText('Finished!!!')
+                # 启动线程, 运行 run 函数
+                self.work.start()
+                # 传送信号, 接受 run 函数执行完毕后的信号
+                self.work.trigger.connect(self.finished)
 
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")

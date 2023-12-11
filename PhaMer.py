@@ -9,9 +9,10 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-import os
+import os,time
 import pandas as pd
 import numpy as np
 import pickle as pkl
@@ -54,8 +55,239 @@ class winTest(QtWidgets.QMainWindow):
         except:
             return None  # 设置正常退出
 
+class WorkThread(QThread):
+    # 自定义信号对象
+    trigger = pyqtSignal(str)
+
+    def __int__(self):
+        # 初始化函数
+        super(WorkThread, self).__init__()
+
+    def run(self):
+        global out
+
+        out_dir = out_fn
+
+        transformer_fn = out_dir + '/phamer'
+        db_dir = './models/PhaMer/database'
+        out = out_dir + '/example_prediction.csv'
+        threads = 1
+        proteins = None
+        diamond_db = f'{db_dir}/database.dmnd'
+        print(diamond_db)
+        path = os.path.abspath('.')
+
+        if not os.path.isdir(out_fn):
+            os.makedirs(out_fn)
+
+        if not os.path.isdir(transformer_fn):
+            os.makedirs(transformer_fn)
+
+        if not os.path.exists(db_dir):
+            print(f'Database directory {db_dir} missing or unreadable')
+
+        rec = []
+        for record in SeqIO.parse(contigs, 'fasta'):
+            if len(record.seq) > length:
+                rec.append(record)
+        SeqIO.write(rec, f'{out_fn}/filtered_contigs.fa', 'fasta')
+
+        if proteins is None:
+            prodigal = path + "/tools/prodigal/prodigal.exe"
+            prodigal_cmd = f'{prodigal} -i {out_fn}/filtered_contigs.fa -a {out_fn}/test_protein.fa -f gff -p meta'
+            print("Running prodigal...")
+            _ = subprocess.check_call(prodigal_cmd, shell=True, stdout=subprocess.DEVNULL,
+                                      stderr=subprocess.DEVNULL)
+        else:
+            shutil.copyfile(proteins, f'{out_fn}/test_protein.fa')
+
+        try:
+            if os.path.exists(diamond_db):
+                print(f'Using preformatted DIAMOND database ({diamond_db}) ...')
+            else:
+                # create database
+                diamond = path + '/tools/diamond/diamond.exe'
+                make_diamond_cmd = f'{diamond} makedb --threads {threads} --in {db_dir}/database.fa -d {out_fn}/database.dmnd'
+                print("Creating Diamond database...")
+                _ = subprocess.check_call(make_diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
+                                          stderr=subprocess.DEVNULL)
+                diamond_db = f'{out_fn}/database.dmnd'
+        except:
+            print("diamond makedb failed")
+
+        def select_tab(file1, file2):
+            f = open(file1)
+            with open(file2, 'w') as w:
+                for i in f:
+                    i = i.strip().split('\t')
+                    print(i[0])
+                    if i[0] != i[1]:
+                        line = i[0] + '\t' + i[1] + '\t' + i[10] + '\n'
+                        w.write(line)
+            w.close()
+
+        try:
+            # running alignment
+            diamond = path + '/tools/diamond/diamond.exe'
+            diamond_cmd = f'{diamond} blastp --threads {threads} --sensitive -d {diamond_db} -q {out_fn}/test_protein.fa -o {out_fn}/results.tab -k 1'
+            print("Running Diamond...")
+            _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
+                                      stderr=subprocess.DEVNULL)
+            diamond_out_fp = f"{out_fn}/results.tab"
+            database_abc_fp = f"{out_fn}/results.abc"
+            select_tab(diamond_out_fp, database_abc_fp)
+        except:
+            print("diamond blastp failed")
+
+        proteins_df = pd.read_csv(f'{db_dir}/proteins.csv')
+        proteins_df.dropna(axis=0, how='any', inplace=True)
+        pc2wordsid = {pc: idx for idx, pc in enumerate(sorted(set(proteins_df['cluster'].values)))}
+        protein2pc = {protein: pc for protein, pc in
+                      zip(proteins_df['protein_id'].values, proteins_df['cluster'].values)}
+        blast_df = pd.read_csv(f"{out_fn}/results.abc", sep='\t', names=['query', 'ref', 'evalue'])
+
+        print(blast_df)
+        # Parse the DIAMOND results
+        contig2pcs = {}
+        for query, ref, evalue in zip(blast_df['query'].values, blast_df['ref'].values,
+                                      blast_df['evalue'].values):
+            conitg = query.rsplit('_', 1)[0]
+            idx = query.rsplit('_', 1)[1]
+            pc = pc2wordsid[protein2pc[ref]]
+            try:
+                contig2pcs[conitg].append((idx, pc, evalue))
+            except:
+                contig2pcs[conitg] = [(idx, pc, evalue)]
+
+        # Sorted by position
+        for contig in contig2pcs:
+            contig2pcs[contig] = sorted(contig2pcs[contig], key=lambda tup: tup[0])
+
+        # Contigs2sentence
+        contig2id = {contig: idx for idx, contig in enumerate(contig2pcs.keys())}
+        id2contig = {idx: contig for idx, contig in enumerate(contig2pcs.keys())}
+        sentence = np.zeros((len(contig2id.keys()), 300))
+        sentence_weight = np.ones((len(contig2id.keys()), 300))
+        for row in range(sentence.shape[0]):
+            contig = id2contig[row]
+            pcs = contig2pcs[contig]
+            for col in range(len(pcs)):
+                try:
+                    _, sentence[row][col], sentence_weight[row][col] = pcs[col]
+                    sentence[row][col] += 1
+                except:
+                    break
+
+        # propostion
+        rec = []
+        for key in blast_df['query'].values:
+            name = key.rsplit('_', 1)[0]
+            rec.append(name)
+        counter = Counter(rec)
+        mapped_num = np.array([counter[item] for item in id2contig.values()])
+
+        rec = []
+        for record in SeqIO.parse(f'{out_fn}/test_protein.fa', 'fasta'):
+            name = record.id
+            name = name.rsplit('_', 1)[0]
+            rec.append(name)
+        counter = Counter(rec)
+        total_num = np.array([counter[item] for item in id2contig.values()])
+        proportion = mapped_num / total_num
+
+        pkl.dump(sentence, open(f'{transformer_fn}/sentence.feat', 'wb'))
+        pkl.dump(id2contig, open(f'{transformer_fn}/sentence_id2contig.dict', 'wb'))
+        pkl.dump(proportion, open(f'{transformer_fn}/sentence_proportion.feat', 'wb'))
+        pkl.dump(pc2wordsid, open(f'{transformer_fn}/pc2wordsid.dict', 'wb'))
+
+        if not os.path.exists(db_dir):
+            print(f'Database directory {db_dir} missing or unreadable')
+
+        if out_dir != '':
+            if not os.path.isdir(out_dir):
+                os.makedirs(out_dir)
+
+        pcs2idx = pkl.load(open(f'{transformer_fn}/pc2wordsid.dict', 'rb'))
+        num_pcs = len(set(pcs2idx.keys()))
+
+        reject = 0.3
+        threads = 1
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if device.type == 'cpu':
+            print("running with cpu")
+            torch.set_num_threads(threads)
+
+        src_pad_idx = 0
+        src_vocab_size = num_pcs + 1
+
+        def reset_model():
+            model = Transformer(
+                src_vocab_size,
+                src_pad_idx,
+                device=device,
+                max_length=300,
+                dropout=0.1
+            ).to(device)
+            optimizer = optim.Adam(model.parameters(), lr=0.001)
+            loss_func = nn.BCEWithLogitsLoss()
+            return model, optimizer, loss_func
+
+        def return_tensor(var, device):
+            return torch.from_numpy(var).to(device)
+
+        def reject_prophage(all_pred, weight):
+            all_pred = np.array(all_pred.detach().cpu())
+            all_pred[weight < reject] = 0
+            return all_pred
+
+        # training with short contigs
+        model, optimizer, loss_func = reset_model()
+        try:
+            pretrained_dict = torch.load(f'{db_dir}/transformer.pth', map_location=device)
+            model.load_state_dict(pretrained_dict)
+        except:
+            print('cannot find pre-trained model')
+
+        sentence = pkl.load(open(f'{transformer_fn}/sentence.feat', 'rb'))
+        id2contig = pkl.load(open(f'{transformer_fn}/sentence_id2contig.dict', 'rb'))
+        proportion = pkl.load(open(f'{transformer_fn}/sentence_proportion.feat', 'rb'))
+
+        all_pred = []
+        all_score = []
+        with torch.no_grad():
+            _ = model.eval()
+            for idx in range(0, len(sentence), 500):
+                try:
+                    batch_x = sentence[idx: idx + 500]
+                    weight = proportion[idx: idx + 500]
+                except:
+                    batch_x = sentence[idx:]
+                    weight = proportion[idx:]
+                batch_x = return_tensor(batch_x, device).long()
+                logit = model(batch_x)
+                logit = torch.sigmoid(logit.squeeze(1))
+                logit = reject_prophage(logit, weight)
+                pred = ['phage' if item > 0.5 else 'non-phage' for item in logit]
+                all_pred += pred
+                all_score += [float('{:.3f}'.format(i)) for i in logit]
+
+        pred_csv = pd.DataFrame({"Contig": id2contig.values(), "Pred": all_pred, "Score": all_score})
+
+        if os.path.exists(out):
+            os.remove(out)
+            pred_csv.to_csv(out, index=False)
+        else:
+            pred_csv.to_csv(out, index=False)
+
+        # 发送完成信号
+        self.trigger.emit('Finished!!!' + '\n' + 'example_prediction.csv is your result!!!')
+
 
 class PhaMer_Form(QWidget):
+    def __init__(self,parent=None):
+        super().__init__(parent)
+        self.work = WorkThread()
+
     def setupUi(self, Clustal):
         Clustal.setObjectName("Clustal")
         Clustal.resize(702, 467)
@@ -223,26 +455,18 @@ class PhaMer_Form(QWidget):
         print(openfile_name)
         self.textBrowser_3.setText(openfile_name)
 
+    def finished(self, str):
+        self.textBrowser.setText(str)
 
     def calculation(self):
         try:
-            global contigs
+            global contigs, out_fn, length, reject
             global out
 
             contigs = self.textBrowser_2.toPlainText()
             out_fn = self.textBrowser_3.toPlainText()
 
             print(out_fn)
-            out_dir = out_fn
-
-            transformer_fn = out_dir + '/phamer'
-            db_dir = './models/PhaMer/database'
-            out = out_dir + '/example_prediction.csv'
-            threads = 1
-            proteins = None
-            diamond_db = f'{db_dir}/database.dmnd'
-
-            path = os.path.abspath('.')
 
             try:
                 length = int(self.textEdit.toPlainText())
@@ -253,7 +477,6 @@ class PhaMer_Form(QWidget):
                 reject = float(self.textEdit_2.toPlainText())
             except:
                 reject = 0.3
-
 
             def is_fasta(filename):
                 with open(filename, "r") as handle:
@@ -269,212 +492,13 @@ class PhaMer_Form(QWidget):
                     self.textBrowser.setText('Running! please wait(5-8mins)' + '\n' + 'If no response,never close window!!!')
                     QApplication.processEvents()  # 逐条打印状态
 
-                    if not os.path.isdir(out_fn):
-                        os.makedirs(out_fn)
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
 
-                    if not os.path.isdir(transformer_fn):
-                        os.makedirs(transformer_fn)
-
-                    if not os.path.exists(db_dir):
-                        print(f'Database directory {db_dir} missing or unreadable')
-
-                    rec = []
-                    for record in SeqIO.parse(contigs, 'fasta'):
-                        if len(record.seq) > length:
-                            rec.append(record)
-                    SeqIO.write(rec, f'{out_fn}/filtered_contigs.fa', 'fasta')
-
-                    if proteins is None:
-                        prodigal = path + "/tools/prodigal/prodigal.exe"
-                        prodigal_cmd = f'{prodigal} -i {out_fn}/filtered_contigs.fa -a {out_fn}/test_protein.fa -f gff -p meta'
-                        print("Running prodigal...")
-                        _ = subprocess.check_call(prodigal_cmd, shell=True, stdout=subprocess.DEVNULL,
-                                                  stderr=subprocess.DEVNULL)
-                    else:
-                        shutil.copyfile(proteins, f'{out_fn}/test_protein.fa')
-
-                    try:
-                        if os.path.exists(diamond_db):
-                            print(f'Using preformatted DIAMOND database ({diamond_db}) ...')
-                        else:
-                            # create database
-                            diamond = path + '/tools/diamond/diamond.exe'
-                            make_diamond_cmd = f'{diamond} makedb --threads {threads} --in {db_dir}/database.fa -d {out_fn}/database.dmnd'
-                            print("Creating Diamond database...")
-                            _ = subprocess.check_call(make_diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
-                                                      stderr=subprocess.DEVNULL)
-                            diamond_db = f'{out_fn}/database.dmnd'
-                    except:
-                        print("diamond makedb failed")
-
-                    def select_tab(file1, file2):
-                        f = open(file1)
-                        with open(file2, 'w') as w:
-                            for i in f:
-                                i = i.strip().split('\t')
-                                print(i[0])
-                                if i[0] != i[1]:
-                                    line = i[0] + '\t' + i[1] + '\t' + i[10] + '\n'
-                                    w.write(line)
-                        w.close()
-
-                    try:
-                        # running alignment
-                        diamond = path + '/tools/diamond/diamond.exe'
-                        diamond_cmd = f'{diamond} blastp --threads {threads} --sensitive -d {diamond_db} -q {out_fn}/test_protein.fa -o {out_fn}/results.tab -k 1'
-                        print("Running Diamond...")
-                        _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
-                                                  stderr=subprocess.DEVNULL)
-                        diamond_out_fp = f"{out_fn}/results.tab"
-                        database_abc_fp = f"{out_fn}/results.abc"
-                        select_tab(diamond_out_fp, database_abc_fp)
-                    except:
-                        print("diamond blastp failed")
-
-                    proteins_df = pd.read_csv(f'{db_dir}/proteins.csv')
-                    proteins_df.dropna(axis=0, how='any', inplace=True)
-                    pc2wordsid = {pc: idx for idx, pc in enumerate(sorted(set(proteins_df['cluster'].values)))}
-                    protein2pc = {protein: pc for protein, pc in
-                                  zip(proteins_df['protein_id'].values, proteins_df['cluster'].values)}
-                    blast_df = pd.read_csv(f"{out_fn}/results.abc", sep='\t', names=['query', 'ref', 'evalue'])
-
-                    print(blast_df)
-                    # Parse the DIAMOND results
-                    contig2pcs = {}
-                    for query, ref, evalue in zip(blast_df['query'].values, blast_df['ref'].values,
-                                                  blast_df['evalue'].values):
-                        conitg = query.rsplit('_', 1)[0]
-                        idx = query.rsplit('_', 1)[1]
-                        pc = pc2wordsid[protein2pc[ref]]
-                        try:
-                            contig2pcs[conitg].append((idx, pc, evalue))
-                        except:
-                            contig2pcs[conitg] = [(idx, pc, evalue)]
-
-                    # Sorted by position
-                    for contig in contig2pcs:
-                        contig2pcs[contig] = sorted(contig2pcs[contig], key=lambda tup: tup[0])
-
-                    # Contigs2sentence
-                    contig2id = {contig: idx for idx, contig in enumerate(contig2pcs.keys())}
-                    id2contig = {idx: contig for idx, contig in enumerate(contig2pcs.keys())}
-                    sentence = np.zeros((len(contig2id.keys()), 300))
-                    sentence_weight = np.ones((len(contig2id.keys()), 300))
-                    for row in range(sentence.shape[0]):
-                        contig = id2contig[row]
-                        pcs = contig2pcs[contig]
-                        for col in range(len(pcs)):
-                            try:
-                                _, sentence[row][col], sentence_weight[row][col] = pcs[col]
-                                sentence[row][col] += 1
-                            except:
-                                break
-
-                    # propostion
-                    rec = []
-                    for key in blast_df['query'].values:
-                        name = key.rsplit('_', 1)[0]
-                        rec.append(name)
-                    counter = Counter(rec)
-                    mapped_num = np.array([counter[item] for item in id2contig.values()])
-
-                    rec = []
-                    for record in SeqIO.parse(f'{out_fn}/test_protein.fa', 'fasta'):
-                        name = record.id
-                        name = name.rsplit('_', 1)[0]
-                        rec.append(name)
-                    counter = Counter(rec)
-                    total_num = np.array([counter[item] for item in id2contig.values()])
-                    proportion = mapped_num / total_num
-
-                    pkl.dump(sentence, open(f'{transformer_fn}/sentence.feat', 'wb'))
-                    pkl.dump(id2contig, open(f'{transformer_fn}/sentence_id2contig.dict', 'wb'))
-                    pkl.dump(proportion, open(f'{transformer_fn}/sentence_proportion.feat', 'wb'))
-                    pkl.dump(pc2wordsid, open(f'{transformer_fn}/pc2wordsid.dict', 'wb'))
-
-                    if not os.path.exists(db_dir):
-                        print(f'Database directory {db_dir} missing or unreadable')
-
-                    if out_dir != '':
-                        if not os.path.isdir(out_dir):
-                            os.makedirs(out_dir)
-
-                    pcs2idx = pkl.load(open(f'{transformer_fn}/pc2wordsid.dict', 'rb'))
-                    num_pcs = len(set(pcs2idx.keys()))
-
-                    reject = 0.3
-                    threads = 1
-                    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                    if device.type == 'cpu':
-                        print("running with cpu")
-                        torch.set_num_threads(threads)
-
-                    src_pad_idx = 0
-                    src_vocab_size = num_pcs + 1
-
-                    def reset_model():
-                        model = Transformer(
-                            src_vocab_size,
-                            src_pad_idx,
-                            device=device,
-                            max_length=300,
-                            dropout=0.1
-                        ).to(device)
-                        optimizer = optim.Adam(model.parameters(), lr=0.001)
-                        loss_func = nn.BCEWithLogitsLoss()
-                        return model, optimizer, loss_func
-
-                    def return_tensor(var, device):
-                        return torch.from_numpy(var).to(device)
-
-                    def reject_prophage(all_pred, weight):
-                        all_pred = np.array(all_pred.detach().cpu())
-                        all_pred[weight < reject] = 0
-                        return all_pred
-
-                    # training with short contigs
-                    model, optimizer, loss_func = reset_model()
-                    try:
-                        pretrained_dict = torch.load(f'{db_dir}/transformer.pth', map_location=device)
-                        model.load_state_dict(pretrained_dict)
-                    except:
-                        print('cannot find pre-trained model')
-
-                    sentence = pkl.load(open(f'{transformer_fn}/sentence.feat', 'rb'))
-                    id2contig = pkl.load(open(f'{transformer_fn}/sentence_id2contig.dict', 'rb'))
-                    proportion = pkl.load(open(f'{transformer_fn}/sentence_proportion.feat', 'rb'))
-
-                    all_pred = []
-                    all_score = []
-                    with torch.no_grad():
-                        _ = model.eval()
-                        for idx in range(0, len(sentence), 500):
-                            try:
-                                batch_x = sentence[idx: idx + 500]
-                                weight = proportion[idx: idx + 500]
-                            except:
-                                batch_x = sentence[idx:]
-                                weight = proportion[idx:]
-                            batch_x = return_tensor(batch_x, device).long()
-                            logit = model(batch_x)
-                            logit = torch.sigmoid(logit.squeeze(1))
-                            logit = reject_prophage(logit, weight)
-                            pred = ['phage' if item > 0.5 else 'non-phage' for item in logit]
-                            all_pred += pred
-                            all_score += [float('{:.3f}'.format(i)) for i in logit]
-
-                    pred_csv = pd.DataFrame({"Contig": id2contig.values(), "Pred": all_pred, "Score": all_score})
-
-                    if os.path.exists(out):
-                        os.remove(out)
-                        pred_csv.to_csv(out, index=False)
-                    else:
-                        pred_csv.to_csv(out, index=False)
-
-                    self.textBrowser.setText('Finished!!!'+'\n'+'example_prediction.csv is your result!!!')
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
-
 
     def table_read(self):
         try:

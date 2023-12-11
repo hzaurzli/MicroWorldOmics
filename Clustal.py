@@ -18,7 +18,43 @@ from Bio import SeqIO
 import psutil
 
 
+class WorkThread(QThread):
+    # 自定义信号对象
+    trigger = pyqtSignal(str)
+
+    def __int__(self):
+        # 初始化函数
+        super(WorkThread, self).__init__()
+
+    def run(self):
+        def check_process_running(process_name):  # 检查进程是否运行
+            for process in psutil.process_iter(['name']):
+                if process.info['name'] == process_name:
+                    return True
+            return False
+
+        os.popen(r".\tools\clustalo\clustal_omega\clustalo.exe -i %s > %s"
+                 % (fasta, out))
+        time.sleep(3)
+        process_name = 'clustalo.exe'
+
+        while True:  # 判断 iqtree.exe 是否运行完成
+            if check_process_running(process_name):
+                print(f"The process {process_name} is running.")
+                time.sleep(10)
+                continue
+            else:
+                print(f"The process {process_name} is not running.")
+                break
+
+        self.trigger.emit('Finished!!!')
+
+
 class Clustal_Form(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.work = WorkThread()
+
     def setupUi(self, Clustal):
         Clustal.setObjectName("Clustal")
         Clustal.resize(702, 467)
@@ -119,17 +155,15 @@ class Clustal_Form(QWidget):
         print(openfile_name)
         self.textBrowser_3.setText(openfile_name)
 
+    def finished(self, str):
+        self.textBrowser.setText(str)
+
     def calculation(self):
         try:
+            global fasta, out, path
             fasta = self.textBrowser_2.toPlainText()
             out = self.textBrowser_3.toPlainText()
             path = os.path.dirname(out)
-
-            def check_process_running(process_name):  # 检查进程是否运行
-                for process in psutil.process_iter(['name']):
-                    if process.info['name'] == process_name:
-                        return True
-                return False
 
             def is_fasta(filename):
                 with open(filename, "r") as handle:
@@ -145,23 +179,11 @@ class Clustal_Form(QWidget):
                     self.textBrowser.setText('Running! please wait')
                     QApplication.processEvents()  # 逐条打印状态
 
-                    myobj = subprocess.Popen(r".\tools\clinker\clinker.exe %s -o %s -p" %
-                                             (bb,
-                                              "D:/Documents/Desktop/test/aa.csv"))
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
 
-                    myobj.wait()
-                    time.sleep(3)
-                    process_name = 'clustalo.exe'
-                    time.sleep(3)
-                    while True:  # 判断 iqtree.exe 是否运行完成
-                        if check_process_running(process_name):
-                            print(f"The process {process_name} is running.")
-                            time.sleep(10)
-                            continue
-                        else:
-                            print(f"The process {process_name} is not running.")
-                            self.textBrowser.setText('Finished!!!')
-                            break
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
 

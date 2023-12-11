@@ -18,7 +18,37 @@ from Bio.Blast.Applications import NcbiblastpCommandline
 from Bio import SeqIO
 
 
+class WorkThread(QThread):
+    # 自定义信号对象
+    trigger = pyqtSignal(str)
+
+    def __int__(self):
+        # 初始化函数
+        super(WorkThread, self).__init__()
+
+    def run(self):
+        makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
+                                            dbtype='prot',
+                                            input_file=ref,
+                                            out=blastdb)
+        makedb()
+
+        blastp = NcbiblastpCommandline(path + "/blast-BLAST_VERSION+/bin/blastp.exe",
+                                       query=query,
+                                       db=blastdb,
+                                       outfmt=format,
+                                       evalue=float(evalue),
+                                       out=out)
+
+        blastp()
+
+        self.trigger.emit('Finished!!!')
+
 class BlastP_Form(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.work = WorkThread()
+
     def setupUi(self, Form):
         Form.setObjectName("BlastP")
         Form.resize(695, 439)
@@ -193,6 +223,9 @@ class BlastP_Form(QWidget):
         print(openfile_name)
         self.textBrowser_3.setText(openfile_name)
 
+    def finished(self, str):
+        self.textBrowser.setText(str)
+
     def read_file3(self):
         openfile_name = QtWidgets.QFileDialog.getSaveFileName(self, 'choose file', '')[0]
         print(openfile_name)
@@ -205,6 +238,7 @@ class BlastP_Form(QWidget):
 
     def blastp(self):
         try:
+            global ref, query, blastdb, out, evalue, format, path
             ## toPlainText read path of files
             ref = self.textBrowser_2.toPlainText()
             query = self.textBrowser_3.toPlainText()
@@ -242,21 +276,7 @@ class BlastP_Form(QWidget):
                         self.textBrowser.setText('Running! please wait')
                         QApplication.processEvents()  # 逐条打印状态
 
-                        makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
-                                                            dbtype='prot',
-                                                            input_file=ref,
-                                                            out=blastdb)
-                        makedb()
 
-                        blastp = NcbiblastpCommandline(path + "/blast-BLAST_VERSION+/bin/blastp.exe",
-                                                       query=query,
-                                                       db=blastdb,
-                                                       outfmt=format,
-                                                       evalue=float(evalue),
-                                                       out=out)
-
-                        blastp()
-                        self.textBrowser.setText('Finished!!!')
                 except:
                     QMessageBox.critical(self, "error", "Check fasta file format!")
         except:

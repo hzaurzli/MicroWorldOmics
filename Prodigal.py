@@ -18,7 +18,63 @@ from Bio import SeqIO
 import psutil
 
 
+class WorkThread(QThread):
+    # 自定义信号对象
+    trigger = pyqtSignal(str)
+
+    def __int__(self):
+        # 初始化函数
+        super(WorkThread, self).__init__()
+
+    def run(self):
+        def check_process_running(process_name):  # 检查进程是否运行
+            for process in psutil.process_iter(['name']):
+                if process.info['name'] == process_name:
+                    return True
+            return False
+
+        if type == 'A':
+            os.popen(r".\tools\prodigal\prodigal.exe -f gff -g %s -o %s -p single -i %s"
+                     % (coden, out, fasta))
+
+        elif type == 'B':
+            os.popen(r".\tools\prodigal\prodigal.exe -f gbk -g %s -o %s -p single -i %s"
+                     % (coden, out, fasta))
+
+        elif type == 'C':
+            os.popen(r".\tools\prodigal\prodigal.exe -f sco -g %s -o %s -p single -i %s"
+                     % (coden, out, fasta))
+
+        elif type == 'D':
+            os.popen(r".\tools\prodigal\prodigal.exe -f gff -g %s -o %s -p meta -i %s"
+                     % (coden, out, fasta))
+
+        elif type == 'E':
+            os.popen(r".\tools\prodigal\prodigal.exe -f gbk -g %s -o %s -p meta -i %s"
+                     % (coden, out, fasta))
+
+        elif type == 'F':
+            os.popen(r".\tools\prodigal\prodigal.exe -f sco -g %s -o %s -p meta -i %s"
+                     % (coden, out, fasta))
+
+        process_name = 'prodigal.exe'
+        time.sleep(5)
+        while True:  # 判断 iqtree.exe 是否运行完成
+            if check_process_running(process_name):
+                print(f"The process {process_name} is running.")
+                time.sleep(30)
+                continue
+            else:
+                print(f"The process {process_name} is not running.")
+                break
+
+        self.trigger.emit('Finished!!!')
+
 class Prodigal_Form(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.work = WorkThread()
+
     def setupUi(self, Clustal):
         Clustal.setObjectName("Clustal")
         Clustal.resize(702, 436)
@@ -263,18 +319,15 @@ class Prodigal_Form(QWidget):
         print(openfile_name)
         self.textBrowser_3.setText(openfile_name)
 
+    def finished(self, str):
+        self.textBrowser.setText(str)
 
     def build_tree(self):
         try:
+            global fasta, out, path, type, coden
             fasta = self.textBrowser_2.toPlainText()
             out = self.textBrowser_3.toPlainText()
             path = os.path.dirname(out)
-
-            def check_process_running(process_name): # 检查进程是否运行
-                for process in psutil.process_iter(['name']):
-                    if process.info['name'] == process_name:
-                        return True
-                return False
 
             try:
                 coden = self.textEdit.text()
@@ -292,37 +345,50 @@ class Prodigal_Form(QWidget):
                 QApplication.processEvents()  # 逐条打印状态
 
                 if self.radioButton.isChecked() and self.radioButton_3.isChecked():
-                    os.popen(r".\tools\prodigal\prodigal.exe -f gff -g %s -o %s -p single -i %s"
-                             % (coden, out, fasta))
+                    type = 'A'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton.isChecked() and self.radioButton_4.isChecked():
-                    os.popen(r".\tools\prodigal\prodigal.exe -f gbk -g %s -o %s -p single -i %s"
-                             % (coden, out, fasta))
+                    type = 'B'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton.isChecked() and self.radioButton_5.isChecked():
-                    os.popen(r".\tools\prodigal\prodigal.exe -f sco -g %s -o %s -p single -i %s"
-                             % (coden, out, fasta))
+                    type = 'C'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_2.isChecked() and self.radioButton_3.isChecked():
-                    os.popen(r".\tools\prodigal\prodigal.exe -f gff -g %s -o %s -p meta -i %s"
-                             % (coden, out, fasta))
+                    type = 'D'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_2.isChecked() and self.radioButton_4.isChecked():
-                    os.popen(r".\tools\prodigal\prodigal.exe -f gbk -g %s -o %s -p meta -i %s"
-                             % (coden, out, fasta))
+                    type = 'E'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_2.isChecked() and self.radioButton_5.isChecked():
-                    os.popen(r".\tools\prodigal\prodigal.exe -f sco -g %s -o %s -p meta -i %s"
-                             % (coden, out, fasta))
+                    type = 'F'
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 else:
                     QMessageBox.critical(self, "error", "Please choose Substitution model!")
 
-                process_name = 'prodigal.exe'
-                time.sleep(5)
-                while True: # 判断 iqtree.exe 是否运行完成
-                    if check_process_running(process_name):
-                        print(f"The process {process_name} is running.")
-                        time.sleep(30)
-                        continue
-                    else:
-                        print(f"The process {process_name} is not running.")
-                        self.textBrowser.setText('Finished!!!')
-                        break
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
 
