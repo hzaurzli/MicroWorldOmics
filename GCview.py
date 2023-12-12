@@ -92,7 +92,7 @@ class GCview_Form(QWidget):
 class MainWindow(QMainWindow):
     def __init__(self,content):
         super().__init__()
-        self.setWindowTitle('My Browser')
+        self.setWindowTitle('GCview')
         self.showMaximized()
 
         self.path_1 = os.path.abspath('.')

@@ -24,7 +24,7 @@ import psutil
 class MainWindow(QMainWindow):
     def __init__(self,content):
         super().__init__()
-        self.setWindowTitle('My Browser')
+        self.setWindowTitle('Clinker plot')
         self.showMaximized()
 
         #####放入WebEngineView

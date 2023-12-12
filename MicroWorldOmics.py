@@ -32,6 +32,13 @@ from GCview import GCview_Form
 from Clinker import Clinker_Form
 from ProtVista import Provista_Form, winTest
 import Blasterjs
+import VipTree
+import VIRIDIC
+from Phylotreejs import Phylotreejs_Form
+from PhaMer import PhaMer_Form, winTest
+from PhaTYP import PhaTYP_Form, winTest
+from PhaGCN import PhaGCN_Form, winTest
+from Cherry import Cherry_Form, winTest
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -42,6 +49,7 @@ class MyWindow(QtWidgets.QPushButton):
             time.sleep(2)                   # 加载数据
             sp.showMessage("Loading... {0}%".format(i * 10), QtCore.Qt.AlignHCenter |QtCore.Qt.AlignBottom, QtCore.Qt.black)
             QtWidgets.qApp.processEvents()  # 允许主进程处理事件
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -68,7 +76,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -135, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -295, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -403,6 +411,7 @@ class Ui_MainWindow(object):
         self.comboBox_10.addItem("")
         self.comboBox_10.addItem("")
         self.comboBox_10.addItem("")
+        self.comboBox_10.addItem("")
         self.label_10 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_10.setGeometry(QtCore.QRect(0, 540, 147, 17))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -674,8 +683,8 @@ class Ui_MainWindow(object):
         self.actionStep2_VIRIDIC.setObjectName("actionStep2_VIRIDIC")
         self.actionStep3_Alignment = QtWidgets.QAction(MainWindow)
         self.actionStep3_Alignment.setObjectName("actionStep3_Alignment")
-        self.actionStep4_Phylogeny = QtWidgets.QAction(MainWindow)
-        self.actionStep4_Phylogeny.setObjectName("actionStep4_Phylogeny")
+        self.actionStep4_Treeing = QtWidgets.QAction(MainWindow)
+        self.actionStep4_Treeing.setObjectName("actionStep4_Treeing")
         self.actionPhaMer = QtWidgets.QAction(MainWindow)
         self.actionPhaMer.setObjectName("actionPhaMer")
         self.actionPhaGCN = QtWidgets.QAction(MainWindow)
@@ -706,6 +715,8 @@ class Ui_MainWindow(object):
         self.actionIGV.setObjectName("actionIGV")
         self.actionJSalignment = QtWidgets.QAction(MainWindow)
         self.actionJSalignment.setObjectName("actionJSalignment")
+        self.actionStep5_Phylogeny = QtWidgets.QAction(MainWindow)
+        self.actionStep5_Phylogeny.setObjectName("actionStep5_Phylogeny")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -730,7 +741,8 @@ class Ui_MainWindow(object):
         self.menuClassification.addAction(self.actionStep1_VipTree)
         self.menuClassification.addAction(self.actionStep2_VIRIDIC)
         self.menuClassification.addAction(self.actionStep3_Alignment)
-        self.menuClassification.addAction(self.actionStep4_Phylogeny)
+        self.menuClassification.addAction(self.actionStep4_Treeing)
+        self.menuClassification.addAction(self.actionStep5_Phylogeny)
         self.menuDeeplearning.addAction(self.actionPhaMer)
         self.menuDeeplearning.addAction(self.actionPhaGCN)
         self.menuDeeplearning.addAction(self.actionPhaTYP)
@@ -763,6 +775,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+
         # pages action
         self.actionBlastN.triggered.connect(self.blastn_show)
         self.actionBlastP.triggered.connect(self.blastp_show)
@@ -794,6 +807,16 @@ class Ui_MainWindow(object):
 
         self.actionPlaque_recognition.triggered.connect(self.plaque_show)
 
+        self.actionStep1_VipTree.triggered.connect(self.viptree_show)
+        self.actionStep2_VIRIDIC.triggered.connect(self.viridic_show)
+        self.actionStep3_Alignment.triggered.connect(self.muscle_show)
+        self.actionStep4_Treeing.triggered.connect(self.iqtree_show)
+        self.actionStep5_Phylogeny.triggered.connect(self.phylotreejs_show)
+        self.actionPhaMer.triggered.connect(self.phamer_show)
+        self.actionPhaTYP.triggered.connect(self.phatyp_show)
+        self.actionPhaGCN.triggered.connect(self.phagcn_show)
+        self.actionCHERRY.triggered.connect(self.cherry_show)
+
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
         self.comboBox_2.currentIndexChanged.connect(self.selectionchange_comboBox_2)
@@ -804,6 +827,8 @@ class Ui_MainWindow(object):
         self.comboBox_7.currentIndexChanged.connect(self.selectionchange_comboBox_7)
         self.comboBox_8.currentIndexChanged.connect(self.selectionchange_comboBox_8)
         self.comboBox_9.currentIndexChanged.connect(self.selectionchange_comboBox_9)
+        self.comboBox_10.currentIndexChanged.connect(self.selectionchange_comboBox_10)
+        self.comboBox_11.currentIndexChanged.connect(self.selectionchange_comboBox_11)
 
 
     def retranslateUi(self, MainWindow):
@@ -849,7 +874,8 @@ class Ui_MainWindow(object):
         self.comboBox_10.setItemText(1, _translate("MainWindow", "Step1 VipTree"))
         self.comboBox_10.setItemText(2, _translate("MainWindow", "Step2 VIRIDIC"))
         self.comboBox_10.setItemText(3, _translate("MainWindow", "Step3 Alignment"))
-        self.comboBox_10.setItemText(4, _translate("MainWindow", "Step4 Phylogeny"))
+        self.comboBox_10.setItemText(4, _translate("MainWindow", "Step4 Treeing"))
+        self.comboBox_10.setItemText(5, _translate("MainWindow", "Step5 Phylogeny"))
         self.label_10.setText(_translate("MainWindow", "Phage classification"))
         self.label_11.setText(_translate("MainWindow", "Phage deeplearning tools"))
         self.comboBox_11.setItemText(0, _translate("MainWindow", "<Default>"))
@@ -934,7 +960,7 @@ class Ui_MainWindow(object):
         self.actionStep1_VipTree.setText(_translate("MainWindow", "Step1 VipTree"))
         self.actionStep2_VIRIDIC.setText(_translate("MainWindow", "Step2 VIRIDIC"))
         self.actionStep3_Alignment.setText(_translate("MainWindow", "Step3 Alignment"))
-        self.actionStep4_Phylogeny.setText(_translate("MainWindow", "Step4 Phylogeny"))
+        self.actionStep4_Treeing.setText(_translate("MainWindow", "Step4 Treeing"))
         self.actionPhaMer.setText(_translate("MainWindow", "PhaMer"))
         self.actionPhaGCN.setText(_translate("MainWindow", "PhaGCN"))
         self.actionPhaTYP.setText(_translate("MainWindow", "PhaTYP"))
@@ -950,7 +976,7 @@ class Ui_MainWindow(object):
         self.actionShiny3Dprotein.setText(_translate("MainWindow", "Shiny3Dprotein"))
         self.actionIGV.setText(_translate("MainWindow", "IGV"))
         self.actionJSalignment.setText(_translate("MainWindow", "JSalignment"))
-
+        self.actionStep5_Phylogeny.setText(_translate("MainWindow", "Step5 Phylogeny"))
 
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
@@ -1047,6 +1073,37 @@ class Ui_MainWindow(object):
         print(label_item)
         if label_item == 'Plaque count':
             self.plaque_show()
+
+    def selectionchange_comboBox_10(self):
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
+        label_item = self.comboBox_10.currentText()
+        print(label_item)
+        if label_item == 'Step1 VipTree':
+            self.viptree_show()
+        elif label_item == 'Step2 VIRIDIC':
+            self.viridic_show()
+        elif label_item == 'Step3 Alignment':
+            self.muscle_show()
+        elif label_item == 'Step4 Treeing':
+            self.iqtree_show()
+        elif label_item == 'Step5 Phylogeny':
+            self.phylotreejs_show()
+
+    def selectionchange_comboBox_11(self):
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
+        label_item = self.comboBox_11.currentText()
+        print(label_item)
+        if label_item == 'PhaMer':
+            self.phamer_show()
+        elif label_item == 'PhaTYP':
+            self.phatyp_show()
+        elif label_item == 'PhaGCN':
+            self.phagcn_show()
+        elif label_item == 'Cherry':
+            self.cherry_show()
+
 
     # pages
     ## click to new window BlastN,BlastN_Form is object in BlastN.py
@@ -1181,6 +1238,48 @@ class Ui_MainWindow(object):
         self.ui = Dots_counting_Form()
         self.ui.setupUi(self.Dialog)
         self.Dialog.show()
+
+    def viptree_show(self):
+        self.winTable = VipTree.VipTree_Form()
+        self.winTable.show()
+
+    def viridic_show(self):
+        self.winTable = VIRIDIC.VIRIDIC_Form()
+        self.winTable.show()
+
+    def phylotreejs_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = Phylotreejs_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
+    def phamer_show(self):
+        self.form = QtWidgets.QWidget()
+        self.winTest = winTest()
+        self.ui = PhaMer_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+    def phatyp_show(self):
+        self.form = QtWidgets.QWidget()
+        self.winTest = winTest()
+        self.ui = PhaTYP_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+    def phagcn_show(self):
+        self.form = QtWidgets.QWidget()
+        self.winTest = winTest()
+        self.ui = PhaGCN_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+    def cherry_show(self):
+        self.form = QtWidgets.QWidget()
+        self.winTest = winTest()
+        self.ui = Cherry_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
 
 
 if __name__ == "__main__":

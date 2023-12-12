@@ -47,7 +47,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-135</y>
+          <y>-295</y>
           <width>198</width>
           <height>719</height>
          </rect>
@@ -722,7 +722,12 @@ QComboBox {
          </item>
          <item>
           <property name="text">
-           <string>Step4 Phylogeny</string>
+           <string>Step4 Treeing</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Step5 Phylogeny</string>
           </property>
          </item>
         </widget>
@@ -1249,7 +1254,8 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionStep1_VipTree"/>
      <addaction name="actionStep2_VIRIDIC"/>
      <addaction name="actionStep3_Alignment"/>
-     <addaction name="actionStep4_Phylogeny"/>
+     <addaction name="actionStep4_Treeing"/>
+     <addaction name="actionStep5_Phylogeny"/>
     </widget>
     <widget class="QMenu" name="menuDeeplearning">
      <property name="title">
@@ -1412,9 +1418,9 @@ p, li { white-space: pre-wrap; }
     <string>Step3 Alignment</string>
    </property>
   </action>
-  <action name="actionStep4_Phylogeny">
+  <action name="actionStep4_Treeing">
    <property name="text">
-    <string>Step4 Phylogeny</string>
+    <string>Step4 Treeing</string>
    </property>
   </action>
   <action name="actionPhaMer">
@@ -1490,6 +1496,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionJSalignment">
    <property name="text">
     <string>JSalignment</string>
+   </property>
+  </action>
+  <action name="actionStep5_Phylogeny">
+   <property name="text">
+    <string>Step5 Phylogeny</string>
    </property>
   </action>
  </widget>

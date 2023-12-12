@@ -15,21 +15,15 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtWebEngineWidgets import *
 
 
-class Blasterjs_Form(QMainWindow):
+class VipTree_Form(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('Blasterjs')
+        self.setWindowTitle('VipTree')
         self.showMaximized()
-
-        path = os.path.abspath('.')
-        if '\\' in path:
-            path = path.strip().split('\\')
-            path = '/'.join(path)
-            print(path)
 
         #####放入WebEngineView
         self.webview = WebEngineView()
-        self.webview.load(QUrl(path + '/html/blasterjs/blasterjs.html'))
+        self.webview.load(QUrl('https://www.genome.jp/viptree/upload'))
         self.setCentralWidget(self.webview)
 
 class WebEngineView(QWebEngineView):
@@ -37,7 +31,7 @@ class WebEngineView(QWebEngineView):
     # 重写createwindow()
     def createWindow(self, QWebEnginePage_WebWindowType):
         new_webview = WebEngineView()
-        new_window = Blasterjs_Form()
+        new_window = VipTree_Form()
         new_window.setCentralWidget(new_webview)
         #new_window.show()
         self.windowList.append(new_window)  #注：没有这句会崩溃
@@ -45,7 +39,6 @@ class WebEngineView(QWebEngineView):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = Blasterjs_Form()
+    win = VipTree_Form()
     win.show()
     app.exit(app.exec_())
-

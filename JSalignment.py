@@ -17,18 +17,31 @@ from PyQt5.QtWebEngineWidgets import *
 
 class JSalignment_Form(QMainWindow):
     def __init__(self):
-        super(JSalignment_Form, self).__init__()
-        self.setWindowTitle('JSalignment')  # 窗口标题
-        self.setGeometry(5, 30, 700, 600)  # 窗口的大小和位置设置
-        self.browser = QWebEngineView()
+        super().__init__()
+        self.setWindowTitle('JSalignment')
+        self.showMaximized()
+
         path = os.path.abspath('.')
         if '\\' in path:
             path = path.strip().split('\\')
             path = '/'.join(path)
             print(path)
-        self.browser.load(QUrl(path + '/html/js_alignment/alignment.html'))
-        self.setCentralWidget(self.browser)
 
+        #####放入WebEngineView
+        self.webview = WebEngineView()
+        self.webview.load(QUrl(path + '/html/js_alignment/alignment.html'))
+        self.setCentralWidget(self.webview)
+
+class WebEngineView(QWebEngineView):
+    windowList = []
+    # 重写createwindow()
+    def createWindow(self, QWebEnginePage_WebWindowType):
+        new_webview = WebEngineView()
+        new_window = JSalignment_Form()
+        new_window.setCentralWidget(new_webview)
+        #new_window.show()
+        self.windowList.append(new_window)  #注：没有这句会崩溃
+        return new_webview
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
