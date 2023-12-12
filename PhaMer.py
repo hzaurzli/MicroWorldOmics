@@ -489,7 +489,7 @@ class PhaMer_Form(QWidget):
                 if is_fasta(contigs) == False:
                     QMessageBox.critical(self, "error", "Check fasta file format!")
                 else:
-                    self.textBrowser.setText('Running! please wait(5-8mins)' + '\n' + 'If no response,never close window!!!')
+                    self.textBrowser.setText('Running! please wait (5-8mins)' + '\n' + 'If no response,never close window!!!')
                     QApplication.processEvents()  # 逐条打印状态
 
                     # 启动线程, 运行 run 函数

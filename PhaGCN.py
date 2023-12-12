@@ -164,11 +164,9 @@ class WorkThread(QThread):
                 w.close()
 
             # running alignment
-            os.chdir('./venv/Scripts')
             diamond_cmd = 'python.exe ' + f'{scripts}/blastxml_to_tabular.py -o {outpth}/{tool}_results.tab -c qseqid,sseqid,pident,length,mismatch,gapopen,qstart,qend,sstart,send,evalue {outpth}/{tool}_results.xml'
             _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
                                       stderr=subprocess.DEVNULL)
-            os.chdir('.')
             diamond_out_fp = f"{outpth}/{tool}_results.tab"
             database_abc_fp = f"{outpth}/{tool}_results.abc"
             select_tab(diamond_out_fp, database_abc_fp)
@@ -496,7 +494,10 @@ class WorkThread(QThread):
         run_diamond(f'{db_dir}/phagcn_database.dmnd', midfolder, 'phagcn_renamed_protein.fa', 'phagcn',
                     threads,
                     path)
+
+        os.chdir(path + '/venv/Scripts')
         convert_xml(midfolder, 'phagcn', path + '/models/PhaGCN/scripts')
+        os.chdir(path)
 
         abc_fp = f"{midfolder}/merged.abc"
         cat_fun(f"{db_dir}/phagcn_database.self-diamond.tab.abc", f"{midfolder}/phagcn_results.abc", abc_fp)
@@ -1133,7 +1134,7 @@ class PhaGCN_Form(QWidget):
                     QMessageBox.critical(self, "error", "Check fasta file format!")
                 else:
                     self.textBrowser.setText(
-                        'Running! please wait(15-20mins)' + '\n' + 'If no response,never close window!!!')
+                        'Running! please wait (15-20mins)' + '\n' + 'If no response,never close window!!!')
                     QApplication.processEvents()  # 逐条打印状态
 
                     try:

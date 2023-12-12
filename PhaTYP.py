@@ -483,7 +483,7 @@ class PhaTYP_Form(QWidget):
                     QMessageBox.critical(self, "error", "Check fasta file format!")
                 else:
                     self.textBrowser.setText(
-                        'Running! please wait(5-8mins)' + '\n' + 'If no response,never close window!!!')
+                        'Running! please wait (5-8mins)' + '\n' + 'If no response,never close window!!!')
                     QApplication.processEvents()  # 逐条打印状态
 
                     try:
