@@ -21,6 +21,29 @@ from itertools import islice
 import operator
 
 
+class winTest(QtWidgets.QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('My Browser')
+        self.setStyleSheet("background-image: url(D:/Documents/Desktop/bb.png)")
+
+    """对QDialog类重写，实现一些功能"""
+
+    def closeEvent(self, event):
+        """
+        重写closeEvent方法，实现dialog窗体关闭时执行一些代码
+        :param event: close()触发的事件
+        :return: None
+        """
+        try:
+            if os.path.exists(ref_tmp):
+                os.remove(ref_tmp)
+            else:
+                event.ignore()  # 设置正常退出
+        except:
+            return None  # 设置正常退出
+
+
 class WorkThread(QThread):
     # 自定义信号对象
     trigger = pyqtSignal(str)
@@ -39,6 +62,22 @@ class WorkThread(QThread):
                 fasta = SeqIO.parse(handle, "fasta")
                 return any(fasta)
 
+        def fasta2dict(fasta_name):
+            with open(fasta_name) as fa:
+                fa_dict = {}
+                for line in fa:
+                    # 去除末尾换行符
+                    line = line.replace('\n', '')
+                    if line.startswith('>'):
+                        # 去除 > 号
+                        seq_name = line[1:]
+                        fa_dict[seq_name] = ''
+                    else:
+                        # 去除末尾换行符并连接多行序列
+                        fa_dict[seq_name] += line.replace('\n', '')
+            return fa_dict
+
+
         blastdb = out_folder + '/' + 'blastdb'
         query_folder = fasta
         out_folder1 = out_folder + '/' 'out'
@@ -48,9 +87,20 @@ class WorkThread(QThread):
         check_path(out_folder1)
         check_path(out_folder2)
 
+        fasta_dict = fasta2dict(ref)
+
+        global ref_tmp
+        ref_tmp = out_folder + '/ref_tmp.fasta'
+
+        with open(ref_tmp,'w') as w:
+            for key in fasta_dict:
+                line = '>' + key + '::' + str(len(fasta_dict[key])) + '\n' + fasta_dict[key] + '\n'
+                w.write(line)
+        w.close()
+
         makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
                                             dbtype='nucl',
-                                            input_file=ref,
+                                            input_file = out_folder + '/ref_tmp.fasta',
                                             out=blastdb + '/target')
 
         makedb()
@@ -132,7 +182,7 @@ class WorkThread(QThread):
                 dic_lis[i] = 0
 
             for item in ST_gene_list:
-                item_info = item.split(":")[0]
+                item_info = item.split("::")[0]
                 item_info_get = item_info.split("_")[1]
                 gene = item_info.split("_")[0]
                 dic_lis[gene] = item_info_get
@@ -149,6 +199,7 @@ class WorkThread(QThread):
 
             out_file_mlst.write(file_name + "\t" + ST_result + "\t" + ST_use + "\n")
 
+            # os.remove(out_folder + '/ref_tmp.fasta')
             self.trigger.emit('Finished!!!')
 
 
@@ -405,7 +456,7 @@ class MLST_Form(QWidget):
                 self.work.trigger.connect(self.finished)
 
         except:
-            QMessageBox.critical(self, "error", "Check fasta file format!")
+            QMessageBox.critical(self, "error", "Check all files format!")
 
     def table_read(self):
         try:
@@ -442,8 +493,9 @@ class MLST_Form(QWidget):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Clustal = QtWidgets.QWidget()
+    # Clustal = QtWidgets.QWidget()
+    WT = winTest()
     ui = MLST_Form()
-    ui.setupUi(Clustal)
-    Clustal.show()
+    ui.setupUi(WT)
+    WT.show()
     sys.exit(app.exec_())
