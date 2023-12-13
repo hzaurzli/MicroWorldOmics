@@ -35,10 +35,7 @@ import Blasterjs
 import VipTree
 import VIRIDIC
 from Phylotreejs import Phylotreejs_Form
-from PhaMer import PhaMer_Form, winTest
-from PhaTYP import PhaTYP_Form, winTest
-from PhaGCN import PhaGCN_Form, winTest
-from Cherry import Cherry_Form, winTest
+
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -1298,6 +1295,10 @@ if __name__ == "__main__":
 
     from Peptides import Peptides_Form
     from Lysins import Lysins_Form
+    from PhaMer import PhaMer_Form, winTest
+    from PhaTYP import PhaTYP_Form, winTest
+    from PhaGCN import PhaGCN_Form, winTest
+    from Cherry import Cherry_Form, winTest
 
     window.load_data(splash)  # 加载数据
     splash.finish(window)  # 隐藏启动界面
