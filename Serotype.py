@@ -91,8 +91,8 @@ class WorkThread(QThread):
                 for line in blast_info:
                     line_info = line.strip().split("\t")
                     Contig_ID_info = line_info[0]
-                    ARG_ID = line_info[1].split(":")[0]
-                    ARG_len = line_info[1].split(":")[-1]
+                    ARG_ID = line_info[1].split("::")[0]
+                    ARG_len = line_info[1].split("::")[-1]
                     identical_percent = line_info[2]
                     align_length = int(line_info[3])
                     contig_start = int(line_info[6])
@@ -110,7 +110,7 @@ class WorkThread(QThread):
                             (ARG_ID, contig_start,
                              contig_end, Score,
                              identical_percent, align_percent,
-                             Contig_ID_info, F_R))
+                             Contig_ID_info, F_R, ARG_len))
                 blast_info.close()
             return ARG_location_dict, isolates_list
 
@@ -132,7 +132,7 @@ class WorkThread(QThread):
                         ii_keep = ii
                     elif ARG_list[ii][1] < start_initial and ARG_list[ii][2] > start_initial and float(
                         ARG_list[ii][2] - start_initial) / float(ARG_list[ii][2] - ARG_list[ii][1]) > 0.8 and float(
-                        start_initial - ARG_list[ii][1]) / float(ARG_list[ii][0].split(":")[-1]) < 0.2:
+                        start_initial - ARG_list[ii][1]) / float(ARG_list[ii][8]) < 0.2:
                         ARG_filter_list.append((ARG_list[ii][0], ARG_list[ii][4], ARG_list[ii][5], ARG_list[ii][1],
                                                 ARG_list[ii][2], ARG_list[ii][6], ARG_list[ii][7]))
                         start_initial = ARG_list[ii][2]
@@ -178,6 +178,8 @@ class WorkThread(QThread):
                         # 去除 > 号
                         seq_name = line[1:]
                         seq_name = seq_name.strip()
+                        seq_name = seq_name.split('\t')[0]
+                        seq_name = seq_name.split(' ')[0]
                         fa_dict[seq_name] = ''
                     else:
                         # 去除末尾换行符并连接多行序列
@@ -220,7 +222,7 @@ class WorkThread(QThread):
                     blastn()
             #########################################
 
-            ARG_location_dict, isolates_list = blast_filter(out_folder + '/out/')
+            ARG_location_dict, isolates_list = blast_filter(out_folder + '/out')
 
             ARG_location_use_dict, ARG_list_get = ARG_filter(ARG_location_dict, isolates_list)
 
@@ -295,7 +297,7 @@ class WorkThread(QThread):
                     blastn()
             #########################################
 
-            ARG_location_dict, isolates_list = blast_filter(out_folder + '/out/')
+            ARG_location_dict, isolates_list = blast_filter(out_folder + '/out')
 
             ARG_location_use_dict, ARG_list_get = ARG_filter(ARG_location_dict, isolates_list)
 
@@ -422,7 +424,7 @@ class WorkThread(QThread):
 
                                     blastn()
 
-            ARG_location_dict, isolates_list = blast_filter(out_folder + '/out_exact/')
+            ARG_location_dict, isolates_list = blast_filter(out_folder + '/out_exact')
             ARG_location_use_dict, ARG_list_get = ARG_filter(ARG_location_dict, isolates_list)
 
             new = open(out_folder + '/Serotype_results.out')
