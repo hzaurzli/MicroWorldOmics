@@ -474,7 +474,8 @@ class WorkThread(QThread):
                                                             if len(gene_protein_s) > len(gene_protein):
                                                                 alignments = pairwise2.align.localxs(gene_protein_s,
                                                                                                      gene_protein,
-                                                                                                     -50000, -50000)
+                                                                                                     -1e9,
+                                                                                                     -1e9)
                                                                 if len(alignments) == 1:
                                                                     for alignment in alignments:
                                                                         sero_seq = alignment.seqB[int(
@@ -489,15 +490,17 @@ class WorkThread(QThread):
                                                             elif len(gene_protein_s) <= len(gene_protein):
                                                                 alignments = pairwise2.align.localxs(gene_protein_s,
                                                                                                      gene_protein,
-                                                                                                     -50000, -50000)
+                                                                                                     -1e9,
+                                                                                                     -1e9)
                                                                 if len(alignments) == 1:
                                                                     for alignment in alignments:
                                                                         gene_protein_a = alignment.seqB[
                                                                                          int(alignment.start): int(
                                                                                              alignment.end)]
                                                                 aligns = pairwise2.align.localxs(gene_protein_s,
-                                                                                                 gene_protein_a, -50000,
-                                                                                                 -50000)
+                                                                                                 gene_protein_a,
+                                                                                                 -1e9,
+                                                                                                 -1e9)
 
                                                                 if len(aligns) == 1:
                                                                     for align in aligns:
@@ -546,7 +549,7 @@ class WorkThread(QThread):
                                                             if len(gene_protein_s) > len(gene_protein):
                                                                 alignments = pairwise2.align.localxs(gene_protein_s,
                                                                                                      gene_protein,
-                                                                                                     -50000, -50000)
+                                                                                                     -1e9, -1e9)
                                                                 if len(alignments) == 1:
                                                                     for alignment in alignments:
                                                                         sero_seq = alignment.seqB[
@@ -562,15 +565,16 @@ class WorkThread(QThread):
                                                             elif len(gene_protein_s) <= len(gene_protein):
                                                                 alignments = pairwise2.align.localxs(gene_protein_s,
                                                                                                      gene_protein,
-                                                                                                     -50000, -50000)
+                                                                                                     -1e9, -1e9)
                                                                 if len(alignments) == 1:
                                                                     for alignment in alignments:
                                                                         gene_protein_a = alignment.seqB[
                                                                                          int(alignment.start): int(
                                                                                              alignment.end)]
                                                                 aligns = pairwise2.align.localxs(gene_protein_s,
-                                                                                                 gene_protein_a, -50000,
-                                                                                                 -50000)
+                                                                                                 gene_protein_a,
+                                                                                                 -1e9,
+                                                                                                 -1e9)
 
                                                                 if len(aligns) == 1:
                                                                     for align in aligns:
@@ -620,7 +624,9 @@ class WorkThread(QThread):
 
                                                                 if len(gene_protein_s) > len(gene_protein):
                                                                     alignments = pairwise2.align.localxs(gene_protein_s,
-                                                                                                         -50000)
+                                                                                                         gene_protein,
+                                                                                                         -1e9,
+                                                                                                         -1e9)
                                                                     if len(alignments) == 1:
                                                                         for alignment in alignments:
                                                                             sero_seq = alignment.seqB[
@@ -636,8 +642,8 @@ class WorkThread(QThread):
                                                                 elif len(gene_protein_s) <= len(gene_protein):
                                                                     alignments = pairwise2.align.localxs(gene_protein_s,
                                                                                                          gene_protein,
-                                                                                                         -50000,
-                                                                                                         -50000)
+                                                                                                         -1e9,
+                                                                                                         -1e9)
                                                                     if len(alignments) == 1:
                                                                         for alignment in alignments:
                                                                             gene_protein_a = alignment.seqB[
@@ -645,7 +651,7 @@ class WorkThread(QThread):
                                                                                                  alignment.end)]
                                                                     aligns = pairwise2.align.localxs(gene_protein_s,
                                                                                                      gene_protein_a,
-                                                                                                     -50000, -50000)
+                                                                                                     -1e9, -1e9)
 
                                                                     if len(aligns) == 1:
                                                                         for align in aligns:
@@ -695,7 +701,7 @@ class WorkThread(QThread):
                                                                 if len(gene_protein_s) > len(gene_protein):
                                                                     alignments = pairwise2.align.localxs(gene_protein_s,
                                                                                                          gene_protein,
-                                                                                                         -50000, -50000)
+                                                                                                         -1e9, -1e9)
                                                                     if len(alignments) == 1:
                                                                         for alignment in alignments:
                                                                             sero_seq = alignment.seqB[
@@ -711,7 +717,7 @@ class WorkThread(QThread):
                                                                 elif len(gene_protein_s) <= len(gene_protein):
                                                                     alignments = pairwise2.align.localxs(gene_protein_s,
                                                                                                          gene_protein,
-                                                                                                         -50000, -50000)
+                                                                                                         -1e9, -1e9)
                                                                     if len(alignments) == 1:
                                                                         for alignment in alignments:
                                                                             gene_protein_a = alignment.seqB[
@@ -719,8 +725,8 @@ class WorkThread(QThread):
                                                                                                  alignment.end)]
                                                                     aligns = pairwise2.align.localxs(gene_protein_s,
                                                                                                      gene_protein_a,
-                                                                                                     -50000,
-                                                                                                     -50000)
+                                                                                                     -1e9,
+                                                                                                     -1e9)
 
                                                                     if len(aligns) == 1:
                                                                         for align in aligns:
