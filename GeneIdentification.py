@@ -36,14 +36,14 @@ class winTest(QtWidgets.QMainWindow):
         """
         try:
             if os.path.exists(ref_tmp):
-                if 'out_tmp' in locals():
+                os.remove(ref_tmp)
+                try:
                     if os.path.exists(out_tmp):
                         os.remove(out_tmp)
-                        os.remove(ref_tmp)
                     else:
-                        os.remove(ref_tmp)
-                else:
-                    os.remove(ref_tmp)
+                        event.ignore()
+                except:
+                    return None  # 设置正常退出
             else:
                 event.ignore()
         except:
