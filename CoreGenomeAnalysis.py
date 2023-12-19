@@ -25,6 +25,29 @@ from Bio.Blast.Applications import NcbiblastnCommandline
 import subprocess
 
 
+class winTest(QtWidgets.QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('My Browser')
+        self.setStyleSheet("background-image: url(D:/Documents/Desktop/bb.png)")
+
+    """对QDialog类重写，实现一些功能"""
+
+    def closeEvent(self, event):
+        """
+        重写closeEvent方法，实现dialog窗体关闭时执行一些代码
+        :param event: close()触发的事件
+        :return: None
+        """
+        try:
+            if os.path.exists(ref_tmp):
+                os.remove(ref_tmp)
+            else:
+                event.ignore()  # 设置正常退出
+        except:
+            return None  # 设置正常退出
+
+
 class WorkThread(QThread):
     # 自定义信号对象
     trigger = pyqtSignal(str)
@@ -603,8 +626,9 @@ class Core_genome_Form(QWidget):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Clustal = QtWidgets.QWidget()
+    # Clustal = QtWidgets.QWidget()
+    WT = winTest()
     ui = Core_genome_Form()
-    ui.setupUi(Clustal)
-    Clustal.show()
+    ui.setupUi(WT)
+    WT.show()
     sys.exit(app.exec_())
