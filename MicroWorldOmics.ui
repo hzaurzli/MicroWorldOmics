@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>850</width>
-    <height>486</height>
+    <height>488</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -34,7 +34,7 @@
       <x>10</x>
       <y>10</y>
       <width>221</width>
-      <height>411</height>
+      <height>421</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -47,7 +47,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-295</y>
+          <y>0</y>
           <width>198</width>
           <height>719</height>
          </rect>
@@ -146,7 +146,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>60</y>
+           <y>50</y>
            <width>68</width>
            <height>17</height>
           </rect>
@@ -176,7 +176,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>80</y>
+           <y>70</y>
            <width>147</width>
            <height>18</height>
           </rect>
@@ -227,7 +227,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>140</y>
+           <y>120</y>
            <width>147</width>
            <height>18</height>
           </rect>
@@ -267,7 +267,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>120</y>
+           <y>100</y>
            <width>147</width>
            <height>15</height>
           </rect>
@@ -297,7 +297,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>200</y>
+           <y>170</y>
            <width>147</width>
            <height>18</height>
           </rect>
@@ -348,7 +348,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>180</y>
+           <y>150</y>
            <width>147</width>
            <height>17</height>
           </rect>
@@ -378,7 +378,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>260</y>
+           <y>220</y>
            <width>151</width>
            <height>21</height>
           </rect>
@@ -419,7 +419,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>240</y>
+           <y>200</y>
            <width>147</width>
            <height>17</height>
           </rect>
@@ -449,7 +449,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>320</y>
+           <y>280</y>
            <width>147</width>
            <height>18</height>
           </rect>
@@ -489,7 +489,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>300</y>
+           <y>260</y>
            <width>147</width>
            <height>17</height>
           </rect>
@@ -519,7 +519,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>440</y>
+           <y>380</y>
            <width>147</width>
            <height>18</height>
           </rect>
@@ -574,7 +574,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>420</y>
+           <y>360</y>
            <width>147</width>
            <height>17</height>
           </rect>
@@ -604,7 +604,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>500</y>
+           <y>430</y>
            <width>147</width>
            <height>18</height>
           </rect>
@@ -644,7 +644,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>480</y>
+           <y>410</y>
            <width>147</width>
            <height>17</height>
           </rect>
@@ -674,7 +674,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>560</y>
+           <y>480</y>
            <width>147</width>
            <height>18</height>
           </rect>
@@ -735,7 +735,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>540</y>
+           <y>460</y>
            <width>147</width>
            <height>17</height>
           </rect>
@@ -762,7 +762,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>600</y>
+           <y>510</y>
            <width>171</width>
            <height>17</height>
           </rect>
@@ -792,7 +792,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>620</y>
+           <y>530</y>
            <width>147</width>
            <height>18</height>
           </rect>
@@ -847,8 +847,8 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>660</y>
-           <width>171</width>
+           <y>560</y>
+           <width>141</width>
            <height>17</height>
           </rect>
          </property>
@@ -877,7 +877,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>680</y>
+           <y>580</y>
            <width>147</width>
            <height>18</height>
           </rect>
@@ -909,21 +909,6 @@ QComboBox {
          </item>
          <item>
           <property name="text">
-           <string>ShinyDiff</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ShinyVolc</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ShinyGenomicPCA</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
            <string>MLST</string>
           </property>
          </item>
@@ -934,12 +919,27 @@ QComboBox {
          </item>
          <item>
           <property name="text">
-           <string>ARGs identification</string>
+           <string>Gene identification</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Virulence gene finder</string>
+           <string>Core genome analysis</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyProtparam</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyGenomicPCA</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Shiny3Dprotein</string>
           </property>
          </item>
          <item>
@@ -965,7 +965,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>380</y>
+           <y>330</y>
            <width>147</width>
            <height>18</height>
           </rect>
@@ -1005,7 +1005,7 @@ QComboBox {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>360</y>
+           <y>310</y>
            <width>147</width>
            <height>17</height>
           </rect>
@@ -1027,6 +1027,201 @@ QComboBox {
          <property name="text">
           <string>ORF prediction</string>
          </property>
+        </widget>
+        <widget class="QLabel" name="label_15">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>610</y>
+           <width>181</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>Times New Roman</family>
+           <pointsize>11</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Metagenomics/Amplicons</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="comboBox_13">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>630</y>
+           <width>147</width>
+           <height>18</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">/* 未下拉时，QComboBox的样式 */
+QComboBox {
+    border: 1px solid gray;   /* 边框 */
+    border-radius:2px;   /* 圆角 */
+    padding: 0px 0px 0px 10px; /* 上内边距、右内边距、下内边距、左内边距 */
+    color: rgba(51,51,51,1);
+    /*font: normal normal 15px &quot;Microsoft YaHei&quot;;*/
+    text-align: AlignHCenter;
+ 
+    color:rgb(123,123,123);/*字体颜色*/
+    background-color: transparent;
+}</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>&lt;Default&gt;</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyDiversity</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyDiff</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyNMDS</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyPCoA</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyMCA</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyVolc</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyTimeSeries</string>
+          </property>
+         </item>
+        </widget>
+        <widget class="QLabel" name="label_16">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>660</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>Times New Roman</family>
+           <pointsize>11</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Networks</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="comboBox_14">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>680</y>
+           <width>147</width>
+           <height>18</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">/* 未下拉时，QComboBox的样式 */
+QComboBox {
+    border: 1px solid gray;   /* 边框 */
+    border-radius:2px;   /* 圆角 */
+    padding: 0px 0px 0px 10px; /* 上内边距、右内边距、下内边距、左内边距 */
+    color: rgba(51,51,51,1);
+    /*font: normal normal 15px &quot;Microsoft YaHei&quot;;*/
+    text-align: AlignHCenter;
+ 
+    color:rgb(123,123,123);/*字体颜色*/
+    background-color: transparent;
+}</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>&lt;Default&gt;</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyMicroWGCNA</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyBioMiCo</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinySpiecEasi</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyREBACCA</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyCCLasso</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ShinyDiffCoEx</string>
+          </property>
+         </item>
         </widget>
        </widget>
       </widget>
@@ -1088,7 +1283,7 @@ background-color: rgb(255, 255, 255);</string>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Times New Roman'; font-size:9pt; font-weight:600; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Micro-worldOmics V1.2&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;MicroWorldOmics V1.2&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);&quot;&gt;Github&lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;: &lt;/span&gt;&lt;/p&gt;
@@ -1156,8 +1351,8 @@ background-color: rgb(255, 255, 255);</string>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Times New Roman'; font-size:9pt; font-weight:600; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Micro-worldOmics Logs&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; color:rgba(0,0,255,0.8);&quot;&gt;Introduction: &lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;Micro-worldOmics&lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; color:rgba(0,0,0,0.8);&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;(a convenient software for microscopic world analysis and visualization), a desktop software developed based on &lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,136,0,0.8);&quot;&gt;PYQT (version=5), R (version=4.0) and Python (version=3.6), &lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;which aims to make new exploration and contribution to the development of bioinformatics. &lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(255,0,0,0.8);&quot;&gt;Realizing data analysis and visualization in the fields of algorithm statistics, sequence analysis, microbiomics , virology,image recognition etc.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;MicroWorldOmics Logs&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; color:rgba(0,0,255,0.8);&quot;&gt;Introduction: &lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;Micro-worldOmics&lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; color:rgba(0,0,0,0.8);&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;(a convenient software for microscopic world analysis and visualization), a desktop software developed based on &lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,136,0,0.8);&quot;&gt;PYQT (version=5), R (version=4.0)，Python (version=3.6) and JavaScript, &lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;which aims to make new exploration and contribution to the development of bioinformatics. &lt;/span&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(255,0,0,0.8);&quot;&gt;Realizing data analysis and visualization in the fields of algorithm statistics, sequence analysis, microbiomics , virology,image recognition etc.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Micro-worldOmics V1.0 2023.1&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
@@ -1273,16 +1468,39 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="action_ShinyDiff"/>
-    <addaction name="actionShinyVolc"/>
-    <addaction name="actionShinyGenomicPCA"/>
+    <widget class="QMenu" name="menuMetagenomics">
+     <property name="title">
+      <string>Metagenomics/Amplicons</string>
+     </property>
+     <addaction name="actionDiversity"/>
+     <addaction name="actionShinyDiff"/>
+     <addaction name="actionShinyNMDS"/>
+     <addaction name="actionShinyPCOA"/>
+     <addaction name="actionShinyMCA"/>
+     <addaction name="actionShinyVolc_2"/>
+     <addaction name="actionShinyTimeSeries"/>
+    </widget>
+    <widget class="QMenu" name="menuNetworks">
+     <property name="title">
+      <string>Networks</string>
+     </property>
+     <addaction name="actionShinyMicroWGCNA"/>
+     <addaction name="actionShinyBioMiCo"/>
+     <addaction name="actionShinySpiecEasi"/>
+     <addaction name="actionShinyREBACCA"/>
+     <addaction name="actionShinyCCLasso"/>
+     <addaction name="actionShinyDiffCoEx"/>
+    </widget>
     <addaction name="actionMLST"/>
     <addaction name="actionSerotype"/>
     <addaction name="action_ARGs_identification"/>
     <addaction name="actionVirulence_gene_finder"/>
-    <addaction name="actionMicroWGCNA"/>
+    <addaction name="actionShinyProtparam"/>
+    <addaction name="actionShinyGenomicPCA"/>
     <addaction name="actionShiny3Dprotein"/>
     <addaction name="actionIGV"/>
+    <addaction name="menuMetagenomics"/>
+    <addaction name="menuNetworks"/>
    </widget>
    <widget class="QMenu" name="menuHelps">
     <property name="title">
@@ -1470,12 +1688,12 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_ARGs_identification">
    <property name="text">
-    <string>ARGs identification</string>
+    <string>Gene identification</string>
    </property>
   </action>
   <action name="actionVirulence_gene_finder">
    <property name="text">
-    <string>Virulence gene finder</string>
+    <string>Core genome analysis</string>
    </property>
   </action>
   <action name="actionMicroWGCNA">
@@ -1501,6 +1719,76 @@ p, li { white-space: pre-wrap; }
   <action name="actionStep5_Phylogeny">
    <property name="text">
     <string>Step5 Phylogeny</string>
+   </property>
+  </action>
+  <action name="actionDiversity">
+   <property name="text">
+    <string>ShinyDiversity</string>
+   </property>
+  </action>
+  <action name="actionShinyDiff">
+   <property name="text">
+    <string>ShinyDiff</string>
+   </property>
+  </action>
+  <action name="actionShinyNMDS">
+   <property name="text">
+    <string>ShinyNMDS</string>
+   </property>
+  </action>
+  <action name="actionShinyPCOA">
+   <property name="text">
+    <string>ShinyPCoA</string>
+   </property>
+  </action>
+  <action name="actionShinyMCA">
+   <property name="text">
+    <string>ShinyMCA</string>
+   </property>
+  </action>
+  <action name="actionShinyVolc_2">
+   <property name="text">
+    <string>ShinyVolc</string>
+   </property>
+  </action>
+  <action name="actionShinyTimeSeries">
+   <property name="text">
+    <string>ShinyTimeSeries</string>
+   </property>
+  </action>
+  <action name="actionShinyMicroWGCNA">
+   <property name="text">
+    <string>ShinyMicroWGCNA</string>
+   </property>
+  </action>
+  <action name="actionShinyBioMiCo">
+   <property name="text">
+    <string>ShinyBioMiCo</string>
+   </property>
+  </action>
+  <action name="actionShinySpiecEasi">
+   <property name="text">
+    <string>ShinySpiecEasi</string>
+   </property>
+  </action>
+  <action name="actionShinyCCLasso">
+   <property name="text">
+    <string>ShinyCCLasso</string>
+   </property>
+  </action>
+  <action name="actionShinyDiffCoEx">
+   <property name="text">
+    <string>ShinyDiffCoEx</string>
+   </property>
+  </action>
+  <action name="actionShinyREBACCA">
+   <property name="text">
+    <string>ShinyREBACCA</string>
+   </property>
+  </action>
+  <action name="actionShinyProtparam">
+   <property name="text">
+    <string>ShinyProtparam</string>
    </property>
   </action>
  </widget>
