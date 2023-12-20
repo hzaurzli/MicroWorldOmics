@@ -15,6 +15,7 @@ from PyQt5.QtCore import *
 import os, sys, re, math, time
 from ShinyWeb import ShinyWeb_Form
 
+
 class winTest(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
@@ -86,10 +87,10 @@ class ShinyBatch_Form(QWidget):
         self.pushButton_2.setFont(font)
         self.pushButton_2.setObjectName("pushButton_2")
         self.label_3 = QtWidgets.QLabel(Form)
-        self.label_3.setGeometry(QtCore.QRect(80, 310, 241, 51))
+        self.label_3.setGeometry(QtCore.QRect(90, 310, 211, 51))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
-        font.setPointSize(13)
+        font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
         self.label_3.setFont(font)
@@ -110,7 +111,7 @@ class ShinyBatch_Form(QWidget):
         self.label_2.setText(_translate("Form", "Status"))
         self.pushButton.setText(_translate("Form", "Start App"))
         self.pushButton_2.setText(_translate("Form", "Open Web"))
-        self.label_3.setText(_translate("Form", "Please close this window after\n"
+        self.label_3.setText(_translate("Form", "Please close this window before\n"
 "starting another Shiny Apps!!!"))
 
 
@@ -129,7 +130,6 @@ class ShinyBatch_Form(QWidget):
 
         self.textBrowser.setText(
             'ShinyApp has been started!!!')
-
 
     def open(self):
         self.winTable = ShinyWeb_Form()

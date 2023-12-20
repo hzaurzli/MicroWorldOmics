@@ -114,22 +114,22 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>90</x>
      <y>310</y>
-     <width>241</width>
+     <width>211</width>
      <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Times New Roman</family>
-     <pointsize>13</pointsize>
+     <pointsize>11</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
    <property name="text">
-    <string>Please close this window after
+    <string>Please close this window before
 starting another Shiny Apps!!!</string>
    </property>
   </widget>
