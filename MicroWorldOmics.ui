@@ -957,6 +957,11 @@ QComboBox {
            <string>IGV</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>Chemical Formula</string>
+          </property>
+         </item>
         </widget>
         <widget class="QComboBox" name="comboBox_7">
          <property name="enabled">
@@ -1499,19 +1504,21 @@ p, li { white-space: pre-wrap; }
     </widget>
     <addaction name="actionMLST"/>
     <addaction name="actionSerotype"/>
-    <addaction name="action_ARGs_identification"/>
-    <addaction name="actionVirulence_gene_finder"/>
+    <addaction name="actionGene_identification"/>
+    <addaction name="actionCore_genome_analysis"/>
     <addaction name="actionShinyProtparam"/>
     <addaction name="actionShinyGenomicPCA"/>
     <addaction name="actionShiny3Dprotein"/>
     <addaction name="actionIGV"/>
     <addaction name="menuMetagenomics"/>
     <addaction name="menuNetworks"/>
+    <addaction name="actionChemical_Formula"/>
    </widget>
    <widget class="QMenu" name="menuHelps">
     <property name="title">
      <string>Helps</string>
     </property>
+    <addaction name="actionReadme"/>
    </widget>
    <addaction name="menuBlast"/>
    <addaction name="menuAlignment"/>
@@ -1692,12 +1699,12 @@ p, li { white-space: pre-wrap; }
     <string>Serotype</string>
    </property>
   </action>
-  <action name="action_ARGs_identification">
+  <action name="actionGene_identification">
    <property name="text">
     <string>Gene identification</string>
    </property>
   </action>
-  <action name="actionVirulence_gene_finder">
+  <action name="actionCore_genome_analysis">
    <property name="text">
     <string>Core genome analysis</string>
    </property>
@@ -1800,6 +1807,16 @@ p, li { white-space: pre-wrap; }
   <action name="actionShinyBatch">
    <property name="text">
     <string>ShinyBatch</string>
+   </property>
+  </action>
+  <action name="actionReadme">
+   <property name="text">
+    <string>Readme</string>
+   </property>
+  </action>
+  <action name="actionChemical_Formula">
+   <property name="text">
+    <string>Chemical Formula</string>
    </property>
   </action>
  </widget>

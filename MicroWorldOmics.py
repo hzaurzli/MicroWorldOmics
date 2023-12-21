@@ -42,23 +42,18 @@ from CoreGenomeAnalysis import Core_genome_Form
 from ShinyProtparam import ShinyProtparam_Form
 from ShinyPCoA import ShinyPCoA_Form
 from ShinyBatch import ShinyBatch_Form
+from Chemical_formula import Chemicalformula_Form
+
 
 
 class MyWindow(QtWidgets.QPushButton):
     def __init__(self):
         QtWidgets.QPushButton.__init__(self)
-    def load_data(self, sp):
-        for i in range(1, 11):              #模拟主程序加载过程
-            time.sleep(2)                   # 加载数据
-            sp.showMessage("Loading... {0}%".format(i * 10), QtCore.Qt.AlignHCenter |QtCore.Qt.AlignBottom, QtCore.Qt.black)
-            if i == 6:
-                from Peptides import Peptides_Form
-                from Lysins import Lysins_Form
-                from PhaMer import PhaMer_Form, winTest
-                from PhaTYP import PhaTYP_Form, winTest
-                from PhaGCN import PhaGCN_Form, winTest
-                from Cherry import Cherry_Form, winTest
-            QtWidgets.qApp.processEvents()  # 允许主进程处理事件
+
+    def load_data(self, sp, num):
+        time.sleep(2) # 加载数据
+        sp.showMessage("Loading... {0}%".format(num * 10), QtCore.Qt.AlignHCenter |QtCore.Qt.AlignBottom, QtCore.Qt.black)
+        QtWidgets.qApp.processEvents()  # 允许主进程处理事件
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -521,6 +516,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
+        self.comboBox_12.addItem("")
         self.comboBox_7 = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox_7.setEnabled(True)
         self.comboBox_7.setGeometry(QtCore.QRect(0, 330, 147, 18))
@@ -802,10 +798,10 @@ class Ui_MainWindow(object):
         self.actionMLST.setObjectName("actionMLST")
         self.actionSerotype = QtWidgets.QAction(MainWindow)
         self.actionSerotype.setObjectName("actionSerotype")
-        self.action_ARGs_identification = QtWidgets.QAction(MainWindow)
-        self.action_ARGs_identification.setObjectName("action_ARGs_identification")
-        self.actionVirulence_gene_finder = QtWidgets.QAction(MainWindow)
-        self.actionVirulence_gene_finder.setObjectName("actionVirulence_gene_finder")
+        self.actionGene_identification = QtWidgets.QAction(MainWindow)
+        self.actionGene_identification.setObjectName("actionGene_identification")
+        self.actionCore_genome_analysis = QtWidgets.QAction(MainWindow)
+        self.actionCore_genome_analysis.setObjectName("actionCore_genome_analysis")
         self.actionMicroWGCNA = QtWidgets.QAction(MainWindow)
         self.actionMicroWGCNA.setObjectName("actionMicroWGCNA")
         self.actionShiny3Dprotein = QtWidgets.QAction(MainWindow)
@@ -846,6 +842,10 @@ class Ui_MainWindow(object):
         self.actionShinyProtparam.setObjectName("actionShinyProtparam")
         self.actionShinyBatch = QtWidgets.QAction(MainWindow)
         self.actionShinyBatch.setObjectName("actionShinyBatch")
+        self.actionReadme = QtWidgets.QAction(MainWindow)
+        self.actionReadme.setObjectName("actionReadme")
+        self.actionChemical_Formula = QtWidgets.QAction(MainWindow)
+        self.actionChemical_Formula.setObjectName("actionChemical_Formula")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -894,14 +894,16 @@ class Ui_MainWindow(object):
         self.menuNetworks.addAction(self.actionShinyDiffCoEx)
         self.menuTools.addAction(self.actionMLST)
         self.menuTools.addAction(self.actionSerotype)
-        self.menuTools.addAction(self.action_ARGs_identification)
-        self.menuTools.addAction(self.actionVirulence_gene_finder)
+        self.menuTools.addAction(self.actionGene_identification)
+        self.menuTools.addAction(self.actionCore_genome_analysis)
         self.menuTools.addAction(self.actionShinyProtparam)
         self.menuTools.addAction(self.actionShinyGenomicPCA)
         self.menuTools.addAction(self.actionShiny3Dprotein)
         self.menuTools.addAction(self.actionIGV)
         self.menuTools.addAction(self.menuMetagenomics.menuAction())
         self.menuTools.addAction(self.menuNetworks.menuAction())
+        self.menuTools.addAction(self.actionChemical_Formula)
+        self.menuHelps.addAction(self.actionReadme)
         self.menubar.addAction(self.menuBlast.menuAction())
         self.menubar.addAction(self.menuAlignment.menuAction())
         self.menubar.addAction(self.menuActivity.menuAction())
@@ -962,12 +964,12 @@ class Ui_MainWindow(object):
 
         self.actionMLST.triggered.connect(self.mlst_show)
         self.actionSerotype.triggered.connect(self.serotype_show)
-        self.action_ARGs_identification.triggered.connect(self.geneidentification_show)
-        self.actionVirulence_gene_finder.triggered.connect(self.coregenome_show)
+        self.actionGene_identification.triggered.connect(self.geneidentification_show)
+        self.actionCore_genome_analysis.triggered.connect(self.coregenome_show)
         self.actionShinyProtparam.triggered.connect(self.shinyprotparam_show)
         self.actionShinyPCOA.triggered.connect(self.shinypcoa_show)
         self.actionShinyBatch.triggered.connect(self.shinybatch_show)
-
+        self.actionChemical_Formula.triggered.connect(self.chemicalformula_show)
 
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
@@ -1049,6 +1051,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.setItemText(8, _translate("MainWindow", "MicroWGCNA"))
         self.comboBox_12.setItemText(9, _translate("MainWindow", "Shiny3Dprotein"))
         self.comboBox_12.setItemText(10, _translate("MainWindow", "IGV"))
+        self.comboBox_12.setItemText(11, _translate("MainWindow", "Chemical Formula"))
         self.comboBox_7.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "Prodigal"))
         self.label_7.setText(_translate("MainWindow", "ORF prediction"))
@@ -1144,8 +1147,8 @@ class Ui_MainWindow(object):
         self.actionShinyGenomicPCA.setText(_translate("MainWindow", "ShinyGenomicPCA"))
         self.actionMLST.setText(_translate("MainWindow", "MLST"))
         self.actionSerotype.setText(_translate("MainWindow", "Serotype"))
-        self.action_ARGs_identification.setText(_translate("MainWindow", "Gene identification"))
-        self.actionVirulence_gene_finder.setText(_translate("MainWindow", "Core genome analysis"))
+        self.actionGene_identification.setText(_translate("MainWindow", "Gene identification"))
+        self.actionCore_genome_analysis.setText(_translate("MainWindow", "Core genome analysis"))
         self.actionMicroWGCNA.setText(_translate("MainWindow", "MicroWGCNA"))
         self.actionShiny3Dprotein.setText(_translate("MainWindow", "Shiny3Dprotein"))
         self.actionIGV.setText(_translate("MainWindow", "IGV"))
@@ -1166,6 +1169,9 @@ class Ui_MainWindow(object):
         self.actionShinyREBACCA.setText(_translate("MainWindow", "ShinyREBACCA"))
         self.actionShinyProtparam.setText(_translate("MainWindow", "ShinyProtparam"))
         self.actionShinyBatch.setText(_translate("MainWindow", "ShinyBatch"))
+        self.actionReadme.setText(_translate("MainWindow", "Readme"))
+        self.actionChemical_Formula.setText(_translate("MainWindow", "Chemical Formula"))
+
 
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
@@ -1309,6 +1315,8 @@ class Ui_MainWindow(object):
             self.coregenome_show()
         elif label_item == 'ShinyProtparam':
             self.shinyprotparam_show()
+        elif label_item == 'Chemical Formula':
+            self.chemicalformula_show()
 
 
     def selectionchange_comboBox_13(self):
@@ -1552,7 +1560,9 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
-
+    def chemicalformula_show(self):
+        self.winTable = Chemicalformula_Form()
+        self.winTable.show()
 
 if __name__ == "__main__":
     import sys
@@ -1569,7 +1579,16 @@ if __name__ == "__main__":
     window.setWindowTitle("QSplashScreen类使用")
     window.resize(500, 50)
 
-    window.load_data(splash)  # 加载数据
+    for i in range(1, 11):  # 模拟主程序加载过程
+        window.load_data(splash,num=i)  # 加载数据
+        if i == 6:
+            from Peptides import Peptides_Form
+            from Lysins import Lysins_Form
+            from PhaMer import PhaMer_Form, winTest
+            from PhaTYP import PhaTYP_Form, winTest
+            from PhaGCN import PhaGCN_Form, winTest
+            from Cherry import Cherry_Form, winTest
+
     splash.finish(window)  # 隐藏启动界面
 
     MainWindow = QtWidgets.QMainWindow()
