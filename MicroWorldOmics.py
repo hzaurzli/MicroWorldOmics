@@ -39,6 +39,8 @@ from MLST import MLST_Form
 from Serotype import Serotype_Form
 from GeneIdentification import GeneIdentification_Form
 from CoreGenomeAnalysis import Core_genome_Form
+from ShinyProtparam import ShinyProtparam_Form
+from ShinyPCoA import ShinyPCoA_Form
 from ShinyBatch import ShinyBatch_Form
 
 
@@ -962,6 +964,8 @@ class Ui_MainWindow(object):
         self.actionSerotype.triggered.connect(self.serotype_show)
         self.action_ARGs_identification.triggered.connect(self.geneidentification_show)
         self.actionVirulence_gene_finder.triggered.connect(self.coregenome_show)
+        self.actionShinyProtparam.triggered.connect(self.shinyprotparam_show)
+        self.actionShinyPCOA.triggered.connect(self.shinypcoa_show)
         self.actionShinyBatch.triggered.connect(self.shinybatch_show)
 
 
@@ -1303,6 +1307,8 @@ class Ui_MainWindow(object):
             self.geneidentification_show()
         elif label_item == 'Core genome analysis':
             self.coregenome_show()
+        elif label_item == 'ShinyProtparam':
+            self.shinyprotparam_show()
 
 
     def selectionchange_comboBox_13(self):
@@ -1310,7 +1316,9 @@ class Ui_MainWindow(object):
         # currentText()：返回选中选项的文本
         label_item = self.comboBox_13.currentText()
         print(label_item)
-        if label_item == 'ShinyBatch':
+        if label_item == 'ShinyPCoA':
+            self.shinypcoa_show()
+        elif label_item == 'ShinyBatch':
             self.shinybatch_show()
 
 
@@ -1521,6 +1529,21 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+
+    def shinyprotparam_show(self):
+        self.form = QtWidgets.QWidget()
+        self.winTest = winTest()
+        self.ui = ShinyProtparam_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+
+    def shinypcoa_show(self):
+        self.form = QtWidgets.QWidget()
+        self.winTest = winTest()
+        self.ui = ShinyPCoA_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
 
     def shinybatch_show(self):
         self.form = QtWidgets.QWidget()
