@@ -39,9 +39,10 @@ class winTest(QtWidgets.QMainWindow):
                 if len(temp) > 4:
                     result.append({'pid': temp[4], 'address': temp[1], 'state': temp[3]})
 
-            for task in result:
-                pid = task['pid']
-                os.popen('taskkill -pid %s -f' % (pid))
+            if len(result) != 0:
+                for task in result:
+                    pid = task['pid']
+                    os.popen('taskkill -pid %s -f' % (pid))
 
         except:
             return None  # 设置正常退出
@@ -139,8 +140,9 @@ class ShinyBatch_Form(QWidget):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
+    # Clustal = QtWidgets.QWidget()
+    WT = winTest()
     ui = ShinyBatch_Form()
-    ui.setupUi(Form)
-    Form.show()
+    ui.setupUi(WT)
+    WT.show()
     sys.exit(app.exec_())

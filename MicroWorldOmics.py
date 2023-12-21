@@ -35,6 +35,11 @@ import Blasterjs
 import VipTree
 import VIRIDIC
 from Phylotreejs import Phylotreejs_Form
+from MLST import MLST_Form
+from Serotype import Serotype_Form
+from GeneIdentification import GeneIdentification_Form
+from CoreGenomeAnalysis import Core_genome_Form
+from ShinyBatch import ShinyBatch_Form
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -44,6 +49,13 @@ class MyWindow(QtWidgets.QPushButton):
         for i in range(1, 11):              #模拟主程序加载过程
             time.sleep(2)                   # 加载数据
             sp.showMessage("Loading... {0}%".format(i * 10), QtCore.Qt.AlignHCenter |QtCore.Qt.AlignBottom, QtCore.Qt.black)
+            if i == 6:
+                from Peptides import Peptides_Form
+                from Lysins import Lysins_Form
+                from PhaMer import PhaMer_Form, winTest
+                from PhaTYP import PhaTYP_Form, winTest
+                from PhaGCN import PhaGCN_Form, winTest
+                from Cherry import Cherry_Form, winTest
             QtWidgets.qApp.processEvents()  # 允许主进程处理事件
 
 class Ui_MainWindow(object):
@@ -946,6 +958,13 @@ class Ui_MainWindow(object):
         self.actionPhaGCN.triggered.connect(self.phagcn_show)
         self.actionCHERRY.triggered.connect(self.cherry_show)
 
+        self.actionMLST.triggered.connect(self.mlst_show)
+        self.actionSerotype.triggered.connect(self.serotype_show)
+        self.action_ARGs_identification.triggered.connect(self.geneidentification_show)
+        self.actionVirulence_gene_finder.triggered.connect(self.coregenome_show)
+        self.actionShinyBatch.triggered.connect(self.shinybatch_show)
+
+
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
         self.comboBox_2.currentIndexChanged.connect(self.selectionchange_comboBox_2)
@@ -958,6 +977,7 @@ class Ui_MainWindow(object):
         self.comboBox_9.currentIndexChanged.connect(self.selectionchange_comboBox_9)
         self.comboBox_10.currentIndexChanged.connect(self.selectionchange_comboBox_10)
         self.comboBox_11.currentIndexChanged.connect(self.selectionchange_comboBox_11)
+        self.comboBox_12.currentIndexChanged.connect(self.selectionchange_comboBox_12)
 
 
     def retranslateUi(self, MainWindow):
@@ -1269,6 +1289,21 @@ class Ui_MainWindow(object):
             self.cherry_show()
 
 
+    def selectionchange_comboBox_12(self):
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
+        label_item = self.comboBox_12.currentText()
+        print(label_item)
+        if label_item == 'MLST':
+            self.mlst_show()
+        elif label_item == 'Serotype':
+            self.serotype_show()
+        elif label_item == 'Gene identification':
+            self.geneidentification_show()
+        elif label_item == 'Core genome analysis':
+            self.coregenome_show()
+
+
     # pages
     ## click to new window BlastN,BlastN_Form is object in BlastN.py
     def blastn_show(self):
@@ -1445,6 +1480,46 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+    def mlst_show(self):
+        self.form = QtWidgets.QWidget()
+        self.winTest = winTest()
+        self.ui = MLST_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+
+    def serotype_show(self):
+        self.form = QtWidgets.QWidget()
+        self.winTest = winTest()
+        self.ui = Serotype_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+
+    def geneidentification_show(self):
+        self.form = QtWidgets.QWidget()
+        self.winTest = winTest()
+        self.ui = GeneIdentification_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+
+    def coregenome_show(self):
+        self.form = QtWidgets.QWidget()
+        self.winTest = winTest()
+        self.ui = Core_genome_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+
+    def shinybatch_show(self):
+        self.form = QtWidgets.QWidget()
+        self.winTest = winTest()
+        self.ui = ShinyBatch_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+
 
 if __name__ == "__main__":
     import sys
@@ -1460,13 +1535,6 @@ if __name__ == "__main__":
     window = MyWindow()
     window.setWindowTitle("QSplashScreen类使用")
     window.resize(500, 50)
-
-    from Peptides import Peptides_Form
-    from Lysins import Lysins_Form
-    from PhaMer import PhaMer_Form, winTest
-    from PhaTYP import PhaTYP_Form, winTest
-    from PhaGCN import PhaGCN_Form, winTest
-    from Cherry import Cherry_Form, winTest
 
     window.load_data(splash)  # 加载数据
     splash.finish(window)  # 隐藏启动界面
