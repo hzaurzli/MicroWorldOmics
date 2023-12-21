@@ -978,6 +978,7 @@ class Ui_MainWindow(object):
         self.comboBox_10.currentIndexChanged.connect(self.selectionchange_comboBox_10)
         self.comboBox_11.currentIndexChanged.connect(self.selectionchange_comboBox_11)
         self.comboBox_12.currentIndexChanged.connect(self.selectionchange_comboBox_12)
+        self.comboBox_13.currentIndexChanged.connect(self.selectionchange_comboBox_13)
 
 
     def retranslateUi(self, MainWindow):
@@ -1302,6 +1303,15 @@ class Ui_MainWindow(object):
             self.geneidentification_show()
         elif label_item == 'Core genome analysis':
             self.coregenome_show()
+
+
+    def selectionchange_comboBox_13(self):
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
+        label_item = self.comboBox_13.currentText()
+        print(label_item)
+        if label_item == 'ShinyBatch':
+            self.shinybatch_show()
 
 
     # pages
