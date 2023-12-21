@@ -31,7 +31,7 @@ class winTest(QtWidgets.QMainWindow):
         :return: None
         """
         try:
-            with os.popen('netstat -aon|findstr "51896"') as res:
+            with os.popen('netstat -aon|findstr "50326"') as res:
                 res = res.read().split('\n')
             result = []
             for line in res:
@@ -65,6 +65,7 @@ class WorkThread(QThread):
         os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
                  path + '/Shiny/ShinyScript/ShinyProtparam/ShinyProtparam.R')
 
+        time.sleep(8)
         self.trigger.emit('ShinyApp has been started!!!')
 
 
@@ -152,7 +153,7 @@ class ShinyProtparam_Form(QWidget):
 
 
     def open(self):
-        self.winTable = ShinyWeb_Form()
+        self.winTable = ShinyWeb_Form(port=50326)
         self.winTable.show()
 
 

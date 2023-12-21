@@ -13,6 +13,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+
+import GeneIdentification
+import PhaTYP
 from BlastN import BlastN_Form
 from BlastP import BlastP_Form
 from BlastX import BlastX_Form
@@ -30,18 +33,18 @@ from PCR import PCR_Form
 from Prodigal import Prodigal_Form
 from GCview import GCview_Form
 from Clinker import Clinker_Form
-from ProtVista import Provista_Form, winTest
+from ProtVista import Protvista_Form, winTest
 import Blasterjs
 import VipTree
 import VIRIDIC
 from Phylotreejs import Phylotreejs_Form
 from MLST import MLST_Form
 from Serotype import Serotype_Form
-from GeneIdentification import GeneIdentification_Form
-from CoreGenomeAnalysis import Core_genome_Form
-from ShinyProtparam import ShinyProtparam_Form
-from ShinyPCoA import ShinyPCoA_Form
-from ShinyBatch import ShinyBatch_Form
+from GeneIdentification import *
+from CoreGenomeAnalysis import *
+from ShinyProtparam import *
+from ShinyPCoA import *
+from ShinyBatch import *
 from Chemical_formula import Chemicalformula_Form
 
 
@@ -1452,8 +1455,9 @@ class Ui_MainWindow(object):
 
     def protvista_show(self):
         self.form = QtWidgets.QWidget()
-        self.winTest = winTest()
-        self.ui = Provista_Form()
+        import ProtVista
+        self.winTest = ProtVista.winTest()
+        self.ui = Protvista_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
@@ -1480,35 +1484,40 @@ class Ui_MainWindow(object):
 
     def phamer_show(self):
         self.form = QtWidgets.QWidget()
-        self.winTest = winTest()
+        import PhaMer
+        self.winTest = PhaMer.winTest()
         self.ui = PhaMer_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
     def phatyp_show(self):
         self.form = QtWidgets.QWidget()
-        self.winTest = winTest()
+        import PhaTYP
+        self.winTest = PhaTYP.winTest()
         self.ui = PhaTYP_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
     def phagcn_show(self):
         self.form = QtWidgets.QWidget()
-        self.winTest = winTest()
+        import PhaGCN
+        self.winTest = PhaGCN.winTest()
         self.ui = PhaGCN_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
     def cherry_show(self):
         self.form = QtWidgets.QWidget()
-        self.winTest = winTest()
+        import Cherry
+        self.winTest = Cherry.winTest()
         self.ui = Cherry_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
     def mlst_show(self):
         self.form = QtWidgets.QWidget()
-        self.winTest = winTest()
+        import MLST
+        self.winTest = MLST.winTest()
         self.ui = MLST_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
@@ -1516,7 +1525,8 @@ class Ui_MainWindow(object):
 
     def serotype_show(self):
         self.form = QtWidgets.QWidget()
-        self.winTest = winTest()
+        import Serotype
+        self.winTest = Serotype.winTest()
         self.ui = Serotype_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
@@ -1524,7 +1534,8 @@ class Ui_MainWindow(object):
 
     def geneidentification_show(self):
         self.form = QtWidgets.QWidget()
-        self.winTest = winTest()
+        import GeneIdentification
+        self.winTest = GeneIdentification.winTest()
         self.ui = GeneIdentification_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
@@ -1532,7 +1543,8 @@ class Ui_MainWindow(object):
 
     def coregenome_show(self):
         self.form = QtWidgets.QWidget()
-        self.winTest = winTest()
+        import CoreGenomeAnalysis
+        self.winTest = CoreGenomeAnalysis.winTest()
         self.ui = Core_genome_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
@@ -1540,7 +1552,8 @@ class Ui_MainWindow(object):
 
     def shinyprotparam_show(self):
         self.form = QtWidgets.QWidget()
-        self.winTest = winTest()
+        import ShinyProtparam
+        self.winTest = ShinyProtparam.winTest()
         self.ui = ShinyProtparam_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
@@ -1548,14 +1561,16 @@ class Ui_MainWindow(object):
 
     def shinypcoa_show(self):
         self.form = QtWidgets.QWidget()
-        self.winTest = winTest()
+        import ShinyPCoA
+        self.winTest = ShinyPCoA.winTest()
         self.ui = ShinyPCoA_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
     def shinybatch_show(self):
         self.form = QtWidgets.QWidget()
-        self.winTest = winTest()
+        import ShinyBatch
+        self.winTest = ShinyBatch.winTest()
         self.ui = ShinyBatch_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
@@ -1563,6 +1578,7 @@ class Ui_MainWindow(object):
     def chemicalformula_show(self):
         self.winTable = Chemicalformula_Form()
         self.winTable.show()
+
 
 if __name__ == "__main__":
     import sys
@@ -1582,12 +1598,12 @@ if __name__ == "__main__":
     for i in range(1, 11):  # 模拟主程序加载过程
         window.load_data(splash,num=i)  # 加载数据
         if i == 6:
-            from Peptides import Peptides_Form
-            from Lysins import Lysins_Form
-            from PhaMer import PhaMer_Form, winTest
-            from PhaTYP import PhaTYP_Form, winTest
-            from PhaGCN import PhaGCN_Form, winTest
-            from Cherry import Cherry_Form, winTest
+            from Peptides import *
+            from Lysins import *
+            from PhaMer import *
+            from PhaTYP import *
+            from PhaGCN import *
+            from Cherry import *
 
     splash.finish(window)  # 隐藏启动界面
 

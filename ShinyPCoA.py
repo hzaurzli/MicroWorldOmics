@@ -31,7 +31,7 @@ class winTest(QtWidgets.QMainWindow):
         :return: None
         """
         try:
-            with os.popen('netstat -aon|findstr "51896"') as res:
+            with os.popen('netstat -aon|findstr "50327"') as res:
                 res = res.read().split('\n')
             result = []
             for line in res:
@@ -133,7 +133,7 @@ class ShinyPCoA_Form(QWidget):
             'ShinyApp has been started!!!')
 
     def open(self):
-        self.winTable = ShinyWeb_Form()
+        self.winTable = ShinyWeb_Form(port=50327)
         self.winTable.show()
 
 
@@ -145,77 +145,4 @@ if __name__ == "__main__":
     ui = ShinyPCoA_Form()
     ui.setupUi(WT)
     WT.show()
-    sys.exit(app.exec_())
-
-
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(691, 431)
-        Form.setStyleSheet("background-image: url(D:/Documents/Desktop/bb.png)")
-        self.textBrowser = QtWidgets.QTextBrowser(Form)
-        self.textBrowser.setGeometry(QtCore.QRect(60, 150, 271, 151))
-        self.textBrowser.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
-        self.textBrowser.setObjectName("textBrowser")
-        self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(260, 20, 161, 41))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(19)
-        self.label.setFont(font)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(Form)
-        self.label_2.setGeometry(QtCore.QRect(150, 100, 101, 41))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(27)
-        self.label_2.setFont(font)
-        self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_2.setObjectName("label_2")
-        self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(430, 160, 171, 61))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(25)
-        self.pushButton.setFont(font)
-        self.pushButton.setObjectName("pushButton")
-        self.pushButton_2 = QtWidgets.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(430, 300, 171, 61))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(25)
-        self.pushButton_2.setFont(font)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.label_3 = QtWidgets.QLabel(Form)
-        self.label_3.setGeometry(QtCore.QRect(90, 310, 211, 51))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(11)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_3.setFont(font)
-        self.label_3.setObjectName("label_3")
-
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-
-    def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.label.setText(_translate("Form", "ShinyPCoA"))
-        self.label_2.setText(_translate("Form", "Status"))
-        self.pushButton.setText(_translate("Form", "Start App"))
-        self.pushButton_2.setText(_translate("Form", "Open Web"))
-        self.label_3.setText(_translate("Form", "Please close this window before\n"
-"starting another Shiny Apps!!!"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
     sys.exit(app.exec_())

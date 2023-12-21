@@ -42,7 +42,7 @@ class winTest(QtWidgets.QMainWindow):
             return None  # 设置正常退出
 
 
-class Provista_Form(QWidget):
+class Protvista_Form(QWidget):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(691, 431)
@@ -198,7 +198,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     # Form = QtWidgets.QWidget()
     WT = winTest()
-    ui = Provista_Form()
+    ui = Protvista_Form()
     ui.setupUi(WT)
     WT.show()
     sys.exit(app.exec_())

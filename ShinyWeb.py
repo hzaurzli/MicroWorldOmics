@@ -24,8 +24,8 @@ import configparser
 import sys
 
 class ShinyWeb_Form(QMainWindow):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, port):
+        super().__init__()
         # 设置窗口标题
         self.setWindowTitle('ShinyApp')
 
@@ -35,7 +35,7 @@ class ShinyWeb_Form(QMainWindow):
         self.frame = 1
         # 设置浏览器
         self.browser = MyEngineView()
-        url = "http://127.0.0.1:51896"
+        url = "http://127.0.0.1:" + str(port)
         # 指定打开界面的 URL
         self.browser.setUrl(QUrl(url))
         # 添加浏览器到窗口中
@@ -77,8 +77,7 @@ class MyEngineView(QWebEngineView):
     '''
     浏览器类。
     '''
-
-    def __init__(self, parent=None, ):
+    def __init__(self, parent=None):
         super(MyEngineView, self).__init__(parent)
         self.parent = parent
         # 有下载信号发起
@@ -89,10 +88,6 @@ class MyEngineView(QWebEngineView):
         实现点击跳转链接。
         '''
         return self
-
-        # 以下函数里的 ：后为注释，无实际作用
-
-        # 下载信号连接到的槽
 
     def on_downloadRequested(self, download: "QWebEngineDownloadItem"):
         # download是QWebEngineDownloadItem对象；
