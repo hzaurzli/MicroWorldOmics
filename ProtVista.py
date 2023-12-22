@@ -22,7 +22,7 @@ class winTest(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('My Browser')
-        self.setStyleSheet("background-image: url(D:/Documents/Desktop/bb.png)")
+        self.setStyleSheet("background-image: url(./logo/backgroundpage.png)")
 
     """对QDialog类重写，实现一些功能"""
 
@@ -46,10 +46,10 @@ class Protvista_Form(QWidget):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(691, 431)
-        Form.setStyleSheet("background-image: url(D:/Documents/Desktop/bb.png)")
+        Form.setStyleSheet("background-image: url(./logo/backgroundpage.png)")
         self.textBrowser_2 = QtWidgets.QTextBrowser(Form)
         self.textBrowser_2.setGeometry(QtCore.QRect(120, 200, 341, 31))
-        self.textBrowser_2.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
+        self.textBrowser_2.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_2.setObjectName("textBrowser_2")
         self.label = QtWidgets.QLabel(Form)
         self.label.setGeometry(QtCore.QRect(280, 30, 141, 41))

@@ -20,7 +20,7 @@ class winTest(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('My Browser')
-        self.setStyleSheet("background-image: url(D:/Documents/Desktop/bb.png)")
+        self.setStyleSheet("background-image: url(./logo/backgroundpage.png)")
 
     """对QDialog类重写，实现一些功能"""
 
@@ -52,10 +52,10 @@ class ShinyBatch_Form(QWidget):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(691, 431)
-        Form.setStyleSheet("background-image: url(D:/Documents/Desktop/bb.png)")
+        Form.setStyleSheet("background-image: url(./logo/backgroundpage.png)")
         self.textBrowser = QtWidgets.QTextBrowser(Form)
         self.textBrowser.setGeometry(QtCore.QRect(60, 150, 271, 151))
-        self.textBrowser.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
+        self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser.setObjectName("textBrowser")
         self.label = QtWidgets.QLabel(Form)
         self.label.setGeometry(QtCore.QRect(260, 20, 161, 41))

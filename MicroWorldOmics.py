@@ -13,7 +13,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-
 import GeneIdentification
 import PhaTYP
 from BlastN import BlastN_Form
@@ -48,7 +47,6 @@ from ShinyBatch import *
 from Chemical_formula import Chemicalformula_Form
 
 
-
 class MyWindow(QtWidgets.QPushButton):
     def __init__(self):
         QtWidgets.QPushButton.__init__(self)
@@ -70,7 +68,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         MainWindow.setFont(font)
-        MainWindow.setStyleSheet("background-image: url(D:/Documents/Desktop/background.png)")
+        MainWindow.setStyleSheet("background-image: url(./logo/background.png)")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -520,6 +518,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
+        self.comboBox_12.addItem("")
         self.comboBox_7 = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox_7.setEnabled(True)
         self.comboBox_7.setGeometry(QtCore.QRect(0, 330, 147, 18))
@@ -646,18 +645,18 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
         self.label_13 = QtWidgets.QLabel(self.centralwidget)
-        self.label_13.setGeometry(QtCore.QRect(600, 40, 61, 61))
+        self.label_13.setGeometry(QtCore.QRect(620, 40, 61, 61))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_13.sizePolicy().hasHeightForWidth())
         self.label_13.setSizePolicy(sizePolicy)
         self.label_13.setText("")
-        self.label_13.setPixmap(QtGui.QPixmap("../../../Documents/Desktop/lrz.png"))
+        self.label_13.setPixmap(QtGui.QPixmap("./logo/lrz.png"))
         self.label_13.setScaledContents(True)
         self.label_13.setObjectName("label_13")
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser.setGeometry(QtCore.QRect(570, 10, 271, 231))
+        self.textBrowser.setGeometry(QtCore.QRect(590, 10, 251, 231))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setBold(True)
@@ -665,20 +664,20 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.textBrowser.setFont(font)
         self.textBrowser.setAutoFillBackground(False)
-        self.textBrowser.setStyleSheet("background-image: url(D:/Documents/Desktop/color1.png);\n"
+        self.textBrowser.setStyleSheet("background-image: url(./logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.textBrowser.setObjectName("textBrowser")
         self.label_14 = QtWidgets.QLabel(self.centralwidget)
-        self.label_14.setGeometry(QtCore.QRect(700, 40, 111, 61))
+        self.label_14.setGeometry(QtCore.QRect(710, 40, 101, 61))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(10)
         self.label_14.setFont(font)
-        self.label_14.setStyleSheet("background-image: url(D:/Documents/Desktop/color1.png);")
+        self.label_14.setStyleSheet("background-image: url(./logo/color1.png);")
         self.label_14.setObjectName("label_14")
         self.textBrowser_2 = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser_2.setGeometry(QtCore.QRect(570, 260, 271, 171))
+        self.textBrowser_2.setGeometry(QtCore.QRect(590, 260, 251, 171))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setBold(True)
@@ -686,7 +685,7 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.textBrowser_2.setFont(font)
         self.textBrowser_2.setAutoFillBackground(False)
-        self.textBrowser_2.setStyleSheet("background-image: url(D:/Documents/Desktop/color1.png);\n"
+        self.textBrowser_2.setStyleSheet("background-image: url(./logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.textBrowser_2.setObjectName("textBrowser_2")
@@ -849,6 +848,8 @@ class Ui_MainWindow(object):
         self.actionReadme.setObjectName("actionReadme")
         self.actionChemical_Formula = QtWidgets.QAction(MainWindow)
         self.actionChemical_Formula.setObjectName("actionChemical_Formula")
+        self.actionShinyMap = QtWidgets.QAction(MainWindow)
+        self.actionShinyMap.setObjectName("actionShinyMap")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -906,6 +907,7 @@ class Ui_MainWindow(object):
         self.menuTools.addAction(self.menuMetagenomics.menuAction())
         self.menuTools.addAction(self.menuNetworks.menuAction())
         self.menuTools.addAction(self.actionChemical_Formula)
+        self.menuTools.addAction(self.actionShinyMap)
         self.menuHelps.addAction(self.actionReadme)
         self.menubar.addAction(self.menuBlast.menuAction())
         self.menubar.addAction(self.menuAlignment.menuAction())
@@ -1055,6 +1057,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.setItemText(9, _translate("MainWindow", "Shiny3Dprotein"))
         self.comboBox_12.setItemText(10, _translate("MainWindow", "IGV"))
         self.comboBox_12.setItemText(11, _translate("MainWindow", "Chemical Formula"))
+        self.comboBox_12.setItemText(12, _translate("MainWindow", "ShinyMap"))
         self.comboBox_7.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "Prodigal"))
         self.label_7.setText(_translate("MainWindow", "ORF prediction"))
@@ -1099,7 +1102,7 @@ class Ui_MainWindow(object):
 "</style></head><body style=\" font-family:\'Times New Roman\'; font-size:9pt; font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">MicroWorldOmics Logs</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; color:rgba(0,0,255,0.8);\">Introduction: </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">Micro-worldOmics</span><span style=\" font-family:\'-webkit-standard\'; color:rgba(0,0,0,0.8);\"> </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">(a convenient software for microscopic world analysis and visualization), a desktop software developed based on </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,136,0,0.8);\">PYQT (version=5), R (version=4.0)，Python (version=3.6) and JavaScript, </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">which aims to make new exploration and contribution to the development of bioinformatics. </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(255,0,0,0.8);\">Realizing data analysis and visualization in the fields of algorithm statistics, sequence analysis, microbiomics , virology,image recognition etc.</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">Micro-worldOmics V1.0 2023.1</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">MicroWorldOmics V1.0 2023.1</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p></body></html>"))
         self.menuBlast.setTitle(_translate("MainWindow", "Blast"))
         self.menuAlignment.setTitle(_translate("MainWindow", "Alignment"))
@@ -1174,6 +1177,7 @@ class Ui_MainWindow(object):
         self.actionShinyBatch.setText(_translate("MainWindow", "ShinyBatch"))
         self.actionReadme.setText(_translate("MainWindow", "Readme"))
         self.actionChemical_Formula.setText(_translate("MainWindow", "Chemical Formula"))
+        self.actionShinyMap.setText(_translate("MainWindow", "ShinyMap"))
 
 
     def selectionchange_comboBox(self):
@@ -1586,7 +1590,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
 
     # 启动预加载
-    splash = QtWidgets.QSplashScreen(QtGui.QPixmap("D:/Documents/Desktop/logo.png"))
+    splash = QtWidgets.QSplashScreen(QtGui.QPixmap("./logo/logo.png"))
     splash.setFont(QFont('微软雅黑', 30))
     splash.showMessage("Loading... 0%", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.black)
     splash.show()  # 显示启动界面
@@ -1596,7 +1600,7 @@ if __name__ == "__main__":
     window.resize(500, 50)
 
     for i in range(1, 11):  # 模拟主程序加载过程
-        window.load_data(splash,num=i)  # 加载数据
+        window.load_data(splash, num=i)  # 加载数据
         if i == 6:
             from Peptides import *
             from Lysins import *

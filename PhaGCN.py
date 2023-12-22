@@ -51,7 +51,7 @@ class winTest(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('My Browser')
-        self.setStyleSheet("background-image: url(D:/Documents/Desktop/bb.png)")
+        self.setStyleSheet("background-image: url(./logo/backgroundpage.png)")
 
     """对QDialog类重写，实现一些功能"""
 
@@ -954,7 +954,7 @@ class PhaGCN_Form(QWidget):
     def setupUi(self, Clustal):
         Clustal.setObjectName("Clustal")
         Clustal.resize(702, 467)
-        Clustal.setStyleSheet("background-image: url(D:/Documents/Desktop/bb.png)")
+        Clustal.setStyleSheet("background-image: url(./logo/backgroundpage.png)")
         self.label = QtWidgets.QLabel(Clustal)
         self.label.setGeometry(QtCore.QRect(250, 10, 191, 41))
         font = QtGui.QFont()
@@ -973,7 +973,7 @@ class PhaGCN_Form(QWidget):
         self.label_2.setObjectName("label_2")
         self.textBrowser_2 = QtWidgets.QTextBrowser(Clustal)
         self.textBrowser_2.setGeometry(QtCore.QRect(60, 80, 181, 31))
-        self.textBrowser_2.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
+        self.textBrowser_2.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_2.setObjectName("textBrowser_2")
         self.label_3 = QtWidgets.QLabel(Clustal)
         self.label_3.setGeometry(QtCore.QRect(60, 120, 161, 31))
@@ -985,7 +985,7 @@ class PhaGCN_Form(QWidget):
         self.label_3.setObjectName("label_3")
         self.textBrowser_3 = QtWidgets.QTextBrowser(Clustal)
         self.textBrowser_3.setGeometry(QtCore.QRect(60, 160, 181, 31))
-        self.textBrowser_3.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
+        self.textBrowser_3.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_3.setObjectName("textBrowser_3")
         self.pushButton_2 = QtWidgets.QPushButton(Clustal)
         self.pushButton_2.setGeometry(QtCore.QRect(260, 80, 61, 31))
@@ -1003,7 +1003,7 @@ class PhaGCN_Form(QWidget):
         self.pushButton_3.setObjectName("pushButton_3")
         self.textBrowser = QtWidgets.QTextBrowser(Clustal)
         self.textBrowser.setGeometry(QtCore.QRect(60, 340, 191, 91))
-        self.textBrowser.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
+        self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser.setObjectName("textBrowser")
         self.label_4 = QtWidgets.QLabel(Clustal)
         self.label_4.setGeometry(QtCore.QRect(100, 290, 101, 31))
@@ -1019,7 +1019,7 @@ class PhaGCN_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(22)
         self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
+        self.pushButton.setStyleSheet("background-image: url(./logo/white.png)")
         self.pushButton.setObjectName("pushButton")
         self.pushButton_4 = QtWidgets.QPushButton(Clustal)
         self.pushButton_4.setGeometry(QtCore.QRect(350, 350, 331, 31))
@@ -1038,7 +1038,7 @@ class PhaGCN_Form(QWidget):
         self.label_6.setObjectName("label_6")
         self.tableWidget = QtWidgets.QTableWidget(Clustal)
         self.tableWidget.setGeometry(QtCore.QRect(355, 70, 321, 241))
-        self.tableWidget.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
+        self.tableWidget.setStyleSheet("background-image: url(./logo/white.png)")
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(4)
         self.tableWidget.setRowCount(0)
@@ -1060,7 +1060,7 @@ class PhaGCN_Form(QWidget):
         self.label_5.setObjectName("label_5")
         self.textEdit = QtWidgets.QTextEdit(Clustal)
         self.textEdit.setGeometry(QtCore.QRect(60, 230, 181, 31))
-        self.textEdit.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
+        self.textEdit.setStyleSheet("background-image: url(./logo/white.png)")
         self.textEdit.setObjectName("textEdit")
 
         self.retranslateUi(Clustal)
