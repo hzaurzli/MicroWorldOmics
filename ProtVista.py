@@ -153,7 +153,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.webview)
 
         #####web页面加载完毕，调用函数
-        self.webview.page().loadFinished.connect(lambda: self.run_js(content))
+        self.webview.page().loadFinished.connect(lambda: self.run_js(content)) # 信号函数传参
 
     def run_js(self, content):
         js_string_1 = '''

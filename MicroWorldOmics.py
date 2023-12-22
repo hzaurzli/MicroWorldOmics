@@ -14,7 +14,6 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import GeneIdentification
-import PhaTYP
 from BlastN import BlastN_Form
 from BlastP import BlastP_Form
 from BlastX import BlastX_Form
@@ -25,6 +24,7 @@ from Muscle import Muscle_Form
 import JSalignment
 import Treevis
 from Dots_counting import Dots_counting_Form,Dialog
+from Dots_counting_V2 import Dots_counting_V2_Form,Dialog
 from IQtree import IQtree_Form
 from Fasttree import Fasttree_Form
 from Raxml import Raxml_Form
@@ -39,11 +39,11 @@ import VIRIDIC
 from Phylotreejs import Phylotreejs_Form
 from MLST import MLST_Form
 from Serotype import Serotype_Form
-from GeneIdentification import *
-from CoreGenomeAnalysis import *
-from ShinyProtparam import *
-from ShinyPCoA import *
-from ShinyBatch import *
+from GeneIdentification import GeneIdentification_Form
+from CoreGenomeAnalysis import Core_genome_Form
+from ShinyProtparam import ShinyProtparam_Form
+from ShinyPCoA import ShinyPCoA_Form
+from ShinyBatch import ShinyBatch_Form
 from Chemical_formula import Chemicalformula_Form
 
 
@@ -55,6 +55,7 @@ class MyWindow(QtWidgets.QPushButton):
         time.sleep(2) # 加载数据
         sp.showMessage("Loading... {0}%".format(num * 10), QtCore.Qt.AlignHCenter |QtCore.Qt.AlignBottom, QtCore.Qt.black)
         QtWidgets.qApp.processEvents()  # 允许主进程处理事件
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -81,7 +82,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -302, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -135, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -373,6 +374,7 @@ class Ui_MainWindow(object):
 "    background-color: transparent;\n"
 "}")
         self.comboBox_9.setObjectName("comboBox_9")
+        self.comboBox_9.addItem("")
         self.comboBox_9.addItem("")
         self.comboBox_9.addItem("")
         self.label_9 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
@@ -772,8 +774,8 @@ class Ui_MainWindow(object):
         self.actionGene_structure_visualization.setObjectName("actionGene_structure_visualization")
         self.actionProtvista = QtWidgets.QAction(MainWindow)
         self.actionProtvista.setObjectName("actionProtvista")
-        self.actionPlaque_recognition = QtWidgets.QAction(MainWindow)
-        self.actionPlaque_recognition.setObjectName("actionPlaque_recognition")
+        self.actionPlaque_count = QtWidgets.QAction(MainWindow)
+        self.actionPlaque_count.setObjectName("actionPlaque_count")
         self.actionStep1_VipTree = QtWidgets.QAction(MainWindow)
         self.actionStep1_VipTree.setObjectName("actionStep1_VipTree")
         self.actionStep2_VIRIDIC = QtWidgets.QAction(MainWindow)
@@ -850,6 +852,8 @@ class Ui_MainWindow(object):
         self.actionChemical_Formula.setObjectName("actionChemical_Formula")
         self.actionShinyMap = QtWidgets.QAction(MainWindow)
         self.actionShinyMap.setObjectName("actionShinyMap")
+        self.actionPlaque_count_V2 = QtWidgets.QAction(MainWindow)
+        self.actionPlaque_count_V2.setObjectName("actionPlaque_count_V2")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -870,7 +874,8 @@ class Ui_MainWindow(object):
         self.menuAnnotation.addAction(self.actionBlast_visualization)
         self.menuAnnotation.addAction(self.actionGene_structure_visualization)
         self.menuAnnotation.addAction(self.actionProtvista)
-        self.menuPlaque.addAction(self.actionPlaque_recognition)
+        self.menuPlaque.addAction(self.actionPlaque_count)
+        self.menuPlaque.addAction(self.actionPlaque_count_V2)
         self.menuClassification.addAction(self.actionStep1_VipTree)
         self.menuClassification.addAction(self.actionStep2_VIRIDIC)
         self.menuClassification.addAction(self.actionStep3_Alignment)
@@ -955,7 +960,8 @@ class Ui_MainWindow(object):
         self.actionGene_structure_visualization.triggered.connect(self.collinearity_show)
         self.actionProtvista.triggered.connect(self.protvista_show)
 
-        self.actionPlaque_recognition.triggered.connect(self.plaque_show)
+        self.actionPlaque_count.triggered.connect(self.plaque_show)
+        self.actionPlaque_count_V2.triggered.connect(self.plaque_V2_show)
 
         self.actionStep1_VipTree.triggered.connect(self.viptree_show)
         self.actionStep2_VIRIDIC.triggered.connect(self.viridic_show)
@@ -1030,6 +1036,7 @@ class Ui_MainWindow(object):
         self.label_8.setText(_translate("MainWindow", "Annotation"))
         self.comboBox_9.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_9.setItemText(1, _translate("MainWindow", "Plaque count"))
+        self.comboBox_9.setItemText(2, _translate("MainWindow", "Plaque count V2"))
         self.label_9.setText(_translate("MainWindow", "Plaque recognition"))
         self.comboBox_10.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_10.setItemText(1, _translate("MainWindow", "Step1 VipTree"))
@@ -1139,7 +1146,7 @@ class Ui_MainWindow(object):
         self.actionBlast_visualization.setText(_translate("MainWindow", "Blast visualization"))
         self.actionGene_structure_visualization.setText(_translate("MainWindow", "Collinearity"))
         self.actionProtvista.setText(_translate("MainWindow", "Protvista"))
-        self.actionPlaque_recognition.setText(_translate("MainWindow", "Plaque recognition"))
+        self.actionPlaque_count.setText(_translate("MainWindow", "Plaque count"))
         self.actionStep1_VipTree.setText(_translate("MainWindow", "Step1 VipTree"))
         self.actionStep2_VIRIDIC.setText(_translate("MainWindow", "Step2 VIRIDIC"))
         self.actionStep3_Alignment.setText(_translate("MainWindow", "Step3 Alignment"))
@@ -1178,6 +1185,7 @@ class Ui_MainWindow(object):
         self.actionReadme.setText(_translate("MainWindow", "Readme"))
         self.actionChemical_Formula.setText(_translate("MainWindow", "Chemical Formula"))
         self.actionShinyMap.setText(_translate("MainWindow", "ShinyMap"))
+        self.actionPlaque_count_V2.setText(_translate("MainWindow", "Plaque count V2"))
 
 
     def selectionchange_comboBox(self):
@@ -1275,6 +1283,8 @@ class Ui_MainWindow(object):
         print(label_item)
         if label_item == 'Plaque count':
             self.plaque_show()
+        elif label_item == 'Plaque count V2':
+            self.plaque_V2_show()
 
     def selectionchange_comboBox_10(self):
         # 标签用来显示选中的文本
@@ -1393,12 +1403,14 @@ class Ui_MainWindow(object):
 
     def lysins_show(self):
         self.form = QtWidgets.QMainWindow()
+        import Lysins
         self.ui = Lysins_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def peptides_show(self):
         self.form = QtWidgets.QMainWindow()
+        import Peptides
         self.ui = Peptides_Form()
         self.ui.setupUi(self.form)
         self.form.show()
@@ -1469,6 +1481,13 @@ class Ui_MainWindow(object):
         self.form = QtWidgets.QWidget()
         self.Dialog = Dialog()
         self.ui = Dots_counting_Form()
+        self.ui.setupUi(self.Dialog)
+        self.Dialog.show()
+
+    def plaque_V2_show(self):
+        self.form = QtWidgets.QWidget()
+        self.Dialog = Dialog()
+        self.ui = Dots_counting_V2_Form()
         self.ui.setupUi(self.Dialog)
         self.Dialog.show()
 

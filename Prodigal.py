@@ -330,7 +330,7 @@ class Prodigal_Form(QWidget):
             path = os.path.dirname(out)
 
             try:
-                coden = self.textEdit.text()
+                coden = self.textEdit.toPlainText
                 if isinstance(coden, int) == True:
                     coden = coden
                 else:

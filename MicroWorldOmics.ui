@@ -47,7 +47,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-302</y>
+          <y>-135</y>
           <width>198</width>
           <height>719</height>
          </rect>
@@ -637,6 +637,11 @@ QComboBox {
          <item>
           <property name="text">
            <string>Plaque count</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Plaque count V2</string>
           </property>
          </item>
         </widget>
@@ -1451,7 +1456,8 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Plaque</string>
     </property>
-    <addaction name="actionPlaque_recognition"/>
+    <addaction name="actionPlaque_count"/>
+    <addaction name="actionPlaque_count_V2"/>
    </widget>
    <widget class="QMenu" name="menuPhage_classification">
     <property name="title">
@@ -1635,9 +1641,9 @@ p, li { white-space: pre-wrap; }
     <string>Protvista</string>
    </property>
   </action>
-  <action name="actionPlaque_recognition">
+  <action name="actionPlaque_count">
    <property name="text">
-    <string>Plaque recognition</string>
+    <string>Plaque count</string>
    </property>
   </action>
   <action name="actionStep1_VipTree">
@@ -1828,6 +1834,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionShinyMap">
    <property name="text">
     <string>ShinyMap</string>
+   </property>
+  </action>
+  <action name="actionPlaque_count_V2">
+   <property name="text">
+    <string>Plaque count V2</string>
    </property>
   </action>
  </widget>

@@ -253,7 +253,7 @@ class IQtree_Form(QWidget):
             path = os.path.dirname(out)
 
             try:
-                bootstrap = self.textEdit.text()
+                bootstrap = self.textEdit.toPlainText()
                 if isinstance(bootstrap, int) == True:
                     bootstrap = bootstrap
                 else:

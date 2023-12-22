@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Dots_counting.ui'
+# Form implementation generated from reading ui file 'Dots_counting_V2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -16,6 +16,7 @@ from PyQt5.QtCore import *
 import cv2
 import numpy as np
 import pandas as pd
+from sklearn.cluster import KMeans
 
 
 class Dialog(QWidget):
@@ -36,7 +37,7 @@ class Dialog(QWidget):
             return None # 设置正常退出
 
 
-class Dots_counting_Form(QWidget):
+class Dots_counting_V2_Form(QWidget):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(825, 585)
@@ -51,12 +52,12 @@ class Dots_counting_Form(QWidget):
         self.label_9.setText("")
         self.label_9.setObjectName("label_9")
         self.pushButton_2 = QtWidgets.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(170, 500, 141, 41))
+        self.pushButton_2.setGeometry(QtCore.QRect(20, 540, 131, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(15)
         self.pushButton_2.setFont(font)
-        self.pushButton_2.setStyleSheet("background-image: url(./logo/white.png)")
+        self.pushButton_2.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.pushButton_2.setObjectName("pushButton_2")
         self.textEdit = QtWidgets.QTextEdit(Form)
         self.textEdit.setGeometry(QtCore.QRect(150, 370, 121, 31))
@@ -75,12 +76,12 @@ class Dots_counting_Form(QWidget):
         self.textEdit_7.setGeometry(QtCore.QRect(690, 510, 121, 31))
         self.textEdit_7.setObjectName("textEdit_7")
         self.pushButton_3 = QtWidgets.QPushButton(Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(360, 500, 111, 41))
+        self.pushButton_3.setGeometry(QtCore.QRect(170, 500, 111, 71))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(15)
         self.pushButton_3.setFont(font)
-        self.pushButton_3.setStyleSheet("background-image: url(./logo/white.png)")
+        self.pushButton_3.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.pushButton_3.setObjectName("pushButton_3")
         self.label_4 = QtWidgets.QLabel(Form)
         self.label_4.setGeometry(QtCore.QRect(300, 440, 131, 21))
@@ -131,12 +132,12 @@ class Dots_counting_Form(QWidget):
         self.textEdit_3.setGeometry(QtCore.QRect(440, 370, 121, 31))
         self.textEdit_3.setObjectName("textEdit_3")
         self.pushButton_1 = QtWidgets.QPushButton(Form)
-        self.pushButton_1.setGeometry(QtCore.QRect(20, 500, 101, 41))
+        self.pushButton_1.setGeometry(QtCore.QRect(20, 500, 131, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(15)
         self.pushButton_1.setFont(font)
-        self.pushButton_1.setStyleSheet("background-image: url(./logo/white.png)")
+        self.pushButton_1.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.pushButton_1.setObjectName("pushButton_1")
         self.textEdit_4 = QtWidgets.QTextEdit(Form)
         self.textEdit_4.setGeometry(QtCore.QRect(440, 440, 121, 31))
@@ -144,6 +145,16 @@ class Dots_counting_Form(QWidget):
         self.textEdit_2 = QtWidgets.QTextEdit(Form)
         self.textEdit_2.setGeometry(QtCore.QRect(150, 440, 121, 31))
         self.textEdit_2.setObjectName("textEdit_2")
+        self.textEdit_8 = QtWidgets.QTextEdit(Form)
+        self.textEdit_8.setGeometry(QtCore.QRect(440, 510, 121, 31))
+        self.textEdit_8.setObjectName("textEdit_8")
+        self.label_10 = QtWidgets.QLabel(Form)
+        self.label_10.setGeometry(QtCore.QRect(300, 500, 101, 51))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(15)
+        self.label_10.setFont(font)
+        self.label_10.setObjectName("label_10")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -162,10 +173,12 @@ class Dots_counting_Form(QWidget):
         self.textEdit_5.setPlaceholderText(" 0; range 0-255")
         self.textEdit_6.setPlaceholderText(" 2; range > 0")
         self.textEdit_7.setPlaceholderText(" 100; range > 0")
+        self.textEdit_8.setPlaceholderText(" channels: 1")
+
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Dots counting"))
+        Form.setWindowTitle(_translate("Form", "Dots counting V2"))
         self.pushButton_2.setText(_translate("Form", "Remove figure"))
         self.label_3.setText(_translate("Form", "MinCircularity:"))
         self.pushButton_3.setText(_translate("Form", "Counting"))
@@ -176,7 +189,8 @@ class Dots_counting_Form(QWidget):
         self.label_7.setText(_translate("Form", "MaxArea:"))
         self.label.setText(_translate("Form", "ThresholdStep:"))
         self.pushButton_1.setText(_translate("Form", "Add figure"))
-
+        self.label_10.setText(_translate("Form", "Number of\n"
+"channels"))
 
     def myRemovePic(self):
         try:
@@ -271,11 +285,88 @@ class Dots_counting_Form(QWidget):
             self.label_9.setPixmap(QPixmap(os.path.dirname(openfile_name) + '/tmp.jpg'))
             self.label_9.setScaledContents(True)
 
-            QMessageBox.information(self, "Dots", "Dots number is %d" % len(x_coordinate),
+            ######################################################### 分界线
+            img = cv2.imread(openfile_name)
+            res = cv2.resize(img, (500, 500), interpolation=cv2.INTER_CUBIC)
+            res = cv2.GaussianBlur(res, (3, 3), 0)
+            gray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
+            edges = cv2.Canny(gray, 50, 150, apertureSize=3)
+            lines = cv2.HoughLines(edges, 1, np.pi / 180, 110)
+
+            x = []
+            for line in lines:
+                rho = line[0][0]
+                theta = line[0][1]
+                a = np.cos(theta)
+                b = np.sin(theta)
+                x0 = a * rho
+                y0 = b * rho
+                x1 = int(x0 + 1000 * (-b))
+                y1 = int(y0 + 1000 * (a))
+                x2 = int(x0 - 1000 * (-b))
+                y2 = int(y0 - 1000 * (a))
+                x.append(str((x1 + x2) / 2))
+
+
+            x_sort = x[:]
+            x_sort.sort(key=float)
+            x_sort = list(map(float, x_sort))
+
+            array_x = np.array(x_sort).reshape(-1, 1)
+
+            try:
+                n_clusters = int(self.textEdit_8.toPlainText())
+            except:
+                n_clusters = 1
+
+            if n_clusters == 1:
+                km = KMeans(n_clusters=1, max_iter=1000).fit(array_x)
+                y = KMeans(n_clusters=1, max_iter=1000).fit_predict(array_x)  # 会得出每个sample属于哪一类
+            else:
+                km = KMeans(n_clusters=n_clusters-1, max_iter=1000).fit(array_x)
+                y = KMeans(n_clusters=n_clusters-1, max_iter=1000).fit_predict(array_x)  # 会得出每个sample属于哪一类
+
+            dic = {}
+            count = 0
+            for i in y:
+                if i not in dic.keys():
+                    dic[i] = []
+                    dic[i].append(array_x[count][0])
+                    count += 1
+                elif i in dic.keys():
+                    dic[i].append(array_x[count][0])
+                    count += 1
+
+            cutoff = []
+            for i in dic:
+                cutoff.append(np.median(dic[i]))
+
+            dic_num = {}
+            print(x_coordinate)
+            for i in range(0, len(dic)):
+                dic_num[i] = []
+
+            for ele in x_coordinate:
+                if ele < cutoff[0]:
+                    dic_num[0].append(ele)
+                elif ele >= cutoff[len(cutoff) - 1]:
+                    dic_num[len(cutoff) - 1].append(ele)
+                else:
+                    for num in range(1, len(cutoff) - 1):
+                        if cutoff[num - 1] <= ele < cutoff[num]:
+                            dic_num[num].append(ele)
+            print(dic_num)
+            line = ''
+            for key in dic_num:
+                line = line + str(int(key) + 1) +": dots number is " + str(len(dic_num[key])) + '\n'
+
+            print(line)
+            QMessageBox.information(self, "Dots", line,
                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
 
         except:
-            QMessageBox.critical(self, "Critical", "Please adjust the resolution or add your figure!", QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.critical(self, "Critical", "Please adjust the resolution or add your figure!",
+                                 QMessageBox.Yes | QMessageBox.No,
                                  QMessageBox.Yes)
 
 
@@ -283,8 +374,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    Dialog = Dialog() # 自定义的QWidget窗口
-    ui = Dots_counting_Form()
-    ui.setupUi(Dialog) # 继承自定义的QWidget窗口
-    Dialog.show() # 显示ui,这时候可触发关闭时间事件
+    ui = Dots_counting_V2_Form()
+    ui.setupUi(Form)
+    Form.show()
     sys.exit(app.exec_())
