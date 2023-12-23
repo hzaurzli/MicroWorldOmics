@@ -30,6 +30,7 @@ from Fasttree import Fasttree_Form
 from Raxml import Raxml_Form
 from PCR import PCR_Form
 from Prodigal import Prodigal_Form
+from Prokka import Prokka_Form
 from GCview import GCview_Form
 from Clinker import Clinker_Form
 from ProtVista import Protvista_Form, winTest
@@ -56,7 +57,6 @@ class MyWindow(QtWidgets.QPushButton):
         sp.showMessage("Loading... {0}%".format(num * 10), QtCore.Qt.AlignHCenter |QtCore.Qt.AlignBottom, QtCore.Qt.black)
         QtWidgets.qApp.processEvents()  # 允许主进程处理事件
 
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -82,7 +82,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -135, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -86, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -334,6 +334,7 @@ class Ui_MainWindow(object):
 "    background-color: transparent;\n"
 "}")
         self.comboBox_8.setObjectName("comboBox_8")
+        self.comboBox_8.addItem("")
         self.comboBox_8.addItem("")
         self.comboBox_8.addItem("")
         self.comboBox_8.addItem("")
@@ -854,6 +855,8 @@ class Ui_MainWindow(object):
         self.actionShinyMap.setObjectName("actionShinyMap")
         self.actionPlaque_count_V2 = QtWidgets.QAction(MainWindow)
         self.actionPlaque_count_V2.setObjectName("actionPlaque_count_V2")
+        self.actionProkka = QtWidgets.QAction(MainWindow)
+        self.actionProkka.setObjectName("actionProkka")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -870,6 +873,7 @@ class Ui_MainWindow(object):
         self.menuTree_visualization.addAction(self.actionPhy_tree)
         self.menuPCR.addAction(self.actionPCR)
         self.menuORF.addAction(self.actionProdigal)
+        self.menuAnnotation.addAction(self.actionProkka)
         self.menuAnnotation.addAction(self.actionCircos)
         self.menuAnnotation.addAction(self.actionBlast_visualization)
         self.menuAnnotation.addAction(self.actionGene_structure_visualization)
@@ -955,6 +959,7 @@ class Ui_MainWindow(object):
 
         self.actionProdigal.triggered.connect(self.prodigal_show)
 
+        self.actionProkka.triggered.connect(self.prokka_show)
         self.actionCircos.triggered.connect(self.circos_show)
         self.actionBlast_visualization.triggered.connect(self.blasterjs_show)
         self.actionGene_structure_visualization.triggered.connect(self.collinearity_show)
@@ -997,7 +1002,6 @@ class Ui_MainWindow(object):
         self.comboBox_12.currentIndexChanged.connect(self.selectionchange_comboBox_12)
         self.comboBox_13.currentIndexChanged.connect(self.selectionchange_comboBox_13)
 
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MicroWorldOmics"))
@@ -1029,10 +1033,11 @@ class Ui_MainWindow(object):
         self.comboBox_6.setItemText(1, _translate("MainWindow", "PCR"))
         self.label_6.setText(_translate("MainWindow", "PCR amplification"))
         self.comboBox_8.setItemText(0, _translate("MainWindow", "<Default>"))
-        self.comboBox_8.setItemText(1, _translate("MainWindow", "Circos annotation"))
-        self.comboBox_8.setItemText(2, _translate("MainWindow", "Blast visualization"))
-        self.comboBox_8.setItemText(3, _translate("MainWindow", "Collinearity"))
-        self.comboBox_8.setItemText(4, _translate("MainWindow", "Protvista"))
+        self.comboBox_8.setItemText(1, _translate("MainWindow", "Prokka"))
+        self.comboBox_8.setItemText(2, _translate("MainWindow", "Circos annotation"))
+        self.comboBox_8.setItemText(3, _translate("MainWindow", "Blast visualization"))
+        self.comboBox_8.setItemText(4, _translate("MainWindow", "Collinearity"))
+        self.comboBox_8.setItemText(5, _translate("MainWindow", "Protvista"))
         self.label_8.setText(_translate("MainWindow", "Annotation"))
         self.comboBox_9.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_9.setItemText(1, _translate("MainWindow", "Plaque count"))
@@ -1186,7 +1191,7 @@ class Ui_MainWindow(object):
         self.actionChemical_Formula.setText(_translate("MainWindow", "Chemical Formula"))
         self.actionShinyMap.setText(_translate("MainWindow", "ShinyMap"))
         self.actionPlaque_count_V2.setText(_translate("MainWindow", "Plaque count V2"))
-
+        self.actionProkka.setText(_translate("MainWindow", "Prokka"))
 
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
@@ -1267,7 +1272,9 @@ class Ui_MainWindow(object):
         # currentText()：返回选中选项的文本
         label_item = self.comboBox_8.currentText()
         print(label_item)
-        if label_item == 'Circos annotation':
+        if label_item == 'Prokka':
+            self.prokka_show()
+        elif label_item == 'Circos annotation':
             self.circos_show()
         elif label_item == 'Blast visualization':
             self.blasterjs_show()
@@ -1449,6 +1456,11 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.form)
         self.form.show()
 
+    def prokka_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = Prokka_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
 
     def circos_show(self):
         self.form = QtWidgets.QMainWindow()

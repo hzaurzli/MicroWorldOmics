@@ -469,12 +469,20 @@ class PhaMer_Form(QWidget):
             print(out_fn)
 
             try:
-                length = int(self.textEdit.toPlainText())
+                length = str(self.textEdit.toPlainText())
+                if length == '':
+                    length = 3000
+                else:
+                    length = int(length)
             except:
                 length = 3000
 
             try:
-                reject = float(self.textEdit_2.toPlainText())
+                reject = str(self.textEdit_2.toPlainText())
+                if reject == '':
+                    reject = 0.3
+                else:
+                    reject = float(reject)
             except:
                 reject = 0.3
 

@@ -487,7 +487,11 @@ class PhaTYP_Form(QWidget):
                     QApplication.processEvents()  # 逐条打印状态
 
                     try:
-                        length = int(self.textEdit.toPlainText())
+                        length = str(self.textEdit.toPlainText())
+                        if length == '':
+                            length = 3000
+                        else:
+                            length = int(length)
                     except:
                         length = 3000
 

@@ -615,17 +615,29 @@ class GeneIdentification_Form(QWidget):
                 QApplication.processEvents()  # 逐条打印状态
 
                 try:
-                    ident = int(self.textEdit_2.toPlainText())
+                    ident = str(self.textEdit_2.toPlainText())
+                    if ident == '':
+                        ident = 80
+                    else:
+                        ident = int(ident)
                 except:
                     ident = 80
 
                 try:
-                    coverage = int(self.textEdit_3.toPlainText())
+                    coverage = str(self.textEdit_3.toPlainText())
+                    if coverage == '':
+                        coverage = 90
+                    else:
+                        coverage = int(coverage)
                 except:
                     coverage = 90
 
                 try:
-                    over_lap = int(self.textEdit.toPlainText())
+                    over_lap = str(self.textEdit.toPlainText())
+                    if over_lap == '':
+                        over_lap = 80
+                    else:
+                        over_lap = int(over_lap)
                 except:
                     over_lap = 80
 

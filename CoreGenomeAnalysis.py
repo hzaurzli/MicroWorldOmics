@@ -604,12 +604,20 @@ class Core_genome_Form(QWidget):
                 QApplication.processEvents()  # 逐条打印状态
 
                 try:
-                    align_percent = int(self.textEdit.toPlainText())
+                    align_percent = str(self.textEdit.toPlainText())
+                    if align_percent == '':
+                        align_percent = 80
+                    else:
+                        align_percent = int(align_percent)
                 except:
                     align_percent = 80
 
                 try:
-                    identical_percent = int(self.textEdit_2.toPlainText())
+                    identical_percent = str(self.textEdit_2.toPlainText())
+                    if identical_percent == '':
+                        identical_percent = 80
+                    else:
+                        identical_percent = int(identical_percent)
                 except:
                     identical_percent = 80
 

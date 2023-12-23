@@ -1138,7 +1138,11 @@ class PhaGCN_Form(QWidget):
                     QApplication.processEvents()  # 逐条打印状态
 
                     try:
-                        length_len = int(self.textEdit.toPlainText())
+                        length_len = str(self.textEdit.toPlainText())
+                        if length_len == '':
+                            length_len = 3000
+                        else:
+                            length_len = int(length_len)
                     except:
                         length_len = 3000
 

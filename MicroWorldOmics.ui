@@ -47,7 +47,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-135</y>
+          <y>-86</y>
           <width>198</width>
           <height>719</height>
          </rect>
@@ -547,6 +547,11 @@ QComboBox {
          <item>
           <property name="text">
            <string>&lt;Default&gt;</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Prokka</string>
           </property>
          </item>
          <item>
@@ -1447,6 +1452,7 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Annotation</string>
     </property>
+    <addaction name="actionProkka"/>
     <addaction name="actionCircos"/>
     <addaction name="actionBlast_visualization"/>
     <addaction name="actionGene_structure_visualization"/>
@@ -1839,6 +1845,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionPlaque_count_V2">
    <property name="text">
     <string>Plaque count V2</string>
+   </property>
+  </action>
+  <action name="actionProkka">
+   <property name="text">
+    <string>Prokka</string>
    </property>
   </action>
  </widget>
