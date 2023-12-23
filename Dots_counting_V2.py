@@ -277,7 +277,6 @@ class Dots_counting_V2_Form(QWidget):
             x_coordinate = []
             for (x, y) in keypoints[0].convert(keypoints):
                 x_coordinate.append(x)
-                print(x)
 
             x_coordinate.sort()
             print("共检测出%d个斑点" % len(x_coordinate))
@@ -343,16 +342,17 @@ class Dots_counting_V2_Form(QWidget):
 
             dic_num = {}
             print(x_coordinate)
-            for i in range(0, len(dic)):
+            for i in range(0, len(dic) + 1):
                 dic_num[i] = []
 
+            print(cutoff)
             for ele in x_coordinate:
                 if ele < cutoff[0]:
                     dic_num[0].append(ele)
-                elif ele >= cutoff[len(cutoff) - 1]:
-                    dic_num[len(cutoff) - 1].append(ele)
+                elif ele >= cutoff[len(cutoff)-1]:
+                    dic_num[len(cutoff)].append(ele)
                 else:
-                    for num in range(1, len(cutoff) - 1):
+                    for num in range(1, len(cutoff)):
                         if cutoff[num - 1] <= ele < cutoff[num]:
                             dic_num[num].append(ele)
             print(dic_num)
