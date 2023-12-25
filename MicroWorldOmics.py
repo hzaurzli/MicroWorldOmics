@@ -46,6 +46,8 @@ from ShinyProtparam import ShinyProtparam_Form
 from ShinyPCoA import ShinyPCoA_Form
 from ShinyBatch import ShinyBatch_Form
 from Chemical_formula import Chemicalformula_Form
+from FastANI import FastANI_Form
+
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -56,6 +58,7 @@ class MyWindow(QtWidgets.QPushButton):
         time.sleep(2) # 加载数据
         sp.showMessage("Loading... {0}%".format(num * 10), QtCore.Qt.AlignHCenter |QtCore.Qt.AlignBottom, QtCore.Qt.black)
         QtWidgets.qApp.processEvents()  # 允许主进程处理事件
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -82,7 +85,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -86, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -302, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -522,6 +525,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
+        self.comboBox_12.addItem("")
         self.comboBox_7 = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox_7.setEnabled(True)
         self.comboBox_7.setGeometry(QtCore.QRect(0, 330, 147, 18))
@@ -857,6 +861,8 @@ class Ui_MainWindow(object):
         self.actionPlaque_count_V2.setObjectName("actionPlaque_count_V2")
         self.actionProkka = QtWidgets.QAction(MainWindow)
         self.actionProkka.setObjectName("actionProkka")
+        self.actionFastANI = QtWidgets.QAction(MainWindow)
+        self.actionFastANI.setObjectName("actionFastANI")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -917,6 +923,7 @@ class Ui_MainWindow(object):
         self.menuTools.addAction(self.menuNetworks.menuAction())
         self.menuTools.addAction(self.actionChemical_Formula)
         self.menuTools.addAction(self.actionShinyMap)
+        self.menuTools.addAction(self.actionFastANI)
         self.menuHelps.addAction(self.actionReadme)
         self.menubar.addAction(self.menuBlast.menuAction())
         self.menubar.addAction(self.menuAlignment.menuAction())
@@ -987,6 +994,9 @@ class Ui_MainWindow(object):
         self.actionShinyBatch.triggered.connect(self.shinybatch_show)
         self.actionChemical_Formula.triggered.connect(self.chemicalformula_show)
 
+        self.actionFastANI.triggered.connect(self.fastani_show)
+
+
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
         self.comboBox_2.currentIndexChanged.connect(self.selectionchange_comboBox_2)
@@ -1001,6 +1011,7 @@ class Ui_MainWindow(object):
         self.comboBox_11.currentIndexChanged.connect(self.selectionchange_comboBox_11)
         self.comboBox_12.currentIndexChanged.connect(self.selectionchange_comboBox_12)
         self.comboBox_13.currentIndexChanged.connect(self.selectionchange_comboBox_13)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -1070,6 +1081,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.setItemText(10, _translate("MainWindow", "IGV"))
         self.comboBox_12.setItemText(11, _translate("MainWindow", "Chemical Formula"))
         self.comboBox_12.setItemText(12, _translate("MainWindow", "ShinyMap"))
+        self.comboBox_12.setItemText(13, _translate("MainWindow", "FastANI"))
         self.comboBox_7.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "Prodigal"))
         self.label_7.setText(_translate("MainWindow", "ORF prediction"))
@@ -1192,6 +1204,8 @@ class Ui_MainWindow(object):
         self.actionShinyMap.setText(_translate("MainWindow", "ShinyMap"))
         self.actionPlaque_count_V2.setText(_translate("MainWindow", "Plaque count V2"))
         self.actionProkka.setText(_translate("MainWindow", "Prokka"))
+        self.actionFastANI.setText(_translate("MainWindow", "FastANI"))
+
 
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
@@ -1341,6 +1355,8 @@ class Ui_MainWindow(object):
             self.shinyprotparam_show()
         elif label_item == 'Chemical Formula':
             self.chemicalformula_show()
+        elif label_item == 'FastANI':
+            self.fastani_show()
 
 
     def selectionchange_comboBox_13(self):
@@ -1613,6 +1629,14 @@ class Ui_MainWindow(object):
     def chemicalformula_show(self):
         self.winTable = Chemicalformula_Form()
         self.winTable.show()
+
+
+    def fastani_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = FastANI_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
 
 
 if __name__ == "__main__":
