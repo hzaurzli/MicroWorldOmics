@@ -65,7 +65,7 @@ class WorkThread(QThread):
         os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
                  path + '/Shiny/ShinyScript/ShinyProtparam/ShinyProtparam.R')
 
-        time.sleep(8)
+        time.sleep(15)
         self.trigger.emit('ShinyApp has been started!!!')
 
 
