@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ShinyPCoA.ui'
+# Form implementation generated from reading ui file 'ShinyGenomePCA.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import os, sys, re, math, time
 from ShinyWeb import ShinyWeb_Form
+
 
 
 class winTest(QtWidgets.QMainWindow):
@@ -31,7 +32,7 @@ class winTest(QtWidgets.QMainWindow):
         :return: None
         """
         try:
-            with os.popen('netstat -aon|findstr "50327"') as res:
+            with os.popen('netstat -aon|findstr "50328"') as res:
                 res = res.read().split('\n')
             result = []
             for line in res:
@@ -48,7 +49,7 @@ class winTest(QtWidgets.QMainWindow):
             return None  # 设置正常退出
 
 
-class ShinyPCoA_Form(QWidget):
+class ShinyGenomePCA_Form(QWidget):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(691, 431)
@@ -58,7 +59,7 @@ class ShinyPCoA_Form(QWidget):
         self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser.setObjectName("textBrowser")
         self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(260, 20, 161, 41))
+        self.label.setGeometry(QtCore.QRect(230, 20, 231, 41))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
@@ -100,15 +101,14 @@ class ShinyPCoA_Form(QWidget):
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
-
         # button action
         self.pushButton.clicked.connect(self.start)
         self.pushButton_2.clicked.connect(self.open)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "ShinyPCoA"))
-        self.label.setText(_translate("Form", "ShinyPCoA"))
+        Form.setWindowTitle(_translate("Form", "ShinyGenomePCA"))
+        self.label.setText(_translate("Form", "ShinyGenomePCA"))
         self.label_2.setText(_translate("Form", "Status"))
         self.pushButton.setText(_translate("Form", "Start App"))
         self.pushButton_2.setText(_translate("Form", "Open Web"))
@@ -127,14 +127,14 @@ class ShinyPCoA_Form(QWidget):
             path = '/'.join(path)
 
         os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
-                 path + '/Shiny/ShinyScript/ShinyPCoA/pcoa-shiny.R')
+                 path + '/Shiny/ShinyScript/ShinyGenomePCA/ShinyGenomePCA.R')
 
         time.sleep(3)
         self.textBrowser.setText(
             'ShinyApp has been started!!!')
 
     def open(self):
-        self.winTable = ShinyWeb_Form(port=50327)
+        self.winTable = ShinyWeb_Form(port=50328)
         self.winTable.show()
 
 
@@ -143,7 +143,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     # Clustal = QtWidgets.QWidget()
     WT = winTest()
-    ui = ShinyPCoA_Form()
+    ui = ShinyGenomePCA_Form()
     ui.setupUi(WT)
     WT.show()
     sys.exit(app.exec_())

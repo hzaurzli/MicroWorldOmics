@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ShinyPCoA.ui'
+# Form implementation generated from reading ui file 'ShinyMap.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import os, sys, re, math, time
 from ShinyWeb import ShinyWeb_Form
+
 
 
 class winTest(QtWidgets.QMainWindow):
@@ -31,7 +32,7 @@ class winTest(QtWidgets.QMainWindow):
         :return: None
         """
         try:
-            with os.popen('netstat -aon|findstr "50327"') as res:
+            with os.popen('netstat -aon|findstr "50329"') as res:
                 res = res.read().split('\n')
             result = []
             for line in res:
@@ -47,8 +48,32 @@ class winTest(QtWidgets.QMainWindow):
         except:
             return None  # 设置正常退出
 
+class WorkThread(QThread):
+    # 自定义信号对象
+    trigger = pyqtSignal(str)
 
-class ShinyPCoA_Form(QWidget):
+    def __int__(self):
+        # 初始化函数
+        super(WorkThread, self).__init__()
+
+    def run(self):
+        path = os.path.abspath('.')
+        if '\\' in path:
+            path = path.strip().split('\\')
+            path = '/'.join(path)
+
+        os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
+                 path + '/Shiny/ShinyScript/ShinyMap/ShinyMap.R')
+
+        time.sleep(5)
+        self.trigger.emit('ShinyApp has been started!!!')
+
+
+class ShinyMap_Form(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.work = WorkThread()
+
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(691, 431)
@@ -58,7 +83,7 @@ class ShinyPCoA_Form(QWidget):
         self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser.setObjectName("textBrowser")
         self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(260, 20, 161, 41))
+        self.label.setGeometry(QtCore.QRect(230, 20, 231, 41))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
@@ -100,42 +125,36 @@ class ShinyPCoA_Form(QWidget):
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
-
         # button action
         self.pushButton.clicked.connect(self.start)
         self.pushButton_2.clicked.connect(self.open)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "ShinyPCoA"))
-        self.label.setText(_translate("Form", "ShinyPCoA"))
+        Form.setWindowTitle(_translate("Form", "ShinyMap"))
+        self.label.setText(_translate("Form", "ShinyMap"))
         self.label_2.setText(_translate("Form", "Status"))
         self.pushButton.setText(_translate("Form", "Start App"))
         self.pushButton_2.setText(_translate("Form", "Open Web"))
         self.label_3.setText(_translate("Form", "Please close this window before\n"
 "starting another Shiny Apps!!!"))
 
-
     def start(self):
         self.textBrowser.setText(
             'Start ShinyApp!!!')
         QApplication.processEvents()  # 逐条打印状态
 
-        path = os.path.abspath('.')
-        if '\\' in path:
-            path = path.strip().split('\\')
-            path = '/'.join(path)
-
-        os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
-                 path + '/Shiny/ShinyScript/ShinyPCoA/pcoa-shiny.R')
-
-        time.sleep(3)
-        self.textBrowser.setText(
-            'ShinyApp has been started!!!')
+        # 启动线程, 运行 run 函数
+        self.work.start()
+        # 传送信号, 接受 run 函数执行完毕后的信号
+        self.work.trigger.connect(self.finished)
 
     def open(self):
-        self.winTable = ShinyWeb_Form(port=50327)
+        self.winTable = ShinyWeb_Form(port=50329)
         self.winTable.show()
+
+    def finished(self, str):
+        self.textBrowser.setText(str)
 
 
 if __name__ == "__main__":
@@ -143,7 +162,8 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     # Clustal = QtWidgets.QWidget()
     WT = winTest()
-    ui = ShinyPCoA_Form()
+    ui = ShinyMap_Form()
     ui.setupUi(WT)
     WT.show()
     sys.exit(app.exec_())
+

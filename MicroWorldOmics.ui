@@ -982,6 +982,11 @@ QComboBox {
            <string>FastANI</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>ShinyTMscoreAlign</string>
+          </property>
+         </item>
         </widget>
         <widget class="QComboBox" name="comboBox_7">
          <property name="enabled">
@@ -1537,6 +1542,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionChemical_Formula"/>
     <addaction name="actionShinyMap"/>
     <addaction name="actionFastANI"/>
+    <addaction name="actionShinyTMscoreAlign"/>
    </widget>
    <widget class="QMenu" name="menuHelps">
     <property name="title">
@@ -1861,6 +1867,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionFastANI">
    <property name="text">
     <string>FastANI</string>
+   </property>
+  </action>
+  <action name="actionShinyTMscoreAlign">
+   <property name="text">
+    <string>ShinyTMscoreAlign</string>
    </property>
   </action>
  </widget>

@@ -129,6 +129,7 @@ class ShinyBatch_Form(QWidget):
         os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
                  path + '/Shiny/ShinyScript/ShinyBatch/plsda-batch-shiny.R')
 
+        time.sleep(3)
         self.textBrowser.setText(
             'ShinyApp has been started!!!')
 

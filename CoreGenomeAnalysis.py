@@ -291,7 +291,7 @@ class WorkThread(QThread):
 
         def connect_aln_file(out_folder):
             dir = out_folder + "/corefa"
-            with open(out_folder + "/corefa/All_core_genes_aln.fasta", 'w') as w:
+            with open(out_folder + "/corefa/All_core_genes.aln", 'w') as w:
                 for file in os.listdir(dir):
                     suffix = file.split('.')[-1]
                     if suffix == 'aln':
