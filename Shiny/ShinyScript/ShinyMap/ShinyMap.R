@@ -69,7 +69,8 @@ server <- function(input, output, session) {
       return(NULL)      
     }
     read.csv(infile$datapath,
-             header = T)
+             header = T,
+			 fileEncoding = 'utf-8')
   })
   
   
