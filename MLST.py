@@ -158,18 +158,21 @@ class WorkThread(QThread):
             ST_gene_list = []
             ST_info_dict = {}
 
+            f = open(mlst,'r',encoding='gb18030', errors='ignore')
             count = 0
-            for line_ST_old in mlst:
+            for line_ST_old in f:
                 count += 1
                 if count == 1:
-                    lis = line_ST_old.replace("\xc2\xa0", "").split('\t')[1::]
+                    lis = line_ST_old.replace("\x00", "").strip().split('\t')[1::]
                 else:
-                    line_ST = line_ST_old.replace("\xc2\xa0", "")
+                    line_ST = line_ST_old.replace("\x00", "")
                     ST_info = line_ST.strip().split("\t")
-                    ST_type = str(ST_info[0])
-                    ST_str = ":".join(ST_info[1:8])
-                    key = str(ST_str)
-                    ST_info_dict[key] = (ST_type)
+                    if ST_info[0] != '':
+                        ST_type = str(ST_info[0])
+                        ST_str = ":".join(ST_info[1::])
+                        key = str(ST_str)
+                        ST_info_dict[key] = (ST_type)
+
 
             for line in blast_info:
                 info = line.strip().split("\t")
@@ -198,7 +201,7 @@ class WorkThread(QThread):
 
             ST_use = str(ST_test.strip(':'))
             if ST_use in ST_info_dict.keys():
-                ST_result = ST_info_dict[ST_test]
+                ST_result = ST_info_dict[ST_use]
             else:
                 ST_result = 'new'
 
