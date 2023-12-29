@@ -158,24 +158,29 @@ class WorkThread(QThread):
             ST_gene_list = []
             ST_info_dict = {}
 
+            count = 0
             for line_ST_old in mlst:
-                line_ST = line_ST_old.replace("\xc2\xa0", "")
-                ST_info = line_ST.strip().split("\t")
-                ST_type = str(ST_info[0])
-                ST_str = ":".join(ST_info[1:8])
-                key = str(ST_str)
-                ST_info_dict[key] = (ST_type)
+                count += 1
+                if count == 1:
+                    lis = line_ST_old.replace("\xc2\xa0", "").split('\t')[1::]
+                else:
+                    line_ST = line_ST_old.replace("\xc2\xa0", "")
+                    ST_info = line_ST.strip().split("\t")
+                    ST_type = str(ST_info[0])
+                    ST_str = ":".join(ST_info[1:8])
+                    key = str(ST_str)
+                    ST_info_dict[key] = (ST_type)
 
             for line in blast_info:
                 info = line.strip().split("\t")
                 ST_gene = str(info[1])
                 ST_gene_list.append(ST_gene)
 
-            lis = []
-            f = open(gene_folder)
-            for i in f:
-                i = i.strip()
-                lis.append(i)
+            # lis = []
+            # f = open(gene_folder)
+            # for i in f:
+            #     i = i.strip()
+            #     lis.append(i)
 
             dic_lis = {}
             for i in lis:
@@ -183,8 +188,8 @@ class WorkThread(QThread):
 
             for item in ST_gene_list:
                 item_info = item.split("::")[0]
-                item_info_get = item_info.split("_")[1]
-                gene = item_info.split("_")[0]
+                item_info_get = item_info.split("_")[-1]
+                gene = '_'.join(item_info.split("_")[:-1])
                 dic_lis[gene] = item_info_get
 
             ST_test = ''
@@ -294,7 +299,7 @@ class MLST_Form(QWidget):
         self.label_6.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_6.setObjectName("label_6")
         self.tableWidget = QtWidgets.QTableWidget(Clustal)
-        self.tableWidget.setGeometry(QtCore.QRect(355, 130, 321, 191))
+        self.tableWidget.setGeometry(QtCore.QRect(355, 70, 321, 251))
         self.tableWidget.setStyleSheet("background-image: url(./logo/white.png)")
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(3)
@@ -320,52 +325,32 @@ class MLST_Form(QWidget):
         font.setPointSize(13)
         self.pushButton_5.setFont(font)
         self.pushButton_5.setObjectName("pushButton_5")
-        self.label_7 = QtWidgets.QLabel(Clustal)
-        self.label_7.setGeometry(QtCore.QRect(60, 270, 251, 31))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(11)
-        self.label_7.setFont(font)
-        self.label_7.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_7.setObjectName("label_7")
         self.pushButton_6 = QtWidgets.QPushButton(Clustal)
-        self.pushButton_6.setGeometry(QtCore.QRect(260, 310, 61, 31))
+        self.pushButton_6.setGeometry(QtCore.QRect(260, 300, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.pushButton_6.setFont(font)
         self.pushButton_6.setObjectName("pushButton_6")
         self.label_8 = QtWidgets.QLabel(Clustal)
-        self.label_8.setGeometry(QtCore.QRect(350, 50, 141, 21))
+        self.label_8.setGeometry(QtCore.QRect(60, 270, 141, 21))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
-        font.setPointSize(13)
+        font.setPointSize(15)
         self.label_8.setFont(font)
         self.label_8.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_8.setObjectName("label_8")
-        self.pushButton_7 = QtWidgets.QPushButton(Clustal)
-        self.pushButton_7.setGeometry(QtCore.QRect(590, 80, 61, 31))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(13)
-        self.pushButton_7.setFont(font)
-        self.pushButton_7.setObjectName("pushButton_7")
         self.textBrowser_4 = QtWidgets.QTextBrowser(Clustal)
         self.textBrowser_4.setGeometry(QtCore.QRect(60, 230, 181, 31))
         self.textBrowser_4.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_4.setObjectName("textBrowser_4")
         self.textBrowser_5 = QtWidgets.QTextBrowser(Clustal)
-        self.textBrowser_5.setGeometry(QtCore.QRect(60, 310, 181, 31))
+        self.textBrowser_5.setGeometry(QtCore.QRect(60, 300, 181, 31))
         self.textBrowser_5.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_5.setObjectName("textBrowser_5")
-        self.textBrowser_6 = QtWidgets.QTextBrowser(Clustal)
-        self.textBrowser_6.setGeometry(QtCore.QRect(350, 80, 181, 31))
-        self.textBrowser_6.setStyleSheet("background-image: url(./logo/white.png)")
-        self.textBrowser_6.setObjectName("textBrowser_6")
 
         self.retranslateUi(Clustal)
         QtCore.QMetaObject.connectSlotsByName(Clustal)
-
 
         # button action
         self.pushButton.clicked.connect(self.calculation)
@@ -374,7 +359,6 @@ class MLST_Form(QWidget):
         self.pushButton_4.clicked.connect(self.table_read)
         self.pushButton_5.clicked.connect(self.read_file3)
         self.pushButton_6.clicked.connect(self.read_file4)
-        self.pushButton_7.clicked.connect(self.read_file5)
 
     def retranslateUi(self, Clustal):
         _translate = QtCore.QCoreApplication.translate
@@ -396,10 +380,9 @@ class MLST_Form(QWidget):
         item.setText(_translate("Clustal", "ST_use"))
         self.label_5.setText(_translate("Clustal", "Ref fasta"))
         self.pushButton_5.setText(_translate("Clustal", "Choose"))
-        self.label_7.setText(_translate("Clustal", "MLST genes (txt, Pay attention to order)"))
         self.pushButton_6.setText(_translate("Clustal", "Choose"))
-        self.label_8.setText(_translate("Clustal", "MLST db (txt)"))
-        self.pushButton_7.setText(_translate("Clustal", "Choose"))
+        self.label_8.setText(_translate("Clustal", "MLST db (TAB)"))
+
 
     def read_file1(self):
         openfile_name = QtWidgets.QFileDialog.getExistingDirectory(self, "choose file", "./")
@@ -421,22 +404,17 @@ class MLST_Form(QWidget):
         print(openfile_name)
         self.textBrowser_5.setText(openfile_name)
 
-    def read_file5(self):
-        openfile_name = QtWidgets.QFileDialog.getOpenFileName(self, 'choose file', '')[0]
-        print(openfile_name)
-        self.textBrowser_6.setText(openfile_name)
 
     def finished(self, str):
         self.textBrowser.setText(str)
 
     def calculation(self):
         try:
-            global fasta, out_folder, ref, gene_folder, mlst, path, out_file_mlst
+            global fasta, out_folder, ref, mlst, path, out_file_mlst
             fasta = self.textBrowser_2.toPlainText()
             out_folder = self.textBrowser_3.toPlainText()
             ref = self.textBrowser_4.toPlainText()
-            gene_folder = self.textBrowser_5.toPlainText()
-            mlst = self.textBrowser_6.toPlainText()
+            mlst = self.textBrowser_5.toPlainText()
 
             path = os.path.abspath('.')
             if '\\' in path:
@@ -444,7 +422,7 @@ class MLST_Form(QWidget):
                 path = '/'.join(path)
 
 
-            if any([len(fasta), len(out_folder), len(ref), len(gene_folder), len(mlst)]) == False:
+            if any([len(fasta), len(out_folder), len(ref), len(mlst)]) == False:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
                 self.textBrowser.setText('Running! please wait')
