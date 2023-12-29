@@ -384,7 +384,7 @@ class MLST_Form(QWidget):
         self.label_5.setText(_translate("Clustal", "Ref fasta"))
         self.pushButton_5.setText(_translate("Clustal", "Choose"))
         self.pushButton_6.setText(_translate("Clustal", "Choose"))
-        self.label_8.setText(_translate("Clustal", "MLST db (TAB)"))
+        self.label_8.setText(_translate("Clustal", "MLST db (TAB, txt)"))
 
 
     def read_file1(self):

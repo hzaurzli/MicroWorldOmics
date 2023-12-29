@@ -348,7 +348,7 @@
     </font>
    </property>
    <property name="text">
-    <string>MLST db (TAB)</string>
+    <string>MLST db (TAB, txt)</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
