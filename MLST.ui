@@ -337,7 +337,7 @@
     <rect>
      <x>60</x>
      <y>270</y>
-     <width>141</width>
+     <width>191</width>
      <height>21</height>
     </rect>
    </property>
@@ -348,7 +348,7 @@
     </font>
    </property>
    <property name="text">
-    <string>MLST db (TAB, txt)</string>
+    <string>MLST db (TAB, xlsx)</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

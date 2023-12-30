@@ -13,7 +13,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import subprocess
-import os,sys,re
+import os, sys, re
+import pandas as pd
 from Bio.Blast.Applications import NcbimakeblastdbCommandline
 from Bio.Blast.Applications import NcbiblastnCommandline
 from Bio import SeqIO
@@ -77,7 +78,6 @@ class WorkThread(QThread):
                         fa_dict[seq_name] += line.replace('\n', '')
             return fa_dict
 
-
         blastdb = out_folder + '/' + 'blastdb'
         query_folder = fasta
         out_folder1 = out_folder + '/' 'out'
@@ -92,7 +92,7 @@ class WorkThread(QThread):
         global ref_tmp
         ref_tmp = out_folder + '/ref_tmp.fasta'
 
-        with open(ref_tmp,'w') as w:
+        with open(ref_tmp, 'w') as w:
             for key in fasta_dict:
                 line = '>' + key + '::' + str(len(fasta_dict[key])) + '\n' + fasta_dict[key] + '\n'
                 w.write(line)
@@ -100,7 +100,7 @@ class WorkThread(QThread):
 
         makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
                                             dbtype='nucl',
-                                            input_file = out_folder + '/ref_tmp.fasta',
+                                            input_file=out_folder + '/ref_tmp.fasta',
                                             out=blastdb + '/target')
 
         makedb()
@@ -109,6 +109,7 @@ class WorkThread(QThread):
         format = str(6)
         for i in os.listdir(query_folder):
             print(i)
+            self.trigger.emit('Running: ' + str(i))
             out = out_folder1 + '/' + os.path.splitext(i)[0] + '.out'
             query = query_folder + '/' + i
 
@@ -156,37 +157,38 @@ class WorkThread(QThread):
             file_name = os.path.splitext(i)[0]
 
             ST_gene_list = []
+            df = pd.read_excel(io=mlst)
+
+            gene = []
+            for i in df:
+                gene.append(i)
+
+            id = gene[0]
+            gene = gene[1::]
+
+            dic_gene = {}
+            for row in df.itertuples():
+                gene_num = []
+                for item in gene:
+                    gene_num.append(getattr(row, item))
+                dic_gene[getattr(row, id)] = gene_num
+
             ST_info_dict = {}
+            for key in dic_gene:
+                ST_type = str(key)
+                dic_gene[key] = list(map(str, dic_gene[key]))
+                ST_str = ":".join(dic_gene[key])
+                ST_str = str(ST_str)
+                ST_info_dict[ST_str] = (ST_type)
 
-            f = open(mlst,'r',encoding='gb18030', errors='ignore')
-            count = 0
-            for line_ST_old in f:
-                count += 1
-                if count == 1:
-                    lis = line_ST_old.replace("\x00", "").strip().split('\t')[1::]
-                else:
-                    line_ST = line_ST_old.replace("\x00", "")
-                    ST_info = line_ST.strip().split("\t")
-                    if ST_info[0] != '':
-                        ST_type = str(ST_info[0])
-                        ST_str = ":".join(ST_info[1::])
-                        key = str(ST_str)
-                        ST_info_dict[key] = (ST_type)
-
-
+            print(ST_info_dict)
             for line in blast_info:
                 info = line.strip().split("\t")
                 ST_gene = str(info[1])
                 ST_gene_list.append(ST_gene)
 
-            # lis = []
-            # f = open(gene_folder)
-            # for i in f:
-            #     i = i.strip()
-            #     lis.append(i)
-
             dic_lis = {}
-            for i in lis:
+            for i in gene:
                 dic_lis[i] = 0
 
             for item in ST_gene_list:
@@ -336,7 +338,7 @@ class MLST_Form(QWidget):
         self.pushButton_6.setFont(font)
         self.pushButton_6.setObjectName("pushButton_6")
         self.label_8 = QtWidgets.QLabel(Clustal)
-        self.label_8.setGeometry(QtCore.QRect(60, 270, 141, 21))
+        self.label_8.setGeometry(QtCore.QRect(60, 270, 191, 21))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(15)
@@ -363,6 +365,7 @@ class MLST_Form(QWidget):
         self.pushButton_5.clicked.connect(self.read_file3)
         self.pushButton_6.clicked.connect(self.read_file4)
 
+
     def retranslateUi(self, Clustal):
         _translate = QtCore.QCoreApplication.translate
         Clustal.setWindowTitle(_translate("Clustal", "MLST"))
@@ -384,7 +387,7 @@ class MLST_Form(QWidget):
         self.label_5.setText(_translate("Clustal", "Ref fasta"))
         self.pushButton_5.setText(_translate("Clustal", "Choose"))
         self.pushButton_6.setText(_translate("Clustal", "Choose"))
-        self.label_8.setText(_translate("Clustal", "MLST db (TAB, txt)"))
+        self.label_8.setText(_translate("Clustal", "MLST db (TAB, xlsx)"))
 
 
     def read_file1(self):
@@ -407,7 +410,6 @@ class MLST_Form(QWidget):
         print(openfile_name)
         self.textBrowser_5.setText(openfile_name)
 
-
     def finished(self, str):
         self.textBrowser.setText(str)
 
@@ -423,7 +425,6 @@ class MLST_Form(QWidget):
             if '\\' in path:
                 path = path.strip().split('\\')
                 path = '/'.join(path)
-
 
             if any([len(fasta), len(out_folder), len(ref), len(mlst)]) == False:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
@@ -469,6 +470,7 @@ class MLST_Form(QWidget):
                 row_num = row_num + 1
         except:
             QMessageBox.critical(self, "error", "Please run program first!!!")
+
 
 
 if __name__ == "__main__":
