@@ -121,7 +121,8 @@ class WorkThread(QThread):
                                                db=blastdb + '/target',
                                                outfmt=format,
                                                evalue=float(evalue),
-                                               out=out)
+                                               out=out,
+                                               max_target_seqs=10000)
 
                 blastn()
 

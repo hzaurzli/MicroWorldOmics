@@ -47,7 +47,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-302</y>
+          <y>0</y>
           <width>198</width>
           <height>719</height>
          </rect>
@@ -220,6 +220,11 @@ QComboBox {
          <item>
           <property name="text">
            <string>JSalignment</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Mafft</string>
           </property>
          </item>
         </widget>
@@ -1328,7 +1333,13 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);&quot;&gt;Download&lt;/span&gt;&lt;span style=&quot; font-family:'SimSun'; font-size:10pt; font-weight:400;&quot;&gt;: &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;  https://github.com/hzaurzli/MicroWorldOmics&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);&quot;&gt;Email&lt;/span&gt;&lt;span style=&quot; font-family:'SimSun'; font-size:10pt; font-weight:400; font-style:italic;&quot;&gt;: &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;  yun_act@163.com&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;  yun_act@163.com&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);&quot;&gt;Hiplot&lt;/span&gt;&lt;span style=&quot; font-family:'SimSun'; font-size:10pt; font-style:italic;&quot;&gt;: &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;  https://hiplot.com.cn/cloud-tool/hiker-land/2525607?tab=1&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);&quot;&gt;Jianshu&lt;/span&gt;&lt;span style=&quot; font-family:'SimSun'; font-size:10pt; font-style:italic;&quot;&gt;: &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;  https://www.jianshu.com/u/ecfc4115cd90&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);&quot;&gt;Yueque&lt;/span&gt;&lt;span style=&quot; font-family:'SimSun'; font-size:10pt; font-style:italic;&quot;&gt;: &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'-webkit-standard'; font-size:8pt; color:rgba(0,0,0,0.8);&quot;&gt;  https://www.yuque.com/u1629231/qd3xf6&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_14">
@@ -1424,6 +1435,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionClustal"/>
     <addaction name="actionMuscle"/>
     <addaction name="actionJSalignment"/>
+    <addaction name="actionMafft"/>
    </widget>
    <widget class="QMenu" name="menuActivity">
     <property name="title">
@@ -1872,6 +1884,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionShinyTMscoreAlign">
    <property name="text">
     <string>ShinyTMscoreAlign</string>
+   </property>
+  </action>
+  <action name="actionMafft">
+   <property name="text">
+    <string>Mafft</string>
    </property>
   </action>
  </widget>

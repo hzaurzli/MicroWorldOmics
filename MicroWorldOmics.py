@@ -21,6 +21,7 @@ from tBlastN import tBlastN_Form
 from tBlastX import tBlastX_Form
 from Clustal import Clustal_Form
 from Muscle import Muscle_Form
+from Mafft import Mafft_Form
 import JSalignment
 import Treevis
 from Dots_counting import Dots_counting_Form, Dialog
@@ -53,6 +54,7 @@ from Shiny3Dprotein import Shiny3Dprotein_Form
 from ShinyTMscoreAlign import ShinyTMscoreAlign_Form
 
 
+
 class MyWindow(QtWidgets.QPushButton):
     def __init__(self):
         QtWidgets.QPushButton.__init__(self)
@@ -62,8 +64,6 @@ class MyWindow(QtWidgets.QPushButton):
         sp.showMessage("Loading... {0}%".format(num * 10), QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom,
                        QtCore.Qt.black)
         QtWidgets.qApp.processEvents()  # 允许主进程处理事件
-
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -90,7 +90,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -302, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -169,6 +169,7 @@ class Ui_MainWindow(object):
 "}\n"
 " ")
         self.comboBox_2.setObjectName("comboBox_2")
+        self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
@@ -871,6 +872,8 @@ class Ui_MainWindow(object):
         self.actionFastANI.setObjectName("actionFastANI")
         self.actionShinyTMscoreAlign = QtWidgets.QAction(MainWindow)
         self.actionShinyTMscoreAlign.setObjectName("actionShinyTMscoreAlign")
+        self.actionMafft = QtWidgets.QAction(MainWindow)
+        self.actionMafft.setObjectName("actionMafft")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -879,6 +882,7 @@ class Ui_MainWindow(object):
         self.menuAlignment.addAction(self.actionClustal)
         self.menuAlignment.addAction(self.actionMuscle)
         self.menuAlignment.addAction(self.actionJSalignment)
+        self.menuAlignment.addAction(self.actionMafft)
         self.menuActivity.addAction(self.actionLysin_activity)
         self.menuActivity.addAction(self.actionPeptides_activity)
         self.menuPhylogeneticTree.addAction(self.actionIQtree)
@@ -960,6 +964,7 @@ class Ui_MainWindow(object):
         self.actionClustal.triggered.connect(self.clustal_show)
         self.actionMuscle.triggered.connect(self.muscle_show)
         self.actionJSalignment.triggered.connect(self.JSalignment_show)
+        self.actionMafft.triggered.connect(self.mafft_show)
 
         self.actionLysin_activity.triggered.connect(self.lysins_show)
         self.actionPeptides_activity.triggered.connect(self.peptides_show)
@@ -1007,7 +1012,6 @@ class Ui_MainWindow(object):
         self.actionFastANI.triggered.connect(self.fastani_show)
         self.actionShinyTMscoreAlign.triggered.connect(self.shinytmscorealign_show)
 
-
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
         self.comboBox_2.currentIndexChanged.connect(self.selectionchange_comboBox_2)
@@ -1039,6 +1043,7 @@ class Ui_MainWindow(object):
         self.comboBox_2.setItemText(1, _translate("MainWindow", "Clustal"))
         self.comboBox_2.setItemText(2, _translate("MainWindow", "Muscle"))
         self.comboBox_2.setItemText(3, _translate("MainWindow", "JSalignment"))
+        self.comboBox_2.setItemText(4, _translate("MainWindow", "Mafft"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_3.setItemText(1, _translate("MainWindow", "For Lysins"))
         self.comboBox_3.setItemText(2, _translate("MainWindow", "For Peptides"))
@@ -1129,7 +1134,13 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);\">Download</span><span style=\" font-family:\'SimSun\'; font-size:10pt; font-weight:400;\">: </span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">  https://github.com/hzaurzli/MicroWorldOmics</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);\">Email</span><span style=\" font-family:\'SimSun\'; font-size:10pt; font-weight:400; font-style:italic;\">: </span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">  yun_act@163.com</span></p></body></html>"))
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">  yun_act@163.com</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);\">Hiplot</span><span style=\" font-family:\'SimSun\'; font-size:10pt; font-style:italic;\">: </span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">  https://hiplot.com.cn/cloud-tool/hiker-land/2525607?tab=1</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);\">Jianshu</span><span style=\" font-family:\'SimSun\'; font-size:10pt; font-style:italic;\">: </span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">  https://www.jianshu.com/u/ecfc4115cd90</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);\">Yueque</span><span style=\" font-family:\'SimSun\'; font-size:10pt; font-style:italic;\">: </span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">  https://www.yuque.com/u1629231/qd3xf6</span></p></body></html>"))
         self.label_14.setToolTip(_translate("MainWindow", "<html><head/><body><p>dad</p></body></html>"))
         self.label_14.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; font-style:italic;\">Maintainer</span><span style=\" font-size:12pt;\">: </span></p><p align=\"center\"><span style=\" font-size:12pt;\">Small Runze</span></p></body></html>"))
         self.textBrowser_2.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -1218,6 +1229,7 @@ class Ui_MainWindow(object):
         self.actionProkka.setText(_translate("MainWindow", "Prokka"))
         self.actionFastANI.setText(_translate("MainWindow", "FastANI"))
         self.actionShinyTMscoreAlign.setText(_translate("MainWindow", "ShinyTMscoreAlign"))
+        self.actionMafft.setText(_translate("MainWindow", "Mafft"))
 
 
     def selectionchange_comboBox(self):
@@ -1247,6 +1259,8 @@ class Ui_MainWindow(object):
             self.muscle_show()
         elif label_item == 'JSalignment':
             self.JSalignment_show()
+        elif label_item == 'Mafft':
+            self.mafft_show()
 
     def selectionchange_comboBox_3(self):
         # 标签用来显示选中的文本
@@ -1440,6 +1454,12 @@ class Ui_MainWindow(object):
     def JSalignment_show(self):
         self.winTable = JSalignment.JSalignment_Form()
         self.winTable.show()
+
+    def mafft_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = Mafft_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
 
     def lysins_show(self):
         self.form = QtWidgets.QMainWindow()
@@ -1718,3 +1738,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
