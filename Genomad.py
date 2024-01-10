@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Muscle.ui'
+# Form implementation generated from reading ui file 'Genomad.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -14,8 +14,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+import paramiko
 from Bio import SeqIO
-import psutil
+from stat import S_ISDIR as isdir
+
 
 
 class WorkThread(QThread):
@@ -27,34 +29,104 @@ class WorkThread(QThread):
         super(WorkThread, self).__init__()
 
     def run(self):
-        def check_process_running(process_name):  # 检查进程是否运行
-            for process in psutil.process_iter(['name']):
-                if process.info['name'] == process_name:
-                    return True
-            return False
+        def up_file(source_file, target_folder):
+            # 设置SSH连接参数
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh.connect(hostname='211.69.141.147',
+                        username='runzeli',
+                        password='runzeli_123',
+                        port=2022)
 
-        path = os.path.abspath('.')
-        if '\\' in path:
-            path = path.strip().split('\\')
-            path = '/'.join(path)
+            # 使用SFTP传输文件
+            sftp = ssh.open_sftp()
+            sftp.put(source_file, target_folder)  # 目标文件名可以按需更改
+            sftp.close()
 
-        os.popen(path + r"/tools/muscle/muscle5.exe -align %s -output %s"
-                 % (fasta, out))
+            # 关闭SSH连接
+            ssh.close()
 
-        process_name = 'muscle5.exe'
-        time.sleep(3)
-        while True:  # 判断 iqtree.exe 是否运行完成
-            if check_process_running(process_name):
-                print(f"The process {process_name} is running.")
-                time.sleep(10)
-                continue
+        def run_command(file):
+            # 创建SSH对象
+            ssh = paramiko.SSHClient()
+
+            # 允许连接不在know_hosts文件中的主机
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+            # 连接服务器
+            ssh.connect(hostname='211.69.141.147',
+                        username='runzeli',
+                        password='runzeli_123',
+                        port=2022)
+
+            # 执行命令
+            stdin, stdout, stderr = ssh.exec_command('python /home/runzeli/rzli/genomad/run_python.py -f %s' % (file))
+
+            # 执行命令
+            stdin, stdout, stderr = ssh.exec_command('bash /home/runzeli/rzli/genomad/run_genomad.sh')
+
+            # 获取命令结果
+            result = stdout.read().decode('utf8')
+            print(result)  # 如果有输出的话
+
+            # 关闭连接
+            ssh.close()
+
+        def check_local_dir(local_dir_name):
+            """本地文件夹是否存在，不存在则创建"""
+            if not os.path.exists(local_dir_name):
+                os.makedirs(local_dir_name)
+
+        def down_from_remote(sftp_obj, remote_dir_name, local_dir_name):
+            """远程下载文件"""
+            remote_file = sftp_obj.stat(remote_dir_name)
+            if isdir(remote_file.st_mode):
+                # 文件夹，不能直接下载，需要继续循环
+                check_local_dir(local_dir_name)
+                print('开始下载文件夹：' + remote_dir_name)
+                for remote_file_name in sftp.listdir(remote_dir_name):
+                    sub_remote = os.path.join(remote_dir_name, remote_file_name)
+                    sub_remote = sub_remote.replace('\\', '/')
+                    sub_local = os.path.join(local_dir_name, remote_file_name)
+                    sub_local = sub_local.replace('\\', '/')
+                    down_from_remote(sftp_obj, sub_remote, sub_local)
             else:
-                print(f"The process {process_name} is not running.")
-                break
+                # 文件，直接下载
+                print('开始下载文件：' + remote_dir_name)
+                sftp.get(remote_dir_name, local_dir_name)
 
-        self.trigger.emit('Finished!!!')
+        try:
+            time.sleep(3)
+            self.trigger.emit('Updating the file!!!')
+            up_file(fasta,'/home/runzeli/rzli/genomad/data/' + os.path.basename(fasta))
 
-class Muscle_Form(QWidget):
+            self.trigger.emit('Running the genomad for about 5 mins!!!')
+            run_command('/home/runzeli/rzli/genomad/data/' + os.path.basename(fasta))
+
+            host_name = '211.69.141.147'
+            user_name = 'runzeli'
+            password = 'runzeli_123'
+            port = 2022
+            # 远程文件路径（需要绝对路径）
+            remote_dir = '/home/runzeli/rzli/genomad/genomad_output'
+            # 本地文件存放路径（绝对路径或者相对路径都可以）
+            local_dir = out
+
+            # 连接远程服务器
+            t = paramiko.Transport((host_name, port))
+            t.connect(username=user_name, password=password)
+            sftp = paramiko.SFTPClient.from_transport(t)
+            # 远程文件开始下载
+            down_from_remote(sftp, remote_dir, local_dir)
+            # 关闭连接
+            t.close()
+
+            self.trigger.emit('Finished!!!')
+
+        except:
+            QMessageBox.critical(self, "error", "Please check your network connection!!!")
+
+class Genomad_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.work = WorkThread()
@@ -64,7 +136,7 @@ class Muscle_Form(QWidget):
         Clustal.resize(702, 467)
         Clustal.setStyleSheet("background-image: url(./logo/backgroundpage.png)")
         self.label = QtWidgets.QLabel(Clustal)
-        self.label.setGeometry(QtCore.QRect(300, 20, 91, 41))
+        self.label.setGeometry(QtCore.QRect(260, 10, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
@@ -72,7 +144,7 @@ class Muscle_Form(QWidget):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(Clustal)
-        self.label_2.setGeometry(QtCore.QRect(60, 70, 161, 31))
+        self.label_2.setGeometry(QtCore.QRect(60, 70, 301, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(15)
@@ -114,7 +186,7 @@ class Muscle_Form(QWidget):
         self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser.setObjectName("textBrowser")
         self.label_4 = QtWidgets.QLabel(Clustal)
-        self.label_4.setGeometry(QtCore.QRect(130, 290, 161, 31))
+        self.label_4.setGeometry(QtCore.QRect(140, 290, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
@@ -138,12 +210,13 @@ class Muscle_Form(QWidget):
         self.pushButton_2.clicked.connect(self.read_file1)
         self.pushButton_3.clicked.connect(self.read_file2)
 
+
     def retranslateUi(self, Clustal):
         _translate = QtCore.QCoreApplication.translate
-        Clustal.setWindowTitle(_translate("Clustal", "Muscle"))
-        self.label.setText(_translate("Clustal", "Muscle"))
-        self.label_2.setText(_translate("Clustal", "Input fasta file"))
-        self.label_3.setText(_translate("Clustal", "Output fasta file"))
+        Clustal.setWindowTitle(_translate("Clustal", "Genomad"))
+        self.label.setText(_translate("Clustal", "Genomad"))
+        self.label_2.setText(_translate("Clustal", "Input file (fa, file size less than 20M)"))
+        self.label_3.setText(_translate("Clustal", "Output folder"))
         self.pushButton_2.setText(_translate("Clustal", "Choose"))
         self.pushButton_3.setText(_translate("Clustal", "Choose"))
         self.label_4.setText(_translate("Clustal", "Status"))
@@ -155,7 +228,7 @@ class Muscle_Form(QWidget):
         self.textBrowser_2.setText(openfile_name)
 
     def read_file2(self):
-        openfile_name = QtWidgets.QFileDialog.getSaveFileName(self, "choose file", "./")[0]
+        openfile_name = QtWidgets.QFileDialog.getExistingDirectory(self, "choose file", "./")
         print(openfile_name)
         self.textBrowser_3.setText(openfile_name)
 
@@ -180,7 +253,7 @@ class Muscle_Form(QWidget):
                 if is_fasta(fasta) == False:
                     QMessageBox.critical(self, "error", "Check fasta file format!")
                 else:
-                    self.textBrowser.setText('Running! please wait')
+                    self.textBrowser.setText('Running! please wait!')
                     QApplication.processEvents()  # 逐条打印状态
 
                     # 启动线程, 运行 run 函数
@@ -192,12 +265,12 @@ class Muscle_Form(QWidget):
             QMessageBox.critical(self, "error", "Check fasta file format!")
 
 
-
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Clustal = QtWidgets.QWidget()
-    ui = Muscle_Form()
+    ui = Genomad_Form()
     ui.setupUi(Clustal)
     Clustal.show()
     sys.exit(app.exec_())
+

@@ -33,7 +33,12 @@ class WorkThread(QThread):
                     return True
             return False
 
-        os.popen(r".\tools\clustalo\clustal_omega\clustalo.exe -i %s > %s"
+        path = os.path.abspath('.')
+        if '\\' in path:
+            path = path.strip().split('\\')
+            path = '/'.join(path)
+
+        os.popen(path + r"/tools/clustalo/clustal_omega/clustalo.exe -i %s > %s"
                  % (fasta, out))
         time.sleep(3)
         process_name = 'clustalo.exe'

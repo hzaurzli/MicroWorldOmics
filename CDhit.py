@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Muscle.ui'
+# Form implementation generated from reading ui file 'CDhit.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -16,6 +16,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from Bio import SeqIO
 import psutil
+
 
 
 class WorkThread(QThread):
@@ -38,11 +39,11 @@ class WorkThread(QThread):
             path = path.strip().split('\\')
             path = '/'.join(path)
 
-        os.popen(path + r"/tools/muscle/muscle5.exe -align %s -output %s"
-                 % (fasta, out))
-
-        process_name = 'muscle5.exe'
+        os.popen(path + r"/tools/cd-hit/cd-hit.exe -i %s -o %s -c %s -aL %s -aS %s"
+                 % (fasta, out, sequence_identity, aL, aS))
         time.sleep(3)
+        process_name = 'cd-hit.exe'
+
         while True:  # 判断 iqtree.exe 是否运行完成
             if check_process_running(process_name):
                 print(f"The process {process_name} is running.")
@@ -54,7 +55,8 @@ class WorkThread(QThread):
 
         self.trigger.emit('Finished!!!')
 
-class Muscle_Form(QWidget):
+
+class CDhit_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.work = WorkThread()
@@ -64,7 +66,7 @@ class Muscle_Form(QWidget):
         Clustal.resize(702, 467)
         Clustal.setStyleSheet("background-image: url(./logo/backgroundpage.png)")
         self.label = QtWidgets.QLabel(Clustal)
-        self.label.setGeometry(QtCore.QRect(300, 20, 91, 41))
+        self.label.setGeometry(QtCore.QRect(230, 10, 241, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
@@ -72,49 +74,49 @@ class Muscle_Form(QWidget):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(Clustal)
-        self.label_2.setGeometry(QtCore.QRect(60, 70, 161, 31))
+        self.label_2.setGeometry(QtCore.QRect(50, 70, 161, 21))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
-        font.setPointSize(15)
+        font.setPointSize(16)
         self.label_2.setFont(font)
         self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
         self.textBrowser_2 = QtWidgets.QTextBrowser(Clustal)
-        self.textBrowser_2.setGeometry(QtCore.QRect(60, 110, 341, 31))
+        self.textBrowser_2.setGeometry(QtCore.QRect(50, 100, 211, 31))
         self.textBrowser_2.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_2.setObjectName("textBrowser_2")
         self.label_3 = QtWidgets.QLabel(Clustal)
-        self.label_3.setGeometry(QtCore.QRect(60, 180, 161, 31))
+        self.label_3.setGeometry(QtCore.QRect(50, 170, 161, 21))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
-        font.setPointSize(15)
+        font.setPointSize(16)
         self.label_3.setFont(font)
         self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_3.setObjectName("label_3")
         self.textBrowser_3 = QtWidgets.QTextBrowser(Clustal)
-        self.textBrowser_3.setGeometry(QtCore.QRect(60, 220, 341, 31))
+        self.textBrowser_3.setGeometry(QtCore.QRect(50, 200, 211, 31))
         self.textBrowser_3.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_3.setObjectName("textBrowser_3")
         self.pushButton_2 = QtWidgets.QPushButton(Clustal)
-        self.pushButton_2.setGeometry(QtCore.QRect(500, 110, 81, 31))
+        self.pushButton_2.setGeometry(QtCore.QRect(280, 100, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.pushButton_2.setFont(font)
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_3 = QtWidgets.QPushButton(Clustal)
-        self.pushButton_3.setGeometry(QtCore.QRect(500, 220, 81, 31))
+        self.pushButton_3.setGeometry(QtCore.QRect(280, 200, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.pushButton_3.setFont(font)
         self.pushButton_3.setObjectName("pushButton_3")
         self.textBrowser = QtWidgets.QTextBrowser(Clustal)
-        self.textBrowser.setGeometry(QtCore.QRect(60, 330, 341, 111))
+        self.textBrowser.setGeometry(QtCore.QRect(50, 310, 241, 111))
         self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser.setObjectName("textBrowser")
         self.label_4 = QtWidgets.QLabel(Clustal)
-        self.label_4.setGeometry(QtCore.QRect(130, 290, 161, 31))
+        self.label_4.setGeometry(QtCore.QRect(120, 270, 101, 21))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
@@ -122,13 +124,52 @@ class Muscle_Form(QWidget):
         self.label_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label_4.setObjectName("label_4")
         self.pushButton = QtWidgets.QPushButton(Clustal)
-        self.pushButton.setGeometry(QtCore.QRect(500, 360, 81, 41))
+        self.pushButton.setGeometry(QtCore.QRect(560, 400, 81, 41))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(22)
         self.pushButton.setFont(font)
         self.pushButton.setStyleSheet("background-image: url(./logo/white.png)")
         self.pushButton.setObjectName("pushButton")
+        self.label_8 = QtWidgets.QLabel(Clustal)
+        self.label_8.setGeometry(QtCore.QRect(420, 69, 251, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(16)
+        font.setItalic(True)
+        self.label_8.setFont(font)
+        self.label_8.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_8.setObjectName("label_8")
+        self.label_9 = QtWidgets.QLabel(Clustal)
+        self.label_9.setGeometry(QtCore.QRect(420, 160, 231, 51))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(16)
+        font.setItalic(True)
+        self.label_9.setFont(font)
+        self.label_9.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_9.setObjectName("label_9")
+        self.textEdit_2 = QtWidgets.QTextEdit(Clustal)
+        self.textEdit_2.setGeometry(QtCore.QRect(420, 100, 231, 31))
+        self.textEdit_2.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textEdit_2.setObjectName("textEdit_2")
+        self.textEdit_3 = QtWidgets.QTextEdit(Clustal)
+        self.textEdit_3.setGeometry(QtCore.QRect(420, 220, 231, 31))
+        self.textEdit_3.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textEdit_3.setObjectName("textEdit_3")
+        self.label_10 = QtWidgets.QLabel(Clustal)
+        self.label_10.setGeometry(QtCore.QRect(420, 270, 231, 61))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(16)
+        font.setItalic(True)
+        self.label_10.setFont(font)
+        self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_10.setObjectName("label_10")
+        self.textEdit_4 = QtWidgets.QTextEdit(Clustal)
+        self.textEdit_4.setGeometry(QtCore.QRect(420, 340, 231, 31))
+        self.textEdit_4.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textEdit_4.setObjectName("textEdit_4")
 
         self.retranslateUi(Clustal)
         QtCore.QMetaObject.connectSlotsByName(Clustal)
@@ -138,16 +179,26 @@ class Muscle_Form(QWidget):
         self.pushButton_2.clicked.connect(self.read_file1)
         self.pushButton_3.clicked.connect(self.read_file2)
 
+        self.textEdit_2.setPlaceholderText(" Default: 0.8")
+        self.textEdit_3.setPlaceholderText(" Default: 0")
+        self.textEdit_4.setPlaceholderText(" Default: 0")
+
     def retranslateUi(self, Clustal):
         _translate = QtCore.QCoreApplication.translate
-        Clustal.setWindowTitle(_translate("Clustal", "Muscle"))
-        self.label.setText(_translate("Clustal", "Muscle"))
-        self.label_2.setText(_translate("Clustal", "Input fasta file"))
-        self.label_3.setText(_translate("Clustal", "Output fasta file"))
+        Clustal.setWindowTitle(_translate("Clustal", "CD-hit"))
+        self.label.setText(_translate("Clustal", "CD-hit"))
+        self.label_2.setText(_translate("Clustal", "Input fasta"))
+        self.label_3.setText(_translate("Clustal", "Output file"))
         self.pushButton_2.setText(_translate("Clustal", "Choose"))
         self.pushButton_3.setText(_translate("Clustal", "Choose"))
         self.label_4.setText(_translate("Clustal", "Status"))
         self.pushButton.setText(_translate("Clustal", "Run"))
+        self.label_8.setText(_translate("Clustal", "Sequence identity threshold"))
+        self.label_9.setText(_translate("Clustal", "Alignment coverage\n"
+"(longer sequence)"))
+        self.label_10.setText(_translate("Clustal", "Alignment coverage\n"
+"(shorter sequence)"))
+
 
     def read_file1(self):
         openfile_name = QtWidgets.QFileDialog.getOpenFileName(self, 'choose file', '')[0]
@@ -164,7 +215,7 @@ class Muscle_Form(QWidget):
 
     def calculation(self):
         try:
-            global fasta, out, path
+            global fasta, out, path, sequence_identity, aL, aS
             fasta = self.textBrowser_2.toPlainText()
             out = self.textBrowser_3.toPlainText()
             path = os.path.dirname(out)
@@ -183,6 +234,36 @@ class Muscle_Form(QWidget):
                     self.textBrowser.setText('Running! please wait')
                     QApplication.processEvents()  # 逐条打印状态
 
+
+                    try:
+                        sequence_identity = str(self.textEdit_2.toPlainText())
+                        if sequence_identity == '':
+                            sequence_identity = 0.8
+                        else:
+                            sequence_identity = int(sequence_identity)
+                    except:
+                        sequence_identity = 0.8
+
+
+                    try:
+                        aL = str(self.textEdit_3.toPlainText())
+                        if aL == '':
+                            aL = 0
+                        else:
+                            aL = int(aL)
+                    except:
+                        aL = 0
+
+
+                    try:
+                        aS = str(self.textEdit_4.toPlainText())
+                        if aS == '':
+                            aS = 0
+                        else:
+                            aS = int(aS)
+                    except:
+                        aS = 0
+
                     # 启动线程, 运行 run 函数
                     self.work.start()
                     # 传送信号, 接受 run 函数执行完毕后的信号
@@ -197,7 +278,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Clustal = QtWidgets.QWidget()
-    ui = Muscle_Form()
+    ui = CDhit_Form()
     ui.setupUi(Clustal)
     Clustal.show()
     sys.exit(app.exec_())
