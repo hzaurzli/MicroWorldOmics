@@ -52,6 +52,9 @@ from ShinyGenomePCA import ShinyGenomePCA_Form
 from ShinyMap import ShinyMap_Form
 from Shiny3Dprotein import Shiny3Dprotein_Form
 from ShinyTMscoreAlign import ShinyTMscoreAlign_Form
+from ARAGORN import ARAGORN_Form
+from CDhit import CDhit_Form
+from Genomad import Genomad_Form
 
 
 
@@ -64,6 +67,7 @@ class MyWindow(QtWidgets.QPushButton):
         sp.showMessage("Loading... {0}%".format(num * 10), QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom,
                        QtCore.Qt.black)
         QtWidgets.qApp.processEvents()  # 允许主进程处理事件
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -90,7 +94,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -302, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -533,6 +537,9 @@ class Ui_MainWindow(object):
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
+        self.comboBox_12.addItem("")
+        self.comboBox_12.addItem("")
+        self.comboBox_12.addItem("")
         self.comboBox_7 = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox_7.setEnabled(True)
         self.comboBox_7.setGeometry(QtCore.QRect(0, 330, 147, 18))
@@ -874,6 +881,12 @@ class Ui_MainWindow(object):
         self.actionShinyTMscoreAlign.setObjectName("actionShinyTMscoreAlign")
         self.actionMafft = QtWidgets.QAction(MainWindow)
         self.actionMafft.setObjectName("actionMafft")
+        self.actionARAGORN = QtWidgets.QAction(MainWindow)
+        self.actionARAGORN.setObjectName("actionARAGORN")
+        self.actionCDhit = QtWidgets.QAction(MainWindow)
+        self.actionCDhit.setObjectName("actionCDhit")
+        self.actionGenomad = QtWidgets.QAction(MainWindow)
+        self.actionGenomad.setObjectName("actionGenomad")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -937,6 +950,9 @@ class Ui_MainWindow(object):
         self.menuTools.addAction(self.actionShinyMap)
         self.menuTools.addAction(self.actionFastANI)
         self.menuTools.addAction(self.actionShinyTMscoreAlign)
+        self.menuTools.addAction(self.actionARAGORN)
+        self.menuTools.addAction(self.actionCDhit)
+        self.menuTools.addAction(self.actionGenomad)
         self.menuHelps.addAction(self.actionReadme)
         self.menubar.addAction(self.menuBlast.menuAction())
         self.menubar.addAction(self.menuAlignment.menuAction())
@@ -953,6 +969,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
 
         # pages action
         self.actionBlastN.triggered.connect(self.blastn_show)
@@ -1011,6 +1028,9 @@ class Ui_MainWindow(object):
         self.actionChemical_Formula.triggered.connect(self.chemicalformula_show)
         self.actionFastANI.triggered.connect(self.fastani_show)
         self.actionShinyTMscoreAlign.triggered.connect(self.shinytmscorealign_show)
+        self.actionARAGORN.triggered.connect(self.aragorn_show)
+        self.actionCDhit.triggered.connect(self.cdhit_show)
+        self.actionGenomad.triggered.connect(self.genomad_show)
 
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
@@ -1099,6 +1119,9 @@ class Ui_MainWindow(object):
         self.comboBox_12.setItemText(12, _translate("MainWindow", "ShinyMap"))
         self.comboBox_12.setItemText(13, _translate("MainWindow", "FastANI"))
         self.comboBox_12.setItemText(14, _translate("MainWindow", "ShinyTMscoreAlign"))
+        self.comboBox_12.setItemText(15, _translate("MainWindow", "ARAGORN"))
+        self.comboBox_12.setItemText(16, _translate("MainWindow", "CDhit"))
+        self.comboBox_12.setItemText(17, _translate("MainWindow", "Genomad"))
         self.comboBox_7.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "Prodigal"))
         self.label_7.setText(_translate("MainWindow", "ORF prediction"))
@@ -1230,6 +1253,9 @@ class Ui_MainWindow(object):
         self.actionFastANI.setText(_translate("MainWindow", "FastANI"))
         self.actionShinyTMscoreAlign.setText(_translate("MainWindow", "ShinyTMscoreAlign"))
         self.actionMafft.setText(_translate("MainWindow", "Mafft"))
+        self.actionARAGORN.setText(_translate("MainWindow", "ARAGORN"))
+        self.actionCDhit.setText(_translate("MainWindow", "CDhit"))
+        self.actionGenomad.setText(_translate("MainWindow", "Genomad"))
 
 
     def selectionchange_comboBox(self):
@@ -1391,6 +1417,12 @@ class Ui_MainWindow(object):
             self.shinygenomepca_show()
         elif label_item == 'ShinyTMscoreAlign':
             self.shinytmscorealign_show()
+        elif label_item == 'ARAGORN':
+            self.aragorn_show()
+        elif label_item == 'CDhit':
+            self.cdhit_show()
+        elif label_item == 'Genomad':
+            self.genomad_show()
 
     def selectionchange_comboBox_13(self):
         # 标签用来显示选中的文本
@@ -1705,6 +1737,23 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+    def aragorn_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = ARAGORN_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
+    def cdhit_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = CDhit_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
+    def genomad_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = Genomad_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
 
 if __name__ == "__main__":
     import sys

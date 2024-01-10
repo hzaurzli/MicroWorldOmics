@@ -47,7 +47,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>0</y>
+          <y>-302</y>
           <width>198</width>
           <height>719</height>
          </rect>
@@ -992,6 +992,21 @@ QComboBox {
            <string>ShinyTMscoreAlign</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>ARAGORN</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>CDhit</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Genomad</string>
+          </property>
+         </item>
         </widget>
         <widget class="QComboBox" name="comboBox_7">
          <property name="enabled">
@@ -1555,6 +1570,9 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionShinyMap"/>
     <addaction name="actionFastANI"/>
     <addaction name="actionShinyTMscoreAlign"/>
+    <addaction name="actionARAGORN"/>
+    <addaction name="actionCDhit"/>
+    <addaction name="actionGenomad"/>
    </widget>
    <widget class="QMenu" name="menuHelps">
     <property name="title">
@@ -1889,6 +1907,21 @@ p, li { white-space: pre-wrap; }
   <action name="actionMafft">
    <property name="text">
     <string>Mafft</string>
+   </property>
+  </action>
+  <action name="actionARAGORN">
+   <property name="text">
+    <string>ARAGORN</string>
+   </property>
+  </action>
+  <action name="actionCDhit">
+   <property name="text">
+    <string>CDhit</string>
+   </property>
+  </action>
+  <action name="actionGenomad">
+   <property name="text">
+    <string>Genomad</string>
    </property>
   </action>
  </widget>
