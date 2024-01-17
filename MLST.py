@@ -182,7 +182,6 @@ class WorkThread(QThread):
                 ST_str = str(ST_str)
                 ST_info_dict[ST_str] = (ST_type)
 
-            print(ST_info_dict)
             for line in blast_info:
                 info = line.strip().split("\t")
                 ST_gene = str(info[1])
