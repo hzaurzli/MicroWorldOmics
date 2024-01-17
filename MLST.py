@@ -207,10 +207,11 @@ class WorkThread(QThread):
             else:
                 ST_result = 'new'
 
+            # print(file_name + "\t" + ST_result + "\t" + ST_use + "\n")
             out_file_mlst.write(file_name + "\t" + ST_result + "\t" + ST_use + "\n")
 
-            # os.remove(out_folder + '/ref_tmp.fasta')
-            self.trigger.emit('Finished!!!')
+        # os.remove(out_folder + '/ref_tmp.fasta')
+        self.trigger.emit('Finished!!!')
 
 
 class MLST_Form(QWidget):
