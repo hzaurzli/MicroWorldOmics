@@ -33,10 +33,16 @@ class WorkThread(QThread):
             # 设置SSH连接参数
             ssh = paramiko.SSHClient()
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            ssh.connect(hostname='211.69.141.147',
-                        username='runzeli',
-                        password='runzeli_123',
-                        port=2022)
+            ssh.connect(hostname='43.242.96.52',
+                        username='xiaorunze',
+                        password='hiplot!@#',
+                        port=41526)
+
+            # 执行命令
+            stdin, stdout, stderr = ssh.exec_command('rm -r /home/xiaorunze/genomad/data/*')
+
+            # 执行命令
+            stdin, stdout, stderr = ssh.exec_command('rm -r /home/xiaorunze/genomad/genomad_output/*')
 
             # 使用SFTP传输文件
             sftp = ssh.open_sftp()
@@ -54,16 +60,16 @@ class WorkThread(QThread):
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
             # 连接服务器
-            ssh.connect(hostname='211.69.141.147',
-                        username='runzeli',
-                        password='runzeli_123',
-                        port=2022)
+            ssh.connect(hostname='43.242.96.52',
+                        username='xiaorunze',
+                        password='hiplot!@#',
+                        port=41526)
 
             # 执行命令
-            stdin, stdout, stderr = ssh.exec_command('python /home/runzeli/rzli/genomad/run_python.py -f %s' % (file))
+            stdin, stdout, stderr = ssh.exec_command('python /home/xiaorunze/genomad/run_python.py -f %s' % (file))
 
             # 执行命令
-            stdin, stdout, stderr = ssh.exec_command('bash /home/runzeli/rzli/genomad/run_genomad.sh')
+            stdin, stdout, stderr = ssh.exec_command('bash /home/xiaorunze/genomad/run_genomad.sh')
 
             # 获取命令结果
             result = stdout.read().decode('utf8')
@@ -98,17 +104,17 @@ class WorkThread(QThread):
         try:
             time.sleep(3)
             self.trigger.emit('Updating the file!!!')
-            up_file(fasta,'/home/runzeli/rzli/genomad/data/' + os.path.basename(fasta))
+            up_file(fasta,'/home/xiaorunze/genomad/data/' + os.path.basename(fasta))
 
             self.trigger.emit('Running the genomad for about 5 mins!!!')
-            run_command('/home/runzeli/rzli/genomad/data/' + os.path.basename(fasta))
+            run_command(os.path.basename(fasta))
 
-            host_name = '211.69.141.147'
-            user_name = 'runzeli'
-            password = 'runzeli_123'
-            port = 2022
+            host_name = '43.242.96.52'
+            user_name = 'xiaorunze'
+            password = 'hiplot!@#'
+            port = 41526
             # 远程文件路径（需要绝对路径）
-            remote_dir = '/home/runzeli/rzli/genomad/genomad_output'
+            remote_dir = '/home/xiaorunze/genomad/genomad_output'
             # 本地文件存放路径（绝对路径或者相对路径都可以）
             local_dir = out
 

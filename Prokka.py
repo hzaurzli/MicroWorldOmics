@@ -30,12 +30,20 @@ class WorkThread(QThread):
         super(WorkThread, self).__init__()
 
     def run(self):
-        def upfile(source_file, target_folder):
+        def up_file(source_file, target_folder):
             # 设置SSH连接参数
             ssh = paramiko.SSHClient()
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            ssh.connect(hostname='113.57.10.23', username='root',
-                        password='aoligei@ay', port=63389)
+            ssh.connect(hostname='43.242.96.52',
+                        username='xiaorunze',
+                        password='hiplot!@#',
+                        port=41526)
+
+            # 执行命令
+            stdin, stdout, stderr = ssh.exec_command('rm -r /home/xiaorunze/prokka/data/*')
+
+            # 执行命令
+            stdin, stdout, stderr = ssh.exec_command('rm -r /home/xiaorunze/prokka/result/*')
 
             # 使用SFTP传输文件
             sftp = ssh.open_sftp()
@@ -45,22 +53,31 @@ class WorkThread(QThread):
             # 关闭SSH连接
             ssh.close()
 
-        def check_file(file):
+        def run_command(fasta, out, prefix, kingdom):
+            # 创建SSH对象
             ssh = paramiko.SSHClient()
+
+            # 允许连接不在know_hosts文件中的主机
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            ssh.connect(hostname='113.57.10.23', username='root',
-                        password='aoligei@ay', port=63389)
 
-            commend = "ls -f /home/prokka/result/" + file
-            _, stdout, _ = ssh.exec_command(commend)
+            # 连接服务器
+            ssh.connect(hostname='43.242.96.52',
+                        username='xiaorunze',
+                        password='hiplot!@#',
+                        port=41526)
 
-            if stdout.readline() != '':
-                print(stdout.readline())
-                ssh.close()
-                return "exist"
-            else:
-                ssh.close()
-                return "not exist"
+            # 执行命令
+            stdin, stdout, stderr = ssh.exec_command('python /home/xiaorunze/prokka/run_python.py -f %s -o %s -p %s -k %s' % (fasta, out, prefix, kingdom))
+
+            # 执行命令
+            stdin, stdout, stderr = ssh.exec_command('bash /home/xiaorunze/prokka/run_prokka.sh')
+
+            # 获取命令结果
+            result = stdout.read().decode('utf8')
+            print(result)  # 如果有输出的话
+
+            # 关闭连接
+            ssh.close()
 
         def down_from_remote(sftp_obj, remote_dir_name, local_dir_name):
             """远程下载文件"""
@@ -86,33 +103,21 @@ class WorkThread(QThread):
                 os.makedirs(local_dir_name)
 
         try:
-            upfile(fasta,'/home/prokka/data/' + os.path.basename(fasta))
-
-            url = 'http://113.57.10.23:3999/prokka'
-            data = "/" + str(os.path.basename(fasta)) + "&&" + str(os.path.split(out)[-1]) + "&&" + prefix + "&&" + kingdom
-            url_data = url + data
-            print(url_data)
-            response = requests.post(url=url_data)
-            print(response.text)
-
-            file = str(os.path.split(out)[-1]) + "/" + str(prefix) + ".gff"
-            print(file)
-            while True:
-                if check_file(file) == "exist":
-                    print("exist")
-                    break
-                else:
-                    time.sleep(10)
-                    continue
-
             time.sleep(3)
+            self.trigger.emit('Updating the file!!!')
+            up_file(fasta, '/home/xiaorunze/prokka/data/' + os.path.basename(fasta))
 
-            host_name = '113.57.10.23'
-            user_name = 'root'
-            password = 'aoligei@ay'
-            port = 63389
+            self.trigger.emit('Running the prokka for about 3 mins!!!')
+            run_command(os.path.basename(fasta),
+                        str(os.path.split(out)[-1]),
+                        prefix, kingdom)
+
+            host_name = '43.242.96.52'
+            user_name = 'xiaorunze'
+            password = 'hiplot!@#'
+            port = 41526
             # 远程文件路径（需要绝对路径）
-            remote_dir = '/home/prokka/result/' + str(os.path.split(out)[-1]) + '/'
+            remote_dir = '/home/xiaorunze/prokka/result/' + str(os.path.split(out)[-1]) + '/'
             # 本地文件存放路径（绝对路径或者相对路径都可以）
             local_dir = out
 
