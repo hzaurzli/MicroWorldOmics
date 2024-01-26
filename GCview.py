@@ -16,7 +16,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtWebEngineWidgets import QWebEngineView
-
+from GCviewWeb import GCviewWeb_Form
 
 
 class GCview_Form(QWidget):
@@ -85,64 +85,8 @@ class GCview_Form(QWidget):
         content = self.textBrowser_2.toPlainText()
         content = content.strip()
         print(content)
-        self.winTable = MainWindow(content)
+        self.winTable = GCviewWeb_Form(content)
         self.winTable.show()
-
-
-class MainWindow(QMainWindow):
-    def __init__(self,content):
-        super().__init__()
-        self.setWindowTitle('GCview')
-        self.showMaximized()
-
-        self.path_1 = os.path.abspath('.')
-        self.path_1 = self.path_1.strip().split('\\')
-        self.path = '/'.join(self.path_1)
-
-        #####放入WebEngineView
-        self.webview = WebEngineView()
-        self.webview.load(QUrl(self.path + "/html/GCview/index.html"))
-        self.setCentralWidget(self.webview)
-
-        #####web页面加载完毕，调用函数
-        self.webview.page().loadFinished.connect(lambda: self.run_js(content)) # 信号函数传参
-
-    def run_js(self,content):
-        js_string_1 = '''
-        cgv = new CGV.Viewer('#my-viewer', {
-        height: 650,
-        width: 1200,
-        });
-    
-        var request = new XMLHttpRequest();
-        request.open('GET', "'''
-
-        js_string_2 = '''",true);
-            request.onload = function() {
-              var response = request.response;
-              const json = JSON.parse(response);
-              cgv.io.loadJSON(json);
-              cgv.draw()
-            };
-            request.send();
-
-            cgv.draw();
-        '''
-
-        js_string = js_string_1 + content + js_string_2
-        print(js_string)
-        self.webview.page().runJavaScript(js_string)
-
-class WebEngineView(QWebEngineView):
-    windowList = []
-    # 重写createwindow()
-    def createWindow(self, QWebEnginePage_WebWindowType):
-        new_webview = WebEngineView()
-        new_window = MainWindow()
-        new_window.setCentralWidget(new_webview)
-        #new_window.show()
-        self.windowList.append(new_window)  #注：没有这句会崩溃
-        return new_webview
 
 
 if __name__ == "__main__":
