@@ -323,70 +323,87 @@ class FastANI_Form(QWidget):
             if len(out) == 0:
                 QMessageBox.warning(self, "warning", "Please add output file path!", QMessageBox.Cancel)
             else:
-                self.textBrowser.setText('Running! please wait')
-                QApplication.processEvents()  # 逐条打印状态
-
                 if self.radioButton.isChecked():
                     query = self.textBrowser_2.toPlainText()
                     ref = self.textBrowser_3.toPlainText()
+                    if len(query) == 0:
+                        QMessageBox.warning(self, "warning", "Please add query file path!", QMessageBox.Cancel)
+                    else:
+                        self.textBrowser.setText('Running! please wait')
+                        QApplication.processEvents()  # 逐条打印状态
 
-                    path = os.path.abspath('.')
-                    if '\\' in path:
-                        path = path.strip().split('\\')
-                        path = '/'.join(path)
+                        path = os.path.abspath('.')
+                        if '\\' in path:
+                            path = path.strip().split('\\')
+                            path = '/'.join(path)
 
-                    type = 'A'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                        type = 'A'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
 
                 elif self.radioButton_2.isChecked():
                     query = self.textBrowser_2.toPlainText()
                     ref = self.textBrowser_5.toPlainText()
+                    if len(query) == 0:
+                        QMessageBox.warning(self, "warning", "Please add query file path!", QMessageBox.Cancel)
+                    else:
+                        self.textBrowser.setText('Running! please wait')
+                        QApplication.processEvents()  # 逐条打印状态
 
-                    path = os.path.abspath('.')
-                    if '\\' in path:
-                        path = path.strip().split('\\')
-                        path = '/'.join(path)
+                        path = os.path.abspath('.')
+                        if '\\' in path:
+                            path = path.strip().split('\\')
+                            path = '/'.join(path)
 
-                    type = 'B'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                        type = 'B'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
                 elif self.radioButton_3.isChecked():
                     query = self.textBrowser_4.toPlainText()
                     ref = self.textBrowser_3.toPlainText()
+                    if len(query) == 0:
+                        QMessageBox.warning(self, "warning", "Please add query file path!", QMessageBox.Cancel)
+                    else:
+                        self.textBrowser.setText('Running! please wait')
+                        QApplication.processEvents()  # 逐条打印状态
 
-                    path = os.path.abspath('.')
-                    if '\\' in path:
-                        path = path.strip().split('\\')
-                        path = '/'.join(path)
+                        path = os.path.abspath('.')
+                        if '\\' in path:
+                            path = path.strip().split('\\')
+                            path = '/'.join(path)
 
-                    type = 'C'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                        type = 'C'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
                 elif self.radioButton_4.isChecked():
                     query = self.textBrowser_4.toPlainText()
                     ref = self.textBrowser_5.toPlainText()
                     out = self.textBrowser_6.toPlainText()
+                    if 0 in [len(query),len(ref)]:
+                        QMessageBox.warning(self, "warning", "Please add query and reference file path!", QMessageBox.Cancel)
+                    else:
+                        self.textBrowser.setText('Running! please wait')
+                        QApplication.processEvents()  # 逐条打印状态
 
-                    path = os.path.abspath('.')
-                    if '\\' in path:
-                        path = path.strip().split('\\')
-                        path = '/'.join(path)
+                        path = os.path.abspath('.')
+                        if '\\' in path:
+                            path = path.strip().split('\\')
+                            path = '/'.join(path)
 
-                    type = 'D'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                        type = 'D'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
         except:
             QMessageBox.critical(self, "error", "Check all files format!")

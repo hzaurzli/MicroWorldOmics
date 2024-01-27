@@ -1034,7 +1034,7 @@ class Serotype_Form(QWidget):
             evalue = 1e-5
             format = str(6)
 
-            if any([len(fasta), len(out_folder), len(ref)]) == False:
+            if 0 in [len(fasta), len(out_folder), len(ref)]:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
                 self.textBrowser.setText(

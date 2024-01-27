@@ -236,7 +236,7 @@ class Fasttree_Form(QWidget):
             out = self.textBrowser_3.toPlainText()
             path = os.path.dirname(out)
 
-            if any([len(fasta), len(out)]) == False:
+            if 0 in [len(fasta), len(out)]:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
                 self.textBrowser.setText('Running! please wait')

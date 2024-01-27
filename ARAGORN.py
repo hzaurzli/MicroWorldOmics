@@ -190,7 +190,7 @@ class ARAGORN_Form(QWidget):
                     fasta = SeqIO.parse(handle, "fasta")
                     return any(fasta)
 
-            if any([len(fasta), len(out)]) == False:
+            if 0 in [len(fasta), len(out)]:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
                 if is_fasta(fasta) == False:

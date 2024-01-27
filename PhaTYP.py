@@ -476,7 +476,7 @@ class PhaTYP_Form(QWidget):
 
             out = out_fn + '/lysogen_prediction.csv'
 
-            if any([len(contigs), len(out_fn)]) == False:
+            if 0 in [len(contigs), len(out_fn)]:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
                 if is_fasta(contigs) == False:

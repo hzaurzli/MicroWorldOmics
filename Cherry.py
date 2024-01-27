@@ -1173,7 +1173,7 @@ class Cherry_Form(QWidget):
                 path = '/'.join(path)
 
 
-            if any([len(contigs), len(out_dir)]) == False:
+            if 0 in [len(contigs), len(out_dir)]:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
                 if is_fasta(contigs) == False:

@@ -197,7 +197,7 @@ class PCR_Form(QWidget):
                     fasta = SeqIO.parse(handle, "fasta")
                     return any(fasta)  # False when `fasta` is empty, i.e. wasn't a FASTA file
 
-            if any([len(fasta), len(out), len(forward), len(reverse)]) == False:
+            if 0 in [len(fasta), len(out), len(forward), len(reverse)]:
                 QMessageBox.warning(self, "warning", "Please add correct file path or correct parameters!",
                                     QMessageBox.Cancel)
             else:

@@ -234,7 +234,7 @@ class Clinker_Form(QWidget):
             html = self.textBrowser_4.toPlainText()
             path = os.path.dirname(out)
 
-            if any([len(gbk), len(out)]) == False:
+            if 0 in [len(gbk), len(out)]:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
                 self.textBrowser.setText('Running! please wait')

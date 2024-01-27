@@ -13,15 +13,13 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtWebEngineWidgets import *
-
-
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 import configparser
-
 import sys
+
 
 class ShinyWeb_Form(QMainWindow):
     def __init__(self, port):

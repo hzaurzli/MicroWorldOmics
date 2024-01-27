@@ -596,7 +596,7 @@ class Core_genome_Form(QWidget):
                 path = path.strip().split('\\')
                 path = '/'.join(path)
 
-            if any([len(fasta), len(out_folder), len(ref)]) == False:
+            if 0 in [len(fasta), len(out_folder), len(ref)]:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
                 self.textBrowser.setText(
