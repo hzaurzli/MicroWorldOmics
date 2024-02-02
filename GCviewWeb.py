@@ -155,7 +155,7 @@ if __name__ == "__main__":
     # 创建应用
     app = QApplication(sys.argv)
     # 创建主窗口
-    window = ShinyWeb_Form()
+    window = GCviewWeb_Form()
     # 显示窗口
     window.show()
     # 运行应用，并监听事件

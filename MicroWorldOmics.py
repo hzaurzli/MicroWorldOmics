@@ -55,7 +55,7 @@ from ShinyTMscoreAlign import ShinyTMscoreAlign_Form
 from ARAGORN import ARAGORN_Form
 from CDhit import CDhit_Form
 from Genomad import Genomad_Form
-
+from GBK2JSON import GBK2JSON_Form
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -67,7 +67,6 @@ class MyWindow(QtWidgets.QPushButton):
         sp.showMessage("Loading... {0}%".format(num * 10), QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom,
                        QtCore.Qt.black)
         QtWidgets.qApp.processEvents()  # 允许主进程处理事件
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -94,7 +93,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -302, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -120, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -347,6 +346,7 @@ class Ui_MainWindow(object):
 "    background-color: transparent;\n"
 "}")
         self.comboBox_8.setObjectName("comboBox_8")
+        self.comboBox_8.addItem("")
         self.comboBox_8.addItem("")
         self.comboBox_8.addItem("")
         self.comboBox_8.addItem("")
@@ -887,6 +887,8 @@ class Ui_MainWindow(object):
         self.actionCDhit.setObjectName("actionCDhit")
         self.actionGenomad = QtWidgets.QAction(MainWindow)
         self.actionGenomad.setObjectName("actionGenomad")
+        self.actionGBK2JSON = QtWidgets.QAction(MainWindow)
+        self.actionGBK2JSON.setObjectName("actionGBK2JSON")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -909,6 +911,7 @@ class Ui_MainWindow(object):
         self.menuAnnotation.addAction(self.actionBlast_visualization)
         self.menuAnnotation.addAction(self.actionGene_structure_visualization)
         self.menuAnnotation.addAction(self.actionProtvista)
+        self.menuAnnotation.addAction(self.actionGBK2JSON)
         self.menuPlaque.addAction(self.actionPlaque_count)
         self.menuPlaque.addAction(self.actionPlaque_count_V2)
         self.menuClassification.addAction(self.actionStep1_VipTree)
@@ -1001,6 +1004,7 @@ class Ui_MainWindow(object):
         self.actionBlast_visualization.triggered.connect(self.blasterjs_show)
         self.actionGene_structure_visualization.triggered.connect(self.collinearity_show)
         self.actionProtvista.triggered.connect(self.protvista_show)
+        self.actionGBK2JSON.triggered.connect(self.gbk2json_show)
 
         self.actionPlaque_count.triggered.connect(self.plaque_show)
         self.actionPlaque_count_V2.triggered.connect(self.plaque_V2_show)
@@ -1085,6 +1089,7 @@ class Ui_MainWindow(object):
         self.comboBox_8.setItemText(3, _translate("MainWindow", "Blast visualization"))
         self.comboBox_8.setItemText(4, _translate("MainWindow", "Collinearity"))
         self.comboBox_8.setItemText(5, _translate("MainWindow", "Protvista"))
+        self.comboBox_8.setItemText(6, _translate("MainWindow", "GBK2JSON"))
         self.label_8.setText(_translate("MainWindow", "Annotation"))
         self.comboBox_9.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_9.setItemText(1, _translate("MainWindow", "Plaque count"))
@@ -1256,6 +1261,7 @@ class Ui_MainWindow(object):
         self.actionARAGORN.setText(_translate("MainWindow", "ARAGORN"))
         self.actionCDhit.setText(_translate("MainWindow", "CDhit"))
         self.actionGenomad.setText(_translate("MainWindow", "Genomad"))
+        self.actionGBK2JSON.setText(_translate("MainWindow", "GBK2JSON"))
 
 
     def selectionchange_comboBox(self):
@@ -1349,6 +1355,8 @@ class Ui_MainWindow(object):
             self.collinearity_show()
         elif label_item == 'Protvista':
             self.protvista_show()
+        elif label_item == 'GBK2JSON':
+            self.gbk2json_show()
 
     def selectionchange_comboBox_9(self):
         # 标签用来显示选中的文本
@@ -1571,6 +1579,12 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+    def gbk2json_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = GBK2JSON_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
     def plaque_show(self):
         self.form = QtWidgets.QWidget()
         self.Dialog = Dialog()
@@ -1757,7 +1771,6 @@ class Ui_MainWindow(object):
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
 
     # 启动预加载
@@ -1787,4 +1800,5 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
 
