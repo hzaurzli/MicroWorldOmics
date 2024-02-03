@@ -40,9 +40,11 @@ class WorkThread(QThread):
 
             # 执行命令
             stdin, stdout, stderr = ssh.exec_command('rm -r /home/xiaorunze/genomad/data/*')
+            time.sleep(3)
 
             # 执行命令
             stdin, stdout, stderr = ssh.exec_command('rm -r /home/xiaorunze/genomad/genomad_output/*')
+            time.sleep(3)
 
             # 使用SFTP传输文件
             sftp = ssh.open_sftp()
@@ -67,9 +69,11 @@ class WorkThread(QThread):
 
             # 执行命令
             stdin, stdout, stderr = ssh.exec_command('python /home/xiaorunze/genomad/run_python.py -f %s' % (file))
+            time.sleep(3)
 
             # 执行命令
             stdin, stdout, stderr = ssh.exec_command('bash /home/xiaorunze/genomad/run_genomad.sh')
+            time.sleep(3)
 
             # 获取命令结果
             result = stdout.read().decode('utf8')
@@ -105,7 +109,8 @@ class WorkThread(QThread):
             time.sleep(3)
             self.trigger.emit('Updating the file!!!')
             up_file(fasta,'/home/xiaorunze/genomad/data/' + os.path.basename(fasta))
-
+            time.sleep(3)
+            
             self.trigger.emit('Running the genomad for about 5 mins!!!')
             run_command(os.path.basename(fasta))
 
