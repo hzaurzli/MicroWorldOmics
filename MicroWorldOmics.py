@@ -46,6 +46,7 @@ from CoreGenomeAnalysis import Core_genome_Form
 from ShinyProtparam import ShinyProtparam_Form
 from ShinyPCoA import ShinyPCoA_Form
 from ShinyBatch import ShinyBatch_Form
+from Bugbase import Bugbase_Form
 from Chemical_formula import Chemicalformula_Form
 from FastANI import FastANI_Form
 from ShinyGenomePCA import ShinyGenomePCA_Form
@@ -67,6 +68,7 @@ class MyWindow(QtWidgets.QPushButton):
         sp.showMessage("Loading... {0}%".format(num * 10), QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom,
                        QtCore.Qt.black)
         QtWidgets.qApp.processEvents()  # 允许主进程处理事件
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -93,7 +95,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -120, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -302, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -621,6 +623,7 @@ class Ui_MainWindow(object):
         self.comboBox_13.addItem("")
         self.comboBox_13.addItem("")
         self.comboBox_13.addItem("")
+        self.comboBox_13.addItem("")
         self.label_16 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_16.setGeometry(QtCore.QRect(0, 660, 141, 17))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -889,6 +892,8 @@ class Ui_MainWindow(object):
         self.actionGenomad.setObjectName("actionGenomad")
         self.actionGBK2JSON = QtWidgets.QAction(MainWindow)
         self.actionGBK2JSON.setObjectName("actionGBK2JSON")
+        self.actionBugbase = QtWidgets.QAction(MainWindow)
+        self.actionBugbase.setObjectName("actionBugbase")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -933,6 +938,7 @@ class Ui_MainWindow(object):
         self.menuMetagenomics.addAction(self.actionShinyVolc_2)
         self.menuMetagenomics.addAction(self.actionShinyTimeSeries)
         self.menuMetagenomics.addAction(self.actionShinyBatch)
+        self.menuMetagenomics.addAction(self.actionBugbase)
         self.menuNetworks.addAction(self.actionShinyMicroWGCNA)
         self.menuNetworks.addAction(self.actionShinyBioMiCo)
         self.menuNetworks.addAction(self.actionShinySpiecEasi)
@@ -1026,6 +1032,7 @@ class Ui_MainWindow(object):
         self.actionShinyProtparam.triggered.connect(self.shinyprotparam_show)
         self.actionShinyPCOA.triggered.connect(self.shinypcoa_show)
         self.actionShinyBatch.triggered.connect(self.shinybatch_show)
+        self.actionBugbase.triggered.connect(self.bugbase_show)
         self.actionShiny3Dprotein.triggered.connect(self.shiny3dprotein_show)
         self.actionShinyGenomicPCA.triggered.connect(self.shinygenomepca_show)
         self.actionShinyMap.triggered.connect(self.shinymap_show)
@@ -1140,6 +1147,7 @@ class Ui_MainWindow(object):
         self.comboBox_13.setItemText(6, _translate("MainWindow", "ShinyVolc"))
         self.comboBox_13.setItemText(7, _translate("MainWindow", "ShinyTimeSeries"))
         self.comboBox_13.setItemText(8, _translate("MainWindow", "ShinyBatch"))
+        self.comboBox_13.setItemText(9, _translate("MainWindow", "Bugbase"))
         self.label_16.setText(_translate("MainWindow", "Networks"))
         self.comboBox_14.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_14.setItemText(1, _translate("MainWindow", "ShinyMicroWGCNA"))
@@ -1262,6 +1270,7 @@ class Ui_MainWindow(object):
         self.actionCDhit.setText(_translate("MainWindow", "CDhit"))
         self.actionGenomad.setText(_translate("MainWindow", "Genomad"))
         self.actionGBK2JSON.setText(_translate("MainWindow", "GBK2JSON"))
+        self.actionBugbase.setText(_translate("MainWindow", "Bugbase"))
 
 
     def selectionchange_comboBox(self):
@@ -1441,6 +1450,9 @@ class Ui_MainWindow(object):
             self.shinypcoa_show()
         elif label_item == 'ShinyBatch':
             self.shinybatch_show()
+        elif label_item == 'Bugbase':
+            self.bugbase_show()
+
 
     # pages
     ## click to new window BlastN,BlastN_Form is object in BlastN.py
@@ -1701,6 +1713,12 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+    def bugbase_show(self):
+        self.form = QtWidgets.QMainWindow()
+        self.ui = Bugbase_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
     def chemicalformula_show(self):
         self.winTable = Chemicalformula_Form()
         self.winTable.show()
@@ -1800,5 +1818,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
-

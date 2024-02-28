@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Genomad.ui'
+# Form implementation generated from reading ui file 'Bugbase.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -17,7 +17,6 @@ from PyQt5.QtCore import *
 import paramiko
 from Bio import SeqIO
 from stat import S_ISDIR as isdir
-
 
 
 class WorkThread(QThread):
@@ -39,11 +38,11 @@ class WorkThread(QThread):
                         port=41526)
 
             # 执行命令
-            stdin, stdout, stderr = ssh.exec_command('rm -r /home/xiaorunze/genomad/data/*')
+            stdin, stdout, stderr = ssh.exec_command('rm -r /home/xiaorunze/bugbase/input/*')
             time.sleep(3)
 
             # 执行命令
-            stdin, stdout, stderr = ssh.exec_command('rm -r /home/xiaorunze/genomad/genomad_output/*')
+            stdin, stdout, stderr = ssh.exec_command('rm -r /home/xiaorunze/bugbase/output/')
             time.sleep(3)
 
             # 使用SFTP传输文件
@@ -54,7 +53,25 @@ class WorkThread(QThread):
             # 关闭SSH连接
             ssh.close()
 
-        def run_command(file):
+
+        def up_file_2(source_file, target_folder):
+            # 设置SSH连接参数
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh.connect(hostname='43.242.96.52',
+                        username='xiaorunze',
+                        password='hiplot!@#',
+                        port=41526)
+
+            # 使用SFTP传输文件
+            sftp = ssh.open_sftp()
+            sftp.put(source_file, target_folder)  # 目标文件名可以按需更改
+            sftp.close()
+
+            # 关闭SSH连接
+            ssh.close()
+
+        def run_command(otu, mapping):
             # 创建SSH对象
             ssh = paramiko.SSHClient()
 
@@ -68,11 +85,11 @@ class WorkThread(QThread):
                         port=41526)
 
             # 执行命令
-            stdin, stdout, stderr = ssh.exec_command('python /home/xiaorunze/genomad/run_python.py -f %s' % (file))
+            stdin, stdout, stderr = ssh.exec_command('python /home/xiaorunze/bugbase/run_python.py -u %s -m %s' % (otu, mapping))
             time.sleep(3)
 
             # 执行命令
-            stdin, stdout, stderr = ssh.exec_command('bash /home/xiaorunze/genomad/run_genomad.sh')
+            stdin, stdout, stderr = ssh.exec_command('bash /home/xiaorunze/bugbase/run_bugbase.sh')
             time.sleep(3)
 
             # 获取命令结果
@@ -108,18 +125,19 @@ class WorkThread(QThread):
         try:
             time.sleep(3)
             self.trigger.emit('Updating the file!!!')
-            up_file(fasta,'/home/xiaorunze/genomad/data/' + os.path.basename(fasta))
+            up_file(otu,'/home/xiaorunze/bugbase/input/' + os.path.basename(otu))
+            up_file_2(mapping, '/home/xiaorunze/bugbase/input/' + os.path.basename(mapping))
             time.sleep(3)
 
-            self.trigger.emit('Running the genomad for about 5 mins!!!')
-            run_command(os.path.basename(fasta))
+            self.trigger.emit('Running the bugbase for about 2 mins!!!')
+            run_command(os.path.basename(otu), os.path.basename(mapping))
 
             host_name = '43.242.96.52'
             user_name = 'xiaorunze'
             password = 'hiplot!@#'
             port = 41526
             # 远程文件路径（需要绝对路径）
-            remote_dir = '/home/xiaorunze/genomad/genomad_output'
+            remote_dir = '/home/xiaorunze/bugbase/output'
             # 本地文件存放路径（绝对路径或者相对路径都可以）
             local_dir = out
 
@@ -137,7 +155,8 @@ class WorkThread(QThread):
         except:
             QMessageBox.critical(self, "error", "Please check your network connection!!!")
 
-class Genomad_Form(QWidget):
+
+class Bugbase_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.work = WorkThread()
@@ -163,19 +182,19 @@ class Genomad_Form(QWidget):
         self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
         self.textBrowser_2 = QtWidgets.QTextBrowser(Clustal)
-        self.textBrowser_2.setGeometry(QtCore.QRect(60, 110, 341, 31))
+        self.textBrowser_2.setGeometry(QtCore.QRect(60, 110, 331, 31))
         self.textBrowser_2.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_2.setObjectName("textBrowser_2")
-        self.label_3 = QtWidgets.QLabel(Clustal)
-        self.label_3.setGeometry(QtCore.QRect(60, 180, 161, 31))
+        self.label_4 = QtWidgets.QLabel(Clustal)
+        self.label_4.setGeometry(QtCore.QRect(60, 250, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(15)
-        self.label_3.setFont(font)
-        self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_3.setObjectName("label_3")
+        self.label_4.setFont(font)
+        self.label_4.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_4.setObjectName("label_4")
         self.textBrowser_3 = QtWidgets.QTextBrowser(Clustal)
-        self.textBrowser_3.setGeometry(QtCore.QRect(60, 220, 341, 31))
+        self.textBrowser_3.setGeometry(QtCore.QRect(60, 200, 331, 31))
         self.textBrowser_3.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_3.setObjectName("textBrowser_3")
         self.pushButton_2 = QtWidgets.QPushButton(Clustal)
@@ -186,32 +205,51 @@ class Genomad_Form(QWidget):
         self.pushButton_2.setFont(font)
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_3 = QtWidgets.QPushButton(Clustal)
-        self.pushButton_3.setGeometry(QtCore.QRect(500, 220, 81, 31))
+        self.pushButton_3.setGeometry(QtCore.QRect(500, 200, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.pushButton_3.setFont(font)
         self.pushButton_3.setObjectName("pushButton_3")
         self.textBrowser = QtWidgets.QTextBrowser(Clustal)
-        self.textBrowser.setGeometry(QtCore.QRect(60, 330, 341, 111))
+        self.textBrowser.setGeometry(QtCore.QRect(60, 370, 331, 71))
         self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser.setObjectName("textBrowser")
-        self.label_4 = QtWidgets.QLabel(Clustal)
-        self.label_4.setGeometry(QtCore.QRect(140, 290, 161, 31))
+        self.label_5 = QtWidgets.QLabel(Clustal)
+        self.label_5.setGeometry(QtCore.QRect(140, 330, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
-        self.label_4.setFont(font)
-        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_4.setObjectName("label_4")
+        self.label_5.setFont(font)
+        self.label_5.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_5.setObjectName("label_5")
         self.pushButton = QtWidgets.QPushButton(Clustal)
-        self.pushButton.setGeometry(QtCore.QRect(500, 360, 81, 41))
+        self.pushButton.setGeometry(QtCore.QRect(500, 380, 81, 41))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(22)
         self.pushButton.setFont(font)
         self.pushButton.setStyleSheet("background-image: url(./logo/white.png)")
         self.pushButton.setObjectName("pushButton")
+        self.textBrowser_4 = QtWidgets.QTextBrowser(Clustal)
+        self.textBrowser_4.setGeometry(QtCore.QRect(60, 290, 331, 31))
+        self.textBrowser_4.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textBrowser_4.setObjectName("textBrowser_4")
+        self.label_3 = QtWidgets.QLabel(Clustal)
+        self.label_3.setGeometry(QtCore.QRect(60, 160, 291, 31))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(15)
+        self.label_3.setFont(font)
+        self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_3.setObjectName("label_3")
+        self.pushButton_4 = QtWidgets.QPushButton(Clustal)
+        self.pushButton_4.setGeometry(QtCore.QRect(500, 290, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(13)
+        self.pushButton_4.setFont(font)
+        self.pushButton_4.setObjectName("pushButton_4")
 
         self.retranslateUi(Clustal)
         QtCore.QMetaObject.connectSlotsByName(Clustal)
@@ -220,18 +258,20 @@ class Genomad_Form(QWidget):
         self.pushButton.clicked.connect(self.calculation)
         self.pushButton_2.clicked.connect(self.read_file1)
         self.pushButton_3.clicked.connect(self.read_file2)
-
+        self.pushButton_4.clicked.connect(self.read_file3)
 
     def retranslateUi(self, Clustal):
         _translate = QtCore.QCoreApplication.translate
-        Clustal.setWindowTitle(_translate("Clustal", "Genomad"))
-        self.label.setText(_translate("Clustal", "Genomad"))
-        self.label_2.setText(_translate("Clustal", "Input file (fa, file size less than 20M)"))
-        self.label_3.setText(_translate("Clustal", "Output folder"))
+        Clustal.setWindowTitle(_translate("Clustal", "Bugbase"))
+        self.label.setText(_translate("Clustal", "Bugbase"))
+        self.label_2.setText(_translate("Clustal", "Input file (Input OTU table)"))
+        self.label_4.setText(_translate("Clustal", "Output folder"))
         self.pushButton_2.setText(_translate("Clustal", "Choose"))
         self.pushButton_3.setText(_translate("Clustal", "Choose"))
-        self.label_4.setText(_translate("Clustal", "Status"))
+        self.label_5.setText(_translate("Clustal", "Status"))
         self.pushButton.setText(_translate("Clustal", "Run"))
+        self.label_3.setText(_translate("Clustal", "Input file (Mapping file)"))
+        self.pushButton_4.setText(_translate("Clustal", "Choose"))
 
     def read_file1(self):
         openfile_name = QtWidgets.QFileDialog.getOpenFileName(self, 'choose file', '')[0]
@@ -239,49 +279,46 @@ class Genomad_Form(QWidget):
         self.textBrowser_2.setText(openfile_name)
 
     def read_file2(self):
-        openfile_name = QtWidgets.QFileDialog.getExistingDirectory(self, "choose file", "./")
+        openfile_name = QtWidgets.QFileDialog.getOpenFileName(self, 'choose file', '')[0]
         print(openfile_name)
         self.textBrowser_3.setText(openfile_name)
+
+    def read_file3(self):
+        openfile_name = QtWidgets.QFileDialog.getExistingDirectory(self, "choose file", "./")
+        print(openfile_name)
+        self.textBrowser_4.setText(openfile_name)
 
     def finished(self, str):
         self.textBrowser.setText(str)
 
     def calculation(self):
         try:
-            global fasta, out, path
-            fasta = self.textBrowser_2.toPlainText()
-            out = self.textBrowser_3.toPlainText()
+            global otu, mapping, out, path
+            otu = self.textBrowser_2.toPlainText()
+            mapping = self.textBrowser_3.toPlainText()
+            out = self.textBrowser_4.toPlainText()
             path = os.path.dirname(out)
 
-            def is_fasta(filename):
-                with open(filename, "r") as handle:
-                    fasta = SeqIO.parse(handle, "fasta")
-                    return any(fasta)
-
-            if 0 in [len(fasta), len(out)]:
+            if 0 in [len(otu), len(mapping), len(out)]:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
-                if is_fasta(fasta) == False:
-                    QMessageBox.critical(self, "error", "Check fasta file format!")
-                else:
-                    self.textBrowser.setText('Running! please wait!')
-                    QApplication.processEvents()  # 逐条打印状态
+                self.textBrowser.setText('Running! please wait!')
+                QApplication.processEvents()  # 逐条打印状态
 
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                # 启动线程, 运行 run 函数
+                self.work.start()
+                # 传送信号, 接受 run 函数执行完毕后的信号
+                self.work.trigger.connect(self.finished)
 
         except:
-            QMessageBox.critical(self, "error", "Check fasta file format!")
+            QMessageBox.critical(self, "error", "Check otu file format!")
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Clustal = QtWidgets.QWidget()
-    ui = Genomad_Form()
+    ui = Bugbase_Form()
     ui.setupUi(Clustal)
     Clustal.show()
     sys.exit(app.exec_())
-

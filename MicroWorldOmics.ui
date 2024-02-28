@@ -47,7 +47,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-120</y>
+          <y>-302</y>
           <width>198</width>
           <height>719</height>
          </rect>
@@ -1187,6 +1187,11 @@ QComboBox {
            <string>ShinyBatch</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>Bugbase</string>
+          </property>
+         </item>
         </widget>
         <widget class="QLabel" name="label_16">
          <property name="geometry">
@@ -1550,6 +1555,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionShinyVolc_2"/>
      <addaction name="actionShinyTimeSeries"/>
      <addaction name="actionShinyBatch"/>
+     <addaction name="actionBugbase"/>
     </widget>
     <widget class="QMenu" name="menuNetworks">
      <property name="title">
@@ -1933,6 +1939,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionGBK2JSON">
    <property name="text">
     <string>GBK2JSON</string>
+   </property>
+  </action>
+  <action name="actionBugbase">
+   <property name="text">
+    <string>Bugbase</string>
    </property>
   </action>
  </widget>
