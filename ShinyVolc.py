@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ShinyTMscoreAlign.ui'
+# Form implementation generated from reading ui file 'ShinyVolc.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import os, sys, re, math, time
 from ShinyWeb import ShinyWeb_Form
+
 
 
 class winTest(QtWidgets.QMainWindow):
@@ -31,7 +32,7 @@ class winTest(QtWidgets.QMainWindow):
         :return: None
         """
         try:
-            with os.popen('netstat -aon|findstr "50331"') as res:
+            with os.popen('netstat -aon|findstr "50631"') as res:
                 res = res.read().split('\n')
             result = []
             for line in res:
@@ -46,6 +47,7 @@ class winTest(QtWidgets.QMainWindow):
 
         except:
             return None  # 设置正常退出
+
 
 
 class WorkThread(QThread):
@@ -63,13 +65,13 @@ class WorkThread(QThread):
             path = '/'.join(path)
 
         os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
-                 path + '/Shiny/ShinyScript/ShinyTMscoreAlign/ShinyTMscoreAlign.R')
+                 path + '/Shiny/ShinyScript/ShinyVolc/ShinyVolc.R')
 
         time.sleep(10)
         self.trigger.emit('ShinyApp has been started!!!')
 
 
-class ShinyTMscoreAlign_Form(QWidget):
+class ShinyVolc_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.work = WorkThread()
@@ -131,14 +133,13 @@ class ShinyTMscoreAlign_Form(QWidget):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "ShinyTMscoreAlign"))
-        self.label.setText(_translate("Form", "ShinyTMscoreAlign"))
+        Form.setWindowTitle(_translate("Form", "ShinyVolc"))
+        self.label.setText(_translate("Form", "ShinyVolc"))
         self.label_2.setText(_translate("Form", "Status"))
         self.pushButton.setText(_translate("Form", "Start App"))
         self.pushButton_2.setText(_translate("Form", "Open Web"))
         self.label_3.setText(_translate("Form", "Please close this window before\n"
 "starting another Shiny Apps!!!"))
-
 
     def start(self):
         self.textBrowser.setText(
@@ -152,7 +153,7 @@ class ShinyTMscoreAlign_Form(QWidget):
 
 
     def open(self):
-        self.winTable = ShinyWeb_Form(port=50331)
+        self.winTable = ShinyWeb_Form(port=50631)
         self.winTable.show()
 
 
@@ -162,10 +163,11 @@ class ShinyTMscoreAlign_Form(QWidget):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     # Clustal = QtWidgets.QWidget()
     WT = winTest()
-    ui = ShinyTMscoreAlign_Form()
+    ui = ShinyVolc_Form()
     ui.setupUi(WT)
     WT.show()
     sys.exit(app.exec_())

@@ -31,7 +31,6 @@ from Fasttree import Fasttree_Form
 from Raxml import Raxml_Form
 from PCR import PCR_Form
 from Prodigal import Prodigal_Form
-from Prokka import Prokka_Form
 from GCview import GCview_Form
 from Clinker import Clinker_Form
 from ProtVista import Protvista_Form, winTest
@@ -53,9 +52,9 @@ from ShinyGenomePCA import ShinyGenomePCA_Form
 from ShinyMap import ShinyMap_Form
 from Shiny3Dprotein import Shiny3Dprotein_Form
 from ShinyTMscoreAlign import ShinyTMscoreAlign_Form
+from ShinyVolc import ShinyVolc_Form
 from ARAGORN import ARAGORN_Form
 from CDhit import CDhit_Form
-from Genomad import Genomad_Form
 from GBK2JSON import GBK2JSON_Form
 
 
@@ -1039,6 +1038,7 @@ class Ui_MainWindow(object):
         self.actionChemical_Formula.triggered.connect(self.chemicalformula_show)
         self.actionFastANI.triggered.connect(self.fastani_show)
         self.actionShinyTMscoreAlign.triggered.connect(self.shinytmscorealign_show)
+        self.actionShinyVolc_2.triggered.connect(self.shinyvolc_show)
         self.actionARAGORN.triggered.connect(self.aragorn_show)
         self.actionCDhit.triggered.connect(self.cdhit_show)
         self.actionGenomad.triggered.connect(self.genomad_show)
@@ -1450,6 +1450,8 @@ class Ui_MainWindow(object):
             self.shinypcoa_show()
         elif label_item == 'ShinyBatch':
             self.shinybatch_show()
+        elif label_item == 'ShinyVolc':
+            self.shinyvolc_show()
         elif label_item == 'Bugbase':
             self.bugbase_show()
 
@@ -1713,6 +1715,15 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+
+    def shinyvolc_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyVolc
+        self.winTest = ShinyVolc.winTest()
+        self.ui = ShinyVolc_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
     def bugbase_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = Bugbase_Form()
@@ -1810,6 +1821,9 @@ if __name__ == "__main__":
             from PhaTYP import *
             from PhaGCN import *
             from Cherry import *
+            from Prokka import Prokka_Form
+            from Bugbase import Bugbase_Form
+            from Genomad import Genomad_Form
 
     splash.finish(window)  # 隐藏启动界面
 
