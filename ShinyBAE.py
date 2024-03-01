@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ShinyVolc.ui'
+# Form implementation generated from reading ui file 'ShinyBAE.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -14,7 +14,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import os, sys, re, math, time
 from ShinyWeb import ShinyWeb_Form
-
 
 
 class winTest(QtWidgets.QMainWindow):
@@ -32,7 +31,7 @@ class winTest(QtWidgets.QMainWindow):
         :return: None
         """
         try:
-            with os.popen('netstat -aon|findstr "50631"') as res:
+            with os.popen('netstat -aon|findstr "50632"') as res:
                 res = res.read().split('\n')
             result = []
             for line in res:
@@ -47,7 +46,6 @@ class winTest(QtWidgets.QMainWindow):
 
         except:
             return None  # 设置正常退出
-
 
 
 class WorkThread(QThread):
@@ -65,13 +63,13 @@ class WorkThread(QThread):
             path = '/'.join(path)
 
         os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
-                 path + '/Shiny/ShinyScript/ShinyVolc/ShinyVolc.R')
+                 path + '/Shiny/ShinyScript/ShinyBactericidalActivity/ShinyBactericidal_activity.R')
 
         time.sleep(10)
         self.trigger.emit('ShinyApp has been started!!!')
 
 
-class ShinyVolc_Form(QWidget):
+class ShinyBAE_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.work = WorkThread()
@@ -85,7 +83,7 @@ class ShinyVolc_Form(QWidget):
         self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser.setObjectName("textBrowser")
         self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(230, 20, 231, 41))
+        self.label.setGeometry(QtCore.QRect(250, 20, 191, 41))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
@@ -131,15 +129,17 @@ class ShinyVolc_Form(QWidget):
         self.pushButton.clicked.connect(self.start)
         self.pushButton_2.clicked.connect(self.open)
 
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "ShinyVolc"))
-        self.label.setText(_translate("Form", "ShinyVolc"))
+        Form.setWindowTitle(_translate("Form", "ShinyBAE"))
+        self.label.setText(_translate("Form", "ShinyBAE"))
         self.label_2.setText(_translate("Form", "Status"))
         self.pushButton.setText(_translate("Form", "Start App"))
         self.pushButton_2.setText(_translate("Form", "Open Web"))
         self.label_3.setText(_translate("Form", "Please close this window before\n"
 "starting another Shiny Apps!!!"))
+
 
     def start(self):
         self.textBrowser.setText(
@@ -153,7 +153,7 @@ class ShinyVolc_Form(QWidget):
 
 
     def open(self):
-        self.winTable = ShinyWeb_Form(port=50631)
+        self.winTable = ShinyWeb_Form(port=50632)
         self.winTable.show()
 
 
@@ -166,7 +166,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     # Clustal = QtWidgets.QWidget()
     WT = winTest()
-    ui = ShinyVolc_Form()
+    ui = ShinyBAE_Form()
     ui.setupUi(WT)
     WT.show()
     sys.exit(app.exec_())
