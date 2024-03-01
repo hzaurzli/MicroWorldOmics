@@ -46,6 +46,8 @@ from ShinyProtparam import ShinyProtparam_Form
 from ShinyPCoA import ShinyPCoA_Form
 from ShinyBatch import ShinyBatch_Form
 from Bugbase import Bugbase_Form
+from ShinyMCA import ShinyMCA_Form
+from ShinyBAE import ShinyBAE_Form
 from Chemical_formula import Chemicalformula_Form
 from FastANI import FastANI_Form
 from ShinyGenomePCA import ShinyGenomePCA_Form
@@ -541,6 +543,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
+        self.comboBox_12.addItem("")
         self.comboBox_7 = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox_7.setEnabled(True)
         self.comboBox_7.setGeometry(QtCore.QRect(0, 330, 147, 18))
@@ -893,6 +896,8 @@ class Ui_MainWindow(object):
         self.actionGBK2JSON.setObjectName("actionGBK2JSON")
         self.actionBugbase = QtWidgets.QAction(MainWindow)
         self.actionBugbase.setObjectName("actionBugbase")
+        self.actionShinyBAE = QtWidgets.QAction(MainWindow)
+        self.actionShinyBAE.setObjectName("actionShinyBAE")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -961,6 +966,7 @@ class Ui_MainWindow(object):
         self.menuTools.addAction(self.actionARAGORN)
         self.menuTools.addAction(self.actionCDhit)
         self.menuTools.addAction(self.actionGenomad)
+        self.menuTools.addAction(self.actionShinyBAE)
         self.menuHelps.addAction(self.actionReadme)
         self.menubar.addAction(self.menuBlast.menuAction())
         self.menubar.addAction(self.menuAlignment.menuAction())
@@ -1030,6 +1036,7 @@ class Ui_MainWindow(object):
         self.actionCore_genome_analysis.triggered.connect(self.coregenome_show)
         self.actionShinyProtparam.triggered.connect(self.shinyprotparam_show)
         self.actionShinyPCOA.triggered.connect(self.shinypcoa_show)
+        self.actionShinyMCA.triggered.connect(self.shinymca_show)
         self.actionShinyBatch.triggered.connect(self.shinybatch_show)
         self.actionBugbase.triggered.connect(self.bugbase_show)
         self.actionShiny3Dprotein.triggered.connect(self.shiny3dprotein_show)
@@ -1042,6 +1049,7 @@ class Ui_MainWindow(object):
         self.actionARAGORN.triggered.connect(self.aragorn_show)
         self.actionCDhit.triggered.connect(self.cdhit_show)
         self.actionGenomad.triggered.connect(self.genomad_show)
+        self.actionShinyBAE.triggered.connect(self.shinybae_show)
 
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
@@ -1134,6 +1142,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.setItemText(15, _translate("MainWindow", "ARAGORN"))
         self.comboBox_12.setItemText(16, _translate("MainWindow", "CDhit"))
         self.comboBox_12.setItemText(17, _translate("MainWindow", "Genomad"))
+        self.comboBox_12.setItemText(18, _translate("MainWindow", "ShinyBAE"))
         self.comboBox_7.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "Prodigal"))
         self.label_7.setText(_translate("MainWindow", "ORF prediction"))
@@ -1271,6 +1280,7 @@ class Ui_MainWindow(object):
         self.actionGenomad.setText(_translate("MainWindow", "Genomad"))
         self.actionGBK2JSON.setText(_translate("MainWindow", "GBK2JSON"))
         self.actionBugbase.setText(_translate("MainWindow", "Bugbase"))
+        self.actionShinyBAE.setText(_translate("MainWindow", "ShinyBAE"))
 
 
     def selectionchange_comboBox(self):
@@ -1440,6 +1450,8 @@ class Ui_MainWindow(object):
             self.cdhit_show()
         elif label_item == 'Genomad':
             self.genomad_show()
+        elif label_item == 'ShinyBAE':
+            self.shinybae_show()
 
     def selectionchange_comboBox_13(self):
         # 标签用来显示选中的文本
@@ -1448,6 +1460,8 @@ class Ui_MainWindow(object):
         print(label_item)
         if label_item == 'ShinyPCoA':
             self.shinypcoa_show()
+        elif label_item == 'ShinyMCA':
+            self.shinymca_show()
         elif label_item == 'ShinyBatch':
             self.shinybatch_show()
         elif label_item == 'ShinyVolc':
@@ -1742,6 +1756,15 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+
+    def shinymca_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyMCA
+        self.winTest = ShinyMCA.winTest()
+        self.ui = ShinyMCA_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
     def fastani_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = FastANI_Form()
@@ -1798,6 +1821,14 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.form)
         self.form.show()
 
+    def shinybae_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyBAE
+        self.winTest = ShinyBAE.winTest()
+        self.ui = ShinyBAE_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -1832,3 +1863,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+

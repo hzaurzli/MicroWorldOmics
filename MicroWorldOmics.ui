@@ -1012,6 +1012,11 @@ QComboBox {
            <string>Genomad</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>ShinyBAE</string>
+          </property>
+         </item>
         </widget>
         <widget class="QComboBox" name="comboBox_7">
          <property name="enabled">
@@ -1585,6 +1590,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionARAGORN"/>
     <addaction name="actionCDhit"/>
     <addaction name="actionGenomad"/>
+    <addaction name="actionShinyBAE"/>
    </widget>
    <widget class="QMenu" name="menuHelps">
     <property name="title">
@@ -1944,6 +1950,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionBugbase">
    <property name="text">
     <string>Bugbase</string>
+   </property>
+  </action>
+  <action name="actionShinyBAE">
+   <property name="text">
+    <string>ShinyBAE</string>
    </property>
   </action>
  </widget>
