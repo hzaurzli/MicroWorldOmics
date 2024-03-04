@@ -52,6 +52,7 @@ from Chemical_formula import Chemicalformula_Form
 from FastANI import FastANI_Form
 from ShinyGenomePCA import ShinyGenomePCA_Form
 from ShinyMap import ShinyMap_Form
+from ShinyNMDS import ShinyNMDS_Form
 from Shiny3Dprotein import Shiny3Dprotein_Form
 from ShinyTMscoreAlign import ShinyTMscoreAlign_Form
 from ShinyVolc import ShinyVolc_Form
@@ -1042,6 +1043,7 @@ class Ui_MainWindow(object):
         self.actionShiny3Dprotein.triggered.connect(self.shiny3dprotein_show)
         self.actionShinyGenomicPCA.triggered.connect(self.shinygenomepca_show)
         self.actionShinyMap.triggered.connect(self.shinymap_show)
+        self.actionShinyNMDS.triggered.connect(self.shinynmds_show)
         self.actionChemical_Formula.triggered.connect(self.chemicalformula_show)
         self.actionFastANI.triggered.connect(self.fastani_show)
         self.actionShinyTMscoreAlign.triggered.connect(self.shinytmscorealign_show)
@@ -1460,6 +1462,8 @@ class Ui_MainWindow(object):
         print(label_item)
         if label_item == 'ShinyPCoA':
             self.shinypcoa_show()
+        elif label_item == 'ShinyNMDS':
+            self.shinynmds_show()
         elif label_item == 'ShinyMCA':
             self.shinymca_show()
         elif label_item == 'ShinyBatch':
@@ -1729,7 +1733,6 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
-
     def shinyvolc_show(self):
         self.form = QtWidgets.QWidget()
         import ShinyVolc
@@ -1756,6 +1759,13 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+    def shinynmds_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyNMDS
+        self.winTest = ShinyNMDS.winTest()
+        self.ui = ShinyNMDS_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
 
     def shinymca_show(self):
         self.form = QtWidgets.QWidget()
