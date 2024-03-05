@@ -53,6 +53,7 @@ from FastANI import FastANI_Form
 from ShinyGenomePCA import ShinyGenomePCA_Form
 from ShinyMap import ShinyMap_Form
 from ShinyNMDS import ShinyNMDS_Form
+from ShinyDiff import ShinyDiff_Form
 from Shiny3Dprotein import Shiny3Dprotein_Form
 from ShinyTMscoreAlign import ShinyTMscoreAlign_Form
 from ShinyVolc import ShinyVolc_Form
@@ -1044,6 +1045,7 @@ class Ui_MainWindow(object):
         self.actionShinyGenomicPCA.triggered.connect(self.shinygenomepca_show)
         self.actionShinyMap.triggered.connect(self.shinymap_show)
         self.actionShinyNMDS.triggered.connect(self.shinynmds_show)
+        self.actionShinyDiff.triggered.connect(self.shinydiff_show)
         self.actionChemical_Formula.triggered.connect(self.chemicalformula_show)
         self.actionFastANI.triggered.connect(self.fastani_show)
         self.actionShinyTMscoreAlign.triggered.connect(self.shinytmscorealign_show)
@@ -1462,6 +1464,8 @@ class Ui_MainWindow(object):
         print(label_item)
         if label_item == 'ShinyPCoA':
             self.shinypcoa_show()
+        elif label_item == 'ShinyDiff':
+            self.shinydiff_show()
         elif label_item == 'ShinyNMDS':
             self.shinynmds_show()
         elif label_item == 'ShinyMCA':
@@ -1772,6 +1776,14 @@ class Ui_MainWindow(object):
         import ShinyMCA
         self.winTest = ShinyMCA.winTest()
         self.ui = ShinyMCA_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+    def shinydiff_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyDiff
+        self.winTest = ShinyDiff.winTest()
+        self.ui = ShinyDiff_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
