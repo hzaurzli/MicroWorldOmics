@@ -167,7 +167,7 @@ server <- function(input, output, session) {
       paste(input$dataset, ".csv", sep = "")
     },
     content = function(file) {
-      write.csv(linkList,file,row.names = T,quote = F)
+      write.csv(finalTable,file,row.names = T,quote = F)
     }
   )
   

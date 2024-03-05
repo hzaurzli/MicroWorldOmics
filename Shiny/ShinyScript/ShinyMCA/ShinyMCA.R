@@ -167,7 +167,7 @@ server <- function(input, output, session) {
       dat = data.frame(mca$samplesCoordinates[,c(1,2,3)])
       dat = data.frame(cbind(dat,group))
       
-      dat_final <<- dat
+	  dat_final <<- dat
     }
   }, options = list(pageLength = 10))
   
@@ -177,7 +177,7 @@ server <- function(input, output, session) {
       paste(input$dataset, ".csv", sep = "")
     },
     content = function(file) {
-      write.csv(linkList,file,row.names = T,quote = F)
+      write.csv(dat_final,file,row.names = T,quote = F)
     }
   )
   
@@ -217,7 +217,7 @@ server <- function(input, output, session) {
       paste(input$dataset, ".csv", sep = "")
     },
     content = function(file) {
-      write.csv(linkList,file,row.names = T,quote = F)
+      write.csv(final,file,row.names = T,quote = F)
     }
   )
 }
