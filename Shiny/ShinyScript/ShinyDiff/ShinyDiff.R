@@ -1,7 +1,7 @@
 library(shiny)
 library(Maaslin2)
 
-
+## 这个函数作 renderUI 和 uiOutput 无法在菜单栏翻页的时候进行渲染,只能在单页中使用
 dropdownButton <- function(label = "", status = c("default", "primary", "success", "info", "warning", "danger"), ..., width = NULL) {
   
   status <- match.arg(status)
