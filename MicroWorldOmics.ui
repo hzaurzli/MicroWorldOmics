@@ -47,7 +47,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-302</y>
+          <y>0</y>
           <width>198</width>
           <height>719</height>
          </rect>
@@ -1154,7 +1154,7 @@ QComboBox {
          </item>
          <item>
           <property name="text">
-           <string>ShinyDiversity</string>
+           <string>ShinyMultifun</string>
           </property>
          </item>
          <item>
@@ -1552,7 +1552,7 @@ p, li { white-space: pre-wrap; }
      <property name="title">
       <string>Metagenomics/Amplicons</string>
      </property>
-     <addaction name="actionDiversity"/>
+     <addaction name="actionShinyMultifun"/>
      <addaction name="actionShinyDiff"/>
      <addaction name="actionShinyNMDS"/>
      <addaction name="actionShinyPCOA"/>
@@ -1812,9 +1812,9 @@ p, li { white-space: pre-wrap; }
     <string>Step5 Phylogeny</string>
    </property>
   </action>
-  <action name="actionDiversity">
+  <action name="actionShinyMultifun">
    <property name="text">
-    <string>ShinyDiversity</string>
+    <string>ShinyMultifun</string>
    </property>
   </action>
   <action name="actionShinyDiff">

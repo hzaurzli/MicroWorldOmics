@@ -53,6 +53,7 @@ from FastANI import FastANI_Form
 from ShinyGenomePCA import ShinyGenomePCA_Form
 from ShinyMap import ShinyMap_Form
 from ShinyNMDS import ShinyNMDS_Form
+from ShinyMultifun import ShinyMultifun_Form
 from ShinyDiff import ShinyDiff_Form
 from Shiny3Dprotein import Shiny3Dprotein_Form
 from ShinyTMscoreAlign import ShinyTMscoreAlign_Form
@@ -98,7 +99,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -302, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -842,8 +843,8 @@ class Ui_MainWindow(object):
         self.actionJSalignment.setObjectName("actionJSalignment")
         self.actionStep5_Phylogeny = QtWidgets.QAction(MainWindow)
         self.actionStep5_Phylogeny.setObjectName("actionStep5_Phylogeny")
-        self.actionDiversity = QtWidgets.QAction(MainWindow)
-        self.actionDiversity.setObjectName("actionDiversity")
+        self.actionShinyMultifun = QtWidgets.QAction(MainWindow)
+        self.actionShinyMultifun.setObjectName("actionShinyMultifun")
         self.actionShinyDiff = QtWidgets.QAction(MainWindow)
         self.actionShinyDiff.setObjectName("actionShinyDiff")
         self.actionShinyNMDS = QtWidgets.QAction(MainWindow)
@@ -936,7 +937,7 @@ class Ui_MainWindow(object):
         self.menuDeeplearning.addAction(self.actionCHERRY)
         self.menuPhage_classification.addAction(self.menuClassification.menuAction())
         self.menuPhage_classification.addAction(self.menuDeeplearning.menuAction())
-        self.menuMetagenomics.addAction(self.actionDiversity)
+        self.menuMetagenomics.addAction(self.actionShinyMultifun)
         self.menuMetagenomics.addAction(self.actionShinyDiff)
         self.menuMetagenomics.addAction(self.actionShinyNMDS)
         self.menuMetagenomics.addAction(self.actionShinyPCOA)
@@ -1045,7 +1046,9 @@ class Ui_MainWindow(object):
         self.actionShinyGenomicPCA.triggered.connect(self.shinygenomepca_show)
         self.actionShinyMap.triggered.connect(self.shinymap_show)
         self.actionShinyNMDS.triggered.connect(self.shinynmds_show)
+        self.actionShinyMultifun.triggered.connect(self.shinymultifun_show)
         self.actionShinyDiff.triggered.connect(self.shinydiff_show)
+
         self.actionChemical_Formula.triggered.connect(self.chemicalformula_show)
         self.actionFastANI.triggered.connect(self.fastani_show)
         self.actionShinyTMscoreAlign.triggered.connect(self.shinytmscorealign_show)
@@ -1152,7 +1155,7 @@ class Ui_MainWindow(object):
         self.label_7.setText(_translate("MainWindow", "ORF prediction"))
         self.label_15.setText(_translate("MainWindow", "Metagenomics/Amplicons"))
         self.comboBox_13.setItemText(0, _translate("MainWindow", "<Default>"))
-        self.comboBox_13.setItemText(1, _translate("MainWindow", "ShinyDiversity"))
+        self.comboBox_13.setItemText(1, _translate("MainWindow", "ShinyMultifun"))
         self.comboBox_13.setItemText(2, _translate("MainWindow", "ShinyDiff"))
         self.comboBox_13.setItemText(3, _translate("MainWindow", "ShinyNMDS"))
         self.comboBox_13.setItemText(4, _translate("MainWindow", "ShinyPCoA"))
@@ -1256,7 +1259,7 @@ class Ui_MainWindow(object):
         self.actionIGV.setText(_translate("MainWindow", "IGV"))
         self.actionJSalignment.setText(_translate("MainWindow", "JSalignment"))
         self.actionStep5_Phylogeny.setText(_translate("MainWindow", "Step5 Phylogeny"))
-        self.actionDiversity.setText(_translate("MainWindow", "ShinyDiversity"))
+        self.actionShinyMultifun.setText(_translate("MainWindow", "ShinyMultifun"))
         self.actionShinyDiff.setText(_translate("MainWindow", "ShinyDiff"))
         self.actionShinyNMDS.setText(_translate("MainWindow", "ShinyNMDS"))
         self.actionShinyPCOA.setText(_translate("MainWindow", "ShinyPCoA"))
@@ -1285,7 +1288,6 @@ class Ui_MainWindow(object):
         self.actionGBK2JSON.setText(_translate("MainWindow", "GBK2JSON"))
         self.actionBugbase.setText(_translate("MainWindow", "Bugbase"))
         self.actionShinyBAE.setText(_translate("MainWindow", "ShinyBAE"))
-
 
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
@@ -1462,7 +1464,9 @@ class Ui_MainWindow(object):
         # currentText()：返回选中选项的文本
         label_item = self.comboBox_13.currentText()
         print(label_item)
-        if label_item == 'ShinyPCoA':
+        if label_item == 'ShinyMultifun':
+            self.shinymultifun_show()
+        elif label_item == 'ShinyPCoA':
             self.shinypcoa_show()
         elif label_item == 'ShinyDiff':
             self.shinydiff_show()
@@ -1477,37 +1481,41 @@ class Ui_MainWindow(object):
         elif label_item == 'Bugbase':
             self.bugbase_show()
 
+        # pages
+        ## click to new window BlastN,BlastN_Form is object in BlastN.py
 
-    # pages
-    ## click to new window BlastN,BlastN_Form is object in BlastN.py
     def blastn_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = BlastN_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
-    ## click to new window BlastP,BlastP_Form is object in BlastP.py
+        ## click to new window BlastP,BlastP_Form is object in BlastP.py
+
     def blastp_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = BlastP_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
-    ## click to new window BlastX,BlastX_Form is object in BlastX.py
+        ## click to new window BlastX,BlastX_Form is object in BlastX.py
+
     def blastx_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = BlastX_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
-    ## click to new window tBlastN,tBlastN_Form is object in tBlastN.py
+        ## click to new window tBlastN,tBlastN_Form is object in tBlastN.py
+
     def tblastn_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = tBlastN_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
-    ## click to new window tBlastX,tBlastX_Form is object in tBlastX.py
+        ## click to new window tBlastX,tBlastX_Form is object in tBlastX.py
+
     def tblastx_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = tBlastX_Form()
@@ -1520,7 +1528,8 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.form)
         self.form.show()
 
-    ## click to new window BlastP,BlastP_Form is object in BlastP.py
+        ## click to new window BlastP,BlastP_Form is object in BlastP.py
+
     def muscle_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = Muscle_Form()
@@ -1779,6 +1788,16 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+
+    def shinymultifun_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyMultifun
+        self.winTest = ShinyMultifun.winTest()
+        self.ui = ShinyMultifun_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+
     def shinydiff_show(self):
         self.form = QtWidgets.QWidget()
         import ShinyDiff
@@ -1851,6 +1870,7 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -1885,4 +1905,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
