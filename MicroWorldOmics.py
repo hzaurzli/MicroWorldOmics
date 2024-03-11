@@ -58,6 +58,7 @@ from ShinyDiff import ShinyDiff_Form
 from Shiny3Dprotein import Shiny3Dprotein_Form
 from ShinyTMscoreAlign import ShinyTMscoreAlign_Form
 from ShinyVolc import ShinyVolc_Form
+from ShinyTimeSeries import ShinyTimeSeries_Form
 from ARAGORN import ARAGORN_Form
 from CDhit import CDhit_Form
 from GBK2JSON import GBK2JSON_Form
@@ -1052,6 +1053,7 @@ class Ui_MainWindow(object):
         self.actionChemical_Formula.triggered.connect(self.chemicalformula_show)
         self.actionFastANI.triggered.connect(self.fastani_show)
         self.actionShinyTMscoreAlign.triggered.connect(self.shinytmscorealign_show)
+        self.actionShinyTimeSeries.triggered.connect(self.shinytimeseries_show)
         self.actionShinyVolc_2.triggered.connect(self.shinyvolc_show)
         self.actionARAGORN.triggered.connect(self.aragorn_show)
         self.actionCDhit.triggered.connect(self.cdhit_show)
@@ -1478,6 +1480,8 @@ class Ui_MainWindow(object):
             self.shinybatch_show()
         elif label_item == 'ShinyVolc':
             self.shinyvolc_show()
+        elif label_item == 'ShinyTimeSeries':
+            self.shinytimeseries_show()
         elif label_item == 'Bugbase':
             self.bugbase_show()
 
@@ -1803,6 +1807,14 @@ class Ui_MainWindow(object):
         import ShinyDiff
         self.winTest = ShinyDiff.winTest()
         self.ui = ShinyDiff_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+    def shinytimeseries_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyTimeSeries
+        self.winTest = ShinyTimeSeries.winTest()
+        self.ui = ShinyTimeSeries_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
