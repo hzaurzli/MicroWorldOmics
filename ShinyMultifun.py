@@ -66,7 +66,7 @@ class WorkThread(QThread):
         os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
                  path + '/Shiny/ShinyScript/ShinyMultifun/ShinyMultifun.R')
 
-        time.sleep(10)
+        time.sleep(30)
         self.trigger.emit('ShinyApp has been started!!!')
 
 
@@ -129,6 +129,7 @@ class ShinyMultifun_Form(QWidget):
         # button action
         self.pushButton.clicked.connect(self.start)
         self.pushButton_2.clicked.connect(self.open)
+
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
