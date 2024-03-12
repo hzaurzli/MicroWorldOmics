@@ -136,10 +136,10 @@ server <- function(input, output, session) {
       summary(mod)
       
       predT = predict(mod,ncomp=2,type='response',
-                      newdata = predict_dat)
+                      newdata = t(predict_dat))
       
       predT_tmp = data.frame(predT)
-      predT_table <<- data.frame(Time_point = row.names(predT), 
+      predT_table <<- data.frame(Time_point = row.names(predT_tmp), 
                                  Time_val = predT_tmp[,1])
       
     }
