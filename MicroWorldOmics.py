@@ -55,6 +55,7 @@ from ShinyMap import ShinyMap_Form
 from ShinyNMDS import ShinyNMDS_Form
 from ShinyMultifun import ShinyMultifun_Form
 from ShinyDiff import ShinyDiff_Form
+from ShinySpiecEasi import ShinySpiecEasi_Form
 from Shiny3Dprotein import Shiny3Dprotein_Form
 from ShinyTMscoreAlign import ShinyTMscoreAlign_Form
 from ShinyVolc import ShinyVolc_Form
@@ -1049,7 +1050,7 @@ class Ui_MainWindow(object):
         self.actionShinyNMDS.triggered.connect(self.shinynmds_show)
         self.actionShinyMultifun.triggered.connect(self.shinymultifun_show)
         self.actionShinyDiff.triggered.connect(self.shinydiff_show)
-
+        self.actionShinySpiecEasi.triggered.connect(self.shinyspieceasi_show)
         self.actionChemical_Formula.triggered.connect(self.chemicalformula_show)
         self.actionFastANI.triggered.connect(self.fastani_show)
         self.actionShinyTMscoreAlign.triggered.connect(self.shinytmscorealign_show)
@@ -1074,6 +1075,7 @@ class Ui_MainWindow(object):
         self.comboBox_11.currentIndexChanged.connect(self.selectionchange_comboBox_11)
         self.comboBox_12.currentIndexChanged.connect(self.selectionchange_comboBox_12)
         self.comboBox_13.currentIndexChanged.connect(self.selectionchange_comboBox_13)
+        self.comboBox_14.currentIndexChanged.connect(self.selectionchange_comboBox_14)
 
 
     def retranslateUi(self, MainWindow):
@@ -1448,7 +1450,7 @@ class Ui_MainWindow(object):
             self.shiny3dprotein_show()
         elif label_item == 'ShinyMap':
             self.shinymap_show()
-        elif label_item == 'ShinyGenomePCA':
+        elif label_item == 'ShinyGenomicPCA':
             self.shinygenomepca_show()
         elif label_item == 'ShinyTMscoreAlign':
             self.shinytmscorealign_show()
@@ -1485,9 +1487,17 @@ class Ui_MainWindow(object):
         elif label_item == 'Bugbase':
             self.bugbase_show()
 
-        # pages
-        ## click to new window BlastN,BlastN_Form is object in BlastN.py
 
+    def selectionchange_comboBox_14(self):
+        # 标签用来显示选中的文本
+        # currentText()：返回选中选项的文本
+        label_item = self.comboBox_14.currentText()
+        print(label_item)
+        if label_item == 'ShinySpiecEasi':
+            self.shinyspieceasi_show()
+
+    # pages
+    ## click to new window BlastN,BlastN_Form is object in BlastN.py
     def blastn_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = BlastN_Form()
@@ -1815,6 +1825,15 @@ class Ui_MainWindow(object):
         import ShinyTimeSeries
         self.winTest = ShinyTimeSeries.winTest()
         self.ui = ShinyTimeSeries_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+
+    def shinyspieceasi_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinySpiecEasi
+        self.winTest = ShinySpiecEasi.winTest()
+        self.ui = ShinySpiecEasi_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
