@@ -63,6 +63,8 @@ from ShinyTimeSeries import ShinyTimeSeries_Form
 from ARAGORN import ARAGORN_Form
 from CDhit import CDhit_Form
 from GBK2JSON import GBK2JSON_Form
+from ShinyREBACCA import ShinyREBACCA_Form
+from ShinyCClasso import ShinyCClasso_Form
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -101,7 +103,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -302, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -672,7 +674,6 @@ class Ui_MainWindow(object):
         self.comboBox_14.addItem("")
         self.comboBox_14.addItem("")
         self.comboBox_14.addItem("")
-        self.comboBox_14.addItem("")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
         self.label_13 = QtWidgets.QLabel(self.centralwidget)
@@ -949,7 +950,6 @@ class Ui_MainWindow(object):
         self.menuMetagenomics.addAction(self.actionShinyBatch)
         self.menuMetagenomics.addAction(self.actionBugbase)
         self.menuNetworks.addAction(self.actionShinyMicroWGCNA)
-        self.menuNetworks.addAction(self.actionShinyBioMiCo)
         self.menuNetworks.addAction(self.actionShinySpiecEasi)
         self.menuNetworks.addAction(self.actionShinyREBACCA)
         self.menuNetworks.addAction(self.actionShinyCCLasso)
@@ -988,7 +988,6 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
 
         # pages action
         self.actionBlastN.triggered.connect(self.blastn_show)
@@ -1051,6 +1050,8 @@ class Ui_MainWindow(object):
         self.actionShinyMultifun.triggered.connect(self.shinymultifun_show)
         self.actionShinyDiff.triggered.connect(self.shinydiff_show)
         self.actionShinySpiecEasi.triggered.connect(self.shinyspieceasi_show)
+        self.actionShinyREBACCA.triggered.connect(self.shinyrebacca_show)
+        self.actionShinyCCLasso.triggered.connect(self.shinycclasso_show)
         self.actionChemical_Formula.triggered.connect(self.chemicalformula_show)
         self.actionFastANI.triggered.connect(self.fastani_show)
         self.actionShinyTMscoreAlign.triggered.connect(self.shinytmscorealign_show)
@@ -1171,11 +1172,10 @@ class Ui_MainWindow(object):
         self.label_16.setText(_translate("MainWindow", "Networks"))
         self.comboBox_14.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_14.setItemText(1, _translate("MainWindow", "ShinyMicroWGCNA"))
-        self.comboBox_14.setItemText(2, _translate("MainWindow", "ShinyBioMiCo"))
-        self.comboBox_14.setItemText(3, _translate("MainWindow", "ShinySpiecEasi"))
-        self.comboBox_14.setItemText(4, _translate("MainWindow", "ShinyREBACCA"))
-        self.comboBox_14.setItemText(5, _translate("MainWindow", "ShinyCCLasso"))
-        self.comboBox_14.setItemText(6, _translate("MainWindow", "ShinyDiffCoEx"))
+        self.comboBox_14.setItemText(2, _translate("MainWindow", "ShinySpiecEasi"))
+        self.comboBox_14.setItemText(3, _translate("MainWindow", "ShinyREBACCA"))
+        self.comboBox_14.setItemText(4, _translate("MainWindow", "ShinyCCLasso"))
+        self.comboBox_14.setItemText(5, _translate("MainWindow", "ShinyDiffCoEx"))
         self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -1292,6 +1292,7 @@ class Ui_MainWindow(object):
         self.actionGBK2JSON.setText(_translate("MainWindow", "GBK2JSON"))
         self.actionBugbase.setText(_translate("MainWindow", "Bugbase"))
         self.actionShinyBAE.setText(_translate("MainWindow", "ShinyBAE"))
+
 
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
@@ -1495,6 +1496,10 @@ class Ui_MainWindow(object):
         print(label_item)
         if label_item == 'ShinySpiecEasi':
             self.shinyspieceasi_show()
+        elif label_item == 'ShinyREBACCA':
+            self.shinyrebacca_show()
+        elif label_item == 'ShinyCCLasso':
+            self.shinycclasso_show()
 
     # pages
     ## click to new window BlastN,BlastN_Form is object in BlastN.py
@@ -1834,6 +1839,24 @@ class Ui_MainWindow(object):
         import ShinySpiecEasi
         self.winTest = ShinySpiecEasi.winTest()
         self.ui = ShinySpiecEasi_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+
+    def shinyrebacca_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyREBACCA
+        self.winTest = ShinyREBACCA.winTest()
+        self.ui = ShinyREBACCA_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+
+    def shinycclasso_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyCClasso
+        self.winTest = ShinyCClasso.winTest()
+        self.ui = ShinyCClasso_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
