@@ -108,13 +108,13 @@ server <- function(input, output, session) {
     input_method <<- input$method
     
     otu_dat = otu_dat()
-    amgut1.filt <<- as.matrix(otu_dat)
    
-    if(is.null(amgut1.filt)){
+    if(is.null(otu_dat)){
       warning("Please upload files!")
     }
     else{
       output$table <- renderDataTable({
+		amgut1.filt <<- as.matrix(otu_dat)
         depths <- rowSums(amgut1.filt)
         amgut1.filt.n  <- t(apply(amgut1.filt, 1, norm_to_total))
         amgut1.filt.cs <- round(amgut1.filt.n * min(depths))
