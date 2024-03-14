@@ -1284,6 +1284,11 @@ QComboBox {
          </item>
          <item>
           <property name="text">
+           <string>ShinyCosine</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>ShinyDiffCoEx</string>
           </property>
          </item>
@@ -1565,6 +1570,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionShinySpiecEasi"/>
      <addaction name="actionShinyREBACCA"/>
      <addaction name="actionShinyCCLasso"/>
+     <addaction name="actionShinyCosine"/>
      <addaction name="actionShinyDiffCoEx"/>
     </widget>
     <addaction name="actionMLST"/>
@@ -1949,6 +1955,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionShinyBAE">
    <property name="text">
     <string>ShinyBAE</string>
+   </property>
+  </action>
+  <action name="actionShinyCosine">
+   <property name="text">
+    <string>ShinyCosine</string>
    </property>
   </action>
  </widget>

@@ -65,6 +65,7 @@ from CDhit import CDhit_Form
 from GBK2JSON import GBK2JSON_Form
 from ShinyREBACCA import ShinyREBACCA_Form
 from ShinyCClasso import ShinyCClasso_Form
+from ShinyCosine import ShinyCosine_Form
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -674,6 +675,7 @@ class Ui_MainWindow(object):
         self.comboBox_14.addItem("")
         self.comboBox_14.addItem("")
         self.comboBox_14.addItem("")
+        self.comboBox_14.addItem("")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
         self.label_13 = QtWidgets.QLabel(self.centralwidget)
@@ -904,6 +906,8 @@ class Ui_MainWindow(object):
         self.actionBugbase.setObjectName("actionBugbase")
         self.actionShinyBAE = QtWidgets.QAction(MainWindow)
         self.actionShinyBAE.setObjectName("actionShinyBAE")
+        self.actionShinyCosine = QtWidgets.QAction(MainWindow)
+        self.actionShinyCosine.setObjectName("actionShinyCosine")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -953,6 +957,7 @@ class Ui_MainWindow(object):
         self.menuNetworks.addAction(self.actionShinySpiecEasi)
         self.menuNetworks.addAction(self.actionShinyREBACCA)
         self.menuNetworks.addAction(self.actionShinyCCLasso)
+        self.menuNetworks.addAction(self.actionShinyCosine)
         self.menuNetworks.addAction(self.actionShinyDiffCoEx)
         self.menuTools.addAction(self.actionMLST)
         self.menuTools.addAction(self.actionSerotype)
@@ -1052,6 +1057,7 @@ class Ui_MainWindow(object):
         self.actionShinySpiecEasi.triggered.connect(self.shinyspieceasi_show)
         self.actionShinyREBACCA.triggered.connect(self.shinyrebacca_show)
         self.actionShinyCCLasso.triggered.connect(self.shinycclasso_show)
+        self.actionShinyCosine.triggered.connect(self.shinycosine_show)
         self.actionChemical_Formula.triggered.connect(self.chemicalformula_show)
         self.actionFastANI.triggered.connect(self.fastani_show)
         self.actionShinyTMscoreAlign.triggered.connect(self.shinytmscorealign_show)
@@ -1077,7 +1083,6 @@ class Ui_MainWindow(object):
         self.comboBox_12.currentIndexChanged.connect(self.selectionchange_comboBox_12)
         self.comboBox_13.currentIndexChanged.connect(self.selectionchange_comboBox_13)
         self.comboBox_14.currentIndexChanged.connect(self.selectionchange_comboBox_14)
-
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -1175,7 +1180,8 @@ class Ui_MainWindow(object):
         self.comboBox_14.setItemText(2, _translate("MainWindow", "ShinySpiecEasi"))
         self.comboBox_14.setItemText(3, _translate("MainWindow", "ShinyREBACCA"))
         self.comboBox_14.setItemText(4, _translate("MainWindow", "ShinyCCLasso"))
-        self.comboBox_14.setItemText(5, _translate("MainWindow", "ShinyDiffCoEx"))
+        self.comboBox_14.setItemText(5, _translate("MainWindow", "ShinyCosine"))
+        self.comboBox_14.setItemText(6, _translate("MainWindow", "ShinyDiffCoEx"))
         self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -1292,7 +1298,7 @@ class Ui_MainWindow(object):
         self.actionGBK2JSON.setText(_translate("MainWindow", "GBK2JSON"))
         self.actionBugbase.setText(_translate("MainWindow", "Bugbase"))
         self.actionShinyBAE.setText(_translate("MainWindow", "ShinyBAE"))
-
+        self.actionShinyCosine.setText(_translate("MainWindow", "ShinyCosine"))
 
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
@@ -1500,6 +1506,8 @@ class Ui_MainWindow(object):
             self.shinyrebacca_show()
         elif label_item == 'ShinyCCLasso':
             self.shinycclasso_show()
+        elif label_item == 'ShinyCosine':
+            self.shinycosine_show()
 
     # pages
     ## click to new window BlastN,BlastN_Form is object in BlastN.py
@@ -1860,6 +1868,14 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+    def shinycosine_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyCosine
+        self.winTest = ShinyCosine.winTest()
+        self.ui = ShinyCosine_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
     def fastani_show(self):
         self.form = QtWidgets.QMainWindow()
         self.ui = FastANI_Form()
@@ -1959,3 +1975,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
