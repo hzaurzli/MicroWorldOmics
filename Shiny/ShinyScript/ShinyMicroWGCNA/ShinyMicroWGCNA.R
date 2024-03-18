@@ -216,9 +216,9 @@ ui <- fluidPage(
              
              mainPanel(
                titlePanel("Modules weight matrix"),
-               withSpinner(plotOutput(outputId = "detectfig4")),
+               dataTableOutput(outputId = "table1"),
                hr(),
-               dataTableOutput(outputId = "table1")
+               withSpinner(plotOutput(outputId = "detectfig4"))
              )
            )
         ),
@@ -1222,7 +1222,8 @@ server <- function(input, output, session) {
 
 
 # Run the application 
-app = shinyApp(ui = ui, server = server)
-runApp(app, port = 50800)
+# app = shinyApp(ui = ui, server = server)
+# runApp(app, port = 50700)
 
+shinyApp(ui = ui, server = server)
 
