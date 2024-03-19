@@ -1292,6 +1292,11 @@ QComboBox {
            <string>ShinyDiffCoEx</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>ShinyNetVis</string>
+          </property>
+         </item>
         </widget>
        </widget>
       </widget>
@@ -1572,6 +1577,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionShinyCCLasso"/>
      <addaction name="actionShinyCosine"/>
      <addaction name="actionShinyDiffCoEx"/>
+     <addaction name="actionShinyNetVis"/>
     </widget>
     <addaction name="actionMLST"/>
     <addaction name="actionSerotype"/>
@@ -1960,6 +1966,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionShinyCosine">
    <property name="text">
     <string>ShinyCosine</string>
+   </property>
+  </action>
+  <action name="actionShinyNetVis">
+   <property name="text">
+    <string>ShinyNetVis</string>
    </property>
   </action>
  </widget>

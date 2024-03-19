@@ -66,7 +66,9 @@ from GBK2JSON import GBK2JSON_Form
 from ShinyREBACCA import ShinyREBACCA_Form
 from ShinyCClasso import ShinyCClasso_Form
 from ShinyCosine import ShinyCosine_Form
-
+from ShinyDiffCoEx import ShinyDiffCoEx_Form
+from ShinyMicroWGCNA import ShinyMicroWGCNA_Form
+from ShinyNetVis import ShinyNetVis_Form
 
 class MyWindow(QtWidgets.QPushButton):
     def __init__(self):
@@ -77,6 +79,7 @@ class MyWindow(QtWidgets.QPushButton):
         sp.showMessage("Loading... {0}%".format(num * 10), QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom,
                        QtCore.Qt.black)
         QtWidgets.qApp.processEvents()  # 允许主进程处理事件
+
 
 
 class Ui_MainWindow(object):
@@ -676,6 +679,7 @@ class Ui_MainWindow(object):
         self.comboBox_14.addItem("")
         self.comboBox_14.addItem("")
         self.comboBox_14.addItem("")
+        self.comboBox_14.addItem("")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
         self.label_13 = QtWidgets.QLabel(self.centralwidget)
@@ -908,6 +912,8 @@ class Ui_MainWindow(object):
         self.actionShinyBAE.setObjectName("actionShinyBAE")
         self.actionShinyCosine = QtWidgets.QAction(MainWindow)
         self.actionShinyCosine.setObjectName("actionShinyCosine")
+        self.actionShinyNetVis = QtWidgets.QAction(MainWindow)
+        self.actionShinyNetVis.setObjectName("actionShinyNetVis")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -959,6 +965,7 @@ class Ui_MainWindow(object):
         self.menuNetworks.addAction(self.actionShinyCCLasso)
         self.menuNetworks.addAction(self.actionShinyCosine)
         self.menuNetworks.addAction(self.actionShinyDiffCoEx)
+        self.menuNetworks.addAction(self.actionShinyNetVis)
         self.menuTools.addAction(self.actionMLST)
         self.menuTools.addAction(self.actionSerotype)
         self.menuTools.addAction(self.actionGene_identification)
@@ -1055,9 +1062,13 @@ class Ui_MainWindow(object):
         self.actionShinyMultifun.triggered.connect(self.shinymultifun_show)
         self.actionShinyDiff.triggered.connect(self.shinydiff_show)
         self.actionShinySpiecEasi.triggered.connect(self.shinyspieceasi_show)
+        self.actionShinyMicroWGCNA.triggered.connect(self.shinymicrowgcna_show)
         self.actionShinyREBACCA.triggered.connect(self.shinyrebacca_show)
         self.actionShinyCCLasso.triggered.connect(self.shinycclasso_show)
         self.actionShinyCosine.triggered.connect(self.shinycosine_show)
+        self.actionShinyDiffCoEx.triggered.connect(self.shinydiffcoex_show)
+        self.actionShinyMicroWGCNA.triggered.connect(self.shinymicrowgcna_show)
+        self.actionShinyNetVis.triggered.connect(self.shinynetvis_show)
         self.actionChemical_Formula.triggered.connect(self.chemicalformula_show)
         self.actionFastANI.triggered.connect(self.fastani_show)
         self.actionShinyTMscoreAlign.triggered.connect(self.shinytmscorealign_show)
@@ -1182,6 +1193,7 @@ class Ui_MainWindow(object):
         self.comboBox_14.setItemText(4, _translate("MainWindow", "ShinyCCLasso"))
         self.comboBox_14.setItemText(5, _translate("MainWindow", "ShinyCosine"))
         self.comboBox_14.setItemText(6, _translate("MainWindow", "ShinyDiffCoEx"))
+        self.comboBox_14.setItemText(7, _translate("MainWindow", "ShinyNetVis"))
         self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -1299,6 +1311,8 @@ class Ui_MainWindow(object):
         self.actionBugbase.setText(_translate("MainWindow", "Bugbase"))
         self.actionShinyBAE.setText(_translate("MainWindow", "ShinyBAE"))
         self.actionShinyCosine.setText(_translate("MainWindow", "ShinyCosine"))
+        self.actionShinyNetVis.setText(_translate("MainWindow", "ShinyNetVis"))
+
 
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
@@ -1500,7 +1514,9 @@ class Ui_MainWindow(object):
         # currentText()：返回选中选项的文本
         label_item = self.comboBox_14.currentText()
         print(label_item)
-        if label_item == 'ShinySpiecEasi':
+        if label_item == 'ShinyMicroWGCNA':
+            self.shinymicrowgcna_show()
+        elif label_item == 'ShinySpiecEasi':
             self.shinyspieceasi_show()
         elif label_item == 'ShinyREBACCA':
             self.shinyrebacca_show()
@@ -1508,6 +1524,10 @@ class Ui_MainWindow(object):
             self.shinycclasso_show()
         elif label_item == 'ShinyCosine':
             self.shinycosine_show()
+        elif label_item == 'ShinyDiffCoEx':
+            self.shinydiffcoex_show()
+        elif label_item == 'ShinyNetVis':
+            self.shinynetvis_show()
 
     # pages
     ## click to new window BlastN,BlastN_Form is object in BlastN.py
@@ -1833,6 +1853,22 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+    def shinymicrowgcna_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyMicroWGCNA
+        self.winTest = ShinyMicroWGCNA.winTest()
+        self.ui = ShinyMicroWGCNA_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+    def shinynetvis_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyNetVis
+        self.winTest = ShinyNetVis.winTest()
+        self.ui = ShinyNetVis_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
     def shinytimeseries_show(self):
         self.form = QtWidgets.QWidget()
         import ShinyTimeSeries
@@ -1841,6 +1877,13 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+    def shinydiffcoex_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyDiffCoEx
+        self.winTest = ShinyDiffCoEx.winTest()
+        self.ui = ShinyDiffCoEx_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
 
     def shinyspieceasi_show(self):
         self.form = QtWidgets.QWidget()
@@ -1850,6 +1893,13 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+    def shinymicrowgcna_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyMicroWGCNA
+        self.winTest = ShinyMicroWGCNA.winTest()
+        self.ui = ShinyMicroWGCNA_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
 
     def shinyrebacca_show(self):
         self.form = QtWidgets.QWidget()
