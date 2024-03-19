@@ -1222,8 +1222,7 @@ server <- function(input, output, session) {
 
 
 # Run the application 
-# app = shinyApp(ui = ui, server = server)
-# runApp(app, port = 50700)
+app = shinyApp(ui = ui, server = server)
+runApp(app, port = 50700)
 
-shinyApp(ui = ui, server = server)
 
