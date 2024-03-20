@@ -51,21 +51,21 @@ ui <- fluidPage(
                
                column(6,
                       div(style = "font-size: 11px", 
-                        numericInput('N_val', 'Filter by abundance',  
-                                     value = 400,min = 0,max = 500000)
+                          numericInput('N_val', 'Filter by abundance',  
+                                       value = 400,min = 0,max = 500000)
                       ),
                       div(style = "font-size: 11px", 
-                        selectInput('method_val', 'Correlation calculation',  
-                                    choices = c("spearman", "kendall"), 
-                                    selected = "spearman")
+                          selectInput('method_val', 'Correlation calculation',  
+                                      choices = c("spearman", "kendall"), 
+                                      selected = "spearman")
                       ),
                       div(style = "font-size: 11px",
-                        numericInput('p_val','Significance cutoff',
-                                     value = 0.05,min = 0,max = 1)
+                          numericInput('p_val','Significance cutoff',
+                                       value = 0.05,min = 0,max = 1)
                       ),
                       div(style = "font-size: 11px",
-                        numericInput('R_val','Pvalue calculate times',
-                                     value = 10,min = 0,max = 500000)
+                          numericInput('R_val','Pvalue calculate times',
+                                       value = 10,min = 0,max = 500000)
                       ),
                       br(),
                       actionButton('reset', 'RESET')
@@ -98,6 +98,7 @@ ui <- fluidPage(
                       div(style = "font-size: 11px",
                           strong("Choose different levels colors (points colors)"),
                           br(),
+                          br(),
                           dropdownButton(
                             label = "Choose colors", status = "default", width = 50,
                             uiOutput('file5')
@@ -120,7 +121,7 @@ ui <- fluidPage(
                       hr()
                ),
       ),
-
+      
     ),
     mainPanel(align="center",
               h4("Network weight matrix and graph"),
@@ -187,7 +188,7 @@ server <- function(input, output, session) {
     print(choose$list_choose)
   })
   
-
+  
   observeEvent(input$reset, {
     values$file <- NULL
     # 点击过执行下面这句
@@ -320,10 +321,11 @@ server <- function(input, output, session) {
       edge_dat <<- edge
       color_dat <<- unique(node$Class_levels)
       
+      x <- colors()
+      y <- sample(x,length(color_dat),replace = F)
+      y_dat <<- y
+      
       output$file5 <- renderUI({
-        x <- colors()
-        y <- sample(x,length(color_dat),replace = F)
-        
         # 自动添加色块,有多少个分类色块就添加多少个色块
         lapply(1:length(color_dat), function(i) {
           colourpicker::colourInput(paste0("col_", i), paste0(color_dat[i]), y[i])
@@ -332,7 +334,7 @@ server <- function(input, output, session) {
       
       
       final_tmp = data.frame()
-      type = c()
+      Type = c()
       for (j in 1:length(dat$net.cor.matrix$cortab)) {
         myAdjacencyMatrix = as.matrix(dat$net.cor.matrix$cortab[[j]])
         g  <- graph.adjacency(myAdjacencyMatrix,weighted=TRUE)
@@ -340,7 +342,7 @@ server <- function(input, output, session) {
         final_tmp <- rbind(final_tmp,final_df)
         type_tmp <- rep(names(dat$net.cor.matrix$cortab)[j],
                         nrow(final_df))
-        type <- c(Type,type_tmp)
+        Type <- c(Type,type_tmp)
         print(nrow(final_df))
       }
       
@@ -362,11 +364,17 @@ server <- function(input, output, session) {
         print(cols)
         cols <- eval(parse(text = cols))
         print(cols)
-        fill_color <- append(fill_color, cols)
+        if(is.null(cols)){
+          fill_color <- append(fill_color, y_dat[n])
+        } 
+        else {
+          fill_color <- append(fill_color, cols)
+        }
+        
       }
       print(fill_color)
       
-      p <<- ggplot() + 
+      p <- ggplot() + 
         geom_segment(aes(x = X1, y = Y1, 
                          xend = X2, yend = Y2,
                          color = cor),
@@ -394,8 +402,8 @@ server <- function(input, output, session) {
                                               colour = NA)) +
         theme(panel.grid.minor = element_blank(), 
               panel.grid.major = element_blank())
+      p1 <<- p
       p
-      
     })
   })
   
@@ -422,7 +430,7 @@ server <- function(input, output, session) {
         jpeg(file)
       }
       # 打印全局变量 p1 (ggplot对象)
-      print(p)
+      print(p1)
       dev.off()
     }
   )
