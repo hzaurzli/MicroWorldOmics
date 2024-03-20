@@ -96,7 +96,7 @@ ui <- fluidPage(
                           colourInput("col", 'Boundary color', "grey40"),
                       ),
                       div(style = "font-size: 11px",
-                          strong("Choose different level colors"),
+                          strong("Choose different levels colors (points colors)"),
                           br(),
                           dropdownButton(
                             label = "Choose colors", status = "default", width = 50,
