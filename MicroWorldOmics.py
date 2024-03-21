@@ -69,6 +69,7 @@ from ShinyCosine import ShinyCosine_Form
 from ShinyDiffCoEx import ShinyDiffCoEx_Form
 from ShinyMicroWGCNA import ShinyMicroWGCNA_Form
 from ShinyNetVis import ShinyNetVis_Form
+from ShinyRhierBaps import ShinyRhierBaps_Form
 
 class MyWindow(QtWidgets.QPushButton):
     def __init__(self):
@@ -79,7 +80,6 @@ class MyWindow(QtWidgets.QPushButton):
         sp.showMessage("Loading... {0}%".format(num * 10), QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom,
                        QtCore.Qt.black)
         QtWidgets.qApp.processEvents()  # 允许主进程处理事件
-
 
 
 class Ui_MainWindow(object):
@@ -555,6 +555,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
+        self.comboBox_12.addItem("")
         self.comboBox_7 = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox_7.setEnabled(True)
         self.comboBox_7.setGeometry(QtCore.QRect(0, 330, 147, 18))
@@ -914,6 +915,8 @@ class Ui_MainWindow(object):
         self.actionShinyCosine.setObjectName("actionShinyCosine")
         self.actionShinyNetVis = QtWidgets.QAction(MainWindow)
         self.actionShinyNetVis.setObjectName("actionShinyNetVis")
+        self.actionShinyRhierBaps = QtWidgets.QAction(MainWindow)
+        self.actionShinyRhierBaps.setObjectName("actionShinyRhierBaps")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -984,6 +987,7 @@ class Ui_MainWindow(object):
         self.menuTools.addAction(self.actionCDhit)
         self.menuTools.addAction(self.actionGenomad)
         self.menuTools.addAction(self.actionShinyBAE)
+        self.menuTools.addAction(self.actionShinyRhierBaps)
         self.menuHelps.addAction(self.actionReadme)
         self.menubar.addAction(self.menuBlast.menuAction())
         self.menubar.addAction(self.menuAlignment.menuAction())
@@ -1078,6 +1082,7 @@ class Ui_MainWindow(object):
         self.actionCDhit.triggered.connect(self.cdhit_show)
         self.actionGenomad.triggered.connect(self.genomad_show)
         self.actionShinyBAE.triggered.connect(self.shinybae_show)
+        self.actionShinyRhierBaps.triggered.connect(self.shinyrhierbaps_show)
 
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
@@ -1094,6 +1099,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.currentIndexChanged.connect(self.selectionchange_comboBox_12)
         self.comboBox_13.currentIndexChanged.connect(self.selectionchange_comboBox_13)
         self.comboBox_14.currentIndexChanged.connect(self.selectionchange_comboBox_14)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -1171,6 +1177,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.setItemText(16, _translate("MainWindow", "CDhit"))
         self.comboBox_12.setItemText(17, _translate("MainWindow", "Genomad"))
         self.comboBox_12.setItemText(18, _translate("MainWindow", "ShinyBAE"))
+        self.comboBox_12.setItemText(19, _translate("MainWindow", "ShinyRhierBaps"))
         self.comboBox_7.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "Prodigal"))
         self.label_7.setText(_translate("MainWindow", "ORF prediction"))
@@ -1312,6 +1319,7 @@ class Ui_MainWindow(object):
         self.actionShinyBAE.setText(_translate("MainWindow", "ShinyBAE"))
         self.actionShinyCosine.setText(_translate("MainWindow", "ShinyCosine"))
         self.actionShinyNetVis.setText(_translate("MainWindow", "ShinyNetVis"))
+        self.actionShinyRhierBaps.setText(_translate("MainWindow", "ShinyRhierBaps"))
 
 
     def selectionchange_comboBox(self):
@@ -1483,6 +1491,8 @@ class Ui_MainWindow(object):
             self.genomad_show()
         elif label_item == 'ShinyBAE':
             self.shinybae_show()
+        elif label_item == 'ShinyRhierBaps':
+            self.shinyrhierbaps_show()
 
     def selectionchange_comboBox_13(self):
         # 标签用来显示选中的文本
@@ -1987,6 +1997,14 @@ class Ui_MainWindow(object):
         import ShinyBAE
         self.winTest = ShinyBAE.winTest()
         self.ui = ShinyBAE_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+    def shinyrhierbaps_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyRhierBaps
+        self.winTest = ShinyRhierBaps.winTest()
+        self.ui = ShinyRhierBaps_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
