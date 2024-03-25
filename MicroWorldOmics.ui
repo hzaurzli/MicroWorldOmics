@@ -1022,6 +1022,11 @@ QComboBox {
            <string>ShinyRhierBaps</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>ShinyBactDating</string>
+          </property>
+         </item>
         </widget>
         <widget class="QComboBox" name="comboBox_7">
          <property name="enabled">
@@ -1603,6 +1608,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionGenomad"/>
     <addaction name="actionShinyBAE"/>
     <addaction name="actionShinyRhierBaps"/>
+    <addaction name="actionShinyBactDating"/>
    </widget>
    <widget class="QMenu" name="menuHelps">
     <property name="title">
@@ -1982,6 +1988,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionShinyRhierBaps">
    <property name="text">
     <string>ShinyRhierBaps</string>
+   </property>
+  </action>
+  <action name="actionShinyBactDating">
+   <property name="text">
+    <string>ShinyBactDating</string>
    </property>
   </action>
  </widget>
