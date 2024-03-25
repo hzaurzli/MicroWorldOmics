@@ -1,6 +1,10 @@
 library(shiny)
 library(shinycssloaders)
 library(shinythemes)
+library(rhierbaps)
+library(ggtree)
+library(phytools)
+library(ape)
 
 
 button_color_css <- "
@@ -221,8 +225,8 @@ server <- function(input, output, session) {
     output$file3 <- renderUI({
       fileInput("file3", "First: Choose tree (newick)",
                 accept = c(
-                  "newick",
-                  "newick,text/plain",
+                  "newick","nwk",
+                  ".treefile,text/plain",
                   ".tree")
       )
     })
@@ -289,7 +293,7 @@ server <- function(input, output, session) {
             id = which(colnames(df) == colnam)
             colnames(df)[id] = 'BAPs cluster'
             
-            gg <- ggtree(iqtree, layout = "circular", 
+            gg <- ggtree(tree_file, layout = "circular", 
                          branch.length = "none")
             gg <- gg %<+% df
             gg <- gg + geom_tippoint(aes(color = factor(`BAPs cluster`)))
@@ -333,7 +337,7 @@ server <- function(input, output, session) {
             id = which(colnames(df) == colnam)
             colnames(df)[id] = 'BAPs cluster'
             
-            gg <- ggtree(iqtree, layout = "circular", branch.length = "none")
+            gg <- ggtree(tree_file, layout = "circular", branch.length = "none")
             gg <- gg %<+% df
             gg <- gg + geom_tippoint(aes(color = factor(`BAPs cluster`)))
             gg <- gg + theme(legend.position = "right")
