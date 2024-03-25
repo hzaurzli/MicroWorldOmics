@@ -96,7 +96,7 @@ server <- function(input, output, session) {
       data = merge(map,meta,by='Country',all = T)
       
       options(scipen=200)
-      p = ggplot(data = data) +
+      p <<- ggplot(data = data) +
             geom_sf(aes(fill = Data)) + 
             scale_fill_gradient2(low = input$low,
                                  mid = input$mid,
@@ -123,7 +123,7 @@ server <- function(input, output, session) {
           jpeg(file)
         }
         # 打印全局变量 p1 (ggplot对象)
-        print(p1)
+        print(p)
         dev.off()
       }
     )
