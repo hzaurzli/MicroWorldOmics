@@ -1,5 +1,6 @@
 library(shiny)
 library(r3dmol)
+library(colourpicker)
 
 
 ui <- fluidPage(
@@ -14,11 +15,11 @@ ui <- fluidPage(
       ),
       hr(),
       ## 适用于少量文本
-      textInput("Beta", "Beta sheet color", value = '#636efa'),
+	  colourInput("Beta", "Beta sheet color", value = '#636efa'),
       ## 适用于少量文本
-      textInput("alpha", "Alpha helix color", value = '#ff7f0e'),
+	  colourInput("alpha", "Alpha helix color", value = '#ff7f0e'),
       ## 适用于少量文本
-      textInput("cartoon", "Cartoon color", value = '#00cc96'),
+	  colourInput("cartoon", "Cartoon color", value = '#00cc96'),
 
       hr(),
       h5('Developer:'),
