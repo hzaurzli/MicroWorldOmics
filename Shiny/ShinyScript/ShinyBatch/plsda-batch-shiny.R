@@ -280,7 +280,7 @@ server <- function(input, output, session) {
     metadata = metadata()
     
     
-    if(is.null(expression) | is.null(gene)){
+    if(is.null(expression) | is.null(metadata)){
       warning("Please upload files!")
     } 
     else{

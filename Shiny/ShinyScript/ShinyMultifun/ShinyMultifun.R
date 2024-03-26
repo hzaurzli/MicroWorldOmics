@@ -1378,8 +1378,8 @@ server <- function(input, output, session) {
   # observeEvent(input$reset), 代表点击 RESET 时触发的动作,此时重新渲染 fileInput 的 ui
   observeEvent(input$reset4, {
     values$file <- NULL
-    output$file11 <- renderUI({
-      fileInput("file11", "Step 1: Choose abundance matrix",
+    output$file13 <- renderUI({
+      fileInput("file13", "Step 1: Choose abundance matrix",
                 accept=c("text/csv",
                          "text/comma-separated-values,text/plain",
                          ".csv")
