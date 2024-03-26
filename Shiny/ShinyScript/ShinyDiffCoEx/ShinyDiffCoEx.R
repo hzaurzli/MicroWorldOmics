@@ -117,11 +117,17 @@ server <- function(input, output, session) {
         
         name1 = colnames(otuC1_dat)
         name2 = colnames(otuC2_dat)
+		
+		name_i1 = name1[order(name1)]
+		name_i2 = name2[order(name2)]
         
-        if (name1 != name2) {
+        if (!identical(name_i1, name_i2)) {
           message('Error: different column names for documents 1 and 2')
         }
         else{
+		  datC1 = otuC1_dat
+		  datC2 = otuC2_dat
+		  
           output$table <- renderDataTable({
             AdjMatC1<-sign(cor(datC1,method="spearman"))*(cor(datC1,method="spearman"))^2
             AdjMatC2<-sign(cor(datC2,method="spearman"))*(cor(datC2,method="spearman"))^2
