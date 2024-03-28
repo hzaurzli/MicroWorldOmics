@@ -1192,7 +1192,7 @@ server <- function(input, output, session) {
         # Transform dissTOM with a power to make moderately strong connections more visible in the heatmap
         plotTOM <<- dissTOM^7;
         diag(plotTOM) = NA
-        TOMplot(plotTOM, geneTree, moduleColors, main = "Network heatmap plot (All ASV/OTU)")
+        TOMplot(plotTOM, geneTree, moduleColors, main = "Network heatmap plot (ASV/OTU)")
         
       })
     }
@@ -1212,7 +1212,7 @@ server <- function(input, output, session) {
         jpeg(file)
       }
       TOMplot(plotTOM, geneTree, moduleColors, 
-              main = "Network heatmap plot (All ASV/OTU)")
+              main = "Network heatmap plot (ASV/OTU)")
       
       dev.off()
     }
