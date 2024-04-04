@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ShinyNetVis.ui'
+# Form implementation generated from reading ui file 'ShinyNetMoss.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -31,7 +31,7 @@ class winTest(QtWidgets.QMainWindow):
         :return: None
         """
         try:
-            with os.popen('netstat -aon|findstr "50905"') as res:
+            with os.popen('netstat -aon|findstr "51235"') as res:
                 res = res.read().split('\n')
             result = []
             for line in res:
@@ -63,13 +63,13 @@ class WorkThread(QThread):
             path = '/'.join(path)
 
         os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
-                 path + '/Shiny/ShinyScript/ShinyNetVis/ShinyNetVis.R')
+                 path + '/Shiny/ShinyScript/ShinyNetMoss/ShinyNetMoss.R')
 
-        time.sleep(20)
+        time.sleep(25)
         self.trigger.emit('ShinyApp has been started!!!')
 
 
-class ShinyNetVis_Form(QWidget):
+class ShinyNetMoss_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.work = WorkThread()
@@ -131,14 +131,13 @@ class ShinyNetVis_Form(QWidget):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "ShinyNetVis"))
-        self.label.setText(_translate("Form", "ShinyNetVis"))
+        Form.setWindowTitle(_translate("Form", "ShinyNetMoss"))
+        self.label.setText(_translate("Form", "ShinyNetMoss"))
         self.label_2.setText(_translate("Form", "Status"))
         self.pushButton.setText(_translate("Form", "Start App"))
         self.pushButton_2.setText(_translate("Form", "Open Web"))
         self.label_3.setText(_translate("Form", "Please close this window before\n"
 "starting another Shiny Apps!!!"))
-
 
     def start(self):
         self.textBrowser.setText(
@@ -151,20 +150,18 @@ class ShinyNetVis_Form(QWidget):
         self.work.trigger.connect(self.finished)
 
     def open(self):
-        self.winTable = ShinyWeb_Form(port=50905)
+        self.winTable = ShinyWeb_Form(port=51235)
         self.winTable.show()
 
     def finished(self, str):
         self.textBrowser.setText(str)
-
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     # Clustal = QtWidgets.QWidget()
     WT = winTest()
-    ui = ShinyNetVis_Form()
+    ui = ShinyNetMoss_Form()
     ui.setupUi(WT)
     WT.show()
     sys.exit(app.exec_())
-

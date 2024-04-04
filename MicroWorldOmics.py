@@ -71,7 +71,7 @@ from ShinyMicroWGCNA import ShinyMicroWGCNA_Form
 from ShinyNetVis import ShinyNetVis_Form
 from ShinyRhierBaps import ShinyRhierBaps_Form
 from ShinyBactDating import ShinyBactDating_Form
-
+from ShinyNetMoss import ShinyNetMoss_Form
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -110,7 +110,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -302, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -114, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -642,6 +642,7 @@ class Ui_MainWindow(object):
         self.comboBox_13.addItem("")
         self.comboBox_13.addItem("")
         self.comboBox_13.addItem("")
+        self.comboBox_13.addItem("")
         self.label_16 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_16.setGeometry(QtCore.QRect(0, 660, 141, 17))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -923,6 +924,8 @@ class Ui_MainWindow(object):
         self.actionShinyRhierBaps.setObjectName("actionShinyRhierBaps")
         self.actionShinyBactDating = QtWidgets.QAction(MainWindow)
         self.actionShinyBactDating.setObjectName("actionShinyBactDating")
+        self.actionShinyNetMoss = QtWidgets.QAction(MainWindow)
+        self.actionShinyNetMoss.setObjectName("actionShinyNetMoss")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -968,6 +971,7 @@ class Ui_MainWindow(object):
         self.menuMetagenomics.addAction(self.actionShinyTimeSeries)
         self.menuMetagenomics.addAction(self.actionShinyBatch)
         self.menuMetagenomics.addAction(self.actionBugbase)
+        self.menuMetagenomics.addAction(self.actionShinyNetMoss)
         self.menuNetworks.addAction(self.actionShinyMicroWGCNA)
         self.menuNetworks.addAction(self.actionShinySpiecEasi)
         self.menuNetworks.addAction(self.actionShinyREBACCA)
@@ -1091,6 +1095,7 @@ class Ui_MainWindow(object):
         self.actionShinyBAE.triggered.connect(self.shinybae_show)
         self.actionShinyRhierBaps.triggered.connect(self.shinyrhierbaps_show)
         self.actionShinyBactDating.triggered.connect(self.shinybactdating_show)
+        self.actionShinyNetMoss.triggered.connect(self.shinynetmoss_show)
 
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
@@ -1134,7 +1139,7 @@ class Ui_MainWindow(object):
         self.comboBox_4.setItemText(3, _translate("MainWindow", "Fasttree"))
         self.label_4.setText(_translate("MainWindow", "Phylogenetic tree"))
         self.comboBox_5.setItemText(0, _translate("MainWindow", "<Default>"))
-        self.comboBox_5.setItemText(1, _translate("MainWindow", "Phy_tree"))
+        self.comboBox_5.setItemText(1, _translate("MainWindow", "PhylogeneticTree"))
         self.label_5.setText(_translate("MainWindow", "Tree visualization"))
         self.comboBox_6.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_6.setItemText(1, _translate("MainWindow", "PCR"))
@@ -1200,6 +1205,7 @@ class Ui_MainWindow(object):
         self.comboBox_13.setItemText(7, _translate("MainWindow", "ShinyTimeSeries"))
         self.comboBox_13.setItemText(8, _translate("MainWindow", "ShinyBatch"))
         self.comboBox_13.setItemText(9, _translate("MainWindow", "Bugbase"))
+        self.comboBox_13.setItemText(10, _translate("MainWindow", "ShinyNetMoss"))
         self.label_16.setText(_translate("MainWindow", "Networks"))
         self.comboBox_14.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_14.setItemText(1, _translate("MainWindow", "ShinyMicroWGCNA"))
@@ -1268,7 +1274,7 @@ class Ui_MainWindow(object):
         self.actionIQtree.setText(_translate("MainWindow", "IQtree"))
         self.actionFasttree.setText(_translate("MainWindow", "Fasttree"))
         self.actionRaxml.setText(_translate("MainWindow", "Raxml"))
-        self.actionPhy_tree.setText(_translate("MainWindow", "Phy_tree"))
+        self.actionPhy_tree.setText(_translate("MainWindow", "PhylogeneticTree"))
         self.actionPCR.setText(_translate("MainWindow", "PCR"))
         self.actionProdigal.setText(_translate("MainWindow", "Prodigal"))
         self.actionCircos.setText(_translate("MainWindow", "Circos"))
@@ -1329,7 +1335,7 @@ class Ui_MainWindow(object):
         self.actionShinyNetVis.setText(_translate("MainWindow", "ShinyNetVis"))
         self.actionShinyRhierBaps.setText(_translate("MainWindow", "ShinyRhierBaps"))
         self.actionShinyBactDating.setText(_translate("MainWindow", "ShinyBactDating"))
-
+        self.actionShinyNetMoss.setText(_translate("MainWindow", "ShinyNetMoss"))
 
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
@@ -1388,7 +1394,7 @@ class Ui_MainWindow(object):
         # currentText()：返回选中选项的文本
         label_item = self.comboBox_5.currentText()
         print(label_item)
-        if label_item == 'Phy_tree':
+        if label_item == 'PhylogeneticTree':
             self.treevis_show()
 
     def selectionchange_comboBox_6(self):
@@ -1528,6 +1534,8 @@ class Ui_MainWindow(object):
             self.shinytimeseries_show()
         elif label_item == 'Bugbase':
             self.bugbase_show()
+        elif label_item == 'ShinyNetMoss':
+            self.shinynetmoss_show()
 
 
     def selectionchange_comboBox_14(self):
@@ -2027,6 +2035,14 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+    def shinynetmoss_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyNetMoss
+        self.winTest = ShinyNetMoss.winTest()
+        self.ui = ShinyNetMoss_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
 
 if __name__ == "__main__":
     import sys
@@ -2062,4 +2078,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-

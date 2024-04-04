@@ -47,7 +47,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-302</y>
+          <y>-114</y>
           <width>198</width>
           <height>719</height>
          </rect>
@@ -416,7 +416,7 @@ QComboBox {
          </item>
          <item>
           <property name="text">
-           <string>Phy_tree</string>
+           <string>PhylogeneticTree</string>
           </property>
          </item>
         </widget>
@@ -1207,6 +1207,11 @@ QComboBox {
            <string>Bugbase</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>ShinyNetMoss</string>
+          </property>
+         </item>
         </widget>
         <widget class="QLabel" name="label_16">
          <property name="geometry">
@@ -1576,6 +1581,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionShinyTimeSeries"/>
      <addaction name="actionShinyBatch"/>
      <addaction name="actionBugbase"/>
+     <addaction name="actionShinyNetMoss"/>
     </widget>
     <widget class="QMenu" name="menuNetworks">
      <property name="title">
@@ -1692,7 +1698,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionPhy_tree">
    <property name="text">
-    <string>Phy_tree</string>
+    <string>PhylogeneticTree</string>
    </property>
   </action>
   <action name="actionPCR">
@@ -1993,6 +1999,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionShinyBactDating">
    <property name="text">
     <string>ShinyBactDating</string>
+   </property>
+  </action>
+  <action name="actionShinyNetMoss">
+   <property name="text">
+    <string>ShinyNetMoss</string>
    </property>
   </action>
  </widget>
