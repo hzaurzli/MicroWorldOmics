@@ -72,6 +72,7 @@ from ShinyNetVis import ShinyNetVis_Form
 from ShinyRhierBaps import ShinyRhierBaps_Form
 from ShinyBactDating import ShinyBactDating_Form
 from ShinyNetMoss import ShinyNetMoss_Form
+from ShinyIGV import ShinyIGV_Form
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -110,7 +111,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -114, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -302, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -1096,6 +1097,7 @@ class Ui_MainWindow(object):
         self.actionShinyRhierBaps.triggered.connect(self.shinyrhierbaps_show)
         self.actionShinyBactDating.triggered.connect(self.shinybactdating_show)
         self.actionShinyNetMoss.triggered.connect(self.shinynetmoss_show)
+        self.actionIGV.triggered.connect(self.shinyigv_show)
 
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
@@ -1180,7 +1182,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.setItemText(7, _translate("MainWindow", "Shiny3Dprotein"))
         self.comboBox_12.setItemText(8, _translate("MainWindow", "MicroWGCNA"))
         self.comboBox_12.setItemText(9, _translate("MainWindow", "Shiny3Dprotein"))
-        self.comboBox_12.setItemText(10, _translate("MainWindow", "IGV"))
+        self.comboBox_12.setItemText(10, _translate("MainWindow", "ShinyIGV"))
         self.comboBox_12.setItemText(11, _translate("MainWindow", "Chemical Formula"))
         self.comboBox_12.setItemText(12, _translate("MainWindow", "ShinyMap"))
         self.comboBox_12.setItemText(13, _translate("MainWindow", "FastANI"))
@@ -1299,7 +1301,7 @@ class Ui_MainWindow(object):
         self.actionCore_genome_analysis.setText(_translate("MainWindow", "Core genome analysis"))
         self.actionMicroWGCNA.setText(_translate("MainWindow", "MicroWGCNA"))
         self.actionShiny3Dprotein.setText(_translate("MainWindow", "Shiny3Dprotein"))
-        self.actionIGV.setText(_translate("MainWindow", "IGV"))
+        self.actionIGV.setText(_translate("MainWindow", "ShinyIGV"))
         self.actionJSalignment.setText(_translate("MainWindow", "JSalignment"))
         self.actionStep5_Phylogeny.setText(_translate("MainWindow", "Step5 Phylogeny"))
         self.actionShinyMultifun.setText(_translate("MainWindow", "ShinyMultifun"))
@@ -1336,6 +1338,7 @@ class Ui_MainWindow(object):
         self.actionShinyRhierBaps.setText(_translate("MainWindow", "ShinyRhierBaps"))
         self.actionShinyBactDating.setText(_translate("MainWindow", "ShinyBactDating"))
         self.actionShinyNetMoss.setText(_translate("MainWindow", "ShinyNetMoss"))
+
 
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
@@ -1509,7 +1512,9 @@ class Ui_MainWindow(object):
         elif label_item == 'ShinyRhierBaps':
             self.shinyrhierbaps_show()
         elif label_item == 'ShinyBactDating':
-                self.shinybactdating_show()
+            self.shinybactdating_show()
+        elif label_item == 'ShinyIGV':
+            self.shinyigv_show()
 
     def selectionchange_comboBox_13(self):
         # 标签用来显示选中的文本
@@ -2032,6 +2037,15 @@ class Ui_MainWindow(object):
         import ShinyBactDating
         self.winTest = ShinyBactDating.winTest()
         self.ui = ShinyBactDating_Form()
+        self.ui.setupUi(self.winTest)
+        self.winTest.show()
+
+
+    def shinyigv_show(self):
+        self.form = QtWidgets.QWidget()
+        import ShinyIGV
+        self.winTest = ShinyIGV.winTest()
+        self.ui = ShinyIGV_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
