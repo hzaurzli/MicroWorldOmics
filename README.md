@@ -3,7 +3,7 @@ Convenient, concise bioinformatics tools for exploring MicroWorld !!!
 
 ## Overview
 MicroWorldOmics abstract:
-![Abstract](https://github.com/hzaurzli/MicroWorldOmics/assets/47686371/73030aff-ef4f-419b-ba84-2badea90a748)
+![Abstract](https://github.com/hzaurzli/MicroWorldOmics/assets/47686371/590ef277-a5b9-45a3-bd5c-94b447653b28)
 
 
 MicroWorldOmics architecture:
