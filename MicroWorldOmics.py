@@ -73,6 +73,7 @@ from ShinyRhierBaps import ShinyRhierBaps_Form
 from ShinyBactDating import ShinyBactDating_Form
 from ShinyNetMoss import ShinyNetMoss_Form
 from ShinyIGV import ShinyIGV_Form
+from Defense import Defense_system_Form
 from Help import Help_Form
 
 
@@ -100,7 +101,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         MainWindow.setFont(font)
-        MainWindow.setStyleSheet("background-image: url(./logo/green.png)")
+        MainWindow.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/green.png)")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.centralwidget)
@@ -118,7 +119,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -242, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -568,6 +569,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
+        self.comboBox_12.addItem("")
         self.comboBox_7 = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox_7.setEnabled(True)
         self.comboBox_7.setGeometry(QtCore.QRect(0, 330, 147, 18))
@@ -705,9 +707,9 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_17.sizePolicy().hasHeightForWidth())
         self.label_17.setSizePolicy(sizePolicy)
-        self.label_17.setStyleSheet("background-image: url(./logo/green_back.png);")
+        self.label_17.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/green_back.png);")
         self.label_17.setText("")
-        self.label_17.setPixmap(QtGui.QPixmap("./logo/background.png"))
+        self.label_17.setPixmap(QtGui.QPixmap("logo/background.png"))
         self.label_17.setAlignment(QtCore.Qt.AlignCenter)
         self.label_17.setObjectName("label_17")
         self.gridLayout_2.addWidget(self.label_17, 0, 0, 1, 1)
@@ -728,7 +730,7 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.textBrowser_2.setFont(font)
         self.textBrowser_2.setAutoFillBackground(False)
-        self.textBrowser_2.setStyleSheet("background-image: url(./logo/color1.png);\n"
+        self.textBrowser_2.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.textBrowser_2.setObjectName("textBrowser_2")
@@ -740,11 +742,11 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.label_13.sizePolicy().hasHeightForWidth())
         self.label_13.setSizePolicy(sizePolicy)
         self.label_13.setMaximumSize(QtCore.QSize(100, 100))
-        self.label_13.setStyleSheet("background-image: url(./logo/color1.png);\n"
+        self.label_13.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.label_13.setText("")
-        self.label_13.setPixmap(QtGui.QPixmap("./logo/lrz.png"))
+        self.label_13.setPixmap(QtGui.QPixmap("../../../Documents/Desktop/lrz.png"))
         self.label_13.setScaledContents(True)
         self.label_13.setObjectName("label_13")
         self.gridLayout.addWidget(self.label_13, 0, 0, 1, 1)
@@ -762,7 +764,7 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.textBrowser.setFont(font)
         self.textBrowser.setAutoFillBackground(False)
-        self.textBrowser.setStyleSheet("background-image: url(./logo/color1.png);\n"
+        self.textBrowser.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.textBrowser.setObjectName("textBrowser")
@@ -773,7 +775,7 @@ class Ui_MainWindow(object):
         font.setFamily("Times New Roman")
         font.setPointSize(10)
         self.label_14.setFont(font)
-        self.label_14.setStyleSheet("background-image: url(./logo/color1.png);\n"
+        self.label_14.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.label_14.setObjectName("label_14")
@@ -1143,6 +1145,7 @@ class Ui_MainWindow(object):
         self.actionShinyNetMoss.triggered.connect(self.shinynetmoss_show)
         self.actionIGV.triggered.connect(self.shinyigv_show)
         self.actionReadme.triggered.connect(self.readme_show)
+        self.actionDefensefinder.triggered.connect(self.defensefinder_show)
 
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
@@ -1238,6 +1241,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.setItemText(18, _translate("MainWindow", "ShinyBAE"))
         self.comboBox_12.setItemText(19, _translate("MainWindow", "ShinyRhierBaps"))
         self.comboBox_12.setItemText(20, _translate("MainWindow", "ShinyBactDating"))
+        self.comboBox_12.setItemText(21, _translate("MainWindow", "DefenseFinder"))
         self.comboBox_7.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "Prodigal"))
         self.label_7.setText(_translate("MainWindow", "ORF prediction"))
@@ -1390,7 +1394,7 @@ class Ui_MainWindow(object):
         self.actionShinyRhierBaps.setText(_translate("MainWindow", "ShinyRhierBaps"))
         self.actionShinyBactDating.setText(_translate("MainWindow", "ShinyBactDating"))
         self.actionShinyNetMoss.setText(_translate("MainWindow", "ShinyNetMoss"))
-        self.actionDefensefinder.setText(_translate("MainWindow", "Defensefinder"))
+        self.actionDefensefinder.setText(_translate("MainWindow", "DefenseFinder"))
 
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
@@ -1614,6 +1618,8 @@ class Ui_MainWindow(object):
             self.shinydiffcoex_show()
         elif label_item == 'ShinyNetVis':
             self.shinynetvis_show()
+        elif label_item == 'DefenseFinder':
+            self.defensefinder_show()
 
     # pages
     ## click to new window BlastN,BlastN_Form is object in BlastN.py
@@ -2172,10 +2178,16 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.winTest)
         self.winTest.show()
 
+    def defensefinder_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
+        self.ui = Defense_system_Form()
+        self.ui.setupUi(self.form)
+        self.form.show()
+
     def readme_show(self):
         self.winTable = Help_Form()
         self.winTable.show()
-
 
 
 if __name__ == "__main__":

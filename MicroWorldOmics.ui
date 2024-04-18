@@ -55,7 +55,7 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>0</y>
+           <y>-242</y>
            <width>198</width>
            <height>719</height>
           </rect>
@@ -1033,6 +1033,11 @@ QComboBox {
           <item>
            <property name="text">
             <string>ShinyBactDating</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>DefenseFinder</string>
            </property>
           </item>
          </widget>
@@ -2066,7 +2071,7 @@ background-color: rgb(255, 255, 255);</string>
   </action>
   <action name="actionDefensefinder">
    <property name="text">
-    <string>Defensefinder</string>
+    <string>DefenseFinder</string>
    </property>
   </action>
  </widget>
