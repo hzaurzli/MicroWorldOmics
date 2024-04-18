@@ -34,7 +34,7 @@ class Help_Form(QMainWindow):
         self.frame = 1
         # 设置浏览器
         self.browser = MyEngineView()
-        url = "https://github.com/hzaurzli"
+        url = "https://hzaurzli.github.io/"
         # 指定打开界面的 URL
         self.browser.setUrl(QUrl(url))
         # 添加浏览器到窗口中
