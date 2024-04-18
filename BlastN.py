@@ -318,7 +318,12 @@ class BlastN_Form(QWidget):
                     fasta = SeqIO.parse(handle, "fasta")
                     return any(fasta)  # False when `fasta` is empty, i.e. wasn't a FASTA file
 
-            if 0 in [len(ref), len(query), len(blastdb), len(format)]:
+            print(len(ref))
+            print(len(query))
+            print(len(blastdb))
+            print(len(format))
+
+            if 0 in [len(ref), len(query), len(blastdb), len(out)]:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
                 try:
