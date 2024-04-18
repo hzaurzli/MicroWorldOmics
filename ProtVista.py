@@ -18,7 +18,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 
-class winTest(QtWidgets.QMainWindow):
+class winTest(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('My Browser')
@@ -37,50 +37,55 @@ class winTest(QtWidgets.QMainWindow):
                 print(content_final)
                 os.remove(os.path.dirname(content_final) + '/external_P05067.json')
             else:
-                event.ignore()  # 设置正常退出
+                return None  # 设置正常退出
         except:
             return None  # 设置正常退出
-
 
 class Protvista_Form(QWidget):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(691, 431)
-        Form.setStyleSheet("background-image: url(./logo/backgroundpage.png)")
+        Form.resize(551, 407)
+        Form.setStyleSheet("background-image: url(./logo/green_back.png);")
+        self.gridLayout_2 = QtWidgets.QGridLayout(Form)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.gridLayout = QtWidgets.QGridLayout()
+        self.gridLayout.setVerticalSpacing(0)
+        self.gridLayout.setObjectName("gridLayout")
         self.textBrowser_2 = QtWidgets.QTextBrowser(Form)
-        self.textBrowser_2.setGeometry(QtCore.QRect(120, 200, 341, 31))
         self.textBrowser_2.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_2.setObjectName("textBrowser_2")
+        self.gridLayout.addWidget(self.textBrowser_2, 2, 0, 1, 1)
         self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(280, 30, 141, 41))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
         self.label.setFont(font)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
+        self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
+        self.pushButton_2 = QtWidgets.QPushButton(Form)
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(13)
+        self.pushButton_2.setFont(font)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.gridLayout.addWidget(self.pushButton_2, 3, 0, 1, 1)
         self.label_2 = QtWidgets.QLabel(Form)
-        self.label_2.setGeometry(QtCore.QRect(120, 160, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(15)
         self.label_2.setFont(font)
         self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
-        self.pushButton_2 = QtWidgets.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(500, 200, 81, 31))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(13)
-        self.pushButton_2.setFont(font)
-        self.pushButton_2.setObjectName("pushButton_2")
+        self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
         self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(300, 300, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.pushButton.setFont(font)
         self.pushButton.setObjectName("pushButton")
+        self.gridLayout.addWidget(self.pushButton, 4, 0, 1, 1)
+        self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -93,10 +98,9 @@ class Protvista_Form(QWidget):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "ProtVista"))
         self.label.setText(_translate("Form", "ProtVista"))
-        self.label_2.setText(_translate("Form", "Input JSON file"))
         self.pushButton_2.setText(_translate("Form", "Choose"))
+        self.label_2.setText(_translate("Form", "Input JSON file"))
         self.pushButton.setText(_translate("Form", "Run"))
-
 
     def read_file1(self):
         openfile_name = QtWidgets.QFileDialog.getOpenFileName(self, 'choose file', '')[0]
@@ -141,6 +145,7 @@ class MainWindow(QMainWindow):
     def __init__(self, content):
         super().__init__()
         self.setWindowTitle('ProtVista')
+        self.setWindowIcon(QIcon("./logo/logo.ico"))
         self.showMaximized()
 
         self.path_1 = os.path.abspath('.')
@@ -196,7 +201,7 @@ class WebEngineView(QWebEngineView):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    # Form = QtWidgets.QWidget()
+    WT = QtWidgets.QWidget()
     WT = winTest()
     ui = Protvista_Form()
     ui.setupUi(WT)

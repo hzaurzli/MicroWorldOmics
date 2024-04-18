@@ -13,21 +13,19 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtWebEngineWidgets import *
-
-
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 import configparser
-
 import sys
 
-class Chemicalformula_Form(QMainWindow):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+
+class ClinkerWeb_Form(QMainWindow):
+    def __init__(self, content):
+        super().__init__()
         # 设置窗口标题
-        self.setWindowTitle('Chemicalformula')
+        self.setWindowTitle('ClinkerWeb')
         self.setWindowIcon(QIcon("./logo/logo.ico"))
 
         # 设置窗口大小900*600
@@ -36,14 +34,7 @@ class Chemicalformula_Form(QMainWindow):
         self.frame = 1
         # 设置浏览器
         self.browser = MyEngineView()
-
-        path = os.path.abspath('.')
-        if '\\' in path:
-            path = path.strip().split('\\')
-            path = '/'.join(path)
-            print(path)
-
-        url = path + '/html/standalone/index.html'
+        url = content
         # 指定打开界面的 URL
         self.browser.setUrl(QUrl(url))
         # 添加浏览器到窗口中
@@ -85,7 +76,7 @@ class MyEngineView(QWebEngineView):
     '''
     浏览器类。
     '''
-    def __init__(self, parent=None,):
+    def __init__(self, parent=None):
         super(MyEngineView, self).__init__(parent)
         self.parent = parent
         # 有下载信号发起
@@ -131,7 +122,7 @@ if __name__ == "__main__":
     # 创建应用
     app = QApplication(sys.argv)
     # 创建主窗口
-    window = Chemicalformula_Form()
+    window = ClinkerWeb_Form()
     # 显示窗口
     window.show()
     # 运行应用，并监听事件

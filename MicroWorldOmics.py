@@ -73,6 +73,7 @@ from ShinyRhierBaps import ShinyRhierBaps_Form
 from ShinyBactDating import ShinyBactDating_Form
 from ShinyNetMoss import ShinyNetMoss_Form
 from ShinyIGV import ShinyIGV_Form
+from Help import Help_Form
 
 
 class MyWindow(QtWidgets.QPushButton):
@@ -89,7 +90,8 @@ class MyWindow(QtWidgets.QPushButton):
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(850, 488)
+        MainWindow.resize(944, 561)
+        MainWindow.setWindowIcon(QIcon("./logo/logo.ico"))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -98,20 +100,25 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         MainWindow.setFont(font)
-        MainWindow.setStyleSheet("background-image: url(./logo/background.png)")
+        MainWindow.setStyleSheet("background-image: url(./logo/green.png)")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 221, 421))
-        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.centralwidget)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.scrollArea = QtWidgets.QScrollArea(self.verticalLayoutWidget)
+        self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.scrollArea.sizePolicy().hasHeightForWidth())
+        self.scrollArea.setSizePolicy(sizePolicy)
+        self.scrollArea.setMaximumSize(QtCore.QSize(200, 16777215))
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -302, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -689,40 +696,31 @@ class Ui_MainWindow(object):
         self.comboBox_14.addItem("")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
-        self.label_13 = QtWidgets.QLabel(self.centralwidget)
-        self.label_13.setGeometry(QtCore.QRect(620, 40, 61, 61))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_3.addLayout(self.verticalLayout, 0, 0, 1, 1)
+        self.gridLayout_2 = QtWidgets.QGridLayout()
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.label_17 = QtWidgets.QLabel(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_13.sizePolicy().hasHeightForWidth())
-        self.label_13.setSizePolicy(sizePolicy)
-        self.label_13.setText("")
-        self.label_13.setPixmap(QtGui.QPixmap("./logo/lrz.png"))
-        self.label_13.setScaledContents(True)
-        self.label_13.setObjectName("label_13")
-        self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser.setGeometry(QtCore.QRect(590, 10, 251, 231))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setBold(True)
-        font.setItalic(False)
-        font.setWeight(75)
-        self.textBrowser.setFont(font)
-        self.textBrowser.setAutoFillBackground(False)
-        self.textBrowser.setStyleSheet("background-image: url(./logo/color1.png);\n"
-"background-color: rgb(85, 255, 0);\n"
-"background-color: rgb(255, 255, 255);")
-        self.textBrowser.setObjectName("textBrowser")
-        self.label_14 = QtWidgets.QLabel(self.centralwidget)
-        self.label_14.setGeometry(QtCore.QRect(710, 40, 101, 61))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(10)
-        self.label_14.setFont(font)
-        self.label_14.setStyleSheet("background-image: url(./logo/color1.png);")
-        self.label_14.setObjectName("label_14")
+        sizePolicy.setHeightForWidth(self.label_17.sizePolicy().hasHeightForWidth())
+        self.label_17.setSizePolicy(sizePolicy)
+        self.label_17.setStyleSheet("background-image: url(./logo/green_back.png);")
+        self.label_17.setText("")
+        self.label_17.setPixmap(QtGui.QPixmap("./logo/background.png"))
+        self.label_17.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_17.setObjectName("label_17")
+        self.gridLayout_2.addWidget(self.label_17, 0, 0, 1, 1)
+        self.gridLayout_3.addLayout(self.gridLayout_2, 0, 1, 1, 1)
+        self.gridLayout = QtWidgets.QGridLayout()
+        self.gridLayout.setSpacing(0)
+        self.gridLayout.setObjectName("gridLayout")
         self.textBrowser_2 = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser_2.setGeometry(QtCore.QRect(590, 260, 251, 171))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.textBrowser_2.sizePolicy().hasHeightForWidth())
+        self.textBrowser_2.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setBold(True)
@@ -734,14 +732,57 @@ class Ui_MainWindow(object):
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.textBrowser_2.setObjectName("textBrowser_2")
-        self.verticalLayoutWidget.raise_()
-        self.textBrowser.raise_()
-        self.label_13.raise_()
-        self.label_14.raise_()
-        self.textBrowser_2.raise_()
+        self.gridLayout.addWidget(self.textBrowser_2, 2, 0, 1, 3)
+        self.label_13 = QtWidgets.QLabel(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_13.sizePolicy().hasHeightForWidth())
+        self.label_13.setSizePolicy(sizePolicy)
+        self.label_13.setMaximumSize(QtCore.QSize(100, 100))
+        self.label_13.setStyleSheet("background-image: url(./logo/color1.png);\n"
+"background-color: rgb(85, 255, 0);\n"
+"background-color: rgb(255, 255, 255);")
+        self.label_13.setText("")
+        self.label_13.setPixmap(QtGui.QPixmap("./logo/lrz.png"))
+        self.label_13.setScaledContents(True)
+        self.label_13.setObjectName("label_13")
+        self.gridLayout.addWidget(self.label_13, 0, 0, 1, 1)
+        self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.textBrowser.sizePolicy().hasHeightForWidth())
+        self.textBrowser.setSizePolicy(sizePolicy)
+        self.textBrowser.setMaximumSize(QtCore.QSize(16777215, 120))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(75)
+        self.textBrowser.setFont(font)
+        self.textBrowser.setAutoFillBackground(False)
+        self.textBrowser.setStyleSheet("background-image: url(./logo/color1.png);\n"
+"background-color: rgb(85, 255, 0);\n"
+"background-color: rgb(255, 255, 255);")
+        self.textBrowser.setObjectName("textBrowser")
+        self.gridLayout.addWidget(self.textBrowser, 1, 0, 1, 3)
+        self.label_14 = QtWidgets.QLabel(self.centralwidget)
+        self.label_14.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(10)
+        self.label_14.setFont(font)
+        self.label_14.setStyleSheet("background-image: url(./logo/color1.png);\n"
+"background-color: rgb(85, 255, 0);\n"
+"background-color: rgb(255, 255, 255);")
+        self.label_14.setObjectName("label_14")
+        self.gridLayout.addWidget(self.label_14, 0, 1, 1, 2)
+        self.gridLayout.setRowStretch(0, 1)
+        self.gridLayout_3.addLayout(self.gridLayout, 0, 2, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 850, 23))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 944, 23))
         self.menubar.setObjectName("menubar")
         self.menuBlast = QtWidgets.QMenu(self.menubar)
         self.menuBlast.setObjectName("menuBlast")
@@ -927,6 +968,8 @@ class Ui_MainWindow(object):
         self.actionShinyBactDating.setObjectName("actionShinyBactDating")
         self.actionShinyNetMoss = QtWidgets.QAction(MainWindow)
         self.actionShinyNetMoss.setObjectName("actionShinyNetMoss")
+        self.actionDefensefinder = QtWidgets.QAction(MainWindow)
+        self.actionDefensefinder.setObjectName("actionDefensefinder")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -1000,6 +1043,7 @@ class Ui_MainWindow(object):
         self.menuTools.addAction(self.actionShinyBAE)
         self.menuTools.addAction(self.actionShinyRhierBaps)
         self.menuTools.addAction(self.actionShinyBactDating)
+        self.menuTools.addAction(self.actionDefensefinder)
         self.menuHelps.addAction(self.actionReadme)
         self.menubar.addAction(self.menuBlast.menuAction())
         self.menubar.addAction(self.menuAlignment.menuAction())
@@ -1098,6 +1142,7 @@ class Ui_MainWindow(object):
         self.actionShinyBactDating.triggered.connect(self.shinybactdating_show)
         self.actionShinyNetMoss.triggered.connect(self.shinynetmoss_show)
         self.actionIGV.triggered.connect(self.shinyigv_show)
+        self.actionReadme.triggered.connect(self.readme_show)
 
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
@@ -1217,13 +1262,28 @@ class Ui_MainWindow(object):
         self.comboBox_14.setItemText(5, _translate("MainWindow", "ShinyCosine"))
         self.comboBox_14.setItemText(6, _translate("MainWindow", "ShinyDiffCoEx"))
         self.comboBox_14.setItemText(7, _translate("MainWindow", "ShinyNetVis"))
+        self.textBrowser_2.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Times New Roman\'; font-size:9pt; font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">MicroWorldOmics Logs</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; color:rgba(0,0,255,0.8);\">Introduction: </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">MicroworldOmics(a convenient software for microscopic world analysis and visualization), a desktop software developed based on </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,136,0,0.8);\">PYQT (version=5), R (version=4.0)，Python (version=3.6) and JavaScript, </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">which aims to make new exploration and contribution to the development of bioinformatics. </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(255,0,0,0.8);\">Realizing data analysis and visualization in the fields of algorithm statistics, sequence analysis, microbiomics , virology,image recognition etc.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">MicroWorldOmics V1.3 2024.5</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">MicroWorldOmics The UI was redesigned to address the unstretchability of the UI page, and the main page was redesigned,finally,defense system analysis was included in MicroWorldOmics V1.3.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">MicroWorldOmics V1.2 2023.12</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">MicroWorldOmics V1.2 incorporates a number of analysis modules, mainly for viruses and microbiomes: multi-language software covering python, R, C++, etc.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">MicroWorldOmics V1.1 2023.1</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">The first version of the software was called &quot;QTBioRZ&quot;,A user-friendly interface visualization software,the main functions are following:</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">a. Blastn and Blastp are for DNA or protein sequences searching.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">b. Counting microorganism colonies.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">c. Calculating anti-peptides activity.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">d. Identifing phages lysogeny</span></p></body></html>"))
         self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Times New Roman\'; font-size:9pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">MicroWorldOmics V1.2</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">MicroWorldOmics V1.3</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);\">Github</span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">: </span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">  https://github.com/hzaurzli</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:10pt; font-style:italic; color:rgba(0,0,0,0.8);\">SourceCodes</span><span style=\" font-family:\'SimSun\'; font-size:10pt; font-weight:400;\">: </span></p>\n"
@@ -1240,14 +1300,6 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">  https://www.yuque.com/u1629231/qd3xf6</span></p></body></html>"))
         self.label_14.setToolTip(_translate("MainWindow", "<html><head/><body><p>dad</p></body></html>"))
         self.label_14.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; font-style:italic;\">Maintainer</span><span style=\" font-size:12pt;\">: </span></p><p align=\"center\"><span style=\" font-size:12pt;\">Small Runze</span></p></body></html>"))
-        self.textBrowser_2.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Times New Roman\'; font-size:9pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">MicroWorldOmics Logs</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-webkit-standard\'; color:rgba(0,0,255,0.8);\">Introduction: </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">Micro-worldOmics</span><span style=\" font-family:\'-webkit-standard\'; color:rgba(0,0,0,0.8);\"> </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">(a convenient software for microscopic world analysis and visualization), a desktop software developed based on </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,136,0,0.8);\">PYQT (version=5), R (version=4.0)，Python (version=3.6) and JavaScript, </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(0,0,0,0.8);\">which aims to make new exploration and contribution to the development of bioinformatics. </span><span style=\" font-family:\'-webkit-standard\'; font-size:8pt; color:rgba(255,0,0,0.8);\">Realizing data analysis and visualization in the fields of algorithm statistics, sequence analysis, microbiomics , virology,image recognition etc.</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">MicroWorldOmics V1.0 2023.1</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p></body></html>"))
         self.menuBlast.setTitle(_translate("MainWindow", "Blast"))
         self.menuAlignment.setTitle(_translate("MainWindow", "Alignment"))
         self.menuActivity.setTitle(_translate("MainWindow", "Activity"))
@@ -1338,7 +1390,7 @@ class Ui_MainWindow(object):
         self.actionShinyRhierBaps.setText(_translate("MainWindow", "ShinyRhierBaps"))
         self.actionShinyBactDating.setText(_translate("MainWindow", "ShinyBactDating"))
         self.actionShinyNetMoss.setText(_translate("MainWindow", "ShinyNetMoss"))
-
+        self.actionDefensefinder.setText(_translate("MainWindow", "Defensefinder"))
 
     def selectionchange_comboBox(self):
         # 标签用来显示选中的文本
@@ -1566,7 +1618,8 @@ class Ui_MainWindow(object):
     # pages
     ## click to new window BlastN,BlastN_Form is object in BlastN.py
     def blastn_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = BlastN_Form()
         self.ui.setupUi(self.form)
         self.form.show()
@@ -1574,7 +1627,8 @@ class Ui_MainWindow(object):
         ## click to new window BlastP,BlastP_Form is object in BlastP.py
 
     def blastp_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = BlastP_Form()
         self.ui.setupUi(self.form)
         self.form.show()
@@ -1582,7 +1636,8 @@ class Ui_MainWindow(object):
         ## click to new window BlastX,BlastX_Form is object in BlastX.py
 
     def blastx_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = BlastX_Form()
         self.ui.setupUi(self.form)
         self.form.show()
@@ -1590,7 +1645,8 @@ class Ui_MainWindow(object):
         ## click to new window tBlastN,tBlastN_Form is object in tBlastN.py
 
     def tblastn_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = tBlastN_Form()
         self.ui.setupUi(self.form)
         self.form.show()
@@ -1598,13 +1654,15 @@ class Ui_MainWindow(object):
         ## click to new window tBlastX,tBlastX_Form is object in tBlastX.py
 
     def tblastx_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = tBlastX_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def clustal_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = Clustal_Form()
         self.ui.setupUi(self.form)
         self.form.show()
@@ -1612,7 +1670,8 @@ class Ui_MainWindow(object):
         ## click to new window BlastP,BlastP_Form is object in BlastP.py
 
     def muscle_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = Muscle_Form()
         self.ui.setupUi(self.form)
         self.form.show()
@@ -1622,39 +1681,45 @@ class Ui_MainWindow(object):
         self.winTable.show()
 
     def mafft_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = Mafft_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def lysins_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         import Lysins
         self.ui = Lysins_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def peptides_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         import Peptides
         self.ui = Peptides_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def iqtree_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = IQtree_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def fasttree_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = Fasttree_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def raxml_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = Raxml_Form()
         self.ui.setupUi(self.form)
         self.form.show()
@@ -1664,25 +1729,29 @@ class Ui_MainWindow(object):
         self.winTable.show()
 
     def pcr_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = PCR_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def prodigal_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = Prodigal_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def prokka_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = Prokka_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def circos_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = GCview_Form()
         self.ui.setupUi(self.form)
         self.form.show()
@@ -1692,12 +1761,14 @@ class Ui_MainWindow(object):
         self.winTable.show()
 
     def collinearity_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = Clinker_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def protvista_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ProtVista
         self.winTest = ProtVista.winTest()
@@ -1706,12 +1777,14 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def gbk2json_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = GBK2JSON_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def plaque_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         self.Dialog = Dialog()
         self.ui = Dots_counting_Form()
@@ -1719,6 +1792,7 @@ class Ui_MainWindow(object):
         self.Dialog.show()
 
     def plaque_V2_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         self.Dialog = Dialog()
         self.ui = Dots_counting_V2_Form()
@@ -1734,12 +1808,14 @@ class Ui_MainWindow(object):
         self.winTable.show()
 
     def phylotreejs_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = Phylotreejs_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def phamer_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import PhaMer
         self.winTest = PhaMer.winTest()
@@ -1748,6 +1824,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def phatyp_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import PhaTYP
         self.winTest = PhaTYP.winTest()
@@ -1756,6 +1833,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def phagcn_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import PhaGCN
         self.winTest = PhaGCN.winTest()
@@ -1764,6 +1842,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def cherry_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import Cherry
         self.winTest = Cherry.winTest()
@@ -1772,6 +1851,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def mlst_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import MLST
         self.winTest = MLST.winTest()
@@ -1780,6 +1860,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def serotype_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import Serotype
         self.winTest = Serotype.winTest()
@@ -1788,6 +1869,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def geneidentification_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import GeneIdentification
         self.winTest = GeneIdentification.winTest()
@@ -1796,6 +1878,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def coregenome_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import CoreGenomeAnalysis
         self.winTest = CoreGenomeAnalysis.winTest()
@@ -1804,6 +1887,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinyprotparam_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyProtparam
         self.winTest = ShinyProtparam.winTest()
@@ -1812,6 +1896,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinypcoa_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyPCoA
         self.winTest = ShinyPCoA.winTest()
@@ -1820,6 +1905,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinybatch_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyBatch
         self.winTest = ShinyBatch.winTest()
@@ -1828,6 +1914,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinyvolc_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyVolc
         self.winTest = ShinyVolc.winTest()
@@ -1836,7 +1923,8 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def bugbase_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = Bugbase_Form()
         self.ui.setupUi(self.form)
         self.form.show()
@@ -1846,6 +1934,7 @@ class Ui_MainWindow(object):
         self.winTable.show()
 
     def shinybatch_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyBatch
         self.winTest = ShinyBatch.winTest()
@@ -1854,6 +1943,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinynmds_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyNMDS
         self.winTest = ShinyNMDS.winTest()
@@ -1862,6 +1952,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinymca_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyMCA
         self.winTest = ShinyMCA.winTest()
@@ -1871,6 +1962,7 @@ class Ui_MainWindow(object):
 
 
     def shinymultifun_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyMultifun
         self.winTest = ShinyMultifun.winTest()
@@ -1880,6 +1972,7 @@ class Ui_MainWindow(object):
 
 
     def shinydiff_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyDiff
         self.winTest = ShinyDiff.winTest()
@@ -1888,6 +1981,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinymicrowgcna_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyMicroWGCNA
         self.winTest = ShinyMicroWGCNA.winTest()
@@ -1896,6 +1990,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinynetvis_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyNetVis
         self.winTest = ShinyNetVis.winTest()
@@ -1904,6 +1999,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinytimeseries_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyTimeSeries
         self.winTest = ShinyTimeSeries.winTest()
@@ -1912,6 +2008,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinydiffcoex_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyDiffCoEx
         self.winTest = ShinyDiffCoEx.winTest()
@@ -1920,6 +2017,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinyspieceasi_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinySpiecEasi
         self.winTest = ShinySpiecEasi.winTest()
@@ -1928,6 +2026,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinymicrowgcna_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyMicroWGCNA
         self.winTest = ShinyMicroWGCNA.winTest()
@@ -1936,6 +2035,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinyrebacca_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyREBACCA
         self.winTest = ShinyREBACCA.winTest()
@@ -1945,6 +2045,7 @@ class Ui_MainWindow(object):
 
 
     def shinycclasso_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyCClasso
         self.winTest = ShinyCClasso.winTest()
@@ -1953,6 +2054,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinycosine_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyCosine
         self.winTest = ShinyCosine.winTest()
@@ -1961,12 +2063,14 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def fastani_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = FastANI_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def shinygenomepca_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyGenomePCA
         self.winTest = ShinyGenomePCA.winTest()
@@ -1975,6 +2079,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinymap_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyMap
         self.winTest = ShinyMap.winTest()
@@ -1983,6 +2088,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shiny3dprotein_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import Shiny3Dprotein
         self.winTest = Shiny3Dprotein.winTest()
@@ -1991,6 +2097,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinytmscorealign_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyTMscoreAlign
         self.winTest = ShinyTMscoreAlign.winTest()
@@ -1999,24 +2106,28 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def aragorn_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = ARAGORN_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def cdhit_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = CDhit_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def genomad_show(self):
-        self.form = QtWidgets.QMainWindow()
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+        self.form = QtWidgets.QWidget()
         self.ui = Genomad_Form()
         self.ui.setupUi(self.form)
         self.form.show()
 
     def shinybae_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyBAE
         self.winTest = ShinyBAE.winTest()
@@ -2025,6 +2136,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinyrhierbaps_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyRhierBaps
         self.winTest = ShinyRhierBaps.winTest()
@@ -2033,6 +2145,7 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinybactdating_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyBactDating
         self.winTest = ShinyBactDating.winTest()
@@ -2042,6 +2155,7 @@ class Ui_MainWindow(object):
 
 
     def shinyigv_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyIGV
         self.winTest = ShinyIGV.winTest()
@@ -2050,12 +2164,18 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def shinynetmoss_show(self):
+        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
         self.form = QtWidgets.QWidget()
         import ShinyNetMoss
         self.winTest = ShinyNetMoss.winTest()
         self.ui = ShinyNetMoss_Form()
         self.ui.setupUi(self.winTest)
         self.winTest.show()
+
+    def readme_show(self):
+        self.winTable = Help_Form()
+        self.winTable.show()
+
 
 
 if __name__ == "__main__":

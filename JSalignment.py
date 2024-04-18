@@ -19,6 +19,7 @@ class JSalignment_Form(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('JSalignment')
+        self.setWindowIcon(QIcon("./logo/logo.ico"))
         self.showMaximized()
 
         path = os.path.abspath('.')
