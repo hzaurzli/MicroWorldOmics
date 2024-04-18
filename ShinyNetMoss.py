@@ -16,7 +16,8 @@ import os, sys, re, math, time
 from ShinyWeb import ShinyWeb_Form
 
 
-class winTest(QtWidgets.QMainWindow):
+# QtWidgets.QWidget 要与 ui 窗口一致 QWidget 对应 QWidget; QMainWindow 对应 QMainWindow
+class winTest(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('My Browser')
@@ -76,44 +77,36 @@ class ShinyNetMoss_Form(QWidget):
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(691, 431)
-        Form.setStyleSheet("background-image: url(./logo/backgroundpage.png)")
-        self.textBrowser = QtWidgets.QTextBrowser(Form)
-        self.textBrowser.setGeometry(QtCore.QRect(60, 150, 271, 151))
-        self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
-        self.textBrowser.setObjectName("textBrowser")
+        Form.resize(633, 434)
+        Form.setWindowIcon(QIcon("./logo/logo.ico"))
+        Form.setStyleSheet("background-image: url(./logo/green_back.png);")
+        self.gridLayout_4 = QtWidgets.QGridLayout(Form)
+        self.gridLayout_4.setVerticalSpacing(0)
+        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.gridLayout_5 = QtWidgets.QGridLayout()
+        self.gridLayout_5.setVerticalSpacing(0)
+        self.gridLayout_5.setObjectName("gridLayout_5")
         self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(230, 20, 231, 41))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
         self.label.setFont(font)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(Form)
-        self.label_2.setGeometry(QtCore.QRect(150, 100, 101, 41))
+        self.gridLayout_5.addWidget(self.label, 0, 0, 1, 3)
+        self.label_4 = QtWidgets.QLabel(Form)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
-        font.setPointSize(27)
-        self.label_2.setFont(font)
-        self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_2.setObjectName("label_2")
-        self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(430, 160, 171, 61))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(25)
-        self.pushButton.setFont(font)
-        self.pushButton.setObjectName("pushButton")
-        self.pushButton_2 = QtWidgets.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(430, 300, 171, 61))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(25)
-        self.pushButton_2.setFont(font)
-        self.pushButton_2.setObjectName("pushButton_2")
+        font.setPointSize(19)
+        self.label_4.setFont(font)
+        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_4.setObjectName("label_4")
+        self.gridLayout_5.addWidget(self.label_4, 3, 0, 1, 3)
+        self.textBrowser = QtWidgets.QTextBrowser(Form)
+        self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textBrowser.setObjectName("textBrowser")
+        self.gridLayout_5.addWidget(self.textBrowser, 5, 0, 2, 3)
         self.label_3 = QtWidgets.QLabel(Form)
-        self.label_3.setGeometry(QtCore.QRect(90, 310, 211, 51))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(11)
@@ -121,6 +114,22 @@ class ShinyNetMoss_Form(QWidget):
         font.setWeight(75)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
+        self.gridLayout_5.addWidget(self.label_3, 7, 0, 1, 3)
+        self.pushButton = QtWidgets.QPushButton(Form)
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(25)
+        self.pushButton.setFont(font)
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayout_5.addWidget(self.pushButton, 8, 0, 1, 3)
+        self.pushButton_2 = QtWidgets.QPushButton(Form)
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(25)
+        self.pushButton_2.setFont(font)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.gridLayout_5.addWidget(self.pushButton_2, 9, 0, 1, 3)
+        self.gridLayout_4.addLayout(self.gridLayout_5, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -133,15 +142,14 @@ class ShinyNetMoss_Form(QWidget):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "ShinyNetMoss"))
         self.label.setText(_translate("Form", "ShinyNetMoss"))
-        self.label_2.setText(_translate("Form", "Status"))
+        self.label_4.setText(_translate("Form", "Status"))
+        self.label_3.setText(_translate("Form", "Please close this window before starting another Shiny Apps!!!"))
         self.pushButton.setText(_translate("Form", "Start App"))
         self.pushButton_2.setText(_translate("Form", "Open Web"))
-        self.label_3.setText(_translate("Form", "Please close this window before\n"
-"starting another Shiny Apps!!!"))
 
     def start(self):
         self.textBrowser.setText(
-            'Start ShinyApp!!!')
+            'Starting ShinyApp!!!')
         QApplication.processEvents()  # 逐条打印状态
 
         # 启动线程, 运行 run 函数
@@ -156,12 +164,14 @@ class ShinyNetMoss_Form(QWidget):
     def finished(self, str):
         self.textBrowser.setText(str)
 
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    # Clustal = QtWidgets.QWidget()
+    WT = QtWidgets.QWidget()
     WT = winTest()
     ui = ShinyNetMoss_Form()
     ui.setupUi(WT)
     WT.show()
     sys.exit(app.exec_())
+

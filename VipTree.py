@@ -28,6 +28,7 @@ class VipTree_Form(QMainWindow):
         super().__init__()
         # 设置窗口标题
         self.setWindowTitle('VipTree')
+        self.setWindowIcon(QIcon("./logo/logo.ico"))
 
         # 设置窗口大小900*600
         self.showMaximized()
