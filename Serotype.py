@@ -1178,6 +1178,11 @@ class Serotype_Form(QWidget):
                 if self.radioButton.isChecked():
                     type = 'A'
 
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
                 elif self.radioButton_2.isChecked():
                     type = 'B'
 
@@ -1191,11 +1196,10 @@ class Serotype_Form(QWidget):
                         blastdb_s = out_folder + '/blast_sdb'
                         ref_tmp_s = out_folder + '/ref_tmp_s.fasta'
 
-
-                # 启动线程, 运行 run 函数
-                self.work.start()
-                # 传送信号, 接受 run 函数执行完毕后的信号
-                self.work.trigger.connect(self.finished)
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")

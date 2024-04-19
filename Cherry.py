@@ -337,7 +337,7 @@ class WorkThread(QThread):
 
         rec = []
         for record in SeqIO.parse(contigs, 'fasta'):
-            if len(record.seq) > int(length_len):
+            if len(record.seq) > float(length_len):
                 rec.append(record)
 
         SeqIO.write(rec, f'{rootpth}/filtered_contigs.fa', 'fasta')
@@ -960,7 +960,7 @@ class WorkThread(QThread):
         for record in SeqIO.parse(f'{contigs}', 'fasta'):
             length_dict[record.id] = len(record.seq)
             seq_dict[record.id] = str(record.seq)
-            if len(record.seq) < int(length_len):
+            if len(record.seq) < float(length_len):
                 filtered_contig.append(record.id)
             else:
                 phage_contig.append(record.id)
@@ -1205,23 +1205,24 @@ class Cherry_Form(QWidget):
                 if is_fasta(contigs) == False:
                     QMessageBox.critical(self, "error", "Check fasta file format!")
                 else:
-                    self.textBrowser.setText(
-                        'Running! please wait (25-30mins)' + '\n' + 'If no response,never close window!!!')
-                    QApplication.processEvents()  # 逐条打印状态
-
                     try:
+                        self.textBrowser.setText(
+                            'Running! please wait (25-30mins)' + '\n' + 'If no response,never close window!!!')
+                        QApplication.processEvents()  # 逐条打印状态
+
                         length_len = str(self.textEdit.toPlainText())
                         if length_len == '':
                             length_len = 3000
                         else:
-                            length_len = str(length_len)
-                    except:
-                        length_len = 3000
+                            length_len = float(length_len)
 
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
+
+                    except:
+                        QMessageBox.critical(self, "error", "Check parameters value!")
 
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")

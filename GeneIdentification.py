@@ -682,48 +682,47 @@ class GeneIdentification_Form(QWidget):
             if 0 in [len(fasta), len(out_folder), len(ref)]:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
-                self.textBrowser.setText(
-                    'Running! please wait' + '\n' + 'If no response,never close window!!!')
-                QApplication.processEvents()  # 逐条打印状态
-
                 try:
+                    self.textBrowser.setText(
+                        'Running! please wait' + '\n' + 'If no response,never close window!!!')
+                    QApplication.processEvents()  # 逐条打印状态
+
                     ident = str(self.textEdit_2.toPlainText())
                     if ident == '':
                         ident = 80
                     else:
-                        ident = int(ident)
-                except:
-                    ident = 80
+                        ident = float(ident)
 
-                try:
                     coverage = str(self.textEdit_3.toPlainText())
                     if coverage == '':
                         coverage = 90
                     else:
-                        coverage = int(coverage)
-                except:
-                    coverage = 90
+                        coverage = float(coverage)
 
-                try:
                     over_lap = str(self.textEdit.toPlainText())
                     if over_lap == '':
                         over_lap = 80
                     else:
-                        over_lap = int(over_lap)
+                        over_lap = float(over_lap)
+
+                    if self.radioButton.isChecked():
+                        type = 'A'
+
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
+
+                    elif self.radioButton_2.isChecked():
+                        type = 'B'
+
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
+
                 except:
-                    over_lap = 80
-
-                if self.radioButton.isChecked():
-                    type = 'A'
-
-                elif self.radioButton_2.isChecked():
-                    type = 'B'
-
-
-                # 启动线程, 运行 run 函数
-                self.work.start()
-                # 传送信号, 接受 run 函数执行完毕后的信号
-                self.work.trigger.connect(self.finished)
+                    QMessageBox.critical(self, "error", "Check parameters value!")
 
         except:
             QMessageBox.critical(self, "error", "Please run program first!!!")

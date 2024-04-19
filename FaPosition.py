@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Prodigal.ui'
+# Form implementation generated from reading ui file 'FaPosition.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -18,6 +18,7 @@ from Bio import SeqIO
 import psutil
 
 
+
 class WorkThread(QThread):
     # 自定义信号对象
     trigger = pyqtSignal(str)
@@ -27,64 +28,109 @@ class WorkThread(QThread):
         super(WorkThread, self).__init__()
 
     def run(self):
-        def check_process_running(process_name):  # 检查进程是否运行
-            for process in psutil.process_iter(['name']):
-                if process.info['name'] == process_name:
-                    return True
-            return False
+        def fasta2dict(fasta_name):
+            with open(fasta_name) as fa:
+                fa_dict = {}
+                for line in fa:
+                    # 去除末尾换行符
+                    line = line.replace('\n', '')
+                    if line.startswith('>'):
+                        # 去除 > 号
+                        seq_name = line[1:]
+                        fa_dict[seq_name] = ''
+                    else:
+                        # 去除末尾换行符并连接多行序列
+                        fa_dict[seq_name] += line.replace('\n', '')
+            return fa_dict
+
+        def DNA_reverse(sequence):
+            return sequence[::-1]
+
+        def DNA_complement(sequence):
+            # 构建互补字典
+            comp_dict = {
+                "A": "T",
+                "T": "A",
+                "G": "C",
+                "C": "G",
+                "a": "t",
+                "t": "a",
+                "g": "c",
+                "c": "g",
+            }
+            # 求互补序列
+            sequence_list = list(sequence)
+            sequence_list = [comp_dict[base] for base in sequence_list]
+            string = ''.join(sequence_list)
+            return string
 
         if type == 'A':
-            os.popen(r".\tools\prodigal\prodigal.exe -f gff -g %s -o %s -p single -i %s"
-                     % (coden, out, fasta))
+            dict_dat = fasta2dict(fasta)
+            key = list(dict_dat.keys())[0]
+
+            seq_tmp = dict_dat[key][int(pos_s)-1:int(pos_e)]
+            seq_tmp = DNA_reverse(seq_tmp)
+            seq = DNA_complement(seq_tmp)
+
+            with open(out, 'w') as w:
+                line = '>' + key + '\n' + seq
+                w.write(line)
+            w.close()
+
 
         elif type == 'B':
-            os.popen(r".\tools\prodigal\prodigal.exe -f gbk -g %s -o %s -p single -i %s"
-                     % (coden, out, fasta))
+            dict_dat = fasta2dict(fasta)
+            key = list(dict_dat.keys())[0]
+
+            seq_tmp = dict_dat[key][int(pos_s)-1:int(pos_e)]
+            seq = DNA_reverse(seq_tmp)
+
+            with open(out, 'w') as w:
+                line = '>' + key + '\n' + seq
+                w.write(line)
+            w.close()
 
         elif type == 'C':
-            os.popen(r".\tools\prodigal\prodigal.exe -f sco -g %s -o %s -p single -i %s"
-                     % (coden, out, fasta))
+            dict_dat = fasta2dict(fasta)
+            key = list(dict_dat.keys())[0]
+
+            seq_tmp = dict_dat[key][int(pos_s)-1:int(pos_e)]
+            seq = DNA_complement(seq_tmp)
+
+            with open(out, 'w') as w:
+                line = '>' + key + '\n' + seq
+                w.write(line)
+            w.close()
+
 
         elif type == 'D':
-            os.popen(r".\tools\prodigal\prodigal.exe -f gff -g %s -o %s -p meta -i %s"
-                     % (coden, out, fasta))
+            dict_dat = fasta2dict(fasta)
+            key = list(dict_dat.keys())[0]
+            seq = dict_dat[key][int(pos_s)-1:int(pos_e)]
 
-        elif type == 'E':
-            os.popen(r".\tools\prodigal\prodigal.exe -f gbk -g %s -o %s -p meta -i %s"
-                     % (coden, out, fasta))
-
-        elif type == 'F':
-            os.popen(r".\tools\prodigal\prodigal.exe -f sco -g %s -o %s -p meta -i %s"
-                     % (coden, out, fasta))
-
-        process_name = 'prodigal.exe'
-        time.sleep(5)
-        while True:  # 判断 iqtree.exe 是否运行完成
-            if check_process_running(process_name):
-                print(f"The process {process_name} is running.")
-                time.sleep(30)
-                continue
-            else:
-                print(f"The process {process_name} is not running.")
-                break
+            with open(out, 'w') as w:
+                line = '>' + key + '\n' + seq + '\n'
+                w.write(line)
+            w.close()
 
         self.trigger.emit('Finished!!!')
 
-class Prodigal_Form(QWidget):
+
+class FaPosition_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.work = WorkThread()
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(658, 478)
+        Form.resize(658, 542)
         Form.setWindowIcon(QIcon("./logo/logo.ico"))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
         Form.setSizePolicy(sizePolicy)
-        Form.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/green_back.png);")
+        Form.setStyleSheet("background-image: url(./logo/green_back.png);")
         self.gridLayout_8 = QtWidgets.QGridLayout(Form)
         self.gridLayout_8.setObjectName("gridLayout_8")
         self.gridLayout_6 = QtWidgets.QGridLayout()
@@ -94,7 +140,7 @@ class Prodigal_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(22)
         self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
+        self.pushButton.setStyleSheet("background-image: url(./logo/white.png)")
         self.pushButton.setObjectName("pushButton")
         self.gridLayout_6.addWidget(self.pushButton, 0, 0, 1, 1)
         self.gridLayout_8.addLayout(self.gridLayout_6, 3, 1, 1, 1)
@@ -110,7 +156,7 @@ class Prodigal_Form(QWidget):
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
         self.radioButton = QtWidgets.QRadioButton(self.groupBox)
-        self.radioButton.setGeometry(QtCore.QRect(10, 40, 151, 29))
+        self.radioButton.setGeometry(QtCore.QRect(20, 40, 151, 29))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -124,7 +170,7 @@ class Prodigal_Form(QWidget):
         self.radioButton.setAutoExclusive(True)
         self.radioButton.setObjectName("radioButton")
         self.radioButton_2 = QtWidgets.QRadioButton(self.groupBox)
-        self.radioButton_2.setGeometry(QtCore.QRect(10, 80, 121, 29))
+        self.radioButton_2.setGeometry(QtCore.QRect(20, 90, 121, 29))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -210,7 +256,7 @@ class Prodigal_Form(QWidget):
         sizePolicy.setHeightForWidth(self.textBrowser.sizePolicy().hasHeightForWidth())
         self.textBrowser.setSizePolicy(sizePolicy)
         self.textBrowser.setMaximumSize(QtCore.QSize(16777215, 200))
-        self.textBrowser.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/white.png)")
+        self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser.setObjectName("textBrowser")
         self.gridLayout_7.addWidget(self.textBrowser, 1, 0, 1, 1)
         self.gridLayout_8.addLayout(self.gridLayout_7, 2, 0, 2, 1)
@@ -224,22 +270,8 @@ class Prodigal_Form(QWidget):
         self.groupBox_2.setSizePolicy(sizePolicy)
         self.groupBox_2.setTitle("")
         self.groupBox_2.setObjectName("groupBox_2")
-        self.radioButton_11 = QtWidgets.QRadioButton(self.groupBox_2)
-        self.radioButton_11.setGeometry(QtCore.QRect(20, 100, 241, 23))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.radioButton_11.sizePolicy().hasHeightForWidth())
-        self.radioButton_11.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(13)
-        self.radioButton_11.setFont(font)
-        self.radioButton_11.setStyleSheet("")
-        self.radioButton_11.setAutoExclusive(True)
-        self.radioButton_11.setObjectName("radioButton_11")
         self.radioButton_4 = QtWidgets.QRadioButton(self.groupBox_2)
-        self.radioButton_4.setGeometry(QtCore.QRect(20, 70, 231, 26))
+        self.radioButton_4.setGeometry(QtCore.QRect(20, 90, 231, 26))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -283,40 +315,34 @@ class Prodigal_Form(QWidget):
         self.gridLayout_8.addLayout(self.verticalLayout_5, 2, 1, 1, 1)
         self.gridLayout_2 = QtWidgets.QGridLayout()
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.pushButton_3 = QtWidgets.QPushButton(Form)
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(13)
-        self.pushButton_3.setFont(font)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.gridLayout_2.addWidget(self.pushButton_3, 4, 1, 1, 1)
-        self.pushButton_2 = QtWidgets.QPushButton(Form)
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(13)
-        self.pushButton_2.setFont(font)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.gridLayout_2.addWidget(self.pushButton_2, 2, 1, 1, 1)
-        self.textBrowser_3 = QtWidgets.QTextBrowser(Form)
+        self.label_3 = QtWidgets.QLabel(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.textBrowser_3.sizePolicy().hasHeightForWidth())
-        self.textBrowser_3.setSizePolicy(sizePolicy)
-        self.textBrowser_3.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.textBrowser_3.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/white.png)")
-        self.textBrowser_3.setObjectName("textBrowser_3")
-        self.gridLayout_2.addWidget(self.textBrowser_3, 4, 0, 1, 1)
-        self.textBrowser_2 = QtWidgets.QTextBrowser(Form)
+        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy)
+        self.label_3.setMaximumSize(QtCore.QSize(16777215, 30))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(15)
+        self.label_3.setFont(font)
+        self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_3.setObjectName("label_3")
+        self.gridLayout_2.addWidget(self.label_3, 3, 0, 1, 2)
+        self.label_9 = QtWidgets.QLabel(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.textBrowser_2.sizePolicy().hasHeightForWidth())
-        self.textBrowser_2.setSizePolicy(sizePolicy)
-        self.textBrowser_2.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.textBrowser_2.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/white.png)")
-        self.textBrowser_2.setObjectName("textBrowser_2")
-        self.gridLayout_2.addWidget(self.textBrowser_2, 2, 0, 1, 1)
+        sizePolicy.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
+        self.label_9.setSizePolicy(sizePolicy)
+        self.label_9.setMaximumSize(QtCore.QSize(16777215, 30))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(15)
+        self.label_9.setFont(font)
+        self.label_9.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_9.setObjectName("label_9")
+        self.gridLayout_2.addWidget(self.label_9, 5, 0, 1, 2)
         self.label_2 = QtWidgets.QLabel(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
@@ -338,37 +364,66 @@ class Prodigal_Form(QWidget):
         sizePolicy.setHeightForWidth(self.textEdit.sizePolicy().hasHeightForWidth())
         self.textEdit.setSizePolicy(sizePolicy)
         self.textEdit.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.textEdit.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
+        self.textEdit.setStyleSheet("background-image: url(./logo/white.png)")
         self.textEdit.setObjectName("textEdit")
         self.gridLayout_2.addWidget(self.textEdit, 6, 0, 1, 1)
-        self.label_9 = QtWidgets.QLabel(Form)
+        self.pushButton_3 = QtWidgets.QPushButton(Form)
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(13)
+        self.pushButton_3.setFont(font)
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.gridLayout_2.addWidget(self.pushButton_3, 4, 1, 1, 1)
+        self.pushButton_2 = QtWidgets.QPushButton(Form)
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(13)
+        self.pushButton_2.setFont(font)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.gridLayout_2.addWidget(self.pushButton_2, 2, 1, 1, 1)
+        self.textBrowser_3 = QtWidgets.QTextBrowser(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
-        self.label_9.setSizePolicy(sizePolicy)
-        self.label_9.setMaximumSize(QtCore.QSize(16777215, 30))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(15)
-        self.label_9.setFont(font)
-        self.label_9.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_9.setObjectName("label_9")
-        self.gridLayout_2.addWidget(self.label_9, 5, 0, 1, 2)
-        self.label_3 = QtWidgets.QLabel(Form)
+        sizePolicy.setHeightForWidth(self.textBrowser_3.sizePolicy().hasHeightForWidth())
+        self.textBrowser_3.setSizePolicy(sizePolicy)
+        self.textBrowser_3.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.textBrowser_3.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textBrowser_3.setObjectName("textBrowser_3")
+        self.gridLayout_2.addWidget(self.textBrowser_3, 4, 0, 1, 1)
+        self.textBrowser_2 = QtWidgets.QTextBrowser(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy)
-        self.label_3.setMaximumSize(QtCore.QSize(16777215, 30))
+        sizePolicy.setHeightForWidth(self.textBrowser_2.sizePolicy().hasHeightForWidth())
+        self.textBrowser_2.setSizePolicy(sizePolicy)
+        self.textBrowser_2.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.textBrowser_2.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textBrowser_2.setObjectName("textBrowser_2")
+        self.gridLayout_2.addWidget(self.textBrowser_2, 2, 0, 1, 1)
+        self.label_6 = QtWidgets.QLabel(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
+        self.label_6.setSizePolicy(sizePolicy)
+        self.label_6.setMaximumSize(QtCore.QSize(16777215, 30))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(15)
-        self.label_3.setFont(font)
-        self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_3.setObjectName("label_3")
-        self.gridLayout_2.addWidget(self.label_3, 3, 0, 1, 2)
+        self.label_6.setFont(font)
+        self.label_6.setObjectName("label_6")
+        self.gridLayout_2.addWidget(self.label_6, 7, 0, 1, 1)
+        self.textEdit_2 = QtWidgets.QTextEdit(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.textEdit_2.sizePolicy().hasHeightForWidth())
+        self.textEdit_2.setSizePolicy(sizePolicy)
+        self.textEdit_2.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.textEdit_2.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textEdit_2.setObjectName("textEdit_2")
+        self.gridLayout_2.addWidget(self.textEdit_2, 8, 0, 1, 1)
         self.gridLayout_8.addLayout(self.gridLayout_2, 1, 0, 1, 1)
 
         self.retranslateUi(Form)
@@ -379,29 +434,30 @@ class Prodigal_Form(QWidget):
         self.pushButton_2.clicked.connect(self.read_file1)
         self.pushButton_3.clicked.connect(self.read_file2)
 
-        self.textEdit.setPlaceholderText(" Coden: 11")
-        self.radioButton.setChecked(True)
-        self.radioButton_3.setChecked(True)
+        self.textEdit.setPlaceholderText(" Start: 1")
+        self.textEdit_2.setPlaceholderText(" End: 2")
+        self.radioButton_2.setChecked(True)
+        self.radioButton_4.setChecked(True)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Prodigal"))
+        Form.setWindowTitle(_translate("Form", "Get Fasta Position"))
         self.pushButton.setText(_translate("Form", "Run"))
-        self.radioButton.setText(_translate("Form", "Single"))
-        self.radioButton_2.setText(_translate("Form", "Meta"))
-        self.label_7.setText(_translate("Form", "Single / Meta"))
-        self.label.setText(_translate("Form", "Prodigal"))
-        self.label_5.setText(_translate("Form", "(ORFs prediction)"))
+        self.radioButton.setText(_translate("Form", "Yes"))
+        self.radioButton_2.setText(_translate("Form", "No"))
+        self.label_7.setText(_translate("Form", "Reverse"))
+        self.label.setText(_translate("Form", "Get Fasta Position"))
+        self.label_5.setText(_translate("Form", "(Opitional)"))
         self.label_4.setText(_translate("Form", "Status"))
-        self.radioButton_11.setText(_translate("Form", "SCO"))
-        self.radioButton_4.setText(_translate("Form", "GBK"))
-        self.radioButton_3.setText(_translate("Form", "GFF"))
-        self.label_10.setText(_translate("Form", "Output file format"))
+        self.radioButton_4.setText(_translate("Form", "No"))
+        self.radioButton_3.setText(_translate("Form", "Yes"))
+        self.label_10.setText(_translate("Form", "Complement"))
+        self.label_3.setText(_translate("Form", "Output fasta file"))
+        self.label_9.setText(_translate("Form", "Position start"))
+        self.label_2.setText(_translate("Form", "Input fasta file"))
         self.pushButton_3.setText(_translate("Form", "Choose"))
         self.pushButton_2.setText(_translate("Form", "Choose"))
-        self.label_2.setText(_translate("Form", "Input fasta file"))
-        self.label_9.setText(_translate("Form", "Translation tables"))
-        self.label_3.setText(_translate("Form", "Output fasta file"))
+        self.label_6.setText(_translate("Form", "Position end"))
 
     def read_file1(self):
         openfile_name = QtWidgets.QFileDialog.getOpenFileName(self, 'choose file', '')[0]
@@ -418,11 +474,10 @@ class Prodigal_Form(QWidget):
 
     def build_tree(self):
         try:
-            global fasta, out, path, type, coden
+            global fasta, out, path, type, pos_s, pos_e
             fasta = self.textBrowser_2.toPlainText()
             out = self.textBrowser_3.toPlainText()
             path = os.path.dirname(out)
-
 
             if 0 in [len(fasta), len(out)]:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
@@ -431,56 +486,71 @@ class Prodigal_Form(QWidget):
                     self.textBrowser.setText('Running! please wait')
                     QApplication.processEvents()  # 逐条打印状态
 
-                    coden = self.textEdit.toPlainText()
-                    if coden == '':
-                        coden = 11
+                    pos_s = self.textEdit.toPlainText()
+                    if pos_s == '':
+                        pos_s = 1
                     else:
-                        coden = int(coden)
+                        pos_s = int(pos_s)
 
-                    if self.radioButton.isChecked() and self.radioButton_3.isChecked():
-                        type = 'A'
-                        # 启动线程, 运行 run 函数
-                        self.work.start()
-                        # 传送信号, 接受 run 函数执行完毕后的信号
-                        self.work.trigger.connect(self.finished)
-
-                    elif self.radioButton.isChecked() and self.radioButton_4.isChecked():
-                        type = 'B'
-                        # 启动线程, 运行 run 函数
-                        self.work.start()
-                        # 传送信号, 接受 run 函数执行完毕后的信号
-                        self.work.trigger.connect(self.finished)
-
-                    elif self.radioButton.isChecked() and self.radioButton_5.isChecked():
-                        type = 'C'
-                        # 启动线程, 运行 run 函数
-                        self.work.start()
-                        # 传送信号, 接受 run 函数执行完毕后的信号
-                        self.work.trigger.connect(self.finished)
-
-                    elif self.radioButton_2.isChecked() and self.radioButton_3.isChecked():
-                        type = 'D'
-                        # 启动线程, 运行 run 函数
-                        self.work.start()
-                        # 传送信号, 接受 run 函数执行完毕后的信号
-                        self.work.trigger.connect(self.finished)
-
-                    elif self.radioButton_2.isChecked() and self.radioButton_4.isChecked():
-                        type = 'E'
-                        # 启动线程, 运行 run 函数
-                        self.work.start()
-                        # 传送信号, 接受 run 函数执行完毕后的信号
-                        self.work.trigger.connect(self.finished)
-
-                    elif self.radioButton_2.isChecked() and self.radioButton_5.isChecked():
-                        type = 'F'
-                        # 启动线程, 运行 run 函数
-                        self.work.start()
-                        # 传送信号, 接受 run 函数执行完毕后的信号
-                        self.work.trigger.connect(self.finished)
-
+                    pos_e = self.textEdit_2.toPlainText()
+                    if pos_e == '':
+                        pos_e = 2
                     else:
-                        QMessageBox.critical(self, "error", "Please choose Substitution model!")
+                        pos_e = int(pos_e)
+
+                    def fasta2dict(fasta_name):
+                        with open(fasta_name) as fa:
+                            fa_dict = {}
+                            for line in fa:
+                                # 去除末尾换行符
+                                line = line.replace('\n', '')
+                                if line.startswith('>'):
+                                    # 去除 > 号
+                                    seq_name = line[1:]
+                                    fa_dict[seq_name] = ''
+                                else:
+                                    # 去除末尾换行符并连接多行序列
+                                    fa_dict[seq_name] += line.replace('\n', '')
+                        return fa_dict
+
+                    dict_dat = fasta2dict(fasta)
+                    key = list(dict_dat.keys())[0]
+                    seq_len = len(dict_dat[key])
+
+                    if pos_s < 1 or pos_e > seq_len:
+                        QMessageBox.warning(self, "warning", "Please add correct position!",
+                                            QMessageBox.Cancel)
+                    else:
+                        if self.radioButton.isChecked() and self.radioButton_3.isChecked():
+                            type = 'A'
+                            # 启动线程, 运行 run 函数
+                            self.work.start()
+                            # 传送信号, 接受 run 函数执行完毕后的信号
+                            self.work.trigger.connect(self.finished)
+
+                        elif self.radioButton.isChecked() and self.radioButton_4.isChecked():
+                            type = 'B'
+                            # 启动线程, 运行 run 函数
+                            self.work.start()
+                            # 传送信号, 接受 run 函数执行完毕后的信号
+                            self.work.trigger.connect(self.finished)
+
+                        elif self.radioButton_2.isChecked() and self.radioButton_3.isChecked():
+                            type = 'C'
+                            # 启动线程, 运行 run 函数
+                            self.work.start()
+                            # 传送信号, 接受 run 函数执行完毕后的信号
+                            self.work.trigger.connect(self.finished)
+
+                        elif self.radioButton_2.isChecked() and self.radioButton_4.isChecked():
+                            type = 'D'
+                            # 启动线程, 运行 run 函数
+                            self.work.start()
+                            # 传送信号, 接受 run 函数执行完毕后的信号
+                            self.work.trigger.connect(self.finished)
+
+                        else:
+                            QMessageBox.critical(self, "error", "Check fasta file format!")
 
                 except:
                     QMessageBox.critical(self, "error", "Check parameters value!")
@@ -488,12 +558,12 @@ class Prodigal_Form(QWidget):
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
 
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui = Prodigal_Form()
+    ui = FaPosition_Form()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
-

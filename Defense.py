@@ -300,15 +300,14 @@ class Defense_system_Form(QWidget):
                         if coverage == '':
                             coverage = 0.4
                         else:
-                            coverage = coverage
+                            coverage = float(coverage)
+
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
                     except:
-                        coverage = 0.4
-
-
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                        QMessageBox.critical(self, "error", "Check parameters value!")
 
         except:
             QMessageBox.critical(self, "error", "Please check all your files format!!!")

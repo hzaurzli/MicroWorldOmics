@@ -341,8 +341,8 @@ class Bugbase_Form(QWidget):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Clustal = QtWidgets.QWidget()
+    Form = QtWidgets.QWidget()
     ui = Bugbase_Form()
-    ui.setupUi(Clustal)
-    Clustal.show()
+    ui.setupUi(Form)
+    Form.show()
     sys.exit(app.exec_())

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>658</width>
-    <height>478</height>
+    <height>542</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -62,7 +62,7 @@
        <widget class="QRadioButton" name="radioButton">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>20</x>
           <y>40</y>
           <width>151</width>
           <height>29</height>
@@ -84,7 +84,7 @@
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Single</string>
+         <string>Yes</string>
         </property>
         <property name="autoExclusive">
          <bool>true</bool>
@@ -93,8 +93,8 @@
        <widget class="QRadioButton" name="radioButton_2">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>80</y>
+          <x>20</x>
+          <y>90</y>
           <width>121</width>
           <height>29</height>
          </rect>
@@ -115,7 +115,7 @@
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Meta</string>
+         <string>No</string>
         </property>
         <property name="autoExclusive">
          <bool>true</bool>
@@ -149,7 +149,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Single / Meta</string>
+         <string>Reverse</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -185,7 +185,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Prodigal</string>
+        <string>Get Fasta Position</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -217,7 +217,7 @@
         </font>
        </property>
        <property name="text">
-        <string>(ORFs prediction)</string>
+        <string>(Opitional)</string>
        </property>
       </widget>
      </item>
@@ -287,42 +287,11 @@
        <property name="title">
         <string/>
        </property>
-       <widget class="QRadioButton" name="radioButton_11">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>100</y>
-          <width>241</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <family>Times New Roman</family>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string>SCO</string>
-        </property>
-        <property name="autoExclusive">
-         <bool>true</bool>
-        </property>
-       </widget>
        <widget class="QRadioButton" name="radioButton_4">
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>70</y>
+          <y>90</y>
           <width>231</width>
           <height>26</height>
          </rect>
@@ -343,7 +312,7 @@
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>GBK</string>
+         <string>No</string>
         </property>
         <property name="autoExclusive">
          <bool>true</bool>
@@ -374,7 +343,7 @@
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>GFF</string>
+         <string>Yes</string>
         </property>
         <property name="autoExclusive">
          <bool>true</bool>
@@ -402,7 +371,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Output file format</string>
+         <string>Complement</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -414,6 +383,109 @@
    </item>
    <item row="1" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
+     <item row="3" column="0" colspan="2">
+      <widget class="QLabel" name="label_3">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Times New Roman</family>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Output fasta file</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" colspan="2">
+      <widget class="QLabel" name="label_9">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Times New Roman</family>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Position start</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QLabel" name="label_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Times New Roman</family>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Input fasta file</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QTextEdit" name="textEdit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(D:/Documents/Desktop/white.png)</string>
+       </property>
+      </widget>
+     </item>
      <item row="4" column="1">
       <widget class="QPushButton" name="pushButton_3">
        <property name="font">
@@ -478,8 +550,8 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0" colspan="2">
-      <widget class="QLabel" name="label_2">
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_6">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
@@ -499,15 +571,12 @@
         </font>
        </property>
        <property name="text">
-        <string>Input fasta file</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        <string>Position end</string>
        </property>
       </widget>
      </item>
-     <item row="6" column="0">
-      <widget class="QTextEdit" name="textEdit">
+     <item row="8" column="0">
+      <widget class="QTextEdit" name="textEdit_2">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
@@ -522,62 +591,6 @@
        </property>
        <property name="styleSheet">
         <string notr="true">background-image: url(D:/Documents/Desktop/white.png)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0" colspan="2">
-      <widget class="QLabel" name="label_9">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Times New Roman</family>
-         <pointsize>15</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Translation tables</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0" colspan="2">
-      <widget class="QLabel" name="label_3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Times New Roman</family>
-         <pointsize>15</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Output fasta file</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>

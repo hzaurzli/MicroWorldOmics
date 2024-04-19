@@ -294,32 +294,35 @@ class PCR_Form(QWidget):
                 if is_fasta(fasta) == False:
                     QMessageBox.critical(self, "error", "check fasta file format!")
                 else:
-                    if len(length) == 0:
-                        length = 0
-                    else:
-                        length = length
+                    try:
+                        if len(length) == 0:
+                            length = 0
+                        else:
+                            length = int(length)
 
-                    if len(mismatch) == 0:
-                        mismatch = 0
-                    else:
-                        mismatch = mismatch
+                        if len(mismatch) == 0:
+                            mismatch = 0
+                        else:
+                            mismatch = int(mismatch)
 
-                    if len(indel) == 0:
-                        indel = 0
-                    else:
-                        indel = indel
+                        if len(indel) == 0:
+                            indel = 0
+                        else:
+                            indel = int(indel)
 
-                    self.textBrowser.setText('Running! please wait')
-                    QApplication.processEvents()  # 逐条打印状态
+                        self.textBrowser.setText('Running! please wait')
+                        QApplication.processEvents()  # 逐条打印状态
+                        os.popen(
+                            r".\perl\bin\perl.exe .\perl\in_silico_PCR.pl -s %s -a %s -b %s -l %s -m %s -i %s > %s 2> %s"
+                            % (fasta, forward, reverse, length, mismatch, indel, path + "/position-" + file, out))
 
-                    os.popen(
-                        r".\perl\bin\perl.exe .\perl\in_silico_PCR.pl -s %s -a %s -b %s -l %s -m %s -i %s > %s 2> %s"
-                        % (fasta, forward, reverse, length, mismatch, indel, path + "/position-" + file, out))
+                        self.textBrowser.setText('Finished!!!')
 
-                    self.textBrowser.setText('Finished!!!')
+                    except:
+                        QMessageBox.critical(self, "error", "Check parameters value!")
 
         except:
-            QMessageBox.critical(self, "error", "check fasta file format!")
+            QMessageBox.critical(self, "error", "Check fasta file format and parameters value!")
 
 
 if __name__ == "__main__":

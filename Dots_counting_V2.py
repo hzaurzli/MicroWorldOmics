@@ -346,8 +346,12 @@ class Dots_counting_V2_Form(QWidget):
         global openfile_name
         openfile_name = QFileDialog.getOpenFileName(self, 'choose figures', '')[0]
         print(openfile_name)
-        self.label.setPixmap(QPixmap(openfile_name))
-        self.label.setScaledContents(True)
+        if openfile_name != '':
+            self.label.setPixmap(QtGui.QPixmap(openfile_name))
+            self.label.setScaledContents(True)
+        else:
+            self.label.setPixmap(QPixmap("./logo/white.png"))
+            self.label.setScaledContents(True)
 
     def counting(self):
 

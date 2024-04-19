@@ -346,31 +346,28 @@ class Prokka_Form(QWidget):
                 if is_fasta(fasta) == False:
                     QMessageBox.critical(self, "error", "Check fasta file format!")
                 else:
-                    self.textBrowser.setText('Running! please wait')
-                    QApplication.processEvents()  # 逐条打印状态
-
                     try:
+                        self.textBrowser.setText('Running! please wait')
+                        QApplication.processEvents()  # 逐条打印状态
+
                         prefix = str(self.textEdit.toPlainText())
                         if prefix == '':
                             prefix = "example"
                         else:
-                            prefix = prefix
-                    except:
-                        prefix = "example"
+                            prefix = str(prefix)
 
-                    try:
                         kingdom = str(self.textEdit_2.toPlainText())
                         if kingdom == '':
                             kingdom = "Bacteria"
                         else:
-                            kingdom = kingdom
-                    except:
-                        kingdom = "Bacteria"
+                            kingdom = str(kingdom)
 
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
+                    except:
+                        QMessageBox.critical(self, "error", "Check parameters value!")
 
         except:
             QMessageBox.critical(self, "error", "Please check all your files format!!!")
@@ -378,10 +375,10 @@ class Prokka_Form(QWidget):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Clustal = QtWidgets.QWidget()
+    Form = QtWidgets.QWidget()
     ui = Prokka_Form()
-    ui.setupUi(Clustal)
-    Clustal.show()
+    ui.setupUi(Form)
+    Form.show()
     sys.exit(app.exec_())
 
 

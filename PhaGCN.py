@@ -1167,23 +1167,24 @@ class PhaGCN_Form(QWidget):
                 if is_fasta(contigs) == False:
                     QMessageBox.critical(self, "error", "Check fasta file format!")
                 else:
-                    self.textBrowser.setText(
-                        'Running! please wait (15-20mins)' + '\n' + 'If no response,never close window!!!')
-                    QApplication.processEvents()  # 逐条打印状态
-
                     try:
+                        self.textBrowser.setText(
+                            'Running! please wait (15-20mins)' + '\n' + 'If no response,never close window!!!')
+                        QApplication.processEvents()  # 逐条打印状态
+
                         length_len = str(self.textEdit.toPlainText())
                         if length_len == '':
                             length_len = 3000
                         else:
-                            length_len = int(length_len)
-                    except:
-                        length_len = 3000
+                            length_len = float(length_len)
 
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
+
+                    except:
+                        QMessageBox.critical(self, "error", "Check parameters value!")
 
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")

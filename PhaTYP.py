@@ -530,14 +530,15 @@ class PhaTYP_Form(QWidget):
                         if length_len == '':
                             length_len = 3000
                         else:
-                            length_len = str(length_len)
-                    except:
-                        length_len = 3000
+                            length_len = float(length_len)
 
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
+
+                    except:
+                        QMessageBox.critical(self, "error", "Check parameters value!")
 
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")

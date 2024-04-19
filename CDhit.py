@@ -260,34 +260,22 @@ class CDhit_Form(QWidget):
                         if sequence_identity == '':
                             sequence_identity = 0.8
                         else:
-                            sequence_identity = int(sequence_identity)
-                    except:
-                        sequence_identity = 0.8
+                            sequence_identity = float(sequence_identity)
 
-
-                    try:
                         aL = str(self.textEdit_3.toPlainText())
                         if aL == '':
                             aL = 0
                         else:
-                            aL = int(aL)
-                    except:
-                        aL = 0
+                            aL = float(aL)
 
-
-                    try:
                         aS = str(self.textEdit_4.toPlainText())
                         if aS == '':
                             aS = 0
                         else:
-                            aS = int(aS)
-                    except:
-                        aS = 0
+                            aS = float(aS)
 
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                    except:
+                        QMessageBox.critical(self, "error", "Check parameters value!")
 
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
@@ -296,9 +284,9 @@ class CDhit_Form(QWidget):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Clustal = QtWidgets.QWidget()
+    Form = QtWidgets.QWidget()
     ui = CDhit_Form()
-    ui.setupUi(Clustal)
-    Clustal.show()
+    ui.setupUi(Form)
+    Form.show()
     sys.exit(app.exec_())
 

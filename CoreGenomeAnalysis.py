@@ -612,23 +612,21 @@ class Core_genome_Form(QWidget):
                     if align_percent == '':
                         align_percent = 80
                     else:
-                        align_percent = int(align_percent)
-                except:
-                    align_percent = 80
+                        align_percent = float(align_percent)
 
-                try:
                     identical_percent = str(self.textEdit_2.toPlainText())
                     if identical_percent == '':
                         identical_percent = 80
                     else:
-                        identical_percent = int(identical_percent)
-                except:
-                    identical_percent = 80
+                        identical_percent = float(identical_percent)
 
-                # 启动线程, 运行 run 函数
-                self.work.start()
-                # 传送信号, 接受 run 函数执行完毕后的信号
-                self.work.trigger.connect(self.finished)
+                    # 启动线程, 运行 run 函数
+                    self.work.start()
+                    # 传送信号, 接受 run 函数执行完毕后的信号
+                    self.work.trigger.connect(self.finished)
+
+                except:
+                    QMessageBox.critical(self, "error", "Check parameters value!")
 
         except:
             QMessageBox.critical(self, "error", "Please run program first!!!")

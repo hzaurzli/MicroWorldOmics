@@ -410,7 +410,6 @@ class FastANI_Form(QWidget):
     def calculation(self):
         try:
             global query, ref, path, type, out
-
             out = self.textBrowser_6.toPlainText()
 
             if len(out) == 0:

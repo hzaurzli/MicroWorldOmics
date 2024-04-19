@@ -1040,6 +1040,11 @@ QComboBox {
             <string>DefenseFinder</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>GetFaPosition</string>
+           </property>
+          </item>
          </widget>
          <widget class="QComboBox" name="comboBox_7">
           <property name="enabled">
@@ -1678,6 +1683,7 @@ background-color: rgb(255, 255, 255);</string>
     <addaction name="actionShinyRhierBaps"/>
     <addaction name="actionShinyBactDating"/>
     <addaction name="actionDefensefinder"/>
+    <addaction name="actionGetFaPosition"/>
    </widget>
    <widget class="QMenu" name="menuHelps">
     <property name="title">
@@ -2072,6 +2078,11 @@ background-color: rgb(255, 255, 255);</string>
   <action name="actionDefensefinder">
    <property name="text">
     <string>DefenseFinder</string>
+   </property>
+  </action>
+  <action name="actionGetFaPosition">
+   <property name="text">
+    <string>GetFaPosition</string>
    </property>
   </action>
  </widget>

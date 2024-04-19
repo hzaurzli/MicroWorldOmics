@@ -503,24 +503,6 @@ class PhaMer_Form(QWidget):
 
             print(out_fn)
 
-            try:
-                length = str(self.textEdit.toPlainText())
-                if length == '':
-                    length = 3000
-                else:
-                    length = int(length)
-            except:
-                length = 3000
-
-            try:
-                reject = str(self.textEdit_2.toPlainText())
-                if reject == '':
-                    reject = 0.3
-                else:
-                    reject = float(reject)
-            except:
-                reject = 0.3
-
             def is_fasta(filename):
                 with open(filename, "r") as handle:
                     fasta = SeqIO.parse(handle, "fasta")
@@ -532,13 +514,29 @@ class PhaMer_Form(QWidget):
                 if is_fasta(contigs) == False:
                     QMessageBox.critical(self, "error", "Check fasta file format!")
                 else:
-                    self.textBrowser.setText('Running! please wait (5-8mins)' + '\n' + 'If no response,never close window!!!')
-                    QApplication.processEvents()  # 逐条打印状态
+                    try:
+                        self.textBrowser.setText('Running! please wait (5-8mins)' + '\n' + 'If no response,never close window!!!')
+                        QApplication.processEvents()  # 逐条打印状态
 
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                        length = str(self.textEdit.toPlainText())
+                        if length == '':
+                            length = 3000
+                        else:
+                            length = float(length)
+
+                        reject = str(self.textEdit_2.toPlainText())
+                        if reject == '':
+                            reject = 0.3
+                        else:
+                            reject = float(reject)
+
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
+
+                    except:
+                        QMessageBox.critical(self, "error", "Check parameters value!")
 
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
@@ -593,7 +591,7 @@ class PhaMer_Form(QWidget):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    # Form = QtWidgets.QWidget()
+    WT = QtWidgets.QWidget()
     WT = winTest()
     ui = PhaMer_Form()
     ui.setupUi(WT)

@@ -456,102 +456,101 @@ class Raxml_Form(QWidget):
             out = self.textBrowser_3.toPlainText()
             path = os.path.dirname(out)
 
-
-            try:
-                bootstrap = self.textEdit.toPlainText()
-                if isinstance(bootstrap, int) == True:
-                    bootstrap = bootstrap
-                else:
-                    QMessageBox.critical(self, "error", "Bootstrap value error!")
-            except:
-                bootstrap = 100
-
             if any([len(fasta), len(out)]) == False:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
-                self.textBrowser.setText('Running! please wait')
-                QApplication.processEvents()  # 逐条打印状态
+                try:
+                    self.textBrowser.setText('Running! please wait')
+                    QApplication.processEvents()  # 逐条打印状态
 
-                if self.radioButton.isChecked():
-                    type = 'A'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                    bootstrap = self.textEdit.toPlainText()
+                    if bootstrap == '':
+                        bootstrap = 100
+                    else:
+                        bootstrap = int(bootstrap)
 
-                elif self.radioButton_2.isChecked():
-                    type = 'B'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                    if self.radioButton.isChecked():
+                        type = 'A'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
-                elif self.radioButton_3.isChecked():
-                    type = 'C'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                    elif self.radioButton_2.isChecked():
+                        type = 'B'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
-                elif self.radioButton_4.isChecked():
-                    type = 'D'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                    elif self.radioButton_3.isChecked():
+                        type = 'C'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
-                elif self.radioButton_5.isChecked():
-                    type = 'E'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                    elif self.radioButton_4.isChecked():
+                        type = 'D'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
-                elif self.radioButton_6.isChecked():
-                    type = 'F'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                    elif self.radioButton_5.isChecked():
+                        type = 'E'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
-                elif self.radioButton_7.isChecked():
-                    type = 'G'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                    elif self.radioButton_6.isChecked():
+                        type = 'F'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
-                elif self.radioButton_8.isChecked():
-                    type = 'H'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                    elif self.radioButton_7.isChecked():
+                        type = 'G'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
-                elif self.radioButton_9.isChecked():
-                    type = 'I'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                    elif self.radioButton_8.isChecked():
+                        type = 'H'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
-                elif self.radioButton_10.isChecked():
-                    type = 'J'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                    elif self.radioButton_9.isChecked():
+                        type = 'I'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
-                elif self.radioButton_11.isChecked():
-                    type = 'K'
-                    # 启动线程, 运行 run 函数
-                    self.work.start()
-                    # 传送信号, 接受 run 函数执行完毕后的信号
-                    self.work.trigger.connect(self.finished)
+                    elif self.radioButton_10.isChecked():
+                        type = 'J'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
-                else:
-                    QMessageBox.critical(self, "error", "Please choose Substitution model!")
+                    elif self.radioButton_11.isChecked():
+                        type = 'K'
+                        # 启动线程, 运行 run 函数
+                        self.work.start()
+                        # 传送信号, 接受 run 函数执行完毕后的信号
+                        self.work.trigger.connect(self.finished)
 
+                    else:
+                        QMessageBox.critical(self, "error", "Please choose Substitution model!")
+
+                except:
+                    QMessageBox.critical(self, "error", "Check parameters value!")
         except:
             QMessageBox.critical(self, "error", "Check fasta file format!")
 
