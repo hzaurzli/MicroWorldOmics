@@ -9,6 +9,7 @@
 
 
 import time, os
+import urllib3
 from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -1761,11 +1762,20 @@ class Ui_MainWindow(object):
         self.form.show()
 
     def prokka_show(self):
-        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
-        self.form = QtWidgets.QWidget()
-        self.ui = Prokka_Form()
-        self.ui.setupUi(self.form)
-        self.form.show()
+        try:
+            http = urllib3.PoolManager()
+            http.request('GET', 'https://cn.bing.com/')
+
+            # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+            self.form = QtWidgets.QWidget()
+            self.ui = Prokka_Form()
+            self.ui.setupUi(self.form)
+            self.form.show()
+
+        except:
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Check your network connection!")
 
     def circos_show(self):
         # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
@@ -2138,11 +2148,19 @@ class Ui_MainWindow(object):
         self.form.show()
 
     def genomad_show(self):
-        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
-        self.form = QtWidgets.QWidget()
-        self.ui = Genomad_Form()
-        self.ui.setupUi(self.form)
-        self.form.show()
+        try:
+            http = urllib3.PoolManager()
+            http.request('GET', 'https://cn.bing.com/')
+            # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+            self.form = QtWidgets.QWidget()
+            self.ui = Genomad_Form()
+            self.ui.setupUi(self.form)
+            self.form.show()
+
+        except:
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Check your network connection!")
 
     def shinybae_show(self):
         # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
@@ -2191,11 +2209,21 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def defensefinder_show(self):
-        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
-        self.form = QtWidgets.QWidget()
-        self.ui = Defense_system_Form()
-        self.ui.setupUi(self.form)
-        self.form.show()
+        try:
+            http = urllib3.PoolManager()
+            http.request('GET', 'https://cn.bing.com/')
+
+            # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+            self.form = QtWidgets.QWidget()
+            self.ui = Defense_system_Form()
+            self.ui.setupUi(self.form)
+            self.form.show()
+
+        except:
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Check your network connection!")
+
 
     def getfaposition_show(self):
         # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
@@ -2205,8 +2233,16 @@ class Ui_MainWindow(object):
         self.form.show()
 
     def readme_show(self):
-        self.winTable = Help_Form()
-        self.winTable.show()
+        try:
+            http = urllib3.PoolManager()
+            http.request('GET', 'https://cn.bing.com/')
+            self.winTable = Help_Form()
+            self.winTable.show()
+
+        except:
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Check your network connection!")
 
 
 if __name__ == "__main__":
