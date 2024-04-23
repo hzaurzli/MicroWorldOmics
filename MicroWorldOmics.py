@@ -1805,11 +1805,20 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def gbk2json_show(self):
-        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
-        self.form = QtWidgets.QWidget()
-        self.ui = GBK2JSON_Form()
-        self.ui.setupUi(self.form)
-        self.form.show()
+        try:
+            http = urllib3.PoolManager()
+            http.request('GET', 'https://cn.bing.com/')
+            # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+            self.form = QtWidgets.QWidget()
+            self.ui = GBK2JSON_Form()
+            self.ui.setupUi(self.form)
+            self.form.show()
+
+        except:
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Check your network connection!")
+
 
     def plaque_show(self):
         # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
@@ -1828,12 +1837,30 @@ class Ui_MainWindow(object):
         self.Dialog.show()
 
     def viptree_show(self):
-        self.winTable = VipTree.VipTree_Form()
-        self.winTable.show()
+        try:
+            http = urllib3.PoolManager()
+            http.request('GET', 'https://cn.bing.com/')
+            # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+            self.winTable = VipTree.VipTree_Form()
+            self.winTable.show()
+
+        except:
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Check your network connection!")
 
     def viridic_show(self):
-        self.winTable = VIRIDIC.VIRIDIC_Form()
-        self.winTable.show()
+        try:
+            http = urllib3.PoolManager()
+            http.request('GET', 'https://cn.bing.com/')
+            # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+            self.winTable = VIRIDIC.VIRIDIC_Form()
+            self.winTable.show()
+
+        except:
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Check your network connection!")
 
     def phylotreejs_show(self):
         # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
@@ -1951,11 +1978,20 @@ class Ui_MainWindow(object):
         self.winTest.show()
 
     def bugbase_show(self):
-        # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
-        self.form = QtWidgets.QWidget()
-        self.ui = Bugbase_Form()
-        self.ui.setupUi(self.form)
-        self.form.show()
+        try:
+            http = urllib3.PoolManager()
+            http.request('GET', 'https://cn.bing.com/')
+            # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+            self.form = QtWidgets.QWidget()
+            self.ui = Bugbase_Form()
+            self.ui.setupUi(self.form)
+            self.form.show()
+
+        except:
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Check your network connection!")
+
 
     def chemicalformula_show(self):
         self.winTable = Chemicalformula_Form()
