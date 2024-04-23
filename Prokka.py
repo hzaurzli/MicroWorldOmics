@@ -133,8 +133,7 @@ class WorkThread(QThread):
             self.trigger.emit('Finished!!!')
 
         except:
-            QMessageBox.critical(self, "error", "Please check your network connection!!!")
-
+            self.trigger.emit('Some errors have occurred,please check your input format and network connection!')
 
 class Prokka_Form(QWidget):
     def __init__(self, parent=None):

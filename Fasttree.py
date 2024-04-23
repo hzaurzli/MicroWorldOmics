@@ -33,28 +33,32 @@ class WorkThread(QThread):
                     return True
             return False
 
-        if type == 'A':
-            os.popen(r".\tools\fastTree\FastTree.exe -nt -gtr %s > %s"
-                     % (fasta, out))
-        elif type == 'B':
-            os.popen(r".\tools\fastTree\FastTree.exe -lg %s > %s"
-                     % (fasta, out))
-        elif type == 'C':
-            os.popen(r".\tools\fastTree\FastTree.exe -wag %s > %s"
-                     % (fasta, out))
+        try:
+            if type == 'A':
+                os.popen(r".\tools\fastTree\FastTree.exe -nt -gtr %s > %s"
+                         % (fasta, out))
+            elif type == 'B':
+                os.popen(r".\tools\fastTree\FastTree.exe -lg %s > %s"
+                         % (fasta, out))
+            elif type == 'C':
+                os.popen(r".\tools\fastTree\FastTree.exe -wag %s > %s"
+                         % (fasta, out))
 
-        process_name = 'FastTree.exe'
-        time.sleep(5)
-        while True:  # 判断 iqtree.exe 是否运行完成
-            if check_process_running(process_name):
-                print(f"The process {process_name} is running.")
-                time.sleep(30)
-                continue
-            else:
-                print(f"The process {process_name} is not running.")
-                break
+            process_name = 'FastTree.exe'
+            time.sleep(5)
+            while True:  # 判断 iqtree.exe 是否运行完成
+                if check_process_running(process_name):
+                    print(f"The process {process_name} is running.")
+                    time.sleep(30)
+                    continue
+                else:
+                    print(f"The process {process_name} is not running.")
+                    break
 
-        self.trigger.emit('Finished!!!')
+            self.trigger.emit('Finished!!!')
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 class Fasttree_Form(QWidget):
     def __init__(self, parent=None):
@@ -222,7 +226,7 @@ class Fasttree_Form(QWidget):
         self.label_4.setText(_translate("Form", "Status"))
         self.pushButton.setText(_translate("Form", "Run"))
         self.label_7.setText(_translate("Form", "Nucleotide models (Protein invalid)"))
-        self.label_3.setText(_translate("Form", "Output fasta file"))
+        self.label_3.setText(_translate("Form", "Output tree file"))
         self.label.setText(_translate("Form", "FastTree"))
         self.pushButton_3.setText(_translate("Form", "Choose"))
         self.pushButton_2.setText(_translate("Form", "Choose"))

@@ -33,27 +33,31 @@ class WorkThread(QThread):
                     return True
             return False
 
-        path = os.path.abspath('.')
-        if '\\' in path:
-            path = path.strip().split('\\')
-            path = '/'.join(path)
+        try:
+            path = os.path.abspath('.')
+            if '\\' in path:
+                path = path.strip().split('\\')
+                path = '/'.join(path)
 
-        commond = path + r"/tools/mafft-win/mafft.bat --auto %s > %s" % (fasta, out)
+            commond = path + r"/tools/mafft-win/mafft.bat --auto %s > %s" % (fasta, out)
 
-        subprocess.call(commond)
-        time.sleep(3)
-        process_name = 'mafft.bat'
+            subprocess.call(commond)
+            time.sleep(3)
+            process_name = 'mafft.bat'
 
-        while True:  # 判断 iqtree.exe 是否运行完成
-            if check_process_running(process_name):
-                print(f"The process {process_name} is running.")
-                time.sleep(10)
-                continue
-            else:
-                print(f"The process {process_name} is not running.")
-                break
+            while True:  # 判断 iqtree.exe 是否运行完成
+                if check_process_running(process_name):
+                    print(f"The process {process_name} is running.")
+                    time.sleep(10)
+                    continue
+                else:
+                    print(f"The process {process_name} is not running.")
+                    break
 
-        self.trigger.emit('Finished!!!')
+            self.trigger.emit('Finished!!!')
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 class Mafft_Form(QWidget):
     def __init__(self, parent=None):

@@ -33,26 +33,30 @@ class WorkThread(QThread):
                     return True
             return False
 
-        path = os.path.abspath('.')
-        if '\\' in path:
-            path = path.strip().split('\\')
-            path = '/'.join(path)
+        try:
+            path = os.path.abspath('.')
+            if '\\' in path:
+                path = path.strip().split('\\')
+                path = '/'.join(path)
 
-        os.popen(path + r"/tools/cd-hit/cd-hit.exe -i %s -o %s -c %s -aL %s -aS %s"
-                 % (fasta, out, sequence_identity, aL, aS))
-        time.sleep(3)
-        process_name = 'cd-hit.exe'
+            os.popen(path + r"/tools/cd-hit/cd-hit.exe -i %s -o %s -c %s -aL %s -aS %s"
+                     % (fasta, out, sequence_identity, aL, aS))
+            time.sleep(3)
+            process_name = 'cd-hit.exe'
 
-        while True:  # 判断 iqtree.exe 是否运行完成
-            if check_process_running(process_name):
-                print(f"The process {process_name} is running.")
-                time.sleep(10)
-                continue
-            else:
-                print(f"The process {process_name} is not running.")
-                break
+            while True:  # 判断 iqtree.exe 是否运行完成
+                if check_process_running(process_name):
+                    print(f"The process {process_name} is running.")
+                    time.sleep(10)
+                    continue
+                else:
+                    print(f"The process {process_name} is not running.")
+                    break
 
-        self.trigger.emit('Finished!!!')
+            self.trigger.emit('Finished!!!')
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 
 class CDhit_Form(QWidget):

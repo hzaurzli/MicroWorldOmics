@@ -336,56 +336,60 @@ class WorkThread(QThread):
                 fasta = SeqIO.parse(handle, "fasta")
                 return any(fasta)
 
-        check_path(blastdb)
-        check_path(out_folder + '/out')
-        check_path(out_folder + '/corefa')
+        try:
+            check_path(blastdb)
+            check_path(out_folder + '/out')
+            check_path(out_folder + '/corefa')
 
-        fasta_dict = fasta2dict(ref)
+            fasta_dict = fasta2dict(ref)
 
-        with open(ref_tmp, 'w') as w:
-            for key in fasta_dict:
-                line = '>' + key + '::' + str(len(fasta_dict[key])) + '\n' + fasta_dict[key] + '\n'
-                w.write(line)
-        w.close()
+            with open(ref_tmp, 'w') as w:
+                for key in fasta_dict:
+                    line = '>' + key + '::' + str(len(fasta_dict[key])) + '\n' + fasta_dict[key] + '\n'
+                    w.write(line)
+            w.close()
 
-        makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
-                                            dbtype='nucl',
-                                            input_file=out_folder + '/ref_tmp.fasta',
-                                            out=blastdb + '/target')
+            makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
+                                                dbtype='nucl',
+                                                input_file=out_folder + '/ref_tmp.fasta',
+                                                out=blastdb + '/target')
 
-        makedb()
+            makedb()
 
-        for i in os.listdir(fasta):
-            print(i)
-            out = out_folder + '/out/' + os.path.splitext(i)[0] + '.Core'
-            query = fasta + '/' + i
+            for i in os.listdir(fasta):
+                print(i)
+                out = out_folder + '/out/' + os.path.splitext(i)[0] + '.Core'
+                query = fasta + '/' + i
 
-            if is_fasta(query) == False:
-                QMessageBox.critical(self, "error", "Check fasta file format!")
-            else:
-                blastn = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
-                                               query=query,
-                                               db=blastdb + '/target',
-                                               outfmt=format,
-                                               evalue=float(evalue),
-                                               out=out,
-                                               max_target_seqs=100000)
+                if is_fasta(query) == False:
+                    QMessageBox.critical(self, "error", "Check fasta file format!")
+                else:
+                    blastn = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
+                                                   query=query,
+                                                   db=blastdb + '/target',
+                                                   outfmt=format,
+                                                   evalue=float(evalue),
+                                                   out=out,
+                                                   max_target_seqs=100000)
 
-                blastn()
+                    blastn()
 
-        ARG_location_dict = blast_filter(out_folder, align_percent, identical_percent)
-        ARG_location_use_dict = ARG_filter(ARG_location_dict)
-        core_gene_list = Core_genome_cal(ARG_location_use_dict)
-        ARG_abstract_dict = Gene_abstract_determine(ARG_location_use_dict,
-                                                    core_gene_list, out_folder,
-                                                    align_percent, identical_percent)
+            ARG_location_dict = blast_filter(out_folder, align_percent, identical_percent)
+            ARG_location_use_dict = ARG_filter(ARG_location_dict)
+            core_gene_list = Core_genome_cal(ARG_location_use_dict)
+            ARG_abstract_dict = Gene_abstract_determine(ARG_location_use_dict,
+                                                        core_gene_list, out_folder,
+                                                        align_percent, identical_percent)
 
-        records_use = blast_seq_abstract(ARG_abstract_dict, fasta, out_folder)
-        creat_aln_file(records_use, core_gene_list)
-        do_alignment(out_folder)
-        connect_aln_file(out_folder)
+            records_use = blast_seq_abstract(ARG_abstract_dict, fasta, out_folder)
+            creat_aln_file(records_use, core_gene_list)
+            do_alignment(out_folder)
+            connect_aln_file(out_folder)
 
-        self.trigger.emit("Finished, Core_genome.aln is your result!!!")
+            self.trigger.emit("Finished, Core_genome.aln is your result!!!")
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 class Core_genome_Form(QWidget):
     def __init__(self, parent=None):

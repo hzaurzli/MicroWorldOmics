@@ -41,7 +41,7 @@ class winTest(QtWidgets.QWidget):
             if os.path.exists(ref_tmp):
                 os.remove(ref_tmp)
             else:
-                event.ignore()  # 设置正常退出
+                return None  # 设置正常退出
         except:
             return None  # 设置正常退出
 
@@ -79,141 +79,144 @@ class WorkThread(QThread):
                         fa_dict[seq_name] += line.replace('\n', '')
             return fa_dict
 
-        blastdb = out_folder + '/' + 'blastdb'
-        query_folder = fasta
-        out_folder1 = out_folder + '/' 'out'
-        out_folder2 = out_folder + '/' + 'filter'
+        try:
+            blastdb = out_folder + '/' + 'blastdb'
+            query_folder = fasta
+            out_folder1 = out_folder + '/' 'out'
+            out_folder2 = out_folder + '/' + 'filter'
 
-        check_path(blastdb)
-        check_path(out_folder1)
-        check_path(out_folder2)
+            check_path(blastdb)
+            check_path(out_folder1)
+            check_path(out_folder2)
 
-        fasta_dict = fasta2dict(ref)
+            fasta_dict = fasta2dict(ref)
 
-        global ref_tmp
-        ref_tmp = out_folder + '/ref_tmp.fasta'
+            global ref_tmp
+            ref_tmp = out_folder + '/ref_tmp.fasta'
 
-        with open(ref_tmp, 'w') as w:
-            for key in fasta_dict:
-                line = '>' + key + '::' + str(len(fasta_dict[key])) + '\n' + fasta_dict[key] + '\n'
-                w.write(line)
-        w.close()
+            with open(ref_tmp, 'w') as w:
+                for key in fasta_dict:
+                    line = '>' + key + '::' + str(len(fasta_dict[key])) + '\n' + fasta_dict[key] + '\n'
+                    w.write(line)
+            w.close()
 
-        makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
-                                            dbtype='nucl',
-                                            input_file=out_folder + '/ref_tmp.fasta',
-                                            out=blastdb + '/target')
+            makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
+                                                dbtype='nucl',
+                                                input_file=out_folder + '/ref_tmp.fasta',
+                                                out=blastdb + '/target')
 
-        makedb()
+            makedb()
 
-        evalue = 1e-5
-        format = str(6)
-        for i in os.listdir(query_folder):
-            print(i)
-            self.trigger.emit('Running: ' + str(i))
-            out = out_folder1 + '/' + os.path.splitext(i)[0] + '.out'
-            query = query_folder + '/' + i
+            evalue = 1e-5
+            format = str(6)
+            for i in os.listdir(query_folder):
+                print(i)
+                self.trigger.emit('Running: ' + str(i))
+                out = out_folder1 + '/' + os.path.splitext(i)[0] + '.out'
+                query = query_folder + '/' + i
 
-            if is_fasta(query) == False:
-                QMessageBox.critical(self, "error", "Check fasta file format!")
-            else:
-                blastn = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
-                                               query=query,
-                                               db=blastdb + '/target',
-                                               outfmt=format,
-                                               evalue=float(evalue),
-                                               out=out,
-                                               max_target_seqs=10000)
+                if is_fasta(query) == False:
+                    QMessageBox.critical(self, "error", "Check fasta file format!")
+                else:
+                    blastn = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
+                                                   query=query,
+                                                   db=blastdb + '/target',
+                                                   outfmt=format,
+                                                   evalue=float(evalue),
+                                                   out=out,
+                                                   max_target_seqs=10000)
 
-                blastn()
+                    blastn()
 
-        for j in os.listdir(out_folder1):
-            blast_info = open(out_folder1 + '/' + os.path.splitext(j)[0] + '.out', "r")
-            out_file = open(out_folder2 + '/' + os.path.splitext(j)[0] + '.filter', "w")
+            for j in os.listdir(out_folder1):
+                blast_info = open(out_folder1 + '/' + os.path.splitext(j)[0] + '.out', "r")
+                out_file = open(out_folder2 + '/' + os.path.splitext(j)[0] + '.filter', "w")
 
-            for line in blast_info:
-                info = line.strip().split("\t")
-                PerCentID = float(info[2])
-                if PerCentID == 100.00:
-                    AlignLen = int(info[3])
-                    Subject = str(info[1])
-                    Subject_pattern = re.compile(r"^.*\:(.*)")
-                    m = Subject_pattern.search(Subject)
-                    SubjectLen = m.group(1)
-                    Subject_figure = float(SubjectLen)
-                    Percentlen = float(AlignLen / Subject_figure) * 100
-                    if Percentlen == 100.00:
-                        out_file.write("\t".join(
-                            [info[0], info[1], info[2], info[3], info[4], info[5], info[6], info[7], info[8], info[9],
-                             info[10],
-                             info[11]]) + "\n")
+                for line in blast_info:
+                    info = line.strip().split("\t")
+                    PerCentID = float(info[2])
+                    if PerCentID == 100.00:
+                        AlignLen = int(info[3])
+                        Subject = str(info[1])
+                        Subject_pattern = re.compile(r"^.*\:(.*)")
+                        m = Subject_pattern.search(Subject)
+                        SubjectLen = m.group(1)
+                        Subject_figure = float(SubjectLen)
+                        Percentlen = float(AlignLen / Subject_figure) * 100
+                        if Percentlen == 100.00:
+                            out_file.write("\t".join(
+                                [info[0], info[1], info[2], info[3], info[4], info[5], info[6], info[7], info[8], info[9],
+                                 info[10],
+                                 info[11]]) + "\n")
 
-            blast_info.close()
-            out_file.close()
+                blast_info.close()
+                out_file.close()
 
-        out_file_mlst = open(out_folder + "/mlst_result.txt", "w")
+            out_file_mlst = open(out_folder + "/mlst_result.txt", "w")
 
-        for i in os.listdir(out_folder2):
-            value = out_folder2 + '/' + i
-            blast_info = open(value, "r")
-            file_name = os.path.splitext(i)[0]
+            for i in os.listdir(out_folder2):
+                value = out_folder2 + '/' + i
+                blast_info = open(value, "r")
+                file_name = os.path.splitext(i)[0]
 
-            ST_gene_list = []
-            df = pd.read_excel(io=mlst)
+                ST_gene_list = []
+                df = pd.read_excel(io=mlst)
 
-            gene = []
-            for i in df:
-                gene.append(i)
+                gene = []
+                for i in df:
+                    gene.append(i)
 
-            id = gene[0]
-            gene = gene[1::]
+                id = gene[0]
+                gene = gene[1::]
 
-            dic_gene = {}
-            for row in df.itertuples():
-                gene_num = []
-                for item in gene:
-                    gene_num.append(getattr(row, item))
-                dic_gene[getattr(row, id)] = gene_num
+                dic_gene = {}
+                for row in df.itertuples():
+                    gene_num = []
+                    for item in gene:
+                        gene_num.append(getattr(row, item))
+                    dic_gene[getattr(row, id)] = gene_num
 
-            ST_info_dict = {}
-            for key in dic_gene:
-                ST_type = str(key)
-                dic_gene[key] = list(map(str, dic_gene[key]))
-                ST_str = ":".join(dic_gene[key])
-                ST_str = str(ST_str)
-                ST_info_dict[ST_str] = (ST_type)
+                ST_info_dict = {}
+                for key in dic_gene:
+                    ST_type = str(key)
+                    dic_gene[key] = list(map(str, dic_gene[key]))
+                    ST_str = ":".join(dic_gene[key])
+                    ST_str = str(ST_str)
+                    ST_info_dict[ST_str] = (ST_type)
 
-            for line in blast_info:
-                info = line.strip().split("\t")
-                ST_gene = str(info[1])
-                ST_gene_list.append(ST_gene)
+                for line in blast_info:
+                    info = line.strip().split("\t")
+                    ST_gene = str(info[1])
+                    ST_gene_list.append(ST_gene)
 
-            dic_lis = {}
-            for i in gene:
-                dic_lis[i] = 0
+                dic_lis = {}
+                for i in gene:
+                    dic_lis[i] = 0
 
-            for item in ST_gene_list:
-                item_info = item.split("::")[0]
-                item_info_get = item_info.split("_")[-1]
-                gene = '_'.join(item_info.split("_")[:-1])
-                dic_lis[gene] = item_info_get
+                for item in ST_gene_list:
+                    item_info = item.split("::")[0]
+                    item_info_get = item_info.split("_")[-1]
+                    gene = '_'.join(item_info.split("_")[:-1])
+                    dic_lis[gene] = item_info_get
 
-            ST_test = ''
-            for key in dic_lis:
-                ST_test = ST_test + str(dic_lis[key]) + ':'
+                ST_test = ''
+                for key in dic_lis:
+                    ST_test = ST_test + str(dic_lis[key]) + ':'
 
-            ST_use = str(ST_test.strip(':'))
-            if ST_use in ST_info_dict.keys():
-                ST_result = ST_info_dict[ST_use]
-            else:
-                ST_result = 'new'
+                ST_use = str(ST_test.strip(':'))
+                if ST_use in ST_info_dict.keys():
+                    ST_result = ST_info_dict[ST_use]
+                else:
+                    ST_result = 'new'
 
-            # print(file_name + "\t" + ST_result + "\t" + ST_use + "\n")
-            out_file_mlst.write(file_name + "\t" + ST_result + "\t" + ST_use + "\n")
+                # print(file_name + "\t" + ST_result + "\t" + ST_use + "\n")
+                out_file_mlst.write(file_name + "\t" + ST_result + "\t" + ST_use + "\n")
 
-        # os.remove(out_folder + '/ref_tmp.fasta')
-        self.trigger.emit('Finished!!!')
+            # os.remove(out_folder + '/ref_tmp.fasta')
+            self.trigger.emit('Finished!!!')
 
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 class MLST_Form(QWidget):
     def __init__(self, parent=None):

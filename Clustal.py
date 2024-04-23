@@ -33,26 +33,30 @@ class WorkThread(QThread):
                     return True
             return False
 
-        path = os.path.abspath('.')
-        if '\\' in path:
-            path = path.strip().split('\\')
-            path = '/'.join(path)
+        try:
+            path = os.path.abspath('.')
+            if '\\' in path:
+                path = path.strip().split('\\')
+                path = '/'.join(path)
 
-        os.popen(path + r"/tools/clustalo/clustal_omega/clustalo.exe -i %s > %s"
-                 % (fasta, out))
-        time.sleep(3)
-        process_name = 'clustalo.exe'
+            os.popen(path + r"/tools/clustalo/clustal_omega/clustalo.exe -i %s > %s"
+                     % (fasta, out))
+            time.sleep(3)
+            process_name = 'clustalo.exe'
 
-        while True:  # 判断 iqtree.exe 是否运行完成
-            if check_process_running(process_name):
-                print(f"The process {process_name} is running.")
-                time.sleep(10)
-                continue
-            else:
-                print(f"The process {process_name} is not running.")
-                break
+            while True:  # 判断 iqtree.exe 是否运行完成
+                if check_process_running(process_name):
+                    print(f"The process {process_name} is running.")
+                    time.sleep(10)
+                    continue
+                else:
+                    print(f"The process {process_name} is not running.")
+                    break
 
-        self.trigger.emit('Finished!!!')
+            self.trigger.emit('Finished!!!')
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 class Clustal_Form(QWidget):
     def __init__(self, parent=None):

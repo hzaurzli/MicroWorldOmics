@@ -64,56 +64,60 @@ class WorkThread(QThread):
             string = ''.join(sequence_list)
             return string
 
-        if type == 'A':
-            dict_dat = fasta2dict(fasta)
-            key = list(dict_dat.keys())[0]
+        try:
+            if type == 'A':
+                dict_dat = fasta2dict(fasta)
+                key = list(dict_dat.keys())[0]
 
-            seq_tmp = dict_dat[key][int(pos_s)-1:int(pos_e)]
-            seq_tmp = DNA_reverse(seq_tmp)
-            seq = DNA_complement(seq_tmp)
+                seq_tmp = dict_dat[key][int(pos_s)-1:int(pos_e)]
+                seq_tmp = DNA_reverse(seq_tmp)
+                seq = DNA_complement(seq_tmp)
 
-            with open(out, 'w') as w:
-                line = '>' + key + '\n' + seq
-                w.write(line)
-            w.close()
-
-
-        elif type == 'B':
-            dict_dat = fasta2dict(fasta)
-            key = list(dict_dat.keys())[0]
-
-            seq_tmp = dict_dat[key][int(pos_s)-1:int(pos_e)]
-            seq = DNA_reverse(seq_tmp)
-
-            with open(out, 'w') as w:
-                line = '>' + key + '\n' + seq
-                w.write(line)
-            w.close()
-
-        elif type == 'C':
-            dict_dat = fasta2dict(fasta)
-            key = list(dict_dat.keys())[0]
-
-            seq_tmp = dict_dat[key][int(pos_s)-1:int(pos_e)]
-            seq = DNA_complement(seq_tmp)
-
-            with open(out, 'w') as w:
-                line = '>' + key + '\n' + seq
-                w.write(line)
-            w.close()
+                with open(out, 'w') as w:
+                    line = '>' + key + '\n' + seq
+                    w.write(line)
+                w.close()
 
 
-        elif type == 'D':
-            dict_dat = fasta2dict(fasta)
-            key = list(dict_dat.keys())[0]
-            seq = dict_dat[key][int(pos_s)-1:int(pos_e)]
+            elif type == 'B':
+                dict_dat = fasta2dict(fasta)
+                key = list(dict_dat.keys())[0]
 
-            with open(out, 'w') as w:
-                line = '>' + key + '\n' + seq + '\n'
-                w.write(line)
-            w.close()
+                seq_tmp = dict_dat[key][int(pos_s)-1:int(pos_e)]
+                seq = DNA_reverse(seq_tmp)
 
-        self.trigger.emit('Finished!!!')
+                with open(out, 'w') as w:
+                    line = '>' + key + '\n' + seq
+                    w.write(line)
+                w.close()
+
+            elif type == 'C':
+                dict_dat = fasta2dict(fasta)
+                key = list(dict_dat.keys())[0]
+
+                seq_tmp = dict_dat[key][int(pos_s)-1:int(pos_e)]
+                seq = DNA_complement(seq_tmp)
+
+                with open(out, 'w') as w:
+                    line = '>' + key + '\n' + seq
+                    w.write(line)
+                w.close()
+
+
+            elif type == 'D':
+                dict_dat = fasta2dict(fasta)
+                key = list(dict_dat.keys())[0]
+                seq = dict_dat[key][int(pos_s)-1:int(pos_e)]
+
+                with open(out, 'w') as w:
+                    line = '>' + key + '\n' + seq + '\n'
+                    w.write(line)
+                w.close()
+
+            self.trigger.emit('Finished!!!')
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 
 class FaPosition_Form(QWidget):

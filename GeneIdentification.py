@@ -41,11 +41,11 @@ class winTest(QtWidgets.QWidget):
                     if os.path.exists(out_tmp):
                         os.remove(out_tmp)
                     else:
-                        event.ignore()
+                        return None
                 except:
                     return None  # 设置正常退出
             else:
-                event.ignore()
+                return None
         except:
             return None  # 设置正常退出
 
@@ -176,106 +176,44 @@ class WorkThread(QThread):
                 fasta = SeqIO.parse(handle, "fasta")
                 return any(fasta)
 
-        check_path(blastdb)
-        check_path(out_folder + '/out')
-        fasta_dict = fasta2dict(ref)
+        try:
+            check_path(blastdb)
+            check_path(out_folder + '/out')
+            fasta_dict = fasta2dict(ref)
 
-        with open(ref_tmp, 'w') as w:
-            for key in fasta_dict:
-                line = '>' + key + '::' + str(len(fasta_dict[key])) + '\n' + fasta_dict[key] + '\n'
-                w.write(line)
-        w.close()
+            with open(ref_tmp, 'w') as w:
+                for key in fasta_dict:
+                    line = '>' + key + '::' + str(len(fasta_dict[key])) + '\n' + fasta_dict[key] + '\n'
+                    w.write(line)
+            w.close()
 
-        if type == 'A':
-            try:
-                makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
-                                                    dbtype='nucl',
-                                                    input_file=out_folder + '/ref_tmp.fasta',
-                                                    out=blastdb + '/target')
+            if type == 'A':
+                try:
+                    makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
+                                                        dbtype='nucl',
+                                                        input_file=out_folder + '/ref_tmp.fasta',
+                                                        out=blastdb + '/target')
 
-                makedb()
+                    makedb()
 
-                for i in os.listdir(fasta):
-                    print(i)
-                    out = out_folder + '/out/' + os.path.splitext(i)[0] + '.Gene'
-                    query = fasta + '/' + i
+                    for i in os.listdir(fasta):
+                        print(i)
+                        out = out_folder + '/out/' + os.path.splitext(i)[0] + '.Gene'
+                        query = fasta + '/' + i
 
-                    if is_fasta(query) == False:
-                        QMessageBox.critical(self, "error", "Check fasta file format!")
-                    else:
-                        blastn = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
-                                                       query=query,
-                                                       db=blastdb + '/target',
-                                                       outfmt=format,
-                                                       evalue=float(evalue),
-                                                       out=out)
-
-                        blastn()
-            except:
-                QMessageBox.critical(self, "error", "Check fasta file type!")
-
-            ARG_location_dict, isolates_list = blast_filter(out_folder + '/out', coverage)
-            ARG_location_use_dict, ARG_list_get = ARG_filter(ARG_location_dict,
-                                                             isolates_list,
-                                                             ident, coverage, over_lap)
-
-            out_file = open(out_folder + "/data_results.out", "w")
-            count = 0
-            for item in ARG_location_use_dict.items():
-                count += 1
-                isolates_info = item[0]
-                out_file.write(isolates_info + "\t")
-                ARG_list = item[1]
-                ARG_write_list = []
-                ARG_write_dict = {}
-                if ARG_list != 'Nontypeable':
-                    for ARG_have in ARG_list:
-                        ARG_write_list.append(ARG_have[0])
-                        ARG_write_dict.setdefault(ARG_have[0], []).append((ARG_have[1], ARG_have[2]))
-                    for n in ARG_list_get:
-                        ARG_write = "0"
-                        m = 0
-                        if n in ARG_write_list:
-                            ARG_write_use = ARG_write_dict[n]
-                            for i in ARG_write_use:
-                                if float(i[0]) >= ident and float(
-                                    i[1]) >= coverage:  # this is the cutoff value for determining an ARG/VF gene
-                                    m = m + 1
-                                    ARG_write = m
-                                    if m > 0:
-                                        out_file.write(n + ":" + str(i[0]) + ":" + str(i[1]) + "\t")
+                        if is_fasta(query) == False:
+                            QMessageBox.critical(self, "error", "Check fasta file format!")
                         else:
-                            ARG_write = "0"
-                    out_file.write("\n")
-                else:
-                    out_file.write("NULL" + "\n")
-            out_file.close()
+                            blastn = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
+                                                           query=query,
+                                                           db=blastdb + '/target',
+                                                           outfmt=format,
+                                                           evalue=float(evalue),
+                                                           out=out)
 
-        elif type == 'B':
-            try:
-                makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
-                                                    dbtype='prot',
-                                                    input_file=out_folder + '/ref_tmp.fasta',
-                                                    out=blastdb + '/target')
-
-                makedb()
-
-                for i in os.listdir(fasta):
-                    print(i)
-                    out = out_folder + '/out/' + os.path.splitext(i)[0] + '.Gene'
-                    query = fasta + '/' + i
-
-                    if is_fasta(query) == False:
-                        QMessageBox.critical(self, "error", "Check fasta file format!")
-                    else:
-                        blastp = NcbiblastpCommandline(path + "/blast-BLAST_VERSION+/bin/blastp.exe",
-                                                       query=query,
-                                                       db=blastdb + '/target',
-                                                       outfmt=format,
-                                                       evalue=float(evalue),
-                                                       out=out)
-
-                        blastp()
+                            blastn()
+                except:
+                    QMessageBox.critical(self, "error", "Check fasta file type!")
 
                 ARG_location_dict, isolates_list = blast_filter(out_folder + '/out', coverage)
                 ARG_location_use_dict, ARG_list_get = ARG_filter(ARG_location_dict,
@@ -314,36 +252,101 @@ class WorkThread(QThread):
                         out_file.write("NULL" + "\n")
                 out_file.close()
 
-            except:
-                QMessageBox.critical(self, "error", "Check fasta file type!")
+            elif type == 'B':
+                try:
+                    makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
+                                                        dbtype='prot',
+                                                        input_file=out_folder + '/ref_tmp.fasta',
+                                                        out=blastdb + '/target')
 
-        count = 0
-        f = open(out_folder + '/data_results.out')
-        count = 0
-        for i in f:
-            count += 1
+                    makedb()
 
-        f = open(out_folder + '/data_results.out')
-        with open(out_folder + '/result_summary.out', 'w') as w:
-            c1 = 0
+                    for i in os.listdir(fasta):
+                        print(i)
+                        out = out_folder + '/out/' + os.path.splitext(i)[0] + '.Gene'
+                        query = fasta + '/' + i
+
+                        if is_fasta(query) == False:
+                            QMessageBox.critical(self, "error", "Check fasta file format!")
+                        else:
+                            blastp = NcbiblastpCommandline(path + "/blast-BLAST_VERSION+/bin/blastp.exe",
+                                                           query=query,
+                                                           db=blastdb + '/target',
+                                                           outfmt=format,
+                                                           evalue=float(evalue),
+                                                           out=out)
+
+                            blastp()
+
+                    ARG_location_dict, isolates_list = blast_filter(out_folder + '/out', coverage)
+                    ARG_location_use_dict, ARG_list_get = ARG_filter(ARG_location_dict,
+                                                                     isolates_list,
+                                                                     ident, coverage, over_lap)
+
+                    out_file = open(out_folder + "/data_results.out", "w")
+                    count = 0
+                    for item in ARG_location_use_dict.items():
+                        count += 1
+                        isolates_info = item[0]
+                        out_file.write(isolates_info + "\t")
+                        ARG_list = item[1]
+                        ARG_write_list = []
+                        ARG_write_dict = {}
+                        if ARG_list != 'Nontypeable':
+                            for ARG_have in ARG_list:
+                                ARG_write_list.append(ARG_have[0])
+                                ARG_write_dict.setdefault(ARG_have[0], []).append((ARG_have[1], ARG_have[2]))
+                            for n in ARG_list_get:
+                                ARG_write = "0"
+                                m = 0
+                                if n in ARG_write_list:
+                                    ARG_write_use = ARG_write_dict[n]
+                                    for i in ARG_write_use:
+                                        if float(i[0]) >= ident and float(
+                                            i[1]) >= coverage:  # this is the cutoff value for determining an ARG/VF gene
+                                            m = m + 1
+                                            ARG_write = m
+                                            if m > 0:
+                                                out_file.write(n + ":" + str(i[0]) + ":" + str(i[1]) + "\t")
+                                else:
+                                    ARG_write = "0"
+                            out_file.write("\n")
+                        else:
+                            out_file.write("NULL" + "\n")
+                    out_file.close()
+
+                except:
+                    QMessageBox.critical(self, "error", "Check fasta file type!")
+
+            count = 0
+            f = open(out_folder + '/data_results.out')
+            count = 0
             for i in f:
-                c1 += 1
-                id = i.strip().split('\t')[0]
-                gene = i.strip().split('\t')[1::]
-                print(gene)
-                c2 = 0
-                for j in gene:
-                    c2 += 1
-                    if c1 == count and c2 == len(gene):
-                        line = id + '\t' + j
-                        w.write(line)
-                    else:
-                        line = id + '\t' + j + '\n'
-                        w.write(line)
-        w.close()
+                count += 1
 
-        self.trigger.emit('Finished!!!' + '\n' + 'data_results.out and result_summary.out are your results')
+            f = open(out_folder + '/data_results.out')
+            with open(out_folder + '/result_summary.out', 'w') as w:
+                c1 = 0
+                for i in f:
+                    c1 += 1
+                    id = i.strip().split('\t')[0]
+                    gene = i.strip().split('\t')[1::]
+                    print(gene)
+                    c2 = 0
+                    for j in gene:
+                        c2 += 1
+                        if c1 == count and c2 == len(gene):
+                            line = id + '\t' + j
+                            w.write(line)
+                        else:
+                            line = id + '\t' + j + '\n'
+                            w.write(line)
+            w.close()
 
+            self.trigger.emit('Finished!!!' + '\n' + 'data_results.out and result_summary.out are your results')
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 class GeneIdentification_Form(QWidget):
     def __init__(self, parent=None):

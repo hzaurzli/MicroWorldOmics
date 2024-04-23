@@ -49,15 +49,15 @@ class winTest(QtWidgets.QWidget):
                             if os.path.exists(out_tmp):
                                 os.remove(out_tmp)
                             else:
-                                event.ignore()
+                                return None
                         except:
                             return None  # 设置正常退出
                     else:
-                        event.ignore()
+                        return None
                 except:
                     return None  # 设置正常退出
             else:
-                event.ignore()  # 设置正常退出
+                return None  # 设置正常退出
         except:
             return None  # 设置正常退出
 
@@ -71,130 +71,214 @@ class WorkThread(QThread):
         super(WorkThread, self).__init__()
 
     def run(self):
-        def is_fasta(filename):
-            with open(filename, "r") as handle:
-                fasta = SeqIO.parse(handle, "fasta")
-                return any(fasta)
+        try:
+            def is_fasta(filename):
+                with open(filename, "r") as handle:
+                    fasta = SeqIO.parse(handle, "fasta")
+                    return any(fasta)
 
-        def check_path(pth):
-            if not os.path.isdir(pth):
-                os.makedirs(pth)
+            def check_path(pth):
+                if not os.path.isdir(pth):
+                    os.makedirs(pth)
 
-        def blast_filter(out_folder):
-            ARG_location_dict = {}
-            isolates_list = []
-            rootdir1 = out_folder
-            for i in os.listdir(rootdir1):
-                file = i
-                blast_info = open(out_folder + '/' + i, "r")
-                id = '.'.join(file.split('.')[:-1])
-                isolates_list.append(id)
-                for line in blast_info:
-                    line_info = line.strip().split("\t")
-                    Contig_ID_info = line_info[0]
-                    ARG_ID = line_info[1].split("::")[0]
-                    ARG_len = line_info[1].split("::")[-1]
-                    identical_percent = line_info[2]
-                    align_length = int(line_info[3])
-                    contig_start = int(line_info[6])
-                    contig_end = int(line_info[7])
-                    ARG_start = int(line_info[8])
-                    ARG_end = int(line_info[9])
-                    Score = float(line_info[11])
-                    F_R = "F"
-                    if ARG_end < ARG_start:
-                        F_R = "R"
-                    align_percent = '%.2f' % (float(align_length) / float(ARG_len) * 100)
-                    key_use = (id)
-                    if float(align_percent) > 50.00:
-                        ARG_location_dict.setdefault(key_use, []).append(
-                            (ARG_ID, contig_start,
-                             contig_end, Score,
-                             identical_percent, align_percent,
-                             Contig_ID_info, F_R, ARG_len))
-                blast_info.close()
-            return ARG_location_dict, isolates_list
+            def blast_filter(out_folder):
+                ARG_location_dict = {}
+                isolates_list = []
+                rootdir1 = out_folder
+                for i in os.listdir(rootdir1):
+                    file = i
+                    blast_info = open(out_folder + '/' + i, "r")
+                    id = '.'.join(file.split('.')[:-1])
+                    isolates_list.append(id)
+                    for line in blast_info:
+                        line_info = line.strip().split("\t")
+                        Contig_ID_info = line_info[0]
+                        ARG_ID = line_info[1].split("::")[0]
+                        ARG_len = line_info[1].split("::")[-1]
+                        identical_percent = line_info[2]
+                        align_length = int(line_info[3])
+                        contig_start = int(line_info[6])
+                        contig_end = int(line_info[7])
+                        ARG_start = int(line_info[8])
+                        ARG_end = int(line_info[9])
+                        Score = float(line_info[11])
+                        F_R = "F"
+                        if ARG_end < ARG_start:
+                            F_R = "R"
+                        align_percent = '%.2f' % (float(align_length) / float(ARG_len) * 100)
+                        key_use = (id)
+                        if float(align_percent) > 50.00:
+                            ARG_location_dict.setdefault(key_use, []).append(
+                                (ARG_ID, contig_start,
+                                 contig_end, Score,
+                                 identical_percent, align_percent,
+                                 Contig_ID_info, F_R, ARG_len))
+                    blast_info.close()
+                return ARG_location_dict, isolates_list
 
-        def ARG_filter(ARG_location_dict, isolates_list):
-            ARG_location_filter_dict = {}
-            ARG_list_get = []
-            for item in ARG_location_dict.items():
-                key_data = item[0]
-                ARG_list = item[1]
-                ARG_list.sort(key=operator.itemgetter(1))
-                start_initial = 0
-                ii_keep = 0
-                ARG_filter_list = []
-                for ii in range(len(ARG_list)):
-                    if ARG_list[ii][1] >= start_initial:
-                        ARG_filter_list.append((ARG_list[ii][0], ARG_list[ii][4], ARG_list[ii][5], ARG_list[ii][1],
-                                                ARG_list[ii][2], ARG_list[ii][6], ARG_list[ii][7]))
-                        start_initial = ARG_list[ii][2]
-                        ii_keep = ii
-                    elif ARG_list[ii][1] < start_initial and ARG_list[ii][2] > start_initial and float(
-                        ARG_list[ii][2] - start_initial) / float(ARG_list[ii][2] - ARG_list[ii][1]) > 0.8 and float(
-                        start_initial - ARG_list[ii][1]) / float(ARG_list[ii][8]) < 0.2:
-                        ARG_filter_list.append((ARG_list[ii][0], ARG_list[ii][4], ARG_list[ii][5], ARG_list[ii][1],
-                                                ARG_list[ii][2], ARG_list[ii][6], ARG_list[ii][7]))
-                        start_initial = ARG_list[ii][2]
-                        ii_keep = ii
-                    else:
-                        if ARG_list[ii][3] > ARG_list[ii_keep][3]:
-                            sss = (ARG_list[ii_keep][0], ARG_list[ii_keep][4], ARG_list[ii_keep][5], ARG_list[ii][1],
-                                   ARG_list[ii][2], ARG_list[ii][6], ARG_list[ii][7])
-                            if sss in ARG_filter_list:
-                                ARG_filter_list.remove(sss)
+            def ARG_filter(ARG_location_dict, isolates_list):
+                ARG_location_filter_dict = {}
+                ARG_list_get = []
+                for item in ARG_location_dict.items():
+                    key_data = item[0]
+                    ARG_list = item[1]
+                    ARG_list.sort(key=operator.itemgetter(1))
+                    start_initial = 0
+                    ii_keep = 0
+                    ARG_filter_list = []
+                    for ii in range(len(ARG_list)):
+                        if ARG_list[ii][1] >= start_initial:
+                            ARG_filter_list.append((ARG_list[ii][0], ARG_list[ii][4], ARG_list[ii][5], ARG_list[ii][1],
+                                                    ARG_list[ii][2], ARG_list[ii][6], ARG_list[ii][7]))
+                            start_initial = ARG_list[ii][2]
+                            ii_keep = ii
+                        elif ARG_list[ii][1] < start_initial and ARG_list[ii][2] > start_initial and float(
+                            ARG_list[ii][2] - start_initial) / float(ARG_list[ii][2] - ARG_list[ii][1]) > 0.8 and float(
+                            start_initial - ARG_list[ii][1]) / float(ARG_list[ii][8]) < 0.2:
                             ARG_filter_list.append((ARG_list[ii][0], ARG_list[ii][4], ARG_list[ii][5], ARG_list[ii][1],
                                                     ARG_list[ii][2], ARG_list[ii][6], ARG_list[ii][7]))
                             start_initial = ARG_list[ii][2]
                             ii_keep = ii
                         else:
-                            continue
-                ARG_filter_list_use = list(set(ARG_filter_list))
-                for j in ARG_filter_list_use:
-                    if j not in ARG_list_get:
-                        ARG_list_get.append(j[0])
-                        ARG_list_get = list(set(ARG_list_get))
-                ARG_location_filter_dict[key_data] = ARG_filter_list_use
-            ARG_location_use_dict = {}
-            for kk in ARG_location_filter_dict.items():
-                ID_filter = kk[0]
-                ARG_list = kk[1]
-                for i in ARG_list:
-                    if float(i[1]) >= 90.00 and float(
-                        i[2]) >= 90.00:  # the cutoff values for the identification of a serotyping-determing gene
-                        ARG_location_use_dict.setdefault(ID_filter, []).append(i)
-            for jj in isolates_list:
-                if jj not in ARG_location_use_dict:
-                    ARG_location_use_dict[jj] = "Nontypeable"
-            return ARG_location_use_dict, ARG_list_get
+                            if ARG_list[ii][3] > ARG_list[ii_keep][3]:
+                                sss = (ARG_list[ii_keep][0], ARG_list[ii_keep][4], ARG_list[ii_keep][5], ARG_list[ii][1],
+                                       ARG_list[ii][2], ARG_list[ii][6], ARG_list[ii][7])
+                                if sss in ARG_filter_list:
+                                    ARG_filter_list.remove(sss)
+                                ARG_filter_list.append((ARG_list[ii][0], ARG_list[ii][4], ARG_list[ii][5], ARG_list[ii][1],
+                                                        ARG_list[ii][2], ARG_list[ii][6], ARG_list[ii][7]))
+                                start_initial = ARG_list[ii][2]
+                                ii_keep = ii
+                            else:
+                                continue
+                    ARG_filter_list_use = list(set(ARG_filter_list))
+                    for j in ARG_filter_list_use:
+                        if j not in ARG_list_get:
+                            ARG_list_get.append(j[0])
+                            ARG_list_get = list(set(ARG_list_get))
+                    ARG_location_filter_dict[key_data] = ARG_filter_list_use
+                ARG_location_use_dict = {}
+                for kk in ARG_location_filter_dict.items():
+                    ID_filter = kk[0]
+                    ARG_list = kk[1]
+                    for i in ARG_list:
+                        if float(i[1]) >= 90.00 and float(
+                            i[2]) >= 90.00:  # the cutoff values for the identification of a serotyping-determing gene
+                            ARG_location_use_dict.setdefault(ID_filter, []).append(i)
+                for jj in isolates_list:
+                    if jj not in ARG_location_use_dict:
+                        ARG_location_use_dict[jj] = "Nontypeable"
+                return ARG_location_use_dict, ARG_list_get
 
-        def fasta2dict(fasta_name):
-            with open(fasta_name) as fa:
-                fa_dict = {}
-                for line in fa:
-                    # 去除末尾换行符
-                    line = line.replace('\n', '')
-                    if line.startswith('>'):
-                        # 去除 > 号
-                        seq_name = line[1:]
-                        seq_name = seq_name.strip()
-                        seq_name = seq_name.split('\t')[0]
-                        seq_name = seq_name.split(' ')[0]
-                        fa_dict[seq_name] = ''
+            def fasta2dict(fasta_name):
+                with open(fasta_name) as fa:
+                    fa_dict = {}
+                    for line in fa:
+                        # 去除末尾换行符
+                        line = line.replace('\n', '')
+                        if line.startswith('>'):
+                            # 去除 > 号
+                            seq_name = line[1:]
+                            seq_name = seq_name.strip()
+                            seq_name = seq_name.split('\t')[0]
+                            seq_name = seq_name.split(' ')[0]
+                            fa_dict[seq_name] = ''
+                        else:
+                            # 去除末尾换行符并连接多行序列
+                            fa_dict[seq_name] += line.replace('\n', '')
+                return fa_dict
+
+            if type == 'A':
+                try:
+                    if is_fasta(ref) == False:
+                        QMessageBox.critical(self, "error", "Check fasta file format!")
                     else:
-                        # 去除末尾换行符并连接多行序列
-                        fa_dict[seq_name] += line.replace('\n', '')
-            return fa_dict
+                        check_path(blastdb)
+                        check_path(out_folder + '/out')
+                        fasta_dict = fasta2dict(ref)
 
-        if type == 'A':
-            try:
+                        with open(ref_tmp, 'w') as w:
+                            for key in fasta_dict:
+                                line = '>' + key + '::' + str(len(fasta_dict[key])) + '\n' + fasta_dict[key] + '\n'
+                                w.write(line)
+                        w.close()
+
+                        makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
+                                                            dbtype='nucl',
+                                                            input_file=out_folder + '/ref_tmp.fasta',
+                                                            out=blastdb + '/target')
+
+                        makedb()
+                except:
+                    QMessageBox.critical(self, "error", "Check fasta file format!")
+
+                for i in os.listdir(fasta):
+                    print(i)
+                    out = out_folder + '/out/' + os.path.splitext(i)[0] + '.Sero'
+                    query = fasta + '/' + i
+
+                    try:
+                        if is_fasta(query) == False:
+                            QMessageBox.critical(self, "error", "Check fasta file format!")
+                        else:
+                            blastn = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
+                                                           query=query,
+                                                           db=blastdb + '/target',
+                                                           outfmt=format,
+                                                           evalue=float(evalue),
+                                                           out=out)
+
+                            blastn()
+                    except:
+                        QMessageBox.critical(self, "error", "Check fasta file format!")
+                #########################################
+
+                ARG_location_dict, isolates_list = blast_filter(out_folder + '/out')
+
+                ARG_location_use_dict, ARG_list_get = ARG_filter(ARG_location_dict, isolates_list)
+
+                out_file = open(file, "w")
+                out_file.write("Genome_ID" + "\t" + "Serotype" + "\n")
+                count = 0
+                for i in isolates_list:
+                    Serotype_results_info = ARG_location_use_dict[i]
+                    count += 1
+                    if Serotype_results_info == "Nontypeable":
+                        if count == len(isolates_list):
+                            out_file.write(i + "\t" + "Nontypeable")
+                        else:
+                            out_file.write(i + "\t" + "Nontypeable" + "\n")
+                    elif len(Serotype_results_info) == 1:
+                        if count == len(isolates_list):
+                            out_file.write(i + "\t" + Serotype_results_info[0][0])
+                        else:
+                            out_file.write(i + "\t" + Serotype_results_info[0][0] + "\n")
+                    else:
+                        sen_type = []
+                        for k in range(0, len(Serotype_results_info)):
+                            sen_type.append(Serotype_results_info[k][0])
+                        sen_type.sort()
+                        type_sero = 'Uncertainty:' + '&'.join(sen_type)
+                        print(type_sero)
+                        if count == len(isolates_list):
+                            out_file.write(i + "\t" + type_sero)
+                        else:
+                            out_file.write(i + "\t" + type_sero + "\n")
+                out_file.close()
+
+
+            elif type == 'B':
                 if is_fasta(ref) == False:
                     QMessageBox.critical(self, "error", "Check fasta file format!")
                 else:
                     check_path(blastdb)
+                    check_path(blastdb_s)
                     check_path(out_folder + '/out')
+                    check_path(out_folder + '/out_exact')
+
+                    profile = open(profile_file)
                     fasta_dict = fasta2dict(ref)
+                    fasta_dict_s = fasta2dict(ref_s)
 
                     with open(ref_tmp, 'w') as w:
                         for key in fasta_dict:
@@ -208,15 +292,12 @@ class WorkThread(QThread):
                                                         out=blastdb + '/target')
 
                     makedb()
-            except:
-                QMessageBox.critical(self, "error", "Check fasta file format!")
 
-            for i in os.listdir(fasta):
-                print(i)
-                out = out_folder + '/out/' + os.path.splitext(i)[0] + '.Sero'
-                query = fasta + '/' + i
+                for i in os.listdir(fasta):
+                    print(i)
+                    out = out_folder + '/out/' + os.path.splitext(i)[0] + '.Sero'
+                    query = fasta + '/' + i
 
-                try:
                     if is_fasta(query) == False:
                         QMessageBox.critical(self, "error", "Check fasta file format!")
                     else:
@@ -228,181 +309,119 @@ class WorkThread(QThread):
                                                        out=out)
 
                         blastn()
-                except:
-                    QMessageBox.critical(self, "error", "Check fasta file format!")
-            #########################################
+                #########################################
 
-            ARG_location_dict, isolates_list = blast_filter(out_folder + '/out')
+                ARG_location_dict, isolates_list = blast_filter(out_folder + '/out')
 
-            ARG_location_use_dict, ARG_list_get = ARG_filter(ARG_location_dict, isolates_list)
+                ARG_location_use_dict, ARG_list_get = ARG_filter(ARG_location_dict, isolates_list)
 
-            out_file = open(file, "w")
-            out_file.write("Genome_ID" + "\t" + "Serotype" + "\n")
-            count = 0
-            for i in isolates_list:
-                Serotype_results_info = ARG_location_use_dict[i]
-                count += 1
-                if Serotype_results_info == "Nontypeable":
-                    if count == len(isolates_list):
-                        out_file.write(i + "\t" + "Nontypeable")
+                out_file = open(file, "w")
+                out_file.write("Genome_ID" + "\t" + "Serotype" + "\n")
+                count = 0
+                for i in isolates_list:
+                    Serotype_results_info = ARG_location_use_dict[i]
+                    count += 1
+                    if Serotype_results_info == "Nontypeable":
+                        if count == len(isolates_list):
+                            out_file.write(i + "\t" + "Nontypeable")
+                        else:
+                            out_file.write(i + "\t" + "Nontypeable" + "\n")
+                    elif len(Serotype_results_info) == 1:
+                        if count == len(isolates_list):
+                            out_file.write(i + "\t" + Serotype_results_info[0][0])
+                        else:
+                            out_file.write(i + "\t" + Serotype_results_info[0][0] + "\n")
                     else:
-                        out_file.write(i + "\t" + "Nontypeable" + "\n")
-                elif len(Serotype_results_info) == 1:
-                    if count == len(isolates_list):
-                        out_file.write(i + "\t" + Serotype_results_info[0][0])
-                    else:
-                        out_file.write(i + "\t" + Serotype_results_info[0][0] + "\n")
-                else:
-                    sen_type = []
-                    for k in range(0, len(Serotype_results_info)):
-                        sen_type.append(Serotype_results_info[k][0])
-                    sen_type.sort()
-                    type_sero = 'Uncertainty:' + '&'.join(sen_type)
-                    print(type_sero)
-                    if count == len(isolates_list):
-                        out_file.write(i + "\t" + type_sero)
-                    else:
-                        out_file.write(i + "\t" + type_sero + "\n")
-            out_file.close()
+                        sen_type = []
+                        for k in range(0, len(Serotype_results_info)):
+                            sen_type.append(Serotype_results_info[k][0])
+                        sen_type.sort()
+                        type_sero = 'Uncertainty:' + '&'.join(sen_type)
+                        print(type_sero)
+                        if count == len(isolates_list):
+                            out_file.write(i + "\t" + type_sero)
+                        else:
+                            out_file.write(i + "\t" + type_sero + "\n")
+                out_file.close()
 
+                ##############################
+                dic_fa = {}
+                f = open(file)
+                next(f)
+                for i in f:
+                    i = i.strip().split('\t')
+                    dic_fa[i[0]] = i[1]
 
-        elif type == 'B':
-            if is_fasta(ref) == False:
-                QMessageBox.critical(self, "error", "Check fasta file format!")
-            else:
-                check_path(blastdb)
-                check_path(blastdb_s)
-                check_path(out_folder + '/out')
-                check_path(out_folder + '/out_exact')
-
-                profile = open(profile_file)
-                fasta_dict = fasta2dict(ref)
-                fasta_dict_s = fasta2dict(ref_s)
-
-                with open(ref_tmp, 'w') as w:
-                    for key in fasta_dict:
-                        line = '>' + key + '::' + str(len(fasta_dict[key])) + '\n' + fasta_dict[key] + '\n'
+                with open(ref_tmp_s, 'w') as w:
+                    for key in fasta_dict_s:
+                        line = '>' + key + '::' + str(len(fasta_dict_s[key])) + '\n' + fasta_dict_s[key] + '\n'
                         w.write(line)
                 w.close()
 
                 makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
                                                     dbtype='nucl',
-                                                    input_file=out_folder + '/ref_tmp.fasta',
-                                                    out=blastdb + '/target')
+                                                    input_file=out_folder + '/ref_tmp_s.fasta',
+                                                    out=blastdb_s + '/target_s')
 
                 makedb()
 
-            for i in os.listdir(fasta):
-                print(i)
-                out = out_folder + '/out/' + os.path.splitext(i)[0] + '.Sero'
-                query = fasta + '/' + i
+                fasta_file = []
+                for j in os.listdir(fasta):
+                    fasta_file.append(j)
 
-                if is_fasta(query) == False:
-                    QMessageBox.critical(self, "error", "Check fasta file format!")
-                else:
-                    blastn = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
-                                                   query=query,
-                                                   db=blastdb + '/target',
-                                                   outfmt=format,
-                                                   evalue=float(evalue),
-                                                   out=out)
+                dic_profile = {}
+                dic_refid = {}
+                dic_group = {}
+                next(profile)
+                try:
+                    for i in profile:
+                        i = i.strip().split(',')
+                        if i[4] in dic_profile.keys():
+                            dic_profile[i[0]].append(i[1])
+                            dic_profile[i[0]].append(i[2])
+                            dic_profile[i[0]].append(i[3])
+                            dic_profile[i[0]].append(i[4])
+                        else:
+                            dic_profile[i[0]] = []
+                            dic_profile[i[0]].append(i[1])
+                            dic_profile[i[0]].append(i[2])
+                            dic_profile[i[0]].append(i[3])
+                            dic_profile[i[0]].append(i[4])
+                        if i[4] in dic_refid.keys():
+                            dic_refid[i[4]].append(i[0])
+                        else:
+                            dic_refid[i[4]] = []
+                            dic_refid[i[4]].append(i[0])
+                        if i[5] in dic_group.keys():
+                            dic_group[i[5]].append(i[0])
+                        else:
+                            dic_group[i[5]] = []
+                            dic_group[i[5]].append(i[0])
+                except:
+                    QMessageBox.critical(self, "error", "Check profile file format (csv)!")
 
-                    blastn()
-            #########################################
+                for key in dic_fa:
+                    if 'Uncertainty:' not in dic_fa[key]:
+                        for n in dic_group:
+                            if any(element == dic_fa[key] for element in dic_group[n]):
+                                out = out_folder + '/out_exact/' + key + '.Sero'
+                                for j in fasta_file:
+                                    if key in str(j):
+                                        query = fasta + '/' + j
+                                        if is_fasta(query) == False:
+                                            QMessageBox.critical(self, "error", "Check fasta file format!")
+                                        else:
+                                            blastn = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
+                                                                           query=query,
+                                                                           db=blastdb_s + '/target_s',
+                                                                           outfmt=format,
+                                                                           evalue=float(evalue),
+                                                                           out=out)
 
-            ARG_location_dict, isolates_list = blast_filter(out_folder + '/out')
-
-            ARG_location_use_dict, ARG_list_get = ARG_filter(ARG_location_dict, isolates_list)
-
-            out_file = open(file, "w")
-            out_file.write("Genome_ID" + "\t" + "Serotype" + "\n")
-            count = 0
-            for i in isolates_list:
-                Serotype_results_info = ARG_location_use_dict[i]
-                count += 1
-                if Serotype_results_info == "Nontypeable":
-                    if count == len(isolates_list):
-                        out_file.write(i + "\t" + "Nontypeable")
+                                            blastn()
                     else:
-                        out_file.write(i + "\t" + "Nontypeable" + "\n")
-                elif len(Serotype_results_info) == 1:
-                    if count == len(isolates_list):
-                        out_file.write(i + "\t" + Serotype_results_info[0][0])
-                    else:
-                        out_file.write(i + "\t" + Serotype_results_info[0][0] + "\n")
-                else:
-                    sen_type = []
-                    for k in range(0, len(Serotype_results_info)):
-                        sen_type.append(Serotype_results_info[k][0])
-                    sen_type.sort()
-                    type_sero = 'Uncertainty:' + '&'.join(sen_type)
-                    print(type_sero)
-                    if count == len(isolates_list):
-                        out_file.write(i + "\t" + type_sero)
-                    else:
-                        out_file.write(i + "\t" + type_sero + "\n")
-            out_file.close()
-
-            ##############################
-            dic_fa = {}
-            f = open(file)
-            next(f)
-            for i in f:
-                i = i.strip().split('\t')
-                dic_fa[i[0]] = i[1]
-
-            with open(ref_tmp_s, 'w') as w:
-                for key in fasta_dict_s:
-                    line = '>' + key + '::' + str(len(fasta_dict_s[key])) + '\n' + fasta_dict_s[key] + '\n'
-                    w.write(line)
-            w.close()
-
-            makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
-                                                dbtype='nucl',
-                                                input_file=out_folder + '/ref_tmp_s.fasta',
-                                                out=blastdb_s + '/target_s')
-
-            makedb()
-
-            fasta_file = []
-            for j in os.listdir(fasta):
-                fasta_file.append(j)
-
-            dic_profile = {}
-            dic_refid = {}
-            dic_group = {}
-            next(profile)
-            try:
-                for i in profile:
-                    i = i.strip().split(',')
-                    if i[4] in dic_profile.keys():
-                        dic_profile[i[0]].append(i[1])
-                        dic_profile[i[0]].append(i[2])
-                        dic_profile[i[0]].append(i[3])
-                        dic_profile[i[0]].append(i[4])
-                    else:
-                        dic_profile[i[0]] = []
-                        dic_profile[i[0]].append(i[1])
-                        dic_profile[i[0]].append(i[2])
-                        dic_profile[i[0]].append(i[3])
-                        dic_profile[i[0]].append(i[4])
-                    if i[4] in dic_refid.keys():
-                        dic_refid[i[4]].append(i[0])
-                    else:
-                        dic_refid[i[4]] = []
-                        dic_refid[i[4]].append(i[0])
-                    if i[5] in dic_group.keys():
-                        dic_group[i[5]].append(i[0])
-                    else:
-                        dic_group[i[5]] = []
-                        dic_group[i[5]].append(i[0])
-            except:
-                QMessageBox.critical(self, "error", "Check profile file format (csv)!")
-
-            for key in dic_fa:
-                if 'Uncertainty:' not in dic_fa[key]:
-                    for n in dic_group:
-                        if any(element == dic_fa[key] for element in dic_group[n]):
+                        lis_type = dic_fa[key].split('ty:')[1].split('&')
+                        if any(lis_type.sort() == dic_group[element].sort() for element in dic_group):
                             out = out_folder + '/out_exact/' + key + '.Sero'
                             for j in fasta_file:
                                 if key in str(j):
@@ -418,189 +437,20 @@ class WorkThread(QThread):
                                                                        out=out)
 
                                         blastn()
-                else:
-                    lis_type = dic_fa[key].split('ty:')[1].split('&')
-                    if any(lis_type.sort() == dic_group[element].sort() for element in dic_group):
-                        out = out_folder + '/out_exact/' + key + '.Sero'
-                        for j in fasta_file:
-                            if key in str(j):
-                                query = fasta + '/' + j
-                                if is_fasta(query) == False:
-                                    QMessageBox.critical(self, "error", "Check fasta file format!")
-                                else:
-                                    blastn = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
-                                                                   query=query,
-                                                                   db=blastdb_s + '/target_s',
-                                                                   outfmt=format,
-                                                                   evalue=float(evalue),
-                                                                   out=out)
 
-                                    blastn()
+                ARG_location_dict, isolates_list = blast_filter(out_folder + '/out_exact')
+                ARG_location_use_dict, ARG_list_get = ARG_filter(ARG_location_dict, isolates_list)
 
-            ARG_location_dict, isolates_list = blast_filter(out_folder + '/out_exact')
-            ARG_location_use_dict, ARG_list_get = ARG_filter(ARG_location_dict, isolates_list)
+                new = open(out_folder + '/Serotype_results.out')
+                dic_new = {}
+                next(new)
+                for i in new:
+                    i = i.strip().split('\t')
+                    dic_new[i[0]] = i[1]
 
-            new = open(out_folder + '/Serotype_results.out')
-            dic_new = {}
-            next(new)
-            for i in new:
-                i = i.strip().split('\t')
-                dic_new[i[0]] = i[1]
-
-            print(ARG_location_use_dict)
-            for i in ARG_location_use_dict:
-                if 'Uncertainty:' not in dic_new[i]:
-                    if ARG_location_use_dict[i][0][6] == 'F':
-                        start = ARG_location_use_dict[i][0][3]
-                        end = ARG_location_use_dict[i][0][4]
-                        for j in fasta_file:
-                            if i in j:
-                                seq_dict = fasta2dict(fasta + '/' + j)
-                                for m in seq_dict:
-                                    if ARG_location_use_dict[i][0][5] in m:
-                                        seq = seq_dict[m][int(start) - 1: int(end)]
-                                        frame_list = []
-                                        for frame_start in range(3):
-                                            frame = translate(seq[frame_start:], table=11)
-                                            Non_count = frame.count("*")
-                                            frame_list.append((Non_count, frame))
-                                        frame_list_use = sorted(frame_list)
-                                        gene_protein = frame_list_use[0][1]
-
-                                        for n in dic_group:
-                                            if any(element == dic_new[i] for element in dic_group[n]):
-                                                for key in fasta_dict_s:
-                                                    for new_sero in dic_group[n]:
-                                                        if dic_profile[new_sero][3] in key:
-                                                            frame_list = []
-                                                            for frame_start in range(3):
-                                                                frame = translate(Seq(fasta_dict_s[key]), table=11)
-                                                                Non_count = frame.count("*")
-                                                                frame_list.append((Non_count, frame))
-                                                            frame_list_use = sorted(frame_list)
-                                                            gene_protein_s = frame_list_use[0][1]
-
-                                                            num = int(dic_profile[new_sero][1]) - int(
-                                                                dic_profile[new_sero][0])
-
-                                                            if len(gene_protein_s) > len(gene_protein):
-                                                                alignments = pairwise2.align.localxs(gene_protein_s,
-                                                                                                     gene_protein,
-                                                                                                     -1e9,
-                                                                                                     -1e9)
-                                                                if len(alignments) == 1:
-                                                                    for alignment in alignments:
-                                                                        sero_seq = alignment.seqB[int(
-                                                                            dic_profile[new_sero][0]) - 1: int(
-                                                                            dic_profile[new_sero][1])]
-                                                                        if sero_seq == dic_profile[new_sero][2]:
-                                                                            print(i + ';' + new_sero)
-                                                                            print('------')
-                                                                            dic_new[i] = new_sero
-
-
-                                                            elif len(gene_protein_s) <= len(gene_protein):
-                                                                alignments = pairwise2.align.localxs(gene_protein_s,
-                                                                                                     gene_protein,
-                                                                                                     -1e9,
-                                                                                                     -1e9)
-                                                                if len(alignments) == 1:
-                                                                    for alignment in alignments:
-                                                                        gene_protein_a = alignment.seqB[
-                                                                                         int(alignment.start): int(
-                                                                                             alignment.end)]
-                                                                aligns = pairwise2.align.localxs(gene_protein_s,
-                                                                                                 gene_protein_a,
-                                                                                                 -1e9,
-                                                                                                 -1e9)
-
-                                                                if len(aligns) == 1:
-                                                                    for align in aligns:
-                                                                        sero_seq = align.seqB[int(
-                                                                            dic_profile[new_sero][0]) - 1: int(
-                                                                            dic_profile[new_sero][1])]
-                                                                        if sero_seq == dic_profile[new_sero][2]:
-                                                                            print(i + ';' + new_sero)
-                                                                            print('------')
-                                                                            dic_new[i] = new_sero
-
-                    elif ARG_location_use_dict[i][0][6] == 'R':
-                        start = ARG_location_use_dict[i][0][3]
-                        end = ARG_location_use_dict[i][0][4]
-                        for j in fasta_file:
-                            if i in j:
-                                seq_dict = fasta2dict(fasta + '/' + j)
-                                for m in seq_dict:
-                                    if ARG_location_use_dict[i][0][5] in m:
-                                        gene_seq_ori = seq_dict[m][int(start) - 1: int(end)]
-                                        seq = Seq(gene_seq_ori).reverse_complement()
-
-                                        frame_list = []
-                                        for frame_start in range(3):
-                                            frame = translate(seq[frame_start:], table=11)
-                                            Non_count = frame.count("*")
-                                            frame_list.append((Non_count, frame))
-                                        frame_list_use = sorted(frame_list)
-                                        gene_protein = frame_list_use[0][1]
-                                        for n in dic_group:
-                                            if any(element == dic_new[i] for element in dic_group[n]):
-                                                for key in fasta_dict_s:
-                                                    for new_sero in dic_group[n]:
-                                                        if dic_profile[new_sero][3] in key:
-                                                            frame_list = []
-                                                            for frame_start in range(3):
-                                                                frame = translate(Seq(fasta_dict_s[key]), table=11)
-                                                                Non_count = frame.count("*")
-                                                                frame_list.append((Non_count, frame))
-                                                            frame_list_use = sorted(frame_list)
-                                                            gene_protein_s = frame_list_use[0][1]
-
-                                                            num = int(dic_profile[new_sero][1]) - int(
-                                                                dic_profile[new_sero][0])
-
-                                                            if len(gene_protein_s) > len(gene_protein):
-                                                                alignments = pairwise2.align.localxs(gene_protein_s,
-                                                                                                     gene_protein,
-                                                                                                     -1e9, -1e9)
-                                                                if len(alignments) == 1:
-                                                                    for alignment in alignments:
-                                                                        sero_seq = alignment.seqB[
-                                                                                   int(dic_profile[new_sero][
-                                                                                           0]) - 1: int(
-                                                                                       dic_profile[new_sero][1])]
-                                                                        if sero_seq == dic_profile[new_sero][2]:
-                                                                            print(i + ';' + new_sero)
-                                                                            print('------')
-                                                                            dic_new[i] = new_sero
-
-
-                                                            elif len(gene_protein_s) <= len(gene_protein):
-                                                                alignments = pairwise2.align.localxs(gene_protein_s,
-                                                                                                     gene_protein,
-                                                                                                     -1e9, -1e9)
-                                                                if len(alignments) == 1:
-                                                                    for alignment in alignments:
-                                                                        gene_protein_a = alignment.seqB[
-                                                                                         int(alignment.start): int(
-                                                                                             alignment.end)]
-                                                                aligns = pairwise2.align.localxs(gene_protein_s,
-                                                                                                 gene_protein_a,
-                                                                                                 -1e9,
-                                                                                                 -1e9)
-
-                                                                if len(aligns) == 1:
-                                                                    for align in aligns:
-                                                                        sero_seq = align.seqB[int(
-                                                                            dic_profile[new_sero][0]) - 1: int(
-                                                                            dic_profile[new_sero][1])]
-                                                                        if sero_seq == dic_profile[new_sero][2]:
-                                                                            print(i + ';' + new_sero)
-                                                                            print('------')
-                                                                            dic_new[i] = new_sero
-
-                else:
-                    lis_type = dic_new[i].split('ty:')[1].split('&')
-                    if any(lis_type.sort() == dic_group[element].sort() for element in dic_group):
+                print(ARG_location_use_dict)
+                for i in ARG_location_use_dict:
+                    if 'Uncertainty:' not in dic_new[i]:
                         if ARG_location_use_dict[i][0][6] == 'F':
                             start = ARG_location_use_dict[i][0][3]
                             end = ARG_location_use_dict[i][0][4]
@@ -619,7 +469,7 @@ class WorkThread(QThread):
                                             gene_protein = frame_list_use[0][1]
 
                                             for n in dic_group:
-                                                if any(element in lis_type for element in dic_group[n]):
+                                                if any(element == dic_new[i] for element in dic_group[n]):
                                                     for key in fasta_dict_s:
                                                         for new_sero in dic_group[n]:
                                                             if dic_profile[new_sero][3] in key:
@@ -641,10 +491,9 @@ class WorkThread(QThread):
                                                                                                          -1e9)
                                                                     if len(alignments) == 1:
                                                                         for alignment in alignments:
-                                                                            sero_seq = alignment.seqB[
-                                                                                       int(dic_profile[new_sero][
-                                                                                               0]) - 1: int(
-                                                                                           dic_profile[new_sero][1])]
+                                                                            sero_seq = alignment.seqB[int(
+                                                                                dic_profile[new_sero][0]) - 1: int(
+                                                                                dic_profile[new_sero][1])]
                                                                             if sero_seq == dic_profile[new_sero][2]:
                                                                                 print(i + ';' + new_sero)
                                                                                 print('------')
@@ -663,14 +512,14 @@ class WorkThread(QThread):
                                                                                                  alignment.end)]
                                                                     aligns = pairwise2.align.localxs(gene_protein_s,
                                                                                                      gene_protein_a,
-                                                                                                     -1e9, -1e9)
+                                                                                                     -1e9,
+                                                                                                     -1e9)
 
                                                                     if len(aligns) == 1:
                                                                         for align in aligns:
-                                                                            sero_seq = align.seqB[
-                                                                                       int(dic_profile[new_sero][
-                                                                                               0]) - 1: int(
-                                                                                           dic_profile[new_sero][1])]
+                                                                            sero_seq = align.seqB[int(
+                                                                                dic_profile[new_sero][0]) - 1: int(
+                                                                                dic_profile[new_sero][1])]
                                                                             if sero_seq == dic_profile[new_sero][2]:
                                                                                 print(i + ';' + new_sero)
                                                                                 print('------')
@@ -742,33 +591,189 @@ class WorkThread(QThread):
 
                                                                     if len(aligns) == 1:
                                                                         for align in aligns:
-                                                                            sero_seq = align.seqB[
-                                                                                       int(dic_profile[new_sero][
-                                                                                               0]) - 1: int(
-                                                                                           dic_profile[new_sero][1])]
+                                                                            sero_seq = align.seqB[int(
+                                                                                dic_profile[new_sero][0]) - 1: int(
+                                                                                dic_profile[new_sero][1])]
                                                                             if sero_seq == dic_profile[new_sero][2]:
                                                                                 print(i + ';' + new_sero)
                                                                                 print('------')
                                                                                 dic_new[i] = new_sero
 
                     else:
-                        print('error')
+                        lis_type = dic_new[i].split('ty:')[1].split('&')
+                        if any(lis_type.sort() == dic_group[element].sort() for element in dic_group):
+                            if ARG_location_use_dict[i][0][6] == 'F':
+                                start = ARG_location_use_dict[i][0][3]
+                                end = ARG_location_use_dict[i][0][4]
+                                for j in fasta_file:
+                                    if i in j:
+                                        seq_dict = fasta2dict(fasta + '/' + j)
+                                        for m in seq_dict:
+                                            if ARG_location_use_dict[i][0][5] in m:
+                                                seq = seq_dict[m][int(start) - 1: int(end)]
+                                                frame_list = []
+                                                for frame_start in range(3):
+                                                    frame = translate(seq[frame_start:], table=11)
+                                                    Non_count = frame.count("*")
+                                                    frame_list.append((Non_count, frame))
+                                                frame_list_use = sorted(frame_list)
+                                                gene_protein = frame_list_use[0][1]
 
-            with open(out_folder + '/Serotype_results_exact.out', 'w') as f:
-                line = 'Genome_ID' + '\t' + 'Serotype' + '\n'
-                f.write(line)
-                count = 0
-                for key in dic_new:
-                    count += 1
-                    if count == len(dic_new):
-                        line = key + '\t' + dic_new[key]
-                        f.write(line)
-                    else:
-                        line = key + '\t' + dic_new[key] + '\n'
-                        f.write(line)
-            f.close()
+                                                for n in dic_group:
+                                                    if any(element in lis_type for element in dic_group[n]):
+                                                        for key in fasta_dict_s:
+                                                            for new_sero in dic_group[n]:
+                                                                if dic_profile[new_sero][3] in key:
+                                                                    frame_list = []
+                                                                    for frame_start in range(3):
+                                                                        frame = translate(Seq(fasta_dict_s[key]), table=11)
+                                                                        Non_count = frame.count("*")
+                                                                        frame_list.append((Non_count, frame))
+                                                                    frame_list_use = sorted(frame_list)
+                                                                    gene_protein_s = frame_list_use[0][1]
 
-        self.trigger.emit('Finished!!!')
+                                                                    num = int(dic_profile[new_sero][1]) - int(
+                                                                        dic_profile[new_sero][0])
+
+                                                                    if len(gene_protein_s) > len(gene_protein):
+                                                                        alignments = pairwise2.align.localxs(gene_protein_s,
+                                                                                                             gene_protein,
+                                                                                                             -1e9,
+                                                                                                             -1e9)
+                                                                        if len(alignments) == 1:
+                                                                            for alignment in alignments:
+                                                                                sero_seq = alignment.seqB[
+                                                                                           int(dic_profile[new_sero][
+                                                                                                   0]) - 1: int(
+                                                                                               dic_profile[new_sero][1])]
+                                                                                if sero_seq == dic_profile[new_sero][2]:
+                                                                                    print(i + ';' + new_sero)
+                                                                                    print('------')
+                                                                                    dic_new[i] = new_sero
+
+
+                                                                    elif len(gene_protein_s) <= len(gene_protein):
+                                                                        alignments = pairwise2.align.localxs(gene_protein_s,
+                                                                                                             gene_protein,
+                                                                                                             -1e9,
+                                                                                                             -1e9)
+                                                                        if len(alignments) == 1:
+                                                                            for alignment in alignments:
+                                                                                gene_protein_a = alignment.seqB[
+                                                                                                 int(alignment.start): int(
+                                                                                                     alignment.end)]
+                                                                        aligns = pairwise2.align.localxs(gene_protein_s,
+                                                                                                         gene_protein_a,
+                                                                                                         -1e9, -1e9)
+
+                                                                        if len(aligns) == 1:
+                                                                            for align in aligns:
+                                                                                sero_seq = align.seqB[
+                                                                                           int(dic_profile[new_sero][
+                                                                                                   0]) - 1: int(
+                                                                                               dic_profile[new_sero][1])]
+                                                                                if sero_seq == dic_profile[new_sero][2]:
+                                                                                    print(i + ';' + new_sero)
+                                                                                    print('------')
+                                                                                    dic_new[i] = new_sero
+
+                            elif ARG_location_use_dict[i][0][6] == 'R':
+                                start = ARG_location_use_dict[i][0][3]
+                                end = ARG_location_use_dict[i][0][4]
+                                for j in fasta_file:
+                                    if i in j:
+                                        seq_dict = fasta2dict(fasta + '/' + j)
+                                        for m in seq_dict:
+                                            if ARG_location_use_dict[i][0][5] in m:
+                                                gene_seq_ori = seq_dict[m][int(start) - 1: int(end)]
+                                                seq = Seq(gene_seq_ori).reverse_complement()
+
+                                                frame_list = []
+                                                for frame_start in range(3):
+                                                    frame = translate(seq[frame_start:], table=11)
+                                                    Non_count = frame.count("*")
+                                                    frame_list.append((Non_count, frame))
+                                                frame_list_use = sorted(frame_list)
+                                                gene_protein = frame_list_use[0][1]
+                                                for n in dic_group:
+                                                    if any(element == dic_new[i] for element in dic_group[n]):
+                                                        for key in fasta_dict_s:
+                                                            for new_sero in dic_group[n]:
+                                                                if dic_profile[new_sero][3] in key:
+                                                                    frame_list = []
+                                                                    for frame_start in range(3):
+                                                                        frame = translate(Seq(fasta_dict_s[key]), table=11)
+                                                                        Non_count = frame.count("*")
+                                                                        frame_list.append((Non_count, frame))
+                                                                    frame_list_use = sorted(frame_list)
+                                                                    gene_protein_s = frame_list_use[0][1]
+
+                                                                    num = int(dic_profile[new_sero][1]) - int(
+                                                                        dic_profile[new_sero][0])
+
+                                                                    if len(gene_protein_s) > len(gene_protein):
+                                                                        alignments = pairwise2.align.localxs(gene_protein_s,
+                                                                                                             gene_protein,
+                                                                                                             -1e9, -1e9)
+                                                                        if len(alignments) == 1:
+                                                                            for alignment in alignments:
+                                                                                sero_seq = alignment.seqB[
+                                                                                           int(dic_profile[new_sero][
+                                                                                                   0]) - 1: int(
+                                                                                               dic_profile[new_sero][1])]
+                                                                                if sero_seq == dic_profile[new_sero][2]:
+                                                                                    print(i + ';' + new_sero)
+                                                                                    print('------')
+                                                                                    dic_new[i] = new_sero
+
+
+                                                                    elif len(gene_protein_s) <= len(gene_protein):
+                                                                        alignments = pairwise2.align.localxs(gene_protein_s,
+                                                                                                             gene_protein,
+                                                                                                             -1e9, -1e9)
+                                                                        if len(alignments) == 1:
+                                                                            for alignment in alignments:
+                                                                                gene_protein_a = alignment.seqB[
+                                                                                                 int(alignment.start): int(
+                                                                                                     alignment.end)]
+                                                                        aligns = pairwise2.align.localxs(gene_protein_s,
+                                                                                                         gene_protein_a,
+                                                                                                         -1e9,
+                                                                                                         -1e9)
+
+                                                                        if len(aligns) == 1:
+                                                                            for align in aligns:
+                                                                                sero_seq = align.seqB[
+                                                                                           int(dic_profile[new_sero][
+                                                                                                   0]) - 1: int(
+                                                                                               dic_profile[new_sero][1])]
+                                                                                if sero_seq == dic_profile[new_sero][2]:
+                                                                                    print(i + ';' + new_sero)
+                                                                                    print('------')
+                                                                                    dic_new[i] = new_sero
+
+                        else:
+                            print('error')
+
+                with open(out_folder + '/Serotype_results_exact.out', 'w') as f:
+                    line = 'Genome_ID' + '\t' + 'Serotype' + '\n'
+                    f.write(line)
+                    count = 0
+                    for key in dic_new:
+                        count += 1
+                        if count == len(dic_new):
+                            line = key + '\t' + dic_new[key]
+                            f.write(line)
+                        else:
+                            line = key + '\t' + dic_new[key] + '\n'
+                            f.write(line)
+                f.close()
+
+            self.trigger.emit('Finished!!!')
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
+
 
 class Serotype_Form(QWidget):
     def __init__(self, parent=None):

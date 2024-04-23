@@ -79,876 +79,878 @@ class WorkThread(QThread):
         super(WorkThread, self).__init__()
 
     def run(self):
+        try:
+            midfolder = out_dir + '/midfolder'
+            rootpth = out_dir
+            db_dir = path + '/models/PhaGCN/database'
+            parampth = path + '/models/PhaGCN/parameters'
+            threads = 2
+            out_pred = f"{out_dir}/phagcn_prediction.csv"
 
-        midfolder = out_dir + '/midfolder'
-        rootpth = out_dir
-        db_dir = path + '/models/PhaGCN/database'
-        parampth = path + '/models/PhaGCN/parameters'
-        threads = 2
-        out_pred = f"{out_dir}/phagcn_prediction.csv"
+            def translation(inpth, outpth, infile, outfile):
+                prodigal = path + "/tools/prodigal/prodigal.exe"
 
-        def translation(inpth, outpth, infile, outfile):
-            prodigal = path + "/tools/prodigal/prodigal.exe"
+                prodigal_cmd = f'{prodigal} -i {inpth}/{infile} -a {outpth}/{outfile} -f gff -p meta'
+                print("Running prodigal...")
+                _ = subprocess.check_call(prodigal_cmd, shell=True, stdout=subprocess.DEVNULL,
+                                          stderr=subprocess.DEVNULL)
 
-            prodigal_cmd = f'{prodigal} -i {inpth}/{infile} -a {outpth}/{outfile} -f gff -p meta'
-            print("Running prodigal...")
-            _ = subprocess.check_call(prodigal_cmd, shell=True, stdout=subprocess.DEVNULL,
-                                      stderr=subprocess.DEVNULL)
+            def check_path(pth):
+                if not os.path.isdir(pth):
+                    os.makedirs(pth)
 
-        def check_path(pth):
-            if not os.path.isdir(pth):
-                os.makedirs(pth)
+            def sample_mask(idx, l):
+                mask = np.zeros(l)
+                mask[idx] = 1
+                return np.array(mask, dtype=np.bool)
 
-        def sample_mask(idx, l):
-            mask = np.zeros(l)
-            mask[idx] = 1
-            return np.array(mask, dtype=np.bool)
+            def sparse_to_tuple(sparse_mx):
+                def to_tuple(mx):
+                    if not scipy.sparse.isspmatrix_coo(mx):
+                        mx = mx.tocoo()
+                    coords = np.vstack((mx.row, mx.col)).transpose()
+                    values = mx.data
+                    shape = mx.shape
+                    return coords, values, shape
 
-        def sparse_to_tuple(sparse_mx):
-            def to_tuple(mx):
-                if not scipy.sparse.isspmatrix_coo(mx):
-                    mx = mx.tocoo()
-                coords = np.vstack((mx.row, mx.col)).transpose()
-                values = mx.data
-                shape = mx.shape
-                return coords, values, shape
+                if isinstance(sparse_mx, list):
+                    for i in range(len(sparse_mx)):
+                        sparse_mx[i] = to_tuple(sparse_mx[i])
+                else:
+                    sparse_mx = to_tuple(sparse_mx)
+                return sparse_mx
 
-            if isinstance(sparse_mx, list):
-                for i in range(len(sparse_mx)):
-                    sparse_mx[i] = to_tuple(sparse_mx[i])
-            else:
-                sparse_mx = to_tuple(sparse_mx)
-            return sparse_mx
+            def preprocess_features(features):
+                rowsum = np.array(features.sum(1))
+                r_inv = np.power(rowsum, -1).flatten()
+                r_inv[np.isinf(r_inv)] = 0.
+                r_mat_inv = scipy.sparse.diags(r_inv)
+                features = r_mat_inv.dot(features)
+                return sparse_to_tuple(features)
 
-        def preprocess_features(features):
-            rowsum = np.array(features.sum(1))
-            r_inv = np.power(rowsum, -1).flatten()
-            r_inv[np.isinf(r_inv)] = 0.
-            r_mat_inv = scipy.sparse.diags(r_inv)
-            features = r_mat_inv.dot(features)
-            return sparse_to_tuple(features)
+            def normalize_adj(adj):
+                adj = scipy.sparse.coo_matrix(adj)
+                rowsum = np.array(adj.sum(1))  # D
+                d_inv_sqrt = np.power(rowsum, -0.5).flatten()  # D^-0.5
+                d_inv_sqrt[np.isinf(d_inv_sqrt)] = 0.
+                d_mat_inv_sqrt = scipy.sparse.diags(d_inv_sqrt)  # D^-0.5
+                return adj.dot(d_mat_inv_sqrt).transpose().dot(d_mat_inv_sqrt).tocoo()  # D^-0.5AD^0.5
 
-        def normalize_adj(adj):
-            adj = scipy.sparse.coo_matrix(adj)
-            rowsum = np.array(adj.sum(1))  # D
-            d_inv_sqrt = np.power(rowsum, -0.5).flatten()  # D^-0.5
-            d_inv_sqrt[np.isinf(d_inv_sqrt)] = 0.
-            d_mat_inv_sqrt = scipy.sparse.diags(d_inv_sqrt)  # D^-0.5
-            return adj.dot(d_mat_inv_sqrt).transpose().dot(d_mat_inv_sqrt).tocoo()  # D^-0.5AD^0.5
+            def preprocess_adj(adj):
+                adj_normalized = normalize_adj(adj + sp.eye(adj.shape[0]))
+                return sparse_to_tuple(adj_normalized)
 
-        def preprocess_adj(adj):
-            adj_normalized = normalize_adj(adj + sp.eye(adj.shape[0]))
-            return sparse_to_tuple(adj_normalized)
+            def run_diamond(diamond_db, outpth, infile, tool, threads, path):
+                # running alignment
+                diamond_cmd = path + f'/tools/diamond/diamond_0_9_14.exe blastp --outfmt 5 --threads {threads} --sensitive -d {diamond_db} -q {outpth}/{infile} -o {outpth}/{tool}_results.xml -k 5'
+                print("Running Diamond...")
+                _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
+                                          stderr=subprocess.DEVNULL)
+                content = open(f'{outpth}/{tool}_results.xml', 'r').read()
+                content = content.replace('&', '')
+                with open(f'{outpth}/{tool}_results.xml', 'w') as file:
+                    file.write(content)
 
-        def run_diamond(diamond_db, outpth, infile, tool, threads, path):
-            # running alignment
-            diamond_cmd = path + f'/tools/diamond/diamond_0_9_14.exe blastp --outfmt 5 --threads {threads} --sensitive -d {diamond_db} -q {outpth}/{infile} -o {outpth}/{tool}_results.xml -k 5'
-            print("Running Diamond...")
-            _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
-                                      stderr=subprocess.DEVNULL)
-            content = open(f'{outpth}/{tool}_results.xml', 'r').read()
-            content = content.replace('&', '')
-            with open(f'{outpth}/{tool}_results.xml', 'w') as file:
-                file.write(content)
+            def convert_xml(outpth, tool, scripts):
+                def select_tab(file1, file2):
+                    f = open(file1)
+                    with open(file2, 'w') as w:
+                        for i in f:
+                            i = i.strip().split('\t')
+                            print(i[0])
+                            if i[0] != i[1]:
+                                line = i[0] + ' ' + i[1] + ' ' + i[10] + '\n'
+                                w.write(line)
+                    w.close()
 
-        def convert_xml(outpth, tool, scripts):
-            def select_tab(file1, file2):
-                f = open(file1)
-                with open(file2, 'w') as w:
-                    for i in f:
-                        i = i.strip().split('\t')
-                        print(i[0])
-                        if i[0] != i[1]:
-                            line = i[0] + ' ' + i[1] + ' ' + i[10] + '\n'
+                # running alignment
+                diamond_cmd = 'python.exe ' + f'{scripts}/blastxml_to_tabular.py -o {outpth}/{tool}_results.tab -c qseqid,sseqid,pident,length,mismatch,gapopen,qstart,qend,sstart,send,evalue {outpth}/{tool}_results.xml'
+                _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
+                                          stderr=subprocess.DEVNULL)
+                diamond_out_fp = f"{outpth}/{tool}_results.tab"
+                database_abc_fp = f"{outpth}/{tool}_results.abc"
+                select_tab(diamond_out_fp, database_abc_fp)
+
+            def cat_fun(df1, df2, df3):
+                with open(df3, 'w') as w:
+                    f1 = open(df1)
+                    f2 = open(df2)
+                    for i in f1:
+                        line = i
+                        w.write(line)
+
+                    for j in f2:
+                        line = j
+                        w.write(line)
+                w.close()
+
+            def mcl_cal(input, merge_new, output):
+                df = pd.read_csv(input,
+                                 sep=' ',
+                                 header=None)
+
+                df[2][df[2] >= 200] = 200
+                df[2][df[2] == 0] = 200
+                df[2][df[2] < 200] = round(-(np.log10(df[2])), 5)
+
+                lis1 = df[0].tolist()
+                lis2 = df[1].tolist()
+                lis = lis1 + lis2
+                df.to_csv(merge_new, sep=' ', index=None, header=None)
+                my_dic = dict.fromkeys(lis)
+                result_list = list(my_dic)
+
+                dic = {}
+                count = 0
+                for i in result_list:
+                    dic[count] = i
+                    count += 1
+
+                data = pd.read_csv(merge_new,
+                                   sep=' ',
+                                   header=None)
+
+                G = nx.Graph()
+                G.add_nodes_from(data[0], bipartite=0)
+                G.add_nodes_from(data[1], bipartite=1)
+                edge_weight_list = data.apply(lambda x: tuple(x), axis=1).values.tolist()
+                G.add_weighted_edges_from(edge_weight_list)
+                A = nx.adjacency_matrix(G)
+
+                del df, data, lis, lis1, lis2, my_dic, result_list
+
+                result = mc.run_mcl(A, inflation=2)
+                clusters = mc.get_clusters(result)
+
+                with open(os.path.dirname(output) + '/mcl_tmp.txt', 'w') as w:
+                    for i in clusters:
+                        i = list(i)
+                        line = ''
+                        count = 1
+                        for j in i:
+                            if count == len(i):
+                                line = line + dic[j] + '\n'
+                                w.write(line)
+                            line = line + dic[j] + '\t'
+                            count += 1
+                w.close()
+
+                with open(output, 'w') as w:
+                    with open(os.path.dirname(output) + '/mcl_tmp.txt', 'r') as f:
+                        lines = f.readlines()
+                        lines.sort(key=lambda x: len(x.strip().split('\t')), reverse=True)
+                        for line in lines:
                             w.write(line)
                 w.close()
 
-            # running alignment
-            diamond_cmd = 'python.exe ' + f'{scripts}/blastxml_to_tabular.py -o {outpth}/{tool}_results.tab -c qseqid,sseqid,pident,length,mismatch,gapopen,qstart,qend,sstart,send,evalue {outpth}/{tool}_results.xml'
-            _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
-                                      stderr=subprocess.DEVNULL)
-            diamond_out_fp = f"{outpth}/{tool}_results.tab"
-            database_abc_fp = f"{outpth}/{tool}_results.abc"
-            select_tab(diamond_out_fp, database_abc_fp)
+                os.remove(os.path.dirname(output) + '/mcl_tmp.txt')
+                os.remove(os.path.dirname(output) + '/merged_new.abc')
 
-        def cat_fun(df1, df2, df3):
-            with open(df3, 'w') as w:
-                f1 = open(df1)
-                f2 = open(df2)
-                for i in f1:
-                    line = i
-                    w.write(line)
+            def load_mcl_clusters(fi):
+                # Read MCL
+                with open(fi) as f:
+                    c = [line.rstrip("\n").split("\t") for line in f]
+                c = [x for x in c if len(c) > 1]
+                nb_clusters = len(c)
+                formatter = "PC_{{:>0{}}}".format(int(round(np.log10(nb_clusters)) + 1))
+                name = [formatter.format(str(i)) for i in range(nb_clusters)]
+                size = [len(i) for i in c]
+                clusters_df = pd.DataFrame({"size": size, "pc_id": name}).set_index("pc_id")
+                return clusters_df, name, c
 
-                for j in f2:
-                    line = j
-                    w.write(line)
-            w.close()
+            def build_clusters(fp, gene2genome):
+                # Read MCL
+                clusters_df, name, c = load_mcl_clusters(fp)
+                print("Using MCL to generate PCs.")
+                # Assign each prot to its cluster
+                gene2genome.set_index("protein_id", inplace=True)  # id, contig, keywords, cluster
+                for prots, clust in zip(c, name):
+                    try:
+                        gene2genome.loc[prots, "cluster"] = clust
+                    except KeyError:
+                        prots_in = [p for p in prots if p in gene2genome.index]
+                        not_in = frozenset(prots) - frozenset(prots_in)
+                        print("{} protein(s) without contig: {}".format(len(not_in), not_in))
+                        gene2genome.loc[prots_in, "cluster"] = clust
+                # Keys
+                for clust, prots in gene2genome.groupby("cluster"):
+                    clusters_df.loc[clust, "annotated"] = prots.keywords.count()
+                    if prots.keywords.count():
+                        keys = ";".join(prots.keywords.dropna().values).split(";")
+                        key_count = {}
+                        for k in keys:
+                            k = k.strip()
+                            try:
+                                key_count[k] += 1
+                            except KeyError:
+                                key_count[k] = 1
+                        clusters_df.loc[clust, "keys"] = "; ".join(
+                            ["{} ({})".format(x, y) for x, y in key_count.items()])
+                gene2genome.reset_index(inplace=True)
+                clusters_df.reset_index(inplace=True)
+                profiles_df = gene2genome.loc[:, ["contig_id", "cluster"]].drop_duplicates()
+                profiles_df.columns = ["contig_id", "pc_id"]
+                contigs_df = pd.DataFrame(gene2genome.fillna(0).groupby("contig_id").count().protein_id)
+                contigs_df.index.name = "contig_id"
+                contigs_df.columns = ["proteins"]
+                contigs_df.reset_index(inplace=True)
+                return gene2genome, clusters_df, profiles_df, contigs_df
 
-        def mcl_cal(input, merge_new, output):
-            df = pd.read_csv(input,
-                             sep=' ',
-                             header=None)
+            def generate_gene2genome(inpth, outpth, tool, rootpth):
+                blastp = pd.read_csv(f'{inpth}/{tool}_results.abc', sep=' ', names=["contig", "ref", "e-value"])
+                protein_id = sorted(list(set(blastp["contig"].values)))
+                contig_id = [item.rsplit("_", 1)[0] for item in protein_id]
+                description = ["hypothetical protein" for item in protein_id]
+                gene2genome = pd.DataFrame(
+                    {"protein_id": protein_id, "contig_id": contig_id, "keywords": description})
+                gene2genome.to_csv(f"{outpth}/{tool}_contig_gene_to_genome.csv", index=None)
 
-            df[2][df[2] >= 200] = 200
-            df[2][df[2] == 0] = 200
-            df[2][df[2] < 200] = round(-(np.log10(df[2])), 5)
+            def create_network(matrix, singletons, thres=1, max_sig=1000):
+                contigs, pcs = matrix.shape
+                pcs += singletons.sum()
+                # Number of comparisons
+                T = 0.5 * contigs * (contigs - 1)
+                logT = np.log10(T)
+                number_of_pc = matrix.sum(1) + singletons
+                number_of_pc = number_of_pc.A1  # Transform into a flat array
+                # Number of common protein clusters between two contigs, tuple + commons
+                commons_pc = matrix.dot(sparse.csr_matrix(matrix.transpose(), dtype=int))
+                S = sparse.lil_matrix((contigs, contigs))
+                total_c = float(commons_pc.getnnz())
+                i = 0  # Display
+                for A, B in zip(*commons_pc.nonzero()):  # For A & B sharing contigs
+                    if A != B:
+                        a, b = sorted([number_of_pc[A], number_of_pc[B]])
+                        pval = stats.hypergeom.sf(commons_pc[A, B] - 1, pcs, a, b)
+                        sig = min(max_sig, np.nan_to_num(-np.log10(pval) - logT))
+                        if sig > thres:
+                            S[min(A, B), max(A, B)] = sig
+                        # Display
+                        i += 1
+                        if i % 1000 == 0:
+                            sys.stdout.write(".")
+                        if i % 10000 == 0:
+                            sys.stdout.write("{:6.2%} {}/{}\n".format(i / total_c, i, total_c))
+                S += S.T  # Symmetry
+                S = S.tocsr()
+                if len(S.data) != 0:
+                    print(
+                        "Hypergeometric contig-similarity network:\n {0:10} contigs,\n {1:10} edges (min:{2:.2}"
+                        "max: {3:.2}, threshold was {4})".format(contigs, S.getnnz(), S.data.min(),
+                                                                 S.data.max(),
+                                                                 thres))
+                else:
+                    raise ValueError("No edge in the similarity network !")
+                return S
 
-            lis1 = df[0].tolist()
-            lis2 = df[1].tolist()
-            lis = lis1 + lis2
-            df.to_csv(merge_new, sep=' ', index=None, header=None)
-            my_dic = dict.fromkeys(lis)
-            result_list = list(my_dic)
+            def to_clusterer(matrix, fi, contigs=None, names=None):
+                names = contigs if names is None else names
+                names = names.set_index("pos").contig_id
+                with open(fi, "wt") as f:
+                    matrix = sparse.dok_matrix(matrix)
+                    for r, c in zip(*matrix.nonzero()):
+                        f.write(" ".join([str(x) for x in (names[r], names[c], matrix[r, c])]))
+                        f.write("\n")
+                print("Saving network in file {0} ({1} lines).".format(fi, matrix.getnnz()))
+                return fi
 
-            dic = {}
-            count = 0
-            for i in result_list:
-                dic[count] = i
-                count += 1
+            check_path(midfolder)
+            check_path(out_dir)
 
-            data = pd.read_csv(merge_new,
-                               sep=' ',
-                               header=None)
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            if device == 'cpu':
+                print("running with cpu")
+                torch.set_num_threads(threads)
 
-            G = nx.Graph()
-            G.add_nodes_from(data[0], bipartite=0)
-            G.add_nodes_from(data[1], bipartite=1)
-            edge_weight_list = data.apply(lambda x: tuple(x), axis=1).values.tolist()
-            G.add_weighted_edges_from(edge_weight_list)
-            A = nx.adjacency_matrix(G)
+            rec = []
+            ID2length = {}
+            for record in SeqIO.parse(contigs, 'fasta'):
+                if len(record.seq) > int(length_len):
+                    rec.append(record)
+                    ID2length[record.id] = len(record.seq)
 
-            del df, data, lis, lis1, lis2, my_dic, result_list
+            # FLAGS
+            SeqIO.write(rec, f'{rootpth}/filtered_contigs.fa', 'fasta')
 
-            result = mc.run_mcl(A, inflation=2)
-            clusters = mc.get_clusters(result)
+            query_file = f"{rootpth}/filtered_contigs.fa"
+            db_virus_prefix = f"{db_dir}/unknown_db/db"
+            output_file = f"{midfolder}/unknown_out.tab"
+            virus_call = NcbiblastnCommandline(
+                path + "/blast-BLAST_VERSION+/bin/blastn.exe",
+                query=query_file,
+                db=db_virus_prefix,
+                out=output_file,
+                outfmt="6 qseqid sseqid evalue pident length qlen",
+                evalue=1e-10,
+                task='megablast',
+                perc_identity=95,
+                num_threads=threads)
+            virus_call()
 
-            with open(os.path.dirname(output) + '/mcl_tmp.txt', 'w') as w:
-                for i in clusters:
-                    i = list(i)
-                    line = ''
-                    count = 1
-                    for j in i:
-                        if count == len(i):
-                            line = line + dic[j] + '\n'
-                            w.write(line)
-                        line = line + dic[j] + '\t'
-                        count += 1
-            w.close()
+            check_unknown = {}
+            check_unknown_all = {}
+            check_unknown_all_score = {}
+            with open(output_file) as file_out:
+                for line in file_out.readlines():
+                    parse = line.replace("\n", "").split("\t")
+                    virus = parse[0]
+                    target = parse[1]
+                    target = target.split('|')[1]
+                    ident = float(parse[-3])
+                    length = float(parse[-2])
+                    qlen = float(parse[-1])
+                    if length / qlen > 0.95 and ident > 0.95:
+                        check_unknown[virus] = target
+                    if virus not in check_unknown_all:
+                        ident = float(parse[-3]) / 100
+                        ident = float(f"{ident:.3f}")
+                        check_unknown_all[virus] = target
+                        check_unknown_all_score[virus] = ident
 
-            with open(output, 'w') as w:
-                with open(os.path.dirname(output) + '/mcl_tmp.txt', 'r') as f:
-                    lines = f.readlines()
-                    lines.sort(key=lambda x: len(x.strip().split('\t')), reverse=True)
-                    for line in lines:
-                        w.write(line)
-            w.close()
-
-            os.remove(os.path.dirname(output) + '/mcl_tmp.txt')
-            os.remove(os.path.dirname(output) + '/merged_new.abc')
-
-        def load_mcl_clusters(fi):
-            # Read MCL
-            with open(fi) as f:
-                c = [line.rstrip("\n").split("\t") for line in f]
-            c = [x for x in c if len(c) > 1]
-            nb_clusters = len(c)
-            formatter = "PC_{{:>0{}}}".format(int(round(np.log10(nb_clusters)) + 1))
-            name = [formatter.format(str(i)) for i in range(nb_clusters)]
-            size = [len(i) for i in c]
-            clusters_df = pd.DataFrame({"size": size, "pc_id": name}).set_index("pc_id")
-            return clusters_df, name, c
-
-        def build_clusters(fp, gene2genome):
-            # Read MCL
-            clusters_df, name, c = load_mcl_clusters(fp)
-            print("Using MCL to generate PCs.")
-            # Assign each prot to its cluster
-            gene2genome.set_index("protein_id", inplace=True)  # id, contig, keywords, cluster
-            for prots, clust in zip(c, name):
+            rec = []
+            for record in SeqIO.parse(f'{rootpth}/filtered_contigs.fa', 'fasta'):
                 try:
-                    gene2genome.loc[prots, "cluster"] = clust
-                except KeyError:
-                    prots_in = [p for p in prots if p in gene2genome.index]
-                    not_in = frozenset(prots) - frozenset(prots_in)
-                    print("{} protein(s) without contig: {}".format(len(not_in), not_in))
-                    gene2genome.loc[prots_in, "cluster"] = clust
-            # Keys
-            for clust, prots in gene2genome.groupby("cluster"):
-                clusters_df.loc[clust, "annotated"] = prots.keywords.count()
-                if prots.keywords.count():
-                    keys = ";".join(prots.keywords.dropna().values).split(";")
-                    key_count = {}
-                    for k in keys:
-                        k = k.strip()
-                        try:
-                            key_count[k] += 1
-                        except KeyError:
-                            key_count[k] = 1
-                    clusters_df.loc[clust, "keys"] = "; ".join(
-                        ["{} ({})".format(x, y) for x, y in key_count.items()])
-            gene2genome.reset_index(inplace=True)
-            clusters_df.reset_index(inplace=True)
-            profiles_df = gene2genome.loc[:, ["contig_id", "cluster"]].drop_duplicates()
-            profiles_df.columns = ["contig_id", "pc_id"]
-            contigs_df = pd.DataFrame(gene2genome.fillna(0).groupby("contig_id").count().protein_id)
-            contigs_df.index.name = "contig_id"
-            contigs_df.columns = ["proteins"]
-            contigs_df.reset_index(inplace=True)
-            return gene2genome, clusters_df, profiles_df, contigs_df
+                    if check_unknown[record.id]:
+                        continue
+                except:
+                    rec.append(record)
 
-        def generate_gene2genome(inpth, outpth, tool, rootpth):
-            blastp = pd.read_csv(f'{inpth}/{tool}_results.abc', sep=' ', names=["contig", "ref", "e-value"])
-            protein_id = sorted(list(set(blastp["contig"].values)))
-            contig_id = [item.rsplit("_", 1)[0] for item in protein_id]
-            description = ["hypothetical protein" for item in protein_id]
-            gene2genome = pd.DataFrame(
-                {"protein_id": protein_id, "contig_id": contig_id, "keywords": description})
-            gene2genome.to_csv(f"{outpth}/{tool}_contig_gene_to_genome.csv", index=None)
 
-        def create_network(matrix, singletons, thres=1, max_sig=1000):
-            contigs, pcs = matrix.shape
-            pcs += singletons.sum()
-            # Number of comparisons
-            T = 0.5 * contigs * (contigs - 1)
-            logT = np.log10(T)
-            number_of_pc = matrix.sum(1) + singletons
-            number_of_pc = number_of_pc.A1  # Transform into a flat array
-            # Number of common protein clusters between two contigs, tuple + commons
-            commons_pc = matrix.dot(sparse.csr_matrix(matrix.transpose(), dtype=int))
-            S = sparse.lil_matrix((contigs, contigs))
-            total_c = float(commons_pc.getnnz())
-            i = 0  # Display
-            for A, B in zip(*commons_pc.nonzero()):  # For A & B sharing contigs
-                if A != B:
-                    a, b = sorted([number_of_pc[A], number_of_pc[B]])
-                    pval = stats.hypergeom.sf(commons_pc[A, B] - 1, pcs, a, b)
-                    sig = min(max_sig, np.nan_to_num(-np.log10(pval) - logT))
-                    if sig > thres:
-                        S[min(A, B), max(A, B)] = sig
-                    # Display
-                    i += 1
-                    if i % 1000 == 0:
-                        sys.stdout.write(".")
-                    if i % 10000 == 0:
-                        sys.stdout.write("{:6.2%} {}/{}\n".format(i / total_c, i, total_c))
-            S += S.T  # Symmetry
-            S = S.tocsr()
-            if len(S.data) != 0:
-                print(
-                    "Hypergeometric contig-similarity network:\n {0:10} contigs,\n {1:10} edges (min:{2:.2}"
-                    "max: {3:.2}, threshold was {4})".format(contigs, S.getnnz(), S.data.min(),
-                                                             S.data.max(),
-                                                             thres))
+            if len(rec) == 0:
+                self.trigger.emit('Finished!!!' + '\n' + 'No family avaliable for any isolate!!!')
+
             else:
-                raise ValueError("No edge in the similarity network !")
-            return S
+                SeqIO.write(rec, f'{rootpth}/filtered_phagcn_contigs.fa', 'fasta')
 
-        def to_clusterer(matrix, fi, contigs=None, names=None):
-            names = contigs if names is None else names
-            names = names.set_index("pos").contig_id
-            with open(fi, "wt") as f:
-                matrix = sparse.dok_matrix(matrix)
-                for r, c in zip(*matrix.nonzero()):
-                    f.write(" ".join([str(x) for x in (names[r], names[c], matrix[r, c])]))
-                    f.write("\n")
-            print("Saving network in file {0} ({1} lines).".format(fi, matrix.getnnz()))
-            return fi
+                translation(rootpth, rootpth, 'filtered_phagcn_contigs.fa', 'test_protein.fa')
+                shutil.copyfile(f"{rootpth}/filtered_contigs.fa", f"{rootpth}/phage_contigs.fa")
 
-        check_path(midfolder)
-        check_path(out_dir)
+                nucl = []
+                protein = []
+                for record in SeqIO.parse(f"{rootpth}/phage_contigs.fa", 'fasta'):
+                    nucl.append(record)
 
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if device == 'cpu':
-            print("running with cpu")
-            torch.set_num_threads(threads)
+                for record in SeqIO.parse(f"{rootpth}/test_protein.fa", 'fasta'):
+                    protein.append(record)
 
-        rec = []
-        ID2length = {}
-        for record in SeqIO.parse(contigs, 'fasta'):
-            if len(record.seq) > int(length_len):
-                rec.append(record)
-                ID2length[record.id] = len(record.seq)
+                SeqIO.write(nucl, f'{rootpth}/checked_phage_contigs.fa', "fasta")
+                SeqIO.write(protein, f'{rootpth}/checked_phage_protein.fa', "fasta")
 
-        # FLAGS
-        SeqIO.write(rec, f'{rootpth}/filtered_contigs.fa', 'fasta')
+                single_pth = rootpth + "/CNN_temp/single"
+                cnninput_pth = rootpth + "/CNN_temp/input"
+                phagcninput_pth = midfolder + "/phgcn"
+                check_path(single_pth)
+                check_path(cnninput_pth)
+                check_path(phagcninput_pth)
 
-        query_file = f"{rootpth}/filtered_contigs.fa"
-        db_virus_prefix = f"{db_dir}/unknown_db/db"
-        output_file = f"{midfolder}/unknown_out.tab"
-        virus_call = NcbiblastnCommandline(
-            path + "/blast-BLAST_VERSION+/bin/blastn.exe",
-            query=query_file,
-            db=db_virus_prefix,
-            out=output_file,
-            outfmt="6 qseqid sseqid evalue pident length qlen",
-            evalue=1e-10,
-            task='megablast',
-            perc_identity=95,
-            num_threads=threads)
-        virus_call()
+                contig2name = {}
+                with open(f"{midfolder}/phagcn_name_list.csv", 'w') as list_out:
+                    list_out.write("Contig,idx\n")
+                    for contig_id, record in enumerate(SeqIO.parse(f'{rootpth}/checked_phage_contigs.fa', "fasta")):
+                        name = f"PhaGCN_{str(contig_id)}"
+                        list_out.write(record.id + "," + name + "\n")
+                        contig2name[record.id] = name
+                        record.id = name
+                        _ = SeqIO.write(record, f"{single_pth}/{name}.fa", "fasta")
 
-        check_unknown = {}
-        check_unknown_all = {}
-        check_unknown_all_score = {}
-        with open(output_file) as file_out:
-            for line in file_out.readlines():
-                parse = line.replace("\n", "").split("\t")
-                virus = parse[0]
-                target = parse[1]
-                target = target.split('|')[1]
-                ident = float(parse[-3])
-                length = float(parse[-2])
-                qlen = float(parse[-1])
-                if length / qlen > 0.95 and ident > 0.95:
-                    check_unknown[virus] = target
-                if virus not in check_unknown_all:
-                    ident = float(parse[-3]) / 100
-                    ident = float(f"{ident:.3f}")
-                    check_unknown_all[virus] = target
-                    check_unknown_all_score[virus] = ident
+                rename_rec = []
+                for record in SeqIO.parse(f'{rootpth}/checked_phage_protein.fa', "fasta"):
+                    old_name = record.id
+                    idx = old_name.rsplit('_', 1)[1]
+                    record.id = contig2name[old_name.rsplit('_', 1)[0]] + "_" + idx
+                    rename_rec.append(record)
 
-        rec = []
-        for record in SeqIO.parse(f'{rootpth}/filtered_contigs.fa', 'fasta'):
-            try:
-                if check_unknown[record.id]:
-                    continue
-            except:
-                rec.append(record)
+                SeqIO.write(rename_rec, f'{midfolder}/phagcn_renamed_protein.fa', 'fasta')
 
+                # sequence encoding using CNN
+                seq_dict = {}
+                for file in os.listdir(single_pth):
+                    rec = create_fragments(single_pth, file)
+                    seq_dict[file.split('.fa')[0]] = rec
 
-        if len(rec) == 0:
-            self.trigger.emit('Finished!!!' + '\n' + 'No family avaliable for any isolate!!!')
+                int_to_vocab, vocab_to_int = return_kmer_vocab()
+                for seq in seq_dict:
+                    int_feature = encode(seq_dict[seq], vocab_to_int)
+                    inputs_feat = create_cnndataset(int_feature)
+                    np.savetxt(f"{cnninput_pth}/{seq}.csv", inputs_feat, delimiter=",", fmt='%d')
 
-        else:
-            SeqIO.write(rec, f'{rootpth}/filtered_phagcn_contigs.fa', 'fasta')
+                cnn, embed = load_cnnmodel(parampth)
+                compress_feature = []
+                file_list = os.listdir(cnninput_pth)
+                file_list = sorted(file_list)
 
-            translation(rootpth, rootpth, 'filtered_phagcn_contigs.fa', 'test_protein.fa')
-            shutil.copyfile(f"{rootpth}/filtered_contigs.fa", f"{rootpth}/phage_contigs.fa")
+                for name in file_list:
+                    val = np.genfromtxt(f'{cnninput_pth}/{name}', delimiter=',')
+                    val_label = val[:, -1]
+                    val_feature = val[:, :-1]
+                    # comvert format
+                    val_feature = torch.from_numpy(val_feature).long()
+                    val_feature = embed(val_feature)
+                    val_feature = val_feature.reshape(len(val_feature), 1, 1998, 100)
+                    # prediction
+                    out = cnn(val_feature)
+                    out = out.detach().numpy()
+                    out = np.sum(out, axis=0)
+                    compress_feature.append(out)
 
-            nucl = []
-            protein = []
-            for record in SeqIO.parse(f"{rootpth}/phage_contigs.fa", 'fasta'):
-                nucl.append(record)
+                compress_feature = np.array(compress_feature)
+                pkl.dump(compress_feature, open(f"{phagcninput_pth}/phagcn_contig.F", 'wb'))
 
-            for record in SeqIO.parse(f"{rootpth}/test_protein.fa", 'fasta'):
-                protein.append(record)
+                run_diamond(f'{db_dir}/phagcn_database.dmnd', midfolder, 'phagcn_renamed_protein.fa', 'phagcn',
+                            threads,
+                            path)
 
-            SeqIO.write(nucl, f'{rootpth}/checked_phage_contigs.fa', "fasta")
-            SeqIO.write(protein, f'{rootpth}/checked_phage_protein.fa', "fasta")
+                os.chdir(path + '/venv/Scripts')
+                convert_xml(midfolder, 'phagcn', path + '/models/PhaGCN/scripts')
+                os.chdir(path)
 
-            single_pth = rootpth + "/CNN_temp/single"
-            cnninput_pth = rootpth + "/CNN_temp/input"
-            phagcninput_pth = midfolder + "/phgcn"
-            check_path(single_pth)
-            check_path(cnninput_pth)
-            check_path(phagcninput_pth)
+                abc_fp = f"{midfolder}/merged.abc"
+                cat_fun(f"{db_dir}/phagcn_database.self-diamond.tab.abc", f"{midfolder}/phagcn_results.abc", abc_fp)
 
-            contig2name = {}
-            with open(f"{midfolder}/phagcn_name_list.csv", 'w') as list_out:
-                list_out.write("Contig,idx\n")
-                for contig_id, record in enumerate(SeqIO.parse(f'{rootpth}/checked_phage_contigs.fa', "fasta")):
-                    name = f"PhaGCN_{str(contig_id)}"
-                    list_out.write(record.id + "," + name + "\n")
-                    contig2name[record.id] = name
-                    record.id = name
-                    _ = SeqIO.write(record, f"{single_pth}/{name}.fa", "fasta")
+                generate_gene2genome(midfolder, midfolder, 'phagcn', rootpth)
+                cat_fun(f"{db_dir}/Caudovirales_gene_to_genomes.csv",
+                        f"{midfolder}/phagcn_contig_gene_to_genome.csv",
+                        f"{midfolder}/phagcn_gene_to_genome.csv")
 
-            rename_rec = []
-            for record in SeqIO.parse(f'{rootpth}/checked_phage_protein.fa', "fasta"):
-                old_name = record.id
-                idx = old_name.rsplit('_', 1)[1]
-                record.id = contig2name[old_name.rsplit('_', 1)[0]] + "_" + idx
-                rename_rec.append(record)
+                # Running MCL
+                print("Running MCL...")
+                gene2genome_fp = f"{midfolder}/phagcn_gene_to_genome.csv"
+                gene2genome_df = pd.read_csv(gene2genome_fp, sep=',', header=0)
+                pc_overlap, pc_penalty, pc_haircut, pc_inflation = 0.8, 2.0, 0.1, 2.0
+                mcl_cal(abc_fp, midfolder + '/merged_new.abc', midfolder + '/res.txt')
+                protein_df, clusters_df, profiles_df, contigs_df = build_clusters(midfolder + '/res.txt',
+                                                                                  gene2genome_df)
 
-            SeqIO.write(rename_rec, f'{midfolder}/phagcn_renamed_protein.fa', 'fasta')
+                print("Saving files")
+                dfs = [gene2genome_df, contigs_df, clusters_df]
+                names = ['proteins', 'contigs', 'pcs']
 
-            # sequence encoding using CNN
-            seq_dict = {}
-            for file in os.listdir(single_pth):
-                rec = create_fragments(single_pth, file)
-                seq_dict[file.split('.fa')[0]] = rec
+                for name, df in zip(names, dfs):
+                    fn = "Cyber_phagcn_{}.csv".format(name)
+                    fp = f'{midfolder}' + '/' + fn
+                    index_id = name.strip('s') + '_id'
+                    df.set_index(index_id).to_csv(fp)
 
-            int_to_vocab, vocab_to_int = return_kmer_vocab()
-            for seq in seq_dict:
-                int_feature = encode(seq_dict[seq], vocab_to_int)
-                inputs_feat = create_cnndataset(int_feature)
-                np.savetxt(f"{cnninput_pth}/{seq}.csv", inputs_feat, delimiter=",", fmt='%d')
+                contigs_csv_df = contigs_df.copy()
+                contigs_csv_df['contig_id'] = contigs_csv_df['contig_id'].str.replace(' ', '~')
+                contigs_csv_df.index.name = "pos"
+                contigs_csv_df.reset_index(inplace=True)
 
-            cnn, embed = load_cnnmodel(parampth)
-            compress_feature = []
-            file_list = os.listdir(cnninput_pth)
-            file_list = sorted(file_list)
+                pcs_csv_df = clusters_df.copy()
+                profiles = profiles_df.copy()
+                profiles['contig_id'] = profiles['contig_id'].str.replace(' ',
+                                                                          '~')  # ClusterONE can't handle spaces
 
-            for name in file_list:
-                val = np.genfromtxt(f'{cnninput_pth}/{name}', delimiter=',')
-                val_label = val[:, -1]
-                val_feature = val[:, :-1]
-                # comvert format
-                val_feature = torch.from_numpy(val_feature).long()
-                val_feature = embed(val_feature)
-                val_feature = val_feature.reshape(len(val_feature), 1, 1998, 100)
-                # prediction
-                out = cnn(val_feature)
-                out = out.detach().numpy()
-                out = np.sum(out, axis=0)
-                compress_feature.append(out)
+                # Filtering the PC profiles that appears only once
+                before_filter = len(profiles)
+                cont_by_pc = profiles.groupby("pc_id").count().contig_id.reset_index()
 
-            compress_feature = np.array(compress_feature)
-            pkl.dump(compress_feature, open(f"{phagcninput_pth}/phagcn_contig.F", 'wb'))
+                # get the number of contigs for each pcs and add it to the dataframe
+                cont_by_pc.columns = ["pc_id", "nb_proteins"]
+                pcs_csv_df = pd.merge(pcs_csv_df, cont_by_pc, left_on="pc_id", right_on="pc_id", how="left")
+                pcs_csv_df.fillna({"nb_proteins": 0}, inplace=True)
 
-            run_diamond(f'{db_dir}/phagcn_database.dmnd', midfolder, 'phagcn_renamed_protein.fa', 'phagcn',
-                        threads,
-                        path)
+                # Drop the pcs that <= 1 contig from the profiles.
+                pcs_csv_df = pcs_csv_df[pcs_csv_df['nb_proteins'] > 1]
+                at_least_a_cont = cont_by_pc[cont_by_pc['nb_proteins'] > 1]
+                profiles = profiles[profiles['pc_id'].isin(at_least_a_cont.pc_id)]
 
-            os.chdir(path + '/venv/Scripts')
-            convert_xml(midfolder, 'phagcn', path + '/models/PhaGCN/scripts')
-            os.chdir(path)
+                pcs_csv_df = pcs_csv_df.reset_index(drop=True)
+                pcs_csv_df.index.name = "pos"
+                pcs_csv_df = pcs_csv_df.reset_index()
 
-            abc_fp = f"{midfolder}/merged.abc"
-            cat_fun(f"{db_dir}/phagcn_database.self-diamond.tab.abc", f"{midfolder}/phagcn_results.abc", abc_fp)
+                matrix, singletons = build_pc_matrices(profiles, contigs_csv_df, pcs_csv_df)
+                profiles_csv = {"matrix": matrix, "singletons": singletons}
+                merged_df = contigs_csv_df
 
-            generate_gene2genome(midfolder, midfolder, 'phagcn', rootpth)
-            cat_fun(f"{db_dir}/Caudovirales_gene_to_genomes.csv",
-                    f"{midfolder}/phagcn_contig_gene_to_genome.csv",
-                    f"{midfolder}/phagcn_gene_to_genome.csv")
+                ntw = create_network(matrix, singletons, thres=1, max_sig=300)
+                fi = to_clusterer(ntw, f"{midfolder}/phagcn_network.ntw", merged_df.copy())
 
-            # Running MCL
-            print("Running MCL...")
-            gene2genome_fp = f"{midfolder}/phagcn_gene_to_genome.csv"
-            gene2genome_df = pd.read_csv(gene2genome_fp, sep=',', header=0)
-            pc_overlap, pc_penalty, pc_haircut, pc_inflation = 0.8, 2.0, 0.1, 2.0
-            mcl_cal(abc_fp, midfolder + '/merged_new.abc', midfolder + '/res.txt')
-            protein_df, clusters_df, profiles_df, contigs_df = build_clusters(midfolder + '/res.txt',
-                                                                              gene2genome_df)
+                print("\n\n" + "{:-^80}".format("Calculating E-edges"))
 
-            print("Saving files")
-            dfs = [gene2genome_df, contigs_df, clusters_df]
-            names = ['proteins', 'contigs', 'pcs']
+                # loading database
+                gene2genome = pd.read_csv(f'{db_dir}/Caudovirales_gene_to_genomes.csv')
+                contig_id = gene2genome["contig_id"].values
+                contig_id = [item.replace(" ", "~") for item in contig_id]
+                gene2genome["contig_id"] = contig_id
 
-            for name, df in zip(names, dfs):
-                fn = "Cyber_phagcn_{}.csv".format(name)
-                fp = f'{midfolder}' + '/' + fn
-                index_id = name.strip('s') + '_id'
-                df.set_index(index_id).to_csv(fp)
+                protein_to_ref = {protein: ref for protein, ref in
+                                  zip(gene2genome["protein_id"].values, gene2genome["contig_id"].values)}
 
-            contigs_csv_df = contigs_df.copy()
-            contigs_csv_df['contig_id'] = contigs_csv_df['contig_id'].str.replace(' ', '~')
-            contigs_csv_df.index.name = "pos"
-            contigs_csv_df.reset_index(inplace=True)
+                contig_set = list(set(gene2genome["contig_id"].values))
+                ID_to_ref = {i: ref for i, ref in enumerate(contig_set)}
+                ref_to_ID = {ref: i for i, ref in enumerate(contig_set)}
 
-            pcs_csv_df = clusters_df.copy()
-            profiles = profiles_df.copy()
-            profiles['contig_id'] = profiles['contig_id'].str.replace(' ',
-                                                                      '~')  # ClusterONE can't handle spaces
+                contig_to_id = {}
+                file_list = os.listdir(single_pth)
+                file_list = sorted(file_list)
+                for file_n in file_list:
+                    name = file_n.split(".")[0]
+                    contig_to_id[name] = file_list.index(file_n)
 
-            # Filtering the PC profiles that appears only once
-            before_filter = len(profiles)
-            cont_by_pc = profiles.groupby("pc_id").count().contig_id.reset_index()
+                # record the row id for each contigs
+                id_to_contig = {value: key for key, value in contig_to_id.items()}
 
-            # get the number of contigs for each pcs and add it to the dataframe
-            cont_by_pc.columns = ["pc_id", "nb_proteins"]
-            pcs_csv_df = pd.merge(pcs_csv_df, cont_by_pc, left_on="pc_id", right_on="pc_id", how="left")
-            pcs_csv_df.fillna({"nb_proteins": 0}, inplace=True)
+                blastp = pd.read_csv(f'{midfolder}/phagcn_results.abc', sep=" ",
+                                     names=["contigs", "ref", "e-value"])
+                gene_to_genome = pd.read_csv(f"{midfolder}/phagcn_contig_gene_to_genome.csv", sep=",")
 
-            # Drop the pcs that <= 1 contig from the profiles.
-            pcs_csv_df = pcs_csv_df[pcs_csv_df['nb_proteins'] > 1]
-            at_least_a_cont = cont_by_pc[cont_by_pc['nb_proteins'] > 1]
-            profiles = profiles[profiles['pc_id'].isin(at_least_a_cont.pc_id)]
+                e_matrix = np.ones((len(contig_to_id), len(ref_to_ID.keys())))
+                blast_contigs = blastp["contigs"].values
+                blast_ref = blastp["ref"].values
+                blast_value = blastp["e-value"].values
+                for i in range(len(blast_contigs)):
+                    contig_name = gene_to_genome[gene_to_genome["protein_id"] == blast_contigs[i]][
+                        "contig_id"].values
+                    contig_name = contig_name[0]
+                    row_id = contig_to_id[contig_name]
+                    reference = protein_to_ref[blast_ref[i]]
+                    col_id = ref_to_ID[reference]
+                    e_value = float(blast_value[i])
+                    if e_value == 0:
+                        e_value = 1e-250
+                    if e_matrix[row_id][col_id] == 1:
+                        e_matrix[row_id][col_id] = e_value
+                    else:
+                        e_matrix[row_id][col_id] += e_value
 
-            pcs_csv_df = pcs_csv_df.reset_index(drop=True)
-            pcs_csv_df.index.name = "pos"
-            pcs_csv_df = pcs_csv_df.reset_index()
+                e_weight = -np.log10(e_matrix) - 50
+                e_weight[e_weight < 1] = 0
 
-            matrix, singletons = build_pc_matrices(profiles, contigs_csv_df, pcs_csv_df)
-            profiles_csv = {"matrix": matrix, "singletons": singletons}
-            merged_df = contigs_csv_df
+                print("\n\n" + "{:-^80}".format("Calculating P-edges"))
+                name_to_id = {}
+                reference_df = pd.read_csv(f"{db_dir}/phagcn_reference_name_id.csv")
+                tmp_ref = reference_df["name"].values
+                tmp_id = reference_df["idx"].values
+                for ref, idx in zip(tmp_ref, tmp_id):
+                    name_to_id[ref.replace(" ", "~")] = idx
 
-            ntw = create_network(matrix, singletons, thres=1, max_sig=300)
-            fi = to_clusterer(ntw, f"{midfolder}/phagcn_network.ntw", merged_df.copy())
+                edges = pd.read_csv(f"{midfolder}/phagcn_network.ntw", sep=' ', names=["node1", "node2", "weight"])
+                merged_df = pd.read_csv(f"{db_dir}/Caudovirales_genome_profile.csv", header=0, index_col=0)
+                Taxonomic_df = pd.read_csv(f"{db_dir}/phagcn_taxonomic_label.csv")
+                merged_df = pd.merge(merged_df, Taxonomic_df, left_on="contig_id", right_on="contig_id",
+                                     how="inner")
+                contig_id = merged_df["contig_id"].values
+                family = merged_df["class"].values
+                contig_to_family = {name: family for name, family in zip(contig_id, family) if
+                                    type(family) != type(np.nan)}
 
-            print("\n\n" + "{:-^80}".format("Calculating E-edges"))
+                G = nx.Graph()
+                # Add p-edges to the graph
+                with open(f"{midfolder}/phagcn_network.ntw") as file_in:
+                    for line in file_in.readlines():
+                        tmp = line[:-1].split(" ")
+                        node1 = tmp[0]
+                        node2 = tmp[1]
+                        weight = float(tmp[2])
 
-            # loading database
-            gene2genome = pd.read_csv(f'{db_dir}/Caudovirales_gene_to_genomes.csv')
-            contig_id = gene2genome["contig_id"].values
-            contig_id = [item.replace(" ", "~") for item in contig_id]
-            gene2genome["contig_id"] = contig_id
+                        if "~" in node1 and node1 not in name_to_id.keys():
+                            print(node1)
+                            print("ERROR")
+                            exit(1)
+                        if "~" in node2 and node2 not in name_to_id.keys():
+                            print(node2)
+                            print("ERROR")
+                            exit(1)
+                        G.add_edge(node1, node2, weight=1)
 
-            protein_to_ref = {protein: ref for protein, ref in
-                              zip(gene2genome["protein_id"].values, gene2genome["contig_id"].values)}
-
-            contig_set = list(set(gene2genome["contig_id"].values))
-            ID_to_ref = {i: ref for i, ref in enumerate(contig_set)}
-            ref_to_ID = {ref: i for i, ref in enumerate(contig_set)}
-
-            contig_to_id = {}
-            file_list = os.listdir(single_pth)
-            file_list = sorted(file_list)
-            for file_n in file_list:
-                name = file_n.split(".")[0]
-                contig_to_id[name] = file_list.index(file_n)
-
-            # record the row id for each contigs
-            id_to_contig = {value: key for key, value in contig_to_id.items()}
-
-            blastp = pd.read_csv(f'{midfolder}/phagcn_results.abc', sep=" ",
-                                 names=["contigs", "ref", "e-value"])
-            gene_to_genome = pd.read_csv(f"{midfolder}/phagcn_contig_gene_to_genome.csv", sep=",")
-
-            e_matrix = np.ones((len(contig_to_id), len(ref_to_ID.keys())))
-            blast_contigs = blastp["contigs"].values
-            blast_ref = blastp["ref"].values
-            blast_value = blastp["e-value"].values
-            for i in range(len(blast_contigs)):
-                contig_name = gene_to_genome[gene_to_genome["protein_id"] == blast_contigs[i]][
-                    "contig_id"].values
-                contig_name = contig_name[0]
-                row_id = contig_to_id[contig_name]
-                reference = protein_to_ref[blast_ref[i]]
-                col_id = ref_to_ID[reference]
-                e_value = float(blast_value[i])
-                if e_value == 0:
-                    e_value = 1e-250
-                if e_matrix[row_id][col_id] == 1:
-                    e_matrix[row_id][col_id] = e_value
-                else:
-                    e_matrix[row_id][col_id] += e_value
-
-            e_weight = -np.log10(e_matrix) - 50
-            e_weight[e_weight < 1] = 0
-
-            print("\n\n" + "{:-^80}".format("Calculating P-edges"))
-            name_to_id = {}
-            reference_df = pd.read_csv(f"{db_dir}/phagcn_reference_name_id.csv")
-            tmp_ref = reference_df["name"].values
-            tmp_id = reference_df["idx"].values
-            for ref, idx in zip(tmp_ref, tmp_id):
-                name_to_id[ref.replace(" ", "~")] = idx
-
-            edges = pd.read_csv(f"{midfolder}/phagcn_network.ntw", sep=' ', names=["node1", "node2", "weight"])
-            merged_df = pd.read_csv(f"{db_dir}/Caudovirales_genome_profile.csv", header=0, index_col=0)
-            Taxonomic_df = pd.read_csv(f"{db_dir}/phagcn_taxonomic_label.csv")
-            merged_df = pd.merge(merged_df, Taxonomic_df, left_on="contig_id", right_on="contig_id",
-                                 how="inner")
-            contig_id = merged_df["contig_id"].values
-            family = merged_df["class"].values
-            contig_to_family = {name: family for name, family in zip(contig_id, family) if
-                                type(family) != type(np.nan)}
-
-            G = nx.Graph()
-            # Add p-edges to the graph
-            with open(f"{midfolder}/phagcn_network.ntw") as file_in:
-                for line in file_in.readlines():
-                    tmp = line[:-1].split(" ")
-                    node1 = tmp[0]
-                    node2 = tmp[1]
-                    weight = float(tmp[2])
-
-                    if "~" in node1 and node1 not in name_to_id.keys():
-                        print(node1)
-                        print("ERROR")
-                        exit(1)
-                    if "~" in node2 and node2 not in name_to_id.keys():
-                        print(node2)
-                        print("ERROR")
-                        exit(1)
-                    G.add_edge(node1, node2, weight=1)
-
-            cnt = 0
-            for i in range(e_weight.shape[0]):
-                contig_name = id_to_contig[i]
-                if contig_name not in G.nodes():
-                    sorted_idx = np.argsort(e_weight[i])
-                    for j in range(5):
-                        idx = sorted_idx[-j]
-                        if e_weight[i][idx] != 0:
-                            ref_name = ID_to_ref[idx]
-                            if ref_name in G.nodes():
-                                G.add_edge(contig_name, ref_name, weight=1)
-                                cnt += 1
-
-            node_list = list(G.nodes())
-            for node in node_list:
-                if "~" in node and node not in contig_to_family.keys():
-                    G.remove_node(node)
-
-            test_to_id = {}
-
-            with open(f'{midfolder}/phagcn_graph.csv', 'w') as file:
-                file.write('Source,Target\n')
-                for node in G.nodes():
-                    for _, neighbor in G.edges(node):
-                        file.write(f'{node},{neighbor}\n')
-
-            # Generating the Knowledge Graph
-            print("\n\n" + "{:-^80}".format("Generating Knowledge graph"))
-            mode = "testing"
-            if mode == "testing":
-                test_mask = []
-                label = []
                 cnt = 0
-                for node in G.nodes():
-                    try:
-                        label.append(contig_to_family[node])  # Nov. 17th
-                        cnt += 1
-                    except:
-                        if "PhaGCN_" in node:
-                            try:
-                                label.append(-1)
-                                test_mask.append(cnt)
-                                test_to_id[node] = cnt
-                                cnt += 1
-                            except:
+                for i in range(e_weight.shape[0]):
+                    contig_name = id_to_contig[i]
+                    if contig_name not in G.nodes():
+                        sorted_idx = np.argsort(e_weight[i])
+                        for j in range(5):
+                            idx = sorted_idx[-j]
+                            if e_weight[i][idx] != 0:
+                                ref_name = ID_to_ref[idx]
+                                if ref_name in G.nodes():
+                                    G.add_edge(contig_name, ref_name, weight=1)
+                                    cnt += 1
+
+                node_list = list(G.nodes())
+                for node in node_list:
+                    if "~" in node and node not in contig_to_family.keys():
+                        G.remove_node(node)
+
+                test_to_id = {}
+
+                with open(f'{midfolder}/phagcn_graph.csv', 'w') as file:
+                    file.write('Source,Target\n')
+                    for node in G.nodes():
+                        for _, neighbor in G.edges(node):
+                            file.write(f'{node},{neighbor}\n')
+
+                # Generating the Knowledge Graph
+                print("\n\n" + "{:-^80}".format("Generating Knowledge graph"))
+                mode = "testing"
+                if mode == "testing":
+                    test_mask = []
+                    label = []
+                    cnt = 0
+                    for node in G.nodes():
+                        try:
+                            label.append(contig_to_family[node])  # Nov. 17th
+                            cnt += 1
+                        except:
+                            if "PhaGCN_" in node:
+                                try:
+                                    label.append(-1)
+                                    test_mask.append(cnt)
+                                    test_to_id[node] = cnt
+                                    cnt += 1
+                                except:
+                                    print(node)
+                            else:
                                 print(node)
-                        else:
-                            print(node)
-                pkl.dump(test_mask, open(f"{phagcninput_pth}/contig.mask", "wb"))
-                adj = nx.adjacency_matrix(G)
-                pkl.dump(adj, open(f"{phagcninput_pth}/contig.graph", "wb"))
-                pkl.dump(test_to_id, open(f"{phagcninput_pth}/contig.dict", "wb"))
+                    pkl.dump(test_mask, open(f"{phagcninput_pth}/contig.mask", "wb"))
+                    adj = nx.adjacency_matrix(G)
+                    pkl.dump(adj, open(f"{phagcninput_pth}/contig.graph", "wb"))
+                    pkl.dump(test_to_id, open(f"{phagcninput_pth}/contig.dict", "wb"))
 
-            with open(f'{midfolder}/phagcn_graph.csv', 'w') as file:
-                file.write('Source,Target\n')
+                with open(f'{midfolder}/phagcn_graph.csv', 'w') as file:
+                    file.write('Source,Target\n')
+                    for node in G.nodes():
+                        for _, neighbor in G.edges(node):
+                            file.write(f'{node},{neighbor}\n')
+
+                # Generating the Knowledge Graph
+                print("\n\n" + "{:-^80}".format("Generating Knowledge graph"))
+                mode = "testing"
+                if mode == "testing":
+                    test_mask = []
+                    label = []
+                    cnt = 0
+                    for node in G.nodes():
+                        try:
+                            label.append(contig_to_family[node])  # Nov. 17th
+                            cnt += 1
+                        except:
+                            if "PhaGCN_" in node:
+                                try:
+                                    label.append(-1)
+                                    test_mask.append(cnt)
+                                    test_to_id[node] = cnt
+                                    cnt += 1
+                                except:
+                                    print(node)
+                            else:
+                                print(node)
+                    pkl.dump(test_mask, open(f"{phagcninput_pth}/contig.mask", "wb"))
+                    adj = nx.adjacency_matrix(G)
+                    pkl.dump(adj, open(f"{phagcninput_pth}/contig.graph", "wb"))
+                    pkl.dump(test_to_id, open(f"{phagcninput_pth}/contig.dict", "wb"))
+
+                # contructing feature map
+                fn = "database"
+                contig_feature = pkl.load(open(f"{phagcninput_pth}/phagcn_contig.F", 'rb'))
+                database_feature = pkl.load(open(f"{db_dir}/phagcn_dataset_compressF", 'rb'))
+
+                feature = []
                 for node in G.nodes():
-                    for _, neighbor in G.edges(node):
-                        file.write(f'{node},{neighbor}\n')
+                    if "~" not in node:
+                        idx = contig_to_id[node]
+                        feature.append(contig_feature[idx])
+                    else:
+                        try:
+                            idx = int(name_to_id[node])
+                            feature.append(database_feature[idx])
+                        except:
+                            print(node)
 
-            # Generating the Knowledge Graph
-            print("\n\n" + "{:-^80}".format("Generating Knowledge graph"))
-            mode = "testing"
-            if mode == "testing":
-                test_mask = []
-                label = []
+                feature = np.array(feature)
+                pkl.dump(feature, open(f"{phagcninput_pth}/contig.feature", "wb"))
+
+                # Graph check for each testing samples
                 cnt = 0
-                for node in G.nodes():
-                    try:
-                        label.append(contig_to_family[node])  # Nov. 17th
-                        cnt += 1
-                    except:
-                        if "PhaGCN_" in node:
-                            try:
-                                label.append(-1)
-                                test_mask.append(cnt)
-                                test_to_id[node] = cnt
-                                cnt += 1
-                            except:
-                                print(node)
-                        else:
-                            print(node)
-                pkl.dump(test_mask, open(f"{phagcninput_pth}/contig.mask", "wb"))
-                adj = nx.adjacency_matrix(G)
-                pkl.dump(adj, open(f"{phagcninput_pth}/contig.graph", "wb"))
-                pkl.dump(test_to_id, open(f"{phagcninput_pth}/contig.dict", "wb"))
+                for node in G.nodes:
+                    if "~" not in node:
+                        neighbor_label = []
+                        for edge in G.edges(node):
+                            neighbor = edge[1]
+                            if "~" in neighbor:
+                                neighbor_label.append(contig_to_family[neighbor])  # Nov. 16th
+                            else:
+                                continue
+                        if len(set(neighbor_label)) == 1:
+                            label[test_to_id[node]] = neighbor_label[0]
+                            cnt += 1
 
-            # contructing feature map
-            fn = "database"
-            contig_feature = pkl.load(open(f"{phagcninput_pth}/phagcn_contig.F", 'rb'))
-            database_feature = pkl.load(open(f"{db_dir}/phagcn_dataset_compressF", 'rb'))
+                pkl.dump(label, open(f"{phagcninput_pth}/contig.label", "wb"))
 
-            feature = []
-            for node in G.nodes():
-                if "~" not in node:
-                    idx = contig_to_id[node]
-                    feature.append(contig_feature[idx])
-                else:
-                    try:
-                        idx = int(name_to_id[node])
-                        feature.append(database_feature[idx])
-                    except:
-                        print(node)
+                phagcninput_pth = midfolder + "/phgcn"
 
-            feature = np.array(feature)
-            pkl.dump(feature, open(f"{phagcninput_pth}/contig.feature", "wb"))
+                seed = 123
+                np.random.seed(seed)
+                torch.random.manual_seed(seed)
 
-            # Graph check for each testing samples
-            cnt = 0
-            for node in G.nodes:
-                if "~" not in node:
-                    neighbor_label = []
-                    for edge in G.edges(node):
-                        neighbor = edge[1]
-                        if "~" in neighbor:
-                            neighbor_label.append(contig_to_family[neighbor])  # Nov. 16th
-                        else:
-                            continue
-                    if len(set(neighbor_label)) == 1:
-                        label[test_to_id[node]] = neighbor_label[0]
-                        cnt += 1
+                adj = pkl.load(open(f"{phagcninput_pth}/contig.graph", 'rb'))
+                labels = pkl.load(open(f"{phagcninput_pth}/contig.label", 'rb'))
+                features = pkl.load(open(f"{phagcninput_pth}/contig.feature", 'rb'))
+                test_to_id = pkl.load(open(f"{phagcninput_pth}/contig.dict", 'rb'))
+                idx_test = pkl.load(open(f"{phagcninput_pth}/contig.mask", 'rb'))
 
-            pkl.dump(label, open(f"{phagcninput_pth}/contig.label", "wb"))
+                idx_test = np.array(idx_test)
+                labels = np.array(labels)
 
-            phagcninput_pth = midfolder + "/phgcn"
+                y_train = np.zeros(labels.shape)
+                y_test = np.zeros(labels.shape)
 
-            seed = 123
-            np.random.seed(seed)
-            torch.random.manual_seed(seed)
+                idx_train = np.array([i for i in range(len(labels)) if i not in idx_test])
 
-            adj = pkl.load(open(f"{phagcninput_pth}/contig.graph", 'rb'))
-            labels = pkl.load(open(f"{phagcninput_pth}/contig.label", 'rb'))
-            features = pkl.load(open(f"{phagcninput_pth}/contig.feature", 'rb'))
-            test_to_id = pkl.load(open(f"{phagcninput_pth}/contig.dict", 'rb'))
-            idx_test = pkl.load(open(f"{phagcninput_pth}/contig.mask", 'rb'))
+                train_mask = sample_mask(idx_train, labels.shape[0])
+                test_mask = sample_mask(idx_test, labels.shape[0])
 
-            idx_test = np.array(idx_test)
-            labels = np.array(labels)
+                y_train[train_mask] = labels[train_mask]
+                y_test[test_mask] = labels[test_mask]
 
-            y_train = np.zeros(labels.shape)
-            y_test = np.zeros(labels.shape)
+                features = scipy.sparse.csc_matrix(features)
 
-            idx_train = np.array([i for i in range(len(labels)) if i not in idx_test])
+                print('adj:', adj.shape)
+                print('features:', features.shape)
+                print('y:', y_train.shape, y_test.shape)  # y_val.shape,
+                print('mask:', train_mask.shape, test_mask.shape)  # val_mask.shape
 
-            train_mask = sample_mask(idx_train, labels.shape[0])
-            test_mask = sample_mask(idx_test, labels.shape[0])
+                features = preprocess_features(features)  # [49216, 2], [49216], [2708, 1433]
+                supports = preprocess_adj(adj)
 
-            y_train[train_mask] = labels[train_mask]
-            y_test[test_mask] = labels[test_mask]
+                train_label = torch.from_numpy(y_train).long().to(device)
+                num_classes = max(labels) + 1
+                train_mask = torch.from_numpy(train_mask.astype(np.bool)).to(device)
+                test_label = torch.from_numpy(y_test).long().to(device)
+                test_mask = torch.from_numpy(test_mask.astype(np.bool)).to(device)
 
-            features = scipy.sparse.csc_matrix(features)
+                i = torch.from_numpy(features[0]).long().to(device)
+                v = torch.from_numpy(features[1]).to(device)
+                feature = torch.sparse.FloatTensor(i.t(), v, features[2]).float().to(device)
 
-            print('adj:', adj.shape)
-            print('features:', features.shape)
-            print('y:', y_train.shape, y_test.shape)  # y_val.shape,
-            print('mask:', train_mask.shape, test_mask.shape)  # val_mask.shape
+                i = torch.from_numpy(supports[0]).long().to(device)
+                v = torch.from_numpy(supports[1]).to(device)
+                support = torch.sparse.FloatTensor(i.t(), v, supports[2]).float().to(device)
 
-            features = preprocess_features(features)  # [49216, 2], [49216], [2708, 1433]
-            supports = preprocess_adj(adj)
+                print('x :', feature)
+                print('sp:', support)
+                num_features_nonzero = feature._nnz()
+                feat_dim = feature.shape[1]
 
-            train_label = torch.from_numpy(y_train).long().to(device)
-            num_classes = max(labels) + 1
-            train_mask = torch.from_numpy(train_mask.astype(np.bool)).to(device)
-            test_label = torch.from_numpy(y_test).long().to(device)
-            test_mask = torch.from_numpy(test_mask.astype(np.bool)).to(device)
+                net = GCN(feat_dim, num_classes, num_features_nonzero)
+                net.to(device)
+                optimizer = optim.Adam(net.parameters(), lr=0.01)  # args.learning_rate
 
-            i = torch.from_numpy(features[0]).long().to(device)
-            v = torch.from_numpy(features[1]).to(device)
-            feature = torch.sparse.FloatTensor(i.t(), v, features[2]).float().to(device)
-
-            i = torch.from_numpy(supports[0]).long().to(device)
-            v = torch.from_numpy(supports[1]).to(device)
-            support = torch.sparse.FloatTensor(i.t(), v, supports[2]).float().to(device)
-
-            print('x :', feature)
-            print('sp:', support)
-            num_features_nonzero = feature._nnz()
-            feat_dim = feature.shape[1]
-
-            net = GCN(feat_dim, num_classes, num_features_nonzero)
-            net.to(device)
-            optimizer = optim.Adam(net.parameters(), lr=0.01)  # args.learning_rate
-
-            _ = net.train()
-            for epoch in range(400):
-                # forward pass
-                out = net((feature, support))
-                loss = masked_loss(out, train_label, train_mask)
-                loss += 5e-4 * net.l2_loss()
-                # backward pass
-                optimizer.zero_grad()
-                loss.backward()
-                optimizer.step()
-                # output
-                if epoch % 10 == 0:
-                    # calculating the acc
-                    _ = net.eval()
-                    out = net((feature, support))
-                    acc_train = phagcn_accuracy(out.detach().cpu().numpy(), train_mask.detach().cpu().numpy(),
-                                                labels)
-                    print(epoch, loss.item(), acc_train)
-                    if acc_train > 0.98:
-                        break
                 _ = net.train()
+                for epoch in range(400):
+                    # forward pass
+                    out = net((feature, support))
+                    loss = masked_loss(out, train_label, train_mask)
+                    loss += 5e-4 * net.l2_loss()
+                    # backward pass
+                    optimizer.zero_grad()
+                    loss.backward()
+                    optimizer.step()
+                    # output
+                    if epoch % 10 == 0:
+                        # calculating the acc
+                        _ = net.eval()
+                        out = net((feature, support))
+                        acc_train = phagcn_accuracy(out.detach().cpu().numpy(), train_mask.detach().cpu().numpy(),
+                                                    labels)
+                        print(epoch, loss.item(), acc_train)
+                        if acc_train > 0.98:
+                            break
+                    _ = net.train()
 
-            net.eval()
-            out = net((feature, support))
-            out = F.softmax(out, dim=1)
-            out = out.cpu().detach().numpy()
+                net.eval()
+                out = net((feature, support))
+                out = F.softmax(out, dim=1)
+                out = out.cpu().detach().numpy()
 
-            pred = np.argmax(out, axis=1)
-            score = np.max(out, axis=1)
+                pred = np.argmax(out, axis=1)
+                score = np.max(out, axis=1)
 
-            pred_to_label = {0: 'Autographiviridae', 1: 'Straboviridae', 2: 'Herelleviridae',
-                             3: 'Drexlerviridae',
-                             4: 'Demerecviridae', 5: 'Peduoviridae', 6: 'Casjensviridae', 7: 'Schitoviridae',
-                             8: 'Kyanoviridae', 9: 'Ackermannviridae', 10: 'Rountreeviridae',
-                             11: 'Salasmaviridae',
-                             12: 'Vilmaviridae', 13: 'Zierdtviridae', 14: 'Mesyanzhinovviridae',
-                             15: 'Chaseviridae',
-                             16: 'Zobellviridae', 17: 'Orlajensenviridae', 18: 'Guelinviridae',
-                             19: 'Steigviridae',
-                             20: 'Duneviridae', 21: 'Pachyviridae', 22: 'Winoviridae', 23: 'Assiduviridae',
-                             24: 'Suoliviridae', 25: 'Naomviridae', 26: 'Intestiviridae', 27: 'Crevaviridae',
-                             28: 'Pervagoviridae'}
+                pred_to_label = {0: 'Autographiviridae', 1: 'Straboviridae', 2: 'Herelleviridae',
+                                 3: 'Drexlerviridae',
+                                 4: 'Demerecviridae', 5: 'Peduoviridae', 6: 'Casjensviridae', 7: 'Schitoviridae',
+                                 8: 'Kyanoviridae', 9: 'Ackermannviridae', 10: 'Rountreeviridae',
+                                 11: 'Salasmaviridae',
+                                 12: 'Vilmaviridae', 13: 'Zierdtviridae', 14: 'Mesyanzhinovviridae',
+                                 15: 'Chaseviridae',
+                                 16: 'Zobellviridae', 17: 'Orlajensenviridae', 18: 'Guelinviridae',
+                                 19: 'Steigviridae',
+                                 20: 'Duneviridae', 21: 'Pachyviridae', 22: 'Winoviridae', 23: 'Assiduviridae',
+                                 24: 'Suoliviridae', 25: 'Naomviridae', 26: 'Intestiviridae', 27: 'Crevaviridae',
+                                 28: 'Pervagoviridae'}
 
-            with open(f'{midfolder}/phagcn_mid_prediction.csv', 'w') as f_out:
-                _ = f_out.write("Contig,Pred,Score\n")
-                for key in test_to_id.keys():
-                    if labels[test_to_id[key]] == -1:
-                        _ = f_out.write(str(key) + "," + str(pred_to_label[pred[test_to_id[key]]]) + "," + str(
-                            score[test_to_id[key]]) + "\n")
+                with open(f'{midfolder}/phagcn_mid_prediction.csv', 'w') as f_out:
+                    _ = f_out.write("Contig,Pred,Score\n")
+                    for key in test_to_id.keys():
+                        if labels[test_to_id[key]] == -1:
+                            _ = f_out.write(str(key) + "," + str(pred_to_label[pred[test_to_id[key]]]) + "," + str(
+                                score[test_to_id[key]]) + "\n")
+                        else:
+                            _ = f_out.write(
+                                str(key) + "," + str(pred_to_label[labels[test_to_id[key]]]) + "," + str(1) + "\n")
+
+                name_list = pd.read_csv(f"{midfolder}/phagcn_name_list.csv")
+                prediction = pd.read_csv(f'{midfolder}/phagcn_mid_prediction.csv')
+                prediction = prediction.rename(columns={'Contig': 'idx'})
+                contig_to_pred = pd.merge(name_list, prediction, on='idx')
+                contig_to_pred = contig_to_pred.rename(columns={'Contig': 'Accession'})
+                # contig_to_pred = contig_to_pred.drop(columns=['idx'])
+                contig_to_pred.to_csv(f"{midfolder}/phagcn_prediction.csv",
+                                      index=None)
+
+                # add no prediction (Nov. 13th)
+                all_Contigs = contig_to_pred['Accession'].values
+                all_Pred = contig_to_pred['Pred'].values
+                all_Score = contig_to_pred['Score'].values
+
+                phage_contig = []
+                filtered_contig = []
+                length_dict = {}
+                seq_dict = {}
+                for record in SeqIO.parse(f'{contigs}', 'fasta'):
+                    length_dict[record.id] = len(record.seq)
+                    seq_dict[record.id] = str(record.seq)
+                    if len(record.seq) < int(length_len):
+                        filtered_contig.append(record.id)
                     else:
-                        _ = f_out.write(
-                            str(key) + "," + str(pred_to_label[labels[test_to_id[key]]]) + "," + str(1) + "\n")
+                        phage_contig.append(record.id)
 
-            name_list = pd.read_csv(f"{midfolder}/phagcn_name_list.csv")
-            prediction = pd.read_csv(f'{midfolder}/phagcn_mid_prediction.csv')
-            prediction = prediction.rename(columns={'Contig': 'idx'})
-            contig_to_pred = pd.merge(name_list, prediction, on='idx')
-            contig_to_pred = contig_to_pred.rename(columns={'Contig': 'Accession'})
-            # contig_to_pred = contig_to_pred.drop(columns=['idx'])
-            contig_to_pred.to_csv(f"{midfolder}/phagcn_prediction.csv",
-                                  index=None)
+                # for unpredicted contigs
+                unpredict_contig = []
+                unnamed_family = []
+                for contig in phage_contig:
+                    if contig not in all_Contigs:
+                        if contig in check_unknown_all:
+                            unnamed_family.append(contig)
+                        else:
+                            unpredict_contig.append(contig)
 
-            # add no prediction (Nov. 13th)
-            all_Contigs = contig_to_pred['Accession'].values
-            all_Pred = contig_to_pred['Pred'].values
-            all_Score = contig_to_pred['Score'].values
+                unnamed_pred = np.array([check_unknown_all[item] for item in unnamed_family])
+                unnamed_pred = np.array([f'no_family_avaliable({item})' for item in unnamed_pred])
+                unnamed_score = np.array([check_unknown_all_score[item] for item in unnamed_family])
 
-            phage_contig = []
-            filtered_contig = []
-            length_dict = {}
-            seq_dict = {}
-            for record in SeqIO.parse(f'{contigs}', 'fasta'):
-                length_dict[record.id] = len(record.seq)
-                seq_dict[record.id] = str(record.seq)
-                if len(record.seq) < int(length_len):
-                    filtered_contig.append(record.id)
-                else:
-                    phage_contig.append(record.id)
+                all_Contigs = np.concatenate(
+                    (all_Contigs, np.array(unnamed_family), np.array(filtered_contig), np.array(unpredict_contig)))
+                all_Pred = np.concatenate((all_Pred, unnamed_pred, np.array(['filtered'] * len(filtered_contig)),
+                                           np.array(['unknown'] * len(unpredict_contig))))
+                all_Score = np.concatenate(
+                    (all_Score, unnamed_score, np.array([0] * len(filtered_contig)),
+                     np.array([0] * len(unpredict_contig))))
+                all_Length = [length_dict[item] for item in all_Contigs]
+                all_Pie = np.concatenate(
+                    (contig_to_pred['Pred'].values, np.array(['unnamed_family'] * len(unnamed_family)),
+                     np.array(['filtered'] * len(filtered_contig)),
+                     np.array(['unknown'] * len(unpredict_contig))))
 
-            # for unpredicted contigs
-            unpredict_contig = []
-            unnamed_family = []
-            for contig in phage_contig:
-                if contig not in all_Contigs:
-                    if contig in check_unknown_all:
-                        unnamed_family.append(contig)
-                    else:
-                        unpredict_contig.append(contig)
+                contig_to_pred = pd.DataFrame(
+                    {'Accession': all_Contigs, 'Length': all_Length, 'Pred': all_Pred, 'Score': all_Score})
 
-            unnamed_pred = np.array([check_unknown_all[item] for item in unnamed_family])
-            unnamed_pred = np.array([f'no_family_avaliable({item})' for item in unnamed_pred])
-            unnamed_score = np.array([check_unknown_all_score[item] for item in unnamed_family])
+                contig_to_pred.to_csv(out_pred, index=None)
 
-            all_Contigs = np.concatenate(
-                (all_Contigs, np.array(unnamed_family), np.array(filtered_contig), np.array(unpredict_contig)))
-            all_Pred = np.concatenate((all_Pred, unnamed_pred, np.array(['filtered'] * len(filtered_contig)),
-                                       np.array(['unknown'] * len(unpredict_contig))))
-            all_Score = np.concatenate(
-                (all_Score, unnamed_score, np.array([0] * len(filtered_contig)),
-                 np.array([0] * len(unpredict_contig))))
-            all_Length = [length_dict[item] for item in all_Contigs]
-            all_Pie = np.concatenate(
-                (contig_to_pred['Pred'].values, np.array(['unnamed_family'] * len(unnamed_family)),
-                 np.array(['filtered'] * len(filtered_contig)),
-                 np.array(['unknown'] * len(unpredict_contig))))
+                self.trigger.emit('Finished!!!' + '\n' + 'phagcn_prediction.csv is your result!!!')
 
-            contig_to_pred = pd.DataFrame(
-                {'Accession': all_Contigs, 'Length': all_Length, 'Pred': all_Pred, 'Score': all_Score})
-
-            contig_to_pred.to_csv(out_pred, index=None)
-
-            self.trigger.emit('Finished!!!' + '\n' + 'phagcn_prediction.csv is your result!!!')
-
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 class PhaGCN_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)

@@ -18,7 +18,6 @@ from Bio import SeqIO
 import psutil
 
 
-
 class WorkThread(QThread):
     # 自定义信号对象
     trigger = pyqtSignal(str)
@@ -33,28 +32,30 @@ class WorkThread(QThread):
                 if process.info['name'] == process_name:
                     return True
             return False
+        try:
+            path = os.path.abspath('.')
+            if '\\' in path:
+                path = path.strip().split('\\')
+                path = '/'.join(path)
 
-        path = os.path.abspath('.')
-        if '\\' in path:
-            path = path.strip().split('\\')
-            path = '/'.join(path)
+            os.popen(path + r"/tools/aragorn/aragorn.exe -v -e -s -d -c -l -j -a -q -t -mt -o %s %s"
+                     % (out, fasta))
+            time.sleep(3)
+            process_name = 'aragorn.exe'
 
-        os.popen(path + r"/tools/aragorn/aragorn.exe -v -e -s -d -c -l -j -a -q -t -mt -o %s %s"
-                 % (out, fasta))
-        time.sleep(3)
-        process_name = 'aragorn.exe'
+            while True:  # 判断 iqtree.exe 是否运行完成
+                if check_process_running(process_name):
+                    print(f"The process {process_name} is running.")
+                    time.sleep(10)
+                    continue
+                else:
+                    print(f"The process {process_name} is not running.")
+                    break
 
-        while True:  # 判断 iqtree.exe 是否运行完成
-            if check_process_running(process_name):
-                print(f"The process {process_name} is running.")
-                time.sleep(10)
-                continue
-            else:
-                print(f"The process {process_name} is not running.")
-                break
+            self.trigger.emit('Finished!!!')
 
-        self.trigger.emit('Finished!!!')
-
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 class ARAGORN_Form(QWidget):
     def __init__(self, parent=None):
@@ -192,36 +193,24 @@ class ARAGORN_Form(QWidget):
         self.gridLayout_3 = QtWidgets.QGridLayout()
         self.gridLayout_3.setObjectName("gridLayout_3")
         self.label_4 = QtWidgets.QLabel(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
         self.label_4.setSizePolicy(sizePolicy)
+        self.label_4.setMaximumSize(QtCore.QSize(16777215, 35))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
         self.label_4.setFont(font)
         self.label_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label_4.setObjectName("label_4")
-        self.gridLayout_3.addWidget(self.label_4, 1, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.label_4, 0, 0, 1, 1)
         self.textBrowser = QtWidgets.QTextBrowser(Form)
         self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser.setObjectName("textBrowser")
-        self.gridLayout_3.addWidget(self.textBrowser, 2, 0, 1, 1)
-        self.label_5 = QtWidgets.QLabel(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
-        self.label_5.setSizePolicy(sizePolicy)
-        self.label_5.setText("")
-        self.label_5.setPixmap(QtGui.QPixmap("./logo/background_page.png"))
-        self.label_5.setScaledContents(True)
-        self.label_5.setObjectName("label_5")
-        self.gridLayout_3.addWidget(self.label_5, 0, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.textBrowser, 1, 0, 1, 1)
         self.gridLayout_3.setRowStretch(0, 5)
-        self.gridLayout_3.setRowStretch(1, 1)
-        self.gridLayout_3.setRowStretch(2, 2)
         self.gridLayout_6.addLayout(self.gridLayout_3, 1, 2, 2, 2)
 
         self.retranslateUi(Form)

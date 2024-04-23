@@ -33,31 +33,35 @@ class WorkThread(QThread):
                     return True
             return False
 
-        if type == 'A':
-            os.popen(r".\tools\iqtree\bin\iqtree.exe -s %s -pre %s -redo -m MFP -b %s"
-                     % (fasta, out, bootstrap))
-        elif type == 'B':
-            os.popen(r".\tools\iqtree\bin\iqtree.exe -s %s -pre %s -redo -m MF -b %s"
-                     % (fasta, out, bootstrap))
-        elif type == 'C':
-            os.popen(r".\tools\iqtree\bin\iqtree.exe -s %s -pre %s -redo -m TIM2+I+G -b %s"
-                     % (fasta, out, bootstrap))
-        elif type == 'D':
-            os.popen(r".\tools\iqtree\bin\iqtree.exe -s %s -pre %s -redo"
-                     % (fasta, out))
+        try:
+            if type == 'A':
+                os.popen(r".\tools\iqtree\bin\iqtree.exe -s %s -pre %s -redo -m MFP -b %s"
+                         % (fasta, out, bootstrap))
+            elif type == 'B':
+                os.popen(r".\tools\iqtree\bin\iqtree.exe -s %s -pre %s -redo -m MF -b %s"
+                         % (fasta, out, bootstrap))
+            elif type == 'C':
+                os.popen(r".\tools\iqtree\bin\iqtree.exe -s %s -pre %s -redo -m TIM2+I+G -b %s"
+                         % (fasta, out, bootstrap))
+            elif type == 'D':
+                os.popen(r".\tools\iqtree\bin\iqtree.exe -s %s -pre %s -redo"
+                         % (fasta, out))
 
-        process_name = 'iqtree.exe'
-        time.sleep(5)
-        while True:  # 判断 iqtree.exe 是否运行完成
-            if check_process_running(process_name):
-                print(f"The process {process_name} is running.")
-                time.sleep(30)
-                continue
-            else:
-                print(f"The process {process_name} is not running.")
-                break
+            process_name = 'iqtree.exe'
+            time.sleep(5)
+            while True:  # 判断 iqtree.exe 是否运行完成
+                if check_process_running(process_name):
+                    print(f"The process {process_name} is running.")
+                    time.sleep(30)
+                    continue
+                else:
+                    print(f"The process {process_name} is not running.")
+                    break
 
-        self.trigger.emit('Finished!!!')
+            self.trigger.emit('Finished!!!')
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 class IQtree_Form(QWidget):
     def __init__(self, parent=None):
@@ -295,7 +299,7 @@ class IQtree_Form(QWidget):
         self.pushButton_2.setText(_translate("Form", "Choose"))
         self.label_5.setText(_translate("Form", "Bootstroop value"))
         self.label_2.setText(_translate("Form", "Input fasta file"))
-        self.label_3.setText(_translate("Form", "Output fasta file"))
+        self.label_3.setText(_translate("Form", "Output tree file"))
         self.label.setText(_translate("Form", "IQtree"))
         self.pushButton_3.setText(_translate("Form", "Choose"))
         self.pushButton.setText(_translate("Form", "Run"))

@@ -27,48 +27,52 @@ class WorkThread(QThread):
         super(WorkThread, self).__init__()
 
     def run(self):
-        def check_process_running(process_name):  # 检查进程是否运行
-            for process in psutil.process_iter(['name']):
-                if process.info['name'] == process_name:
-                    return True
-            return False
+        try:
+            def check_process_running(process_name):  # 检查进程是否运行
+                for process in psutil.process_iter(['name']):
+                    if process.info['name'] == process_name:
+                        return True
+                return False
 
-        if type == 'A':
-            os.popen(r".\tools\prodigal\prodigal.exe -f gff -g %s -o %s -p single -i %s"
-                     % (coden, out, fasta))
+            if type == 'A':
+                os.popen(r".\tools\prodigal\prodigal.exe -f gff -g %s -o %s -p single -i %s"
+                         % (coden, out, fasta))
 
-        elif type == 'B':
-            os.popen(r".\tools\prodigal\prodigal.exe -f gbk -g %s -o %s -p single -i %s"
-                     % (coden, out, fasta))
+            elif type == 'B':
+                os.popen(r".\tools\prodigal\prodigal.exe -f gbk -g %s -o %s -p single -i %s"
+                         % (coden, out, fasta))
 
-        elif type == 'C':
-            os.popen(r".\tools\prodigal\prodigal.exe -f sco -g %s -o %s -p single -i %s"
-                     % (coden, out, fasta))
+            elif type == 'C':
+                os.popen(r".\tools\prodigal\prodigal.exe -f sco -g %s -o %s -p single -i %s"
+                         % (coden, out, fasta))
 
-        elif type == 'D':
-            os.popen(r".\tools\prodigal\prodigal.exe -f gff -g %s -o %s -p meta -i %s"
-                     % (coden, out, fasta))
+            elif type == 'D':
+                os.popen(r".\tools\prodigal\prodigal.exe -f gff -g %s -o %s -p meta -i %s"
+                         % (coden, out, fasta))
 
-        elif type == 'E':
-            os.popen(r".\tools\prodigal\prodigal.exe -f gbk -g %s -o %s -p meta -i %s"
-                     % (coden, out, fasta))
+            elif type == 'E':
+                os.popen(r".\tools\prodigal\prodigal.exe -f gbk -g %s -o %s -p meta -i %s"
+                         % (coden, out, fasta))
 
-        elif type == 'F':
-            os.popen(r".\tools\prodigal\prodigal.exe -f sco -g %s -o %s -p meta -i %s"
-                     % (coden, out, fasta))
+            elif type == 'F':
+                os.popen(r".\tools\prodigal\prodigal.exe -f sco -g %s -o %s -p meta -i %s"
+                         % (coden, out, fasta))
 
-        process_name = 'prodigal.exe'
-        time.sleep(5)
-        while True:  # 判断 iqtree.exe 是否运行完成
-            if check_process_running(process_name):
-                print(f"The process {process_name} is running.")
-                time.sleep(30)
-                continue
-            else:
-                print(f"The process {process_name} is not running.")
-                break
+            process_name = 'prodigal.exe'
+            time.sleep(5)
+            while True:  # 判断 iqtree.exe 是否运行完成
+                if check_process_running(process_name):
+                    print(f"The process {process_name} is running.")
+                    time.sleep(30)
+                    continue
+                else:
+                    print(f"The process {process_name} is not running.")
+                    break
 
-        self.trigger.emit('Finished!!!')
+            self.trigger.emit('Finished!!!')
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 class Prodigal_Form(QWidget):
     def __init__(self, parent=None):

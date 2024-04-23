@@ -29,66 +29,70 @@ class WorkThread(QThread):
         super(WorkThread, self).__init__()
 
     def run(self):
-        global out
+        try:
+            global out
 
-        def check_process_running(process_name):  # 检查进程是否运行
-            for process in psutil.process_iter(['name']):
-                if process.info['name'] == process_name:
-                    return True
-            return False
+            def check_process_running(process_name):  # 检查进程是否运行
+                for process in psutil.process_iter(['name']):
+                    if process.info['name'] == process_name:
+                        return True
+                return False
 
-        os.popen(r".\perl\bin\perl.exe .\perl\format.pl %s none > %s"
-                 % (fasta, path + '/tmp.txt'))
-        time.sleep(3)
-        process_name = 'perl.exe'
-        while True:  # 判断 perl.exe 是否运行完成
-            if check_process_running(process_name):
-                print(f"The process {process_name} is running.")
-                time.sleep(10)
-                continue
-            else:
-                print(f"The process {process_name} is not running.")
-                break
-
-        model = load_model('./models/Activity/lstm.h5')
-        x = loadtxt(path + '/tmp.txt', delimiter=",")
-        preds = model.predict(x)
-        savetxt(path + '/tmpActivity.txt', preds, fmt="%.8f", delimiter=",")
-
-        with open(fasta) as fa:
-            fa_dict = {}
-            for line in fa:
-                line = line.replace('\n', '')
-                if line.startswith('>'):
-                    seq_name = line[1:]
-                    fa_dict[seq_name] = ''
+            os.popen(r".\perl\bin\perl.exe .\perl\format.pl %s none > %s"
+                     % (fasta, path + '/tmp.txt'))
+            time.sleep(3)
+            process_name = 'perl.exe'
+            while True:  # 判断 perl.exe 是否运行完成
+                if check_process_running(process_name):
+                    print(f"The process {process_name} is running.")
+                    time.sleep(10)
+                    continue
                 else:
-                    fa_dict[seq_name] += line.replace('\n', '')
-        fa.close()
+                    print(f"The process {process_name} is not running.")
+                    break
 
-        lis = []
-        with open(path + '/tmpActivity.txt') as ac:
-            for i in ac:
-                i = i.replace('\n', '')
-                lis.append(i)
-        ac.close()
+            model = load_model('./models/Activity/lstm.h5')
+            x = loadtxt(path + '/tmp.txt', delimiter=",")
+            preds = model.predict(x)
+            savetxt(path + '/tmpActivity.txt', preds, fmt="%.8f", delimiter=",")
 
-        for i_1 in range(0, len(lis)):
-            key = list(fa_dict.keys())[i_1]
-            val = [fa_dict.get(key, [])] + [lis[i_1]]
-            fa_dict[key] = val
+            with open(fasta) as fa:
+                fa_dict = {}
+                for line in fa:
+                    line = line.replace('\n', '')
+                    if line.startswith('>'):
+                        seq_name = line[1:]
+                        fa_dict[seq_name] = ''
+                    else:
+                        fa_dict[seq_name] += line.replace('\n', '')
+            fa.close()
 
-        with open(out, 'w') as f:
-            for key in fa_dict:
-                lines = key + '\t' + fa_dict[key][0] + '\t' + fa_dict[key][1] + '\n'
-                print(lines)
-                f.write(lines)
-        f.close()
+            lis = []
+            with open(path + '/tmpActivity.txt') as ac:
+                for i in ac:
+                    i = i.replace('\n', '')
+                    lis.append(i)
+            ac.close()
 
-        os.remove(path + '/tmp.txt')
-        os.remove(path + '/tmpActivity.txt')
+            for i_1 in range(0, len(lis)):
+                key = list(fa_dict.keys())[i_1]
+                val = [fa_dict.get(key, [])] + [lis[i_1]]
+                fa_dict[key] = val
 
-        self.trigger.emit('Finished!!!')
+            with open(out, 'w') as f:
+                for key in fa_dict:
+                    lines = key + '\t' + fa_dict[key][0] + '\t' + fa_dict[key][1] + '\n'
+                    print(lines)
+                    f.write(lines)
+            f.close()
+
+            os.remove(path + '/tmp.txt')
+            os.remove(path + '/tmpActivity.txt')
+
+            self.trigger.emit('Finished!!!')
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 
 class Peptides_Form(QWidget):

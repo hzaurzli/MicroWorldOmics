@@ -31,15 +31,19 @@ class WorkThread(QThread):
         super(WorkThread, self).__init__()
 
     def run(self):
-        myobj = subprocess.Popen(r".\tools\clinker\clinker.exe %s -o %s -p %s" %
-                                 (gbk_path,
-                                  out,
-                                  html))
+        try:
+            myobj = subprocess.Popen(r".\tools\clinker\clinker.exe %s -o %s -p %s" %
+                                     (gbk_path,
+                                      out,
+                                      html))
 
-        myobj.communicate()
-        time.sleep(3)
+            myobj.communicate()
+            time.sleep(10)
 
-        self.trigger.emit('Finished!!!')
+            self.trigger.emit('Finished!!!')
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 class Clinker_Form(QWidget):
     def __init__(self, parent=None):

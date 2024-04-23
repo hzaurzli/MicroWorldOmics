@@ -28,74 +28,78 @@ class WorkThread(QThread):
         super(WorkThread, self).__init__()
 
     def run(self):
-        def check_process_running(process_name):  # 检查进程是否运行
-            for process in psutil.process_iter(['name']):
-                if process.info['name'] == process_name:
-                    return True
-            return False
+        try:
+            def check_process_running(process_name):  # 检查进程是否运行
+                for process in psutil.process_iter(['name']):
+                    if process.info['name'] == process_name:
+                        return True
+                return False
 
-        if type == 'A':
-            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m ASC_GTRCAT"
-                     % (fasta, bootstrap))
+            if type == 'A':
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m ASC_GTRCAT"
+                         % (fasta, bootstrap))
 
-        elif type == 'B':
-            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRGAMMAI"
-                     % (fasta, bootstrap))
+            elif type == 'B':
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRGAMMAI"
+                         % (fasta, bootstrap))
 
-        elif type == 'C':
-            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRGAMMA"
-                     % (fasta, bootstrap))
+            elif type == 'C':
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRGAMMA"
+                         % (fasta, bootstrap))
 
-        elif type == 'D':
-            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRCAT"
-                     % (fasta, bootstrap))
+            elif type == 'D':
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRCAT"
+                         % (fasta, bootstrap))
 
-        elif type == 'E':
-            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRCATI"
-                     % (fasta, bootstrap))
+            elif type == 'E':
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRCATI"
+                         % (fasta, bootstrap))
 
-        elif type == 'F':
-            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m ASC_GTRGAMMA"
-                     % (fasta, bootstrap))
+            elif type == 'F':
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m ASC_GTRGAMMA"
+                         % (fasta, bootstrap))
 
-        elif type == 'G':
-            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGAMMALGF"
-                     % (fasta, bootstrap))
+            elif type == 'G':
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGAMMALGF"
+                         % (fasta, bootstrap))
 
-        elif type == 'H':
-            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGAMMAILGX"
-                     % (fasta, bootstrap))
+            elif type == 'H':
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGAMMAILGX"
+                         % (fasta, bootstrap))
 
-        elif type == 'I':
-            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGTRGAMMA"
-                     % (fasta, bootstrap))
+            elif type == 'I':
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGTRGAMMA"
+                         % (fasta, bootstrap))
 
-        elif type == 'J':
-            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m  PROTGAMMAAUTO"
-                     % (fasta, bootstrap))
+            elif type == 'J':
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m  PROTGAMMAAUTO"
+                         % (fasta, bootstrap))
 
-        elif type == 'K':
-            os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m  PROTGAMMAWAG"
-                     % (fasta, bootstrap))
+            elif type == 'K':
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m  PROTGAMMAWAG"
+                         % (fasta, bootstrap))
 
-        process_name = 'raxmlHPC.exe'
-        time.sleep(5)
-        while True:  # 判断 iqtree.exe 是否运行完成
-            if check_process_running(process_name):
-                print(f"The process {process_name} is running.")
-                time.sleep(30)
-                continue
-            else:
-                print(f"The process {process_name} is not running.")
-                relevant_path = "."
-                included_extensions = ['ex']
-                file_names = [fn for fn in os.listdir(relevant_path)
-                              if any(fn.endswith(ext) for ext in included_extensions)]
-                for i in file_names:
-                    shutil.move(i, path)
-                break
+            process_name = 'raxmlHPC.exe'
+            time.sleep(5)
+            while True:  # 判断 iqtree.exe 是否运行完成
+                if check_process_running(process_name):
+                    print(f"The process {process_name} is running.")
+                    time.sleep(30)
+                    continue
+                else:
+                    print(f"The process {process_name} is not running.")
+                    relevant_path = "."
+                    included_extensions = ['ex']
+                    file_names = [fn for fn in os.listdir(relevant_path)
+                                  if any(fn.endswith(ext) for ext in included_extensions)]
+                    for i in file_names:
+                        shutil.move(i, path)
+                    break
 
-        self.trigger.emit('Finished!!!')
+            self.trigger.emit('Finished!!!')
+
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 
 class Raxml_Form(QWidget):
     def __init__(self, parent=None):
@@ -429,7 +433,7 @@ class Raxml_Form(QWidget):
         self.radioButton_6.setText(_translate("Form", "ASC_GTRGAMMA"))
         self.label_8.setText(_translate("Form", "Models of amino acids substitution"))
         self.label_2.setText(_translate("Form", "Input fasta file"))
-        self.label_3.setText(_translate("Form", "Output fasta file"))
+        self.label_3.setText(_translate("Form", "Output tree file"))
         self.label.setText(_translate("Form", "RaxmlHPC"))
         self.pushButton_3.setText(_translate("Form", "Choose"))
         self.label_4.setText(_translate("Form", "Status"))
