@@ -27,23 +27,26 @@ class WorkThread(QThread):
         super(WorkThread, self).__init__()
 
     def run(self):
-        makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
-                                            dbtype='nucl',
-                                            input_file=ref,
-                                            out=blastdb)
-        makedb()
+        try:
+            makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
+                                                dbtype='nucl',
+                                                input_file=ref,
+                                                out=blastdb)
+            makedb()
 
-        tblastn = NcbitblastnCommandline(path + "/blast-BLAST_VERSION+/bin/tblastn.exe",
-                                         query=query,
-                                         db=blastdb,
-                                         outfmt=format,
-                                         evalue=float(evalue),
-                                         out=out)
+            tblastn = NcbitblastnCommandline(path + "/blast-BLAST_VERSION+/bin/tblastn.exe",
+                                             query=query,
+                                             db=blastdb,
+                                             outfmt=format,
+                                             evalue=float(evalue),
+                                             out=out)
 
-        tblastn()
+            tblastn()
 
-        self.trigger.emit('Finished!!!')
+            self.trigger.emit('Finished!!!')
 
+        except:
+            self.trigger.emit('Some errors have occurred,please check your input format!')
 class tBlastN_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
