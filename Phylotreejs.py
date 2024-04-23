@@ -92,14 +92,20 @@ class Phylotreejs_Form(QWidget):
         content = self.textBrowser_2.toPlainText()
         content = content.strip()
         print(content)
-        self.winTable = MainWindow(content)
-        self.winTable.show()
+        if content == '':
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Please add correct path!")
+        else:
+            self.winTable = MainWindow(content)
+            self.winTable.show()
 
 
 class MainWindow(QMainWindow):
     def __init__(self, content):
         super().__init__()
         self.setWindowTitle('Phylotree')
+        self.setWindowIcon(QIcon("./logo/logo.ico"))
         self.showMaximized()
 
         self.path_1 = os.path.abspath('.')

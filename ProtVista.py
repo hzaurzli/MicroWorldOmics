@@ -45,6 +45,7 @@ class Protvista_Form(QWidget):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(551, 407)
+        Form.setWindowIcon(QIcon("./logo/logo.ico"))
         Form.setStyleSheet("background-image: url(./logo/green_back.png);")
         self.gridLayout_2 = QtWidgets.QGridLayout(Form)
         self.gridLayout_2.setObjectName("gridLayout_2")
@@ -135,10 +136,15 @@ class Protvista_Form(QWidget):
                 content_final = path + 'external_P05067.json'
 
             print(content_final)
-            self.winTable = MainWindow(content_final)
-            self.winTable.show()
+            if content_final == '':
+                w = QWidget()
+                QMessageBox.critical(w, "error",
+                                     "Please add correct path!")
+            else:
+                self.winTable = MainWindow(content_final)
+                self.winTable.show()
         else:
-            QMessageBox.critical(self, "error", "Please check format(suffix:json or JSON)!")
+            QMessageBox.critical(self, "error", "Please check format(suffix: json or JSON)!")
 
 
 class MainWindow(QMainWindow):

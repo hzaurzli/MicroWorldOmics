@@ -91,8 +91,14 @@ class GCview_Form(QWidget):
         content = self.textBrowser_2.toPlainText()
         content = content.strip()
         print(content)
-        self.winTable = GCviewWeb_Form(content)
-        self.winTable.show()
+        if content == '':
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Please add correct path!")
+        else:
+            self.winTable = GCviewWeb_Form(content)
+            self.winTable.show()
+
 
 
 if __name__ == "__main__":
