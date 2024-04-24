@@ -467,7 +467,7 @@ class PhaMer_Form(QWidget):
         self.pushButton_2.setText(_translate("Form", "Choose"))
         self.label_7.setText(_translate("Form", "Threshold to reject prophage"))
         self.label_5.setText(_translate("Form", "Contig length"))
-        self.label_3.setText(_translate("Form", "Output fasta file"))
+        self.label_3.setText(_translate("Form", "Output folder"))
         self.pushButton_3.setText(_translate("Form", "Choose"))
         self.label_4.setText(_translate("Form", "Status"))
         self.label_6.setText(_translate("Form", "If the program is finished, click \'Table\' to display the result"))

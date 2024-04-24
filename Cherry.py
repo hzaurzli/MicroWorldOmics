@@ -1155,7 +1155,7 @@ class Cherry_Form(QWidget):
         self.label_6.setText(_translate("Form", "If the program is finished, click \'Table\' to display the result"))
         self.pushButton.setText(_translate("Form", "Run"))
         self.label.setText(_translate("Form", "Cherry"))
-        self.label_3.setText(_translate("Form", "Output fasta file"))
+        self.label_3.setText(_translate("Form", "Output folder"))
         self.pushButton_2.setText(_translate("Form", "Choose"))
         self.label_5.setText(_translate("Form", "Contig length"))
         self.pushButton_3.setText(_translate("Form", "Choose"))
