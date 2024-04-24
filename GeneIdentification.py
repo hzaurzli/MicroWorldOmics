@@ -609,6 +609,10 @@ class GeneIdentification_Form(QWidget):
         self.pushButton_4.clicked.connect(self.table_read)
         self.pushButton_5.clicked.connect(self.read_file3)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/fa_input")
+        self.textBrowser_3.setPlaceholderText("D:/output")
+        self.textBrowser_4.setPlaceholderText("D:/input/reference.fa")
         self.textEdit.setPlaceholderText(" Default: 80 (%)")
         self.textEdit_2.setPlaceholderText(" Default: 90 (%)")
         self.textEdit_3.setPlaceholderText(" Default: 90 (%)")

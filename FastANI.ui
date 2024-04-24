@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>570</width>
-    <height>371</height>
+    <width>673</width>
+    <height>526</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,12 +20,12 @@
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
      <property name="verticalSpacing">
-      <number>1</number>
+      <number>0</number>
      </property>
      <item row="8" column="0">
       <widget class="QTextBrowser" name="textBrowser_5">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -33,7 +33,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>30</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -44,7 +44,7 @@
      <item row="10" column="0">
       <widget class="QTextBrowser" name="textBrowser_6">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -52,7 +52,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>30</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -63,7 +63,7 @@
      <item row="6" column="0">
       <widget class="QTextBrowser" name="textBrowser_4">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -71,7 +71,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>30</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -82,7 +82,7 @@
      <item row="4" column="0">
       <widget class="QTextBrowser" name="textBrowser_3">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -90,7 +90,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>30</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -285,7 +285,7 @@
      <item row="2" column="0">
       <widget class="QTextBrowser" name="textBrowser_2">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -293,7 +293,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>30</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -369,7 +369,7 @@
      <item row="2" column="2">
       <widget class="QRadioButton" name="radioButton">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -377,7 +377,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>30</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="font">
@@ -397,7 +397,7 @@
      <item row="3" column="2">
       <widget class="QRadioButton" name="radioButton_2">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -405,7 +405,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>30</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="font">
@@ -425,7 +425,7 @@
      <item row="4" column="2">
       <widget class="QRadioButton" name="radioButton_3">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -433,7 +433,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>30</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="font">
@@ -453,7 +453,7 @@
      <item row="5" column="2">
       <widget class="QRadioButton" name="radioButton_4">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -461,7 +461,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>30</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="font">

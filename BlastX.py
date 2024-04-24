@@ -271,6 +271,10 @@ class BlastX_Form(QWidget):
         ## default
         self.textEdit.setPlaceholderText("E value: 0.000001")
         self.textEdit_2.setPlaceholderText("Format: 6")
+        self.textBrowser_2.setPlaceholderText("D:/input/reference.fa")
+        self.textBrowser_3.setPlaceholderText("D:/input/query.fa")
+        self.textBrowser_4.setPlaceholderText("D:/blastdb/target")
+        self.textBrowser_5.setPlaceholderText("D:/output/result.txt")
 
         ## action
         self.pushButton.clicked.connect(self.blastx)

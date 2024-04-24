@@ -241,6 +241,10 @@ class Defense_system_Form(QWidget):
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/input/test.fa")
+        self.textBrowser_3.setPlaceholderText("D:/output")
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Defense system"))

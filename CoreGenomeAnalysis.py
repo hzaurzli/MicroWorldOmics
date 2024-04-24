@@ -545,6 +545,10 @@ class Core_genome_Form(QWidget):
         self.pushButton_3.clicked.connect(self.read_file2)
         self.pushButton_4.clicked.connect(self.read_file3)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/fna_input")
+        self.textBrowser_3.setPlaceholderText("D:/output")
+        self.textBrowser_4.setPlaceholderText("D:/input/reference.fa")
         self.textEdit.setPlaceholderText(" Default: 80 (%)")
         self.textEdit_2.setPlaceholderText(" Default: 80 (%)")
 

@@ -457,6 +457,9 @@ class PhaTYP_Form(QWidget):
         self.pushButton_3.clicked.connect(self.read_file2)
         self.pushButton_4.clicked.connect(self.table_read)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/input/test.fa")
+        self.textBrowser_3.setPlaceholderText("D:/output")
         self.textEdit.setPlaceholderText(" Contig length filter: 3000")
 
     def retranslateUi(self, Form):

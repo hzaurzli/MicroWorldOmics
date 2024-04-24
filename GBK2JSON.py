@@ -231,6 +231,10 @@ class GBK2JSON_Form(QWidget):
         self.pushButton_2.clicked.connect(self.read_file1)
         self.pushButton_3.clicked.connect(self.read_file2)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/input/test.gbk")
+        self.textBrowser_3.setPlaceholderText("D:/output")
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "GBK2JSON"))

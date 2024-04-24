@@ -298,6 +298,9 @@ class Prokka_Form(QWidget):
         self.pushButton_2.clicked.connect(self.read_file1)
         self.pushButton_3.clicked.connect(self.read_file2)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/input/test.fa")
+        self.textBrowser_3.setPlaceholderText("D:/output")
         self.textEdit.setPlaceholderText(" example")
         self.textEdit_2.setPlaceholderText(" Bacteria")
 
@@ -307,7 +310,7 @@ class Prokka_Form(QWidget):
         self.label_4.setText(_translate("Form", "Status"))
         self.label.setText(_translate("Form", "Prokka"))
         self.label_2.setText(_translate("Form", "Input fasta file"))
-        self.label_3.setText(_translate("Form", "Output fasta file"))
+        self.label_3.setText(_translate("Form", "Output folder"))
         self.pushButton_2.setText(_translate("Form", "Choose"))
         self.label_5.setText(_translate("Form", "Prefix"))
         self.pushButton_3.setText(_translate("Form", "Choose"))

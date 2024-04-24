@@ -28,7 +28,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Input GBK file</string>
+        <string>Input GBK folder</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

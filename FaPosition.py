@@ -438,6 +438,9 @@ class FaPosition_Form(QWidget):
         self.pushButton_2.clicked.connect(self.read_file1)
         self.pushButton_3.clicked.connect(self.read_file2)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/input/input.fa")
+        self.textBrowser_3.setPlaceholderText("D:/output/output.fa")
         self.textEdit.setPlaceholderText(" Start: 1")
         self.textEdit_2.setPlaceholderText(" End: 2")
         self.radioButton_2.setChecked(True)

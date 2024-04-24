@@ -95,6 +95,9 @@ class Protvista_Form(QWidget):
         self.pushButton.clicked.connect(self.web_open)
         self.pushButton_2.clicked.connect(self.read_file1)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/input/ex.json")
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "ProtVista"))

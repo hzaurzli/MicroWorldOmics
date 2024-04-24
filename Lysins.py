@@ -299,12 +299,16 @@ class Lysins_Form(QWidget):
         self.pushButton_3.clicked.connect(self.read_file2)
         self.pushButton_4.clicked.connect(self.table_read)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/input/test.fa")
+        self.textBrowser_3.setPlaceholderText("D:/output/result.txt")
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Lysins activity"))
         self.label_2.setText(_translate("Form", "Input fasta file"))
         self.label.setText(_translate("Form", "Lysins activity"))
-        self.label_3.setText(_translate("Form", "Output fasta file"))
+        self.label_3.setText(_translate("Form", "Output result file"))
         self.pushButton_2.setText(_translate("Form", "Choose"))
         self.pushButton_3.setText(_translate("Form", "Choose"))
         self.label_7.setText(_translate("Form", "Result table"))

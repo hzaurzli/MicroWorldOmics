@@ -1086,6 +1086,10 @@ class Serotype_Form(QWidget):
         self.pushButton_6.clicked.connect(self.read_file4)
         self.pushButton_7.clicked.connect(self.read_file5)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/fa_input")
+        self.textBrowser_3.setPlaceholderText("D:/output")
+        self.textBrowser_4.setPlaceholderText("D:/input/reference.fa")
         self.radioButton.setChecked(True)
         self.textBrowser_5.setPlaceholderText(" Default: NULL")
         self.textBrowser_6.setPlaceholderText(" Default: NULL")

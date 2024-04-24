@@ -203,6 +203,9 @@ class CDhit_Form(QWidget):
         self.pushButton_2.clicked.connect(self.read_file1)
         self.pushButton_3.clicked.connect(self.read_file2)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/input/test.fa")
+        self.textBrowser_3.setPlaceholderText("D:/output/result.txt")
         self.textEdit_2.setPlaceholderText(" Default: 0.8")
         self.textEdit_3.setPlaceholderText(" Default: 0")
         self.textEdit_4.setPlaceholderText(" Default: 0")

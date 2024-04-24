@@ -432,6 +432,12 @@ class MLST_Form(QWidget):
         self.pushButton_5.clicked.connect(self.read_file3)
         self.pushButton_6.clicked.connect(self.read_file4)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/fa_input")
+        self.textBrowser_3.setPlaceholderText("D:/output")
+        self.textBrowser_4.setPlaceholderText("D:/input/reference.fa")
+        self.textBrowser_5.setPlaceholderText("D:/input/MLSTdb.xlsx")
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "MLST"))

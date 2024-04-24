@@ -38,7 +38,7 @@ class WorkThread(QThread):
                                       html))
 
             myobj.communicate()
-            time.sleep(10)
+            time.sleep(20)
 
             self.trigger.emit('Finished!!!')
 
@@ -180,10 +180,15 @@ class Clinker_Form(QWidget):
         self.pushButton_4.clicked.connect(self.editing)
         self.pushButton_5.clicked.connect(self.read_file3)
 
+        ## default
+        self.textBrowser_2.setPlaceholderText("D:/gbk_input")
+        self.textBrowser_3.setPlaceholderText("D:/output/result.aln")
+        self.textBrowser_4.setPlaceholderText("D:/output/result.html")
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Clinker"))
-        self.label_2.setText(_translate("Form", "Input GBK file"))
+        self.label_2.setText(_translate("Form", "Input GBK folder"))
         self.label_3.setText(_translate("Form", "Output alignment file"))
         self.label_6.setText(_translate("Form", "Output html file"))
         self.pushButton_2.setText(_translate("Form", "Choose"))
