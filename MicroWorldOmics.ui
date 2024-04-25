@@ -55,7 +55,7 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>0</y>
+           <y>-242</y>
            <width>198</width>
            <height>719</height>
           </rect>
@@ -1213,7 +1213,7 @@ QComboBox {
           </item>
           <item>
            <property name="text">
-            <string>ShinyVolc</string>
+            <string>ShinyVolcano</string>
            </property>
           </item>
           <item>
@@ -1962,7 +1962,7 @@ background-color: rgb(255, 255, 255);</string>
   </action>
   <action name="actionShinyVolc_2">
    <property name="text">
-    <string>ShinyVolc</string>
+    <string>ShinyVolcano</string>
    </property>
   </action>
   <action name="actionShinyTimeSeries">

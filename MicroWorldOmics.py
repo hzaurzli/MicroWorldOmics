@@ -89,7 +89,6 @@ class MyWindow(QtWidgets.QPushButton):
                        QtCore.Qt.black)
         QtWidgets.qApp.processEvents()  # 允许主进程处理事件
 
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -121,7 +120,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(False)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 198, 719))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -242, 198, 719))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.comboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
         self.comboBox.setEnabled(True)
@@ -1181,7 +1180,6 @@ class Ui_MainWindow(object):
         self.comboBox_13.currentIndexChanged.connect(self.selectionchange_comboBox_13)
         self.comboBox_14.currentIndexChanged.connect(self.selectionchange_comboBox_14)
 
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MicroWorldOmics"))
@@ -1272,7 +1270,7 @@ class Ui_MainWindow(object):
         self.comboBox_13.setItemText(3, _translate("MainWindow", "ShinyNMDS"))
         self.comboBox_13.setItemText(4, _translate("MainWindow", "ShinyPCoA"))
         self.comboBox_13.setItemText(5, _translate("MainWindow", "ShinyMCA"))
-        self.comboBox_13.setItemText(6, _translate("MainWindow", "ShinyVolc"))
+        self.comboBox_13.setItemText(6, _translate("MainWindow", "ShinyVolcano"))
         self.comboBox_13.setItemText(7, _translate("MainWindow", "ShinyTimeSeries"))
         self.comboBox_13.setItemText(8, _translate("MainWindow", "ShinyBatch"))
         self.comboBox_13.setItemText(9, _translate("MainWindow", "Bugbase"))
@@ -1385,7 +1383,7 @@ class Ui_MainWindow(object):
         self.actionShinyNMDS.setText(_translate("MainWindow", "ShinyNMDS"))
         self.actionShinyPCOA.setText(_translate("MainWindow", "ShinyPCoA"))
         self.actionShinyMCA.setText(_translate("MainWindow", "ShinyMCA"))
-        self.actionShinyVolc_2.setText(_translate("MainWindow", "ShinyVolc"))
+        self.actionShinyVolc_2.setText(_translate("MainWindow", "ShinyVolcano"))
         self.actionShinyTimeSeries.setText(_translate("MainWindow", "ShinyTimeSeries"))
         self.actionShinyMicroWGCNA.setText(_translate("MainWindow", "ShinyMicroWGCNA"))
         self.actionShinyBioMiCo.setText(_translate("MainWindow", "ShinyBioMiCo"))
@@ -1616,7 +1614,7 @@ class Ui_MainWindow(object):
             self.shinymca_show()
         elif label_item == 'ShinyBatch':
             self.shinybatch_show()
-        elif label_item == 'ShinyVolc':
+        elif label_item == 'ShinyVolcano':
             self.shinyvolc_show()
         elif label_item == 'ShinyTimeSeries':
             self.shinytimeseries_show()
@@ -2327,4 +2325,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ShinyDiffCoEx.ui'
+# Form implementation generated from reading ui file 'Shiny3Dprotein.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -13,6 +13,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import os, sys, re, math, time
+import urllib3
 from ShinyWeb import ShinyWeb_Form
 
 
@@ -32,7 +33,7 @@ class winTest(QtWidgets.QWidget):
         :return: None
         """
         try:
-            with os.popen('netstat -aon|findstr "50330"') as res:
+            with os.popen('netstat -aon|findstr "51733"') as res:
                 res = res.read().split('\n')
             result = []
             for line in res:
@@ -66,9 +67,14 @@ class WorkThread(QThread):
         os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
                  path + '/Shiny/ShinyScript/Shiny3Dprotein/Shiny3Dprotein.R')
 
-        time.sleep(20)
-        self.trigger.emit('ShinyApp has been started!!!')
+        while True:
+            try:
+                http = urllib3.PoolManager()
+                http.request('GET', 'http://127.0.0.1:51733')
 
+                self.trigger.emit('ShinyApp has been started!!!')
+            except:
+                time.sleep(5)
 
 class Shiny3Dprotein_Form(QWidget):
     def __init__(self, parent=None):
@@ -77,7 +83,7 @@ class Shiny3Dprotein_Form(QWidget):
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(633, 434)
+        Form.resize(633, 412)
         Form.setWindowIcon(QIcon("./logo/logo.ico"))
         Form.setStyleSheet("background-image: url(./logo/green_back.png);")
         self.gridLayout_4 = QtWidgets.QGridLayout(Form)
@@ -87,6 +93,11 @@ class Shiny3Dprotein_Form(QWidget):
         self.gridLayout_5.setVerticalSpacing(0)
         self.gridLayout_5.setObjectName("gridLayout_5")
         self.label = QtWidgets.QLabel(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
@@ -95,6 +106,11 @@ class Shiny3Dprotein_Form(QWidget):
         self.label.setObjectName("label")
         self.gridLayout_5.addWidget(self.label, 0, 0, 1, 3)
         self.label_4 = QtWidgets.QLabel(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(19)
@@ -107,6 +123,11 @@ class Shiny3Dprotein_Form(QWidget):
         self.textBrowser.setObjectName("textBrowser")
         self.gridLayout_5.addWidget(self.textBrowser, 5, 0, 2, 3)
         self.label_3 = QtWidgets.QLabel(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(11)
@@ -116,6 +137,11 @@ class Shiny3Dprotein_Form(QWidget):
         self.label_3.setObjectName("label_3")
         self.gridLayout_5.addWidget(self.label_3, 7, 0, 1, 3)
         self.pushButton = QtWidgets.QPushButton(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
+        self.pushButton.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(25)
@@ -123,6 +149,11 @@ class Shiny3Dprotein_Form(QWidget):
         self.pushButton.setObjectName("pushButton")
         self.gridLayout_5.addWidget(self.pushButton, 8, 0, 1, 3)
         self.pushButton_2 = QtWidgets.QPushButton(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
+        self.pushButton_2.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(25)
@@ -140,12 +171,13 @@ class Shiny3Dprotein_Form(QWidget):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Shiny3Dprotein"))
+        Form.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(_translate("Form", "Shiny3Dprotein"))
         self.label_4.setText(_translate("Form", "Status"))
         self.label_3.setText(_translate("Form", "Please close this window before starting another Shiny Apps!!!"))
         self.pushButton.setText(_translate("Form", "Start App"))
         self.pushButton_2.setText(_translate("Form", "Open Web"))
+
 
     def start(self):
         self.textBrowser.setText(
@@ -158,8 +190,16 @@ class Shiny3Dprotein_Form(QWidget):
         self.work.trigger.connect(self.finished)
 
     def open(self):
-        self.winTable = ShinyWeb_Form(port=50330)
-        self.winTable.show()
+        textbrowser = self.textBrowser.toPlainText()
+        print(textbrowser)
+        if textbrowser == 'ShinyApp has been started!!!':
+            self.winTable = ShinyWeb_Form(port=51733)
+            self.winTable.show()
+        else:
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Please wait for the shiny app to start!")
+
 
     def finished(self, str):
         self.textBrowser.setText(str)
