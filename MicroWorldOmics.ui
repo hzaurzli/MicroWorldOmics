@@ -28,58 +28,46 @@
    <string notr="true">background-image: url(D:/tools/Pycharm/pyqt/logo/green.png)</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_3">
-    <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
       <property name="spacing">
        <number>0</number>
       </property>
       <item>
-       <widget class="QScrollArea" name="scrollArea">
+       <widget class="QLabel" name="label">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>600</width>
-          <height>16777215</height>
-         </size>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
         </property>
-        <property name="widgetResizable">
-         <bool>false</bool>
+        <property name="text">
+         <string>Blast</string>
         </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>-242</y>
-           <width>198</width>
-           <height>719</height>
-          </rect>
-         </property>
-         <widget class="QComboBox" name="comboBox">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>20</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -91,112 +79,73 @@ QComboBox {
     color:rgb(123,123,123);/*字体颜色*/
     background-color: transparent;
 }</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>BlastN</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>BlastP</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>BlastX</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>tBlastN</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>tBlastX</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QLabel" name="label">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Blast</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="label_2">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>50</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Alignment</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="comboBox_2">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>70</y>
-            <width>181</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>BlastN</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>BlastP</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>BlastX</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>tBlastN</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>tBlastX</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Alignment</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_2">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -209,50 +158,65 @@ QComboBox {
     background-color: transparent;
 }
  </string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Clustal</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Muscle</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>JSalignment</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Mafft</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QComboBox" name="comboBox_3">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>130</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Clustal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Muscle</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>JSalignment</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Mafft</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Phage Lysins/Peptides</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -265,70 +229,58 @@ QComboBox {
     background-color: transparent;
 }
 </string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>For Lysins</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>For Peptides</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QLabel" name="label_3">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>100</y>
-            <width>181</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Phage Lysins/Peptides</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="comboBox_4">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>180</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>For Lysins</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>For Peptides</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Phylogenetic tree</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_4">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -341,75 +293,63 @@ QComboBox {
     background-color: transparent;
 }
 </string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>IQtree</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Raxml</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Fasttree</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QLabel" name="label_4">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>160</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Phylogenetic tree</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="comboBox_5">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>230</y>
-            <width>181</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>IQtree</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Raxml</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fasttree</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_5">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Tree visualization</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_5">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -422,65 +362,53 @@ QComboBox {
     background-color: transparent;
 }
 </string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>PhylogeneticTree</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QLabel" name="label_5">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>210</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Tree visualization</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="comboBox_6">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>290</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>PhylogeneticTree</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_6">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>PCR amplification</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_6">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -492,65 +420,53 @@ QComboBox {
     color:rgb(123,123,123);/*字体颜色*/
     background-color: transparent;
 }</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>PCR</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QLabel" name="label_6">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>270</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>PCR amplification</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="comboBox_8">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>390</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>PCR</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_7">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>ORF prediction</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_7">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -562,90 +478,53 @@ QComboBox {
     color:rgb(123,123,123);/*字体颜色*/
     background-color: transparent;
 }</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Prokka</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Circos annotation</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Blast visualization</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Collinearity</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Protvista</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>GBK2JSON</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QLabel" name="label_8">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>370</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Annotation</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="comboBox_9">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>440</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Prodigal</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_8">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Annotation</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_8">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -657,70 +536,141 @@ QComboBox {
     color:rgb(123,123,123);/*字体颜色*/
     background-color: transparent;
 }</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Plaque count</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Plaque count V2</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QLabel" name="label_9">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>420</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Plaque recognition</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="comboBox_10">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>490</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Prokka</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Circos annotation</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Blast visualization</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Collinearity</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Protvista</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>GBK2JSON</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_9">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Plaque recognition</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_9">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
+QComboBox {
+    border: 1px solid gray;   /* 边框 */
+    border-radius:2px;   /* 圆角 */
+    padding: 0px 0px 0px 10px; /* 上内边距、右内边距、下内边距、左内边距 */
+    color: rgba(51,51,51,1);
+    /*font: normal normal 15px &quot;Microsoft YaHei&quot;;*/
+    text-align: AlignHCenter;
+ 
+    color:rgb(123,123,123);/*字体颜色*/
+    background-color: transparent;
+}</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Plaque count</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Plaque count V2</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_10">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Phage classification</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_10">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -733,112 +683,73 @@ QComboBox {
     background-color: transparent;
 }
 </string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Step1 VipTree</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Step2 VIRIDIC</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Step3 Alignment</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Step4 Treeing</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Step5 Phylogeny</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QLabel" name="label_10">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>470</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Phage classification</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="label_11">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>520</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Phage deeplearning tools</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="comboBox_11">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>540</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Step1 VipTree</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Step2 VIRIDIC</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Step3 Alignment</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Step4 Treeing</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Step5 Phylogeny</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_11">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Phage deeplearning tools</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_11">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -850,80 +761,68 @@ QComboBox {
     color:rgb(123,123,123);/*字体颜色*/
     background-color: transparent;
 }</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>PhaMer</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>PhaGCN</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>PhaTYP</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>CHERRY</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QLabel" name="label_12">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>570</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Useful tools</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="comboBox_12">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>590</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>PhaMer</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>PhaGCN</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>PhaTYP</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>CHERRY</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_12">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Useful tools</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_12">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -935,143 +834,158 @@ QComboBox {
     color:rgb(123,123,123);/*字体颜色*/
     background-color: transparent;
 }</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>MLST</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Serotype</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Gene identification</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Core genome analysis</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyProtparam</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyGenomicPCA</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Shiny3Dprotein</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>MicroWGCNA</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Shiny3Dprotein</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyIGV</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Chemical Formula</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyMap</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>FastANI</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyTMscoreAlign</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ARAGORN</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>CDhit</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Genomad</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyBAE</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyRhierBaps</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyBactDating</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>DefenseFinder</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>GetFaPosition</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QComboBox" name="comboBox_7">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>340</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>MLST</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Serotype</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Gene identification</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Core genome analysis</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyProtparam</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyGenomicPCA</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Shiny3Dprotein</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>MicroWGCNA</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Shiny3Dprotein</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyIGV</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Chemical Formula</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyMap</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>FastANI</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyTMscoreAlign</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ARAGORN</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>CDhit</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Genomad</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyBAE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyRhierBaps</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyBactDating</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>DefenseFinder</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>GetFaPosition</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_15">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Metagenomics/Amplicons</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_13">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -1083,92 +997,98 @@ QComboBox {
     color:rgb(123,123,123);/*字体颜色*/
     background-color: transparent;
 }</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Prodigal</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QLabel" name="label_7">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>320</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>ORF prediction</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="label_15">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>620</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Metagenomics/Amplicons</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="comboBox_13">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>640</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyMultifun</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyDiff</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyNMDS</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyPCoA</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyMCA</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyVolcano</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyTimeSeries</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyBatch</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bugbase</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyNetMoss</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_16">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Networks</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_14">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">/* 未下拉时，QComboBox的样式 */
 QComboBox {
     border: 1px solid gray;   /* 边框 */
     border-radius:2px;   /* 圆角 */
@@ -1180,169 +1100,52 @@ QComboBox {
     color:rgb(123,123,123);/*字体颜色*/
     background-color: transparent;
 }</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyMultifun</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyDiff</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyNMDS</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyPCoA</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyMCA</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyVolcano</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyTimeSeries</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyBatch</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Bugbase</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyNetMoss</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QLabel" name="label_16">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>670</y>
-            <width>181</width>
-            <height>17</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Times New Roman</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Networks</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="comboBox_14">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>690</y>
-            <width>181</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/* 未下拉时，QComboBox的样式 */
-QComboBox {
-    border: 1px solid gray;   /* 边框 */
-    border-radius:2px;   /* 圆角 */
-    padding: 0px 0px 0px 10px; /* 上内边距、右内边距、下内边距、左内边距 */
-    color: rgba(51,51,51,1);
-    /*font: normal normal 15px &quot;Microsoft YaHei&quot;;*/
-    text-align: AlignHCenter;
- 
-    color:rgb(123,123,123);/*字体颜色*/
-    background-color: transparent;
-}</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>&lt;Default&gt;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyMicroWGCNA</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinySpiecEasi</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyREBACCA</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyCCLasso</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyCosine</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyDiffCoEx</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ShinyNetVis</string>
-           </property>
-          </item>
-         </widget>
-        </widget>
+        </property>
+        <item>
+         <property name="text">
+          <string>&lt;Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyMicroWGCNA</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinySpiecEasi</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyREBACCA</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyCCLasso</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyCosine</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyDiffCoEx</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ShinyNetVis</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>
     </item>
-    <item row="0" column="1">
+    <item>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <widget class="QLabel" name="label_17">
@@ -1386,7 +1189,7 @@ QComboBox {
       </item>
      </layout>
     </item>
-    <item row="0" column="2">
+    <item>
      <layout class="QGridLayout" name="gridLayout" rowstretch="1,0,0">
       <property name="spacing">
        <number>0</number>
