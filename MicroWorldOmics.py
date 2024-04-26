@@ -701,7 +701,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_17.sizePolicy().hasHeightForWidth())
         self.label_17.setSizePolicy(sizePolicy)
-        self.label_17.setMaximumSize(QtCore.QSize(720, 16777215))
+        self.label_17.setMaximumSize(QtCore.QSize(860, 16777215))
         self.label_17.setStyleSheet("background-image: url(./logo/green_back.png);")
         self.label_17.setText("")
         self.label_17.setTextFormat(QtCore.Qt.AutoText)
@@ -722,7 +722,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.textBrowser_2.sizePolicy().hasHeightForWidth())
         self.textBrowser_2.setSizePolicy(sizePolicy)
-        self.textBrowser_2.setMaximumSize(QtCore.QSize(600, 16777215))
+        self.textBrowser_2.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setBold(True)
@@ -741,7 +741,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.textBrowser.sizePolicy().hasHeightForWidth())
         self.textBrowser.setSizePolicy(sizePolicy)
-        self.textBrowser.setMaximumSize(QtCore.QSize(600, 16777215))
+        self.textBrowser.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setBold(True)
@@ -770,7 +770,7 @@ class Ui_MainWindow(object):
         self.label_13.setObjectName("label_13")
         self.gridLayout.addWidget(self.label_13, 0, 0, 1, 1)
         self.label_14 = QtWidgets.QLabel(self.centralwidget)
-        self.label_14.setMaximumSize(QtCore.QSize(450, 16777215))
+        self.label_14.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(10)
@@ -1166,6 +1166,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.currentIndexChanged.connect(self.selectionchange_comboBox_12)
         self.comboBox_13.currentIndexChanged.connect(self.selectionchange_comboBox_13)
         self.comboBox_14.currentIndexChanged.connect(self.selectionchange_comboBox_14)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -2312,3 +2313,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
