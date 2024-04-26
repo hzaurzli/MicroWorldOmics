@@ -1157,7 +1157,7 @@ QComboBox {
         </property>
         <property name="maximumSize">
          <size>
-          <width>720</width>
+          <width>860</width>
           <height>16777215</height>
          </size>
         </property>
@@ -1204,7 +1204,7 @@ QComboBox {
         </property>
         <property name="maximumSize">
          <size>
-          <width>600</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -1255,7 +1255,7 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="maximumSize">
          <size>
-          <width>600</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -1332,7 +1332,7 @@ background-color: rgb(255, 255, 255);</string>
        <widget class="QLabel" name="label_14">
         <property name="maximumSize">
          <size>
-          <width>450</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
