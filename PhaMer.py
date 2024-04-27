@@ -285,8 +285,8 @@ class WorkThread(QThread):
             # 发送完成信号
             self.trigger.emit('Finished!!!' + '\n' + 'example_prediction.csv is your result!!!')
 
-        except:
-            self.trigger.emit('Some errors have occurred,please check your input format!')
+        except Exception as ex:
+            self.trigger.emit('Some errors have occurred, %s!' % ex)
 
 class PhaMer_Form(QWidget):
     def __init__(self,parent=None):

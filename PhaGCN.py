@@ -500,7 +500,7 @@ class WorkThread(QThread):
                             threads,
                             path)
 
-                os.chdir(path + '/venv/Scripts')
+                os.chdir(path + '/python')
                 convert_xml(midfolder, 'phagcn', path + '/models/PhaGCN/scripts')
                 os.chdir(path)
 
@@ -949,8 +949,9 @@ class WorkThread(QThread):
 
                 self.trigger.emit('Finished!!!' + '\n' + 'phagcn_prediction.csv is your result!!!')
 
-        except:
-            self.trigger.emit('Some errors have occurred,please check your input format!')
+        except Exception as ex:
+            self.trigger.emit('Some errors have occurred, %s!' % ex)
+
 class PhaGCN_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)

@@ -96,6 +96,9 @@ class WorkThread(QThread):
                         return True
                 return False
 
+            out_fn = out_dir
+            transformer_fn = out_dir
+
             if not os.path.isdir(out_fn):
                 os.makedirs(out_fn)
 
@@ -104,7 +107,7 @@ class WorkThread(QThread):
 
             rec = []
             for record in SeqIO.parse(contigs, 'fasta'):
-                if len(record.seq) > int(length):
+                if len(record.seq) > int(length_len):
                     rec.append(record)
             SeqIO.write(rec, out_fn + '/filtered_contigs.fa', 'fasta')
 
@@ -215,10 +218,12 @@ class WorkThread(QThread):
             feat_df = pd.DataFrame({'label': label, 'text': text})
             feat_df.to_csv(transformer_fn + '/bert_feat.csv', index=None)
 
-            out_dir = os.path.dirname(out)
-            if out_dir != '':
-                if not os.path.isdir(out_dir):
-                    os.makedirs(out_dir)
+            out = out_fn + '/lysogen_prediction.csv'
+
+            out_dir_r = os.path.dirname(out)
+            if out_dir_r != '':
+                if not os.path.isdir(out_dir_r):
+                    os.makedirs(out_dir_r)
 
             id2contig = pkl.load(open(transformer_fn + '/sentence_id2contig.dict', 'rb'))
             bert_feat = pd.read_csv(transformer_fn + '/bert_feat.csv')
@@ -302,8 +307,9 @@ class WorkThread(QThread):
 
             self.trigger.emit('Finished!!!' + '\n' + 'lysogen_prediction.csv is your result!!!')
 
-        except:
-            self.trigger.emit('Some errors have occurred,please check your input format!')
+        except Exception as ex:
+            self.trigger.emit('Some errors have occurred, %s!' % ex)
+
 class PhaTYP_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)

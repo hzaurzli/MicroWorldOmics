@@ -45,8 +45,9 @@ class WorkThread(QThread):
 
             self.trigger.emit('Finished!!!')
 
-        except:
-            self.trigger.emit('Some errors have occurred,please check your input format!')
+        except Exception as ex:
+            self.trigger.emit('Some errors have occurred, %s!' % ex)
+
 class tBlastN_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
