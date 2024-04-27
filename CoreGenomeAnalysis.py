@@ -388,8 +388,10 @@ class WorkThread(QThread):
 
             self.trigger.emit("Finished, Core_genome.aln is your result!!!")
 
-        except:
-            self.trigger.emit('Some errors have occurred,please check your input format!')
+
+        except Exception as ex:
+            self.trigger.emit('Some errors have occurred, %s!' % ex)
+
 
 class Core_genome_Form(QWidget):
     def __init__(self, parent=None):

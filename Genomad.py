@@ -134,8 +134,9 @@ class WorkThread(QThread):
 
             self.trigger.emit('Finished!!!')
 
-        except:
-            self.trigger.emit('Some errors have occurred,please check your input format and network connection!')
+        except Exception as ex:
+            self.trigger.emit('Some errors have occurred, %s!' % ex)
+
 
 class Genomad_Form(QWidget):
     def __init__(self, parent=None):

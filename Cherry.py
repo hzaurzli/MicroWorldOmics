@@ -405,7 +405,7 @@ class WorkThread(QThread):
                         'cherry_renamed_protein.fa',
                         'cherry', threads, path)
 
-            os.chdir(path + '/venv/Scripts')
+            os.chdir(path + '/python')
             convert_xml(midfolder, 'cherry', path + '/models/Cherry/scripts')
             os.chdir(path)
 
@@ -426,7 +426,7 @@ class WorkThread(QThread):
                         'cherry_renamed_protein.fa',
                         'cherry_test', threads, path)
 
-            os.chdir(path + '/venv/Scripts')
+            os.chdir(path + '/python')
             convert_xml(midfolder, 'cherry_test', path + '/models/Cherry/scripts')
             os.chdir(path)
 
@@ -986,9 +986,8 @@ class WorkThread(QThread):
 
             self.trigger.emit('Finished!!!' + '\n' + 'cherry_prediction.csv is your result!!!')
 
-        except:
-            self.trigger.emit('Some errors have occurred,please check your input format!')
-
+        except Exception as ex:
+            self.trigger.emit('Some errors have occurred, %s!' % ex)
 class Cherry_Form(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)

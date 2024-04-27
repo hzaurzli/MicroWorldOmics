@@ -345,8 +345,9 @@ class WorkThread(QThread):
 
             self.trigger.emit('Finished!!!' + '\n' + 'data_results.out and result_summary.out are your results')
 
-        except:
-            self.trigger.emit('Some errors have occurred,please check your input format!')
+        except Exception as ex:
+            self.trigger.emit('Some errors have occurred, %s!' % ex)
+
 
 class GeneIdentification_Form(QWidget):
     def __init__(self, parent=None):
