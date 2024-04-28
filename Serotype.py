@@ -43,17 +43,23 @@ class winTest(QtWidgets.QWidget):
             if os.path.exists(ref_tmp):
                 os.remove(ref_tmp)
                 try:
-                    if os.path.exists(ref_tmp_s):
-                        os.remove(ref_tmp_s)
+                    if os.path.exists(out_tmp):
+                        os.remove(out_tmp)
                         try:
-                            if os.path.exists(out_tmp):
-                                os.remove(out_tmp)
+                            if os.path.exists(ref_tmp_s):
+                                os.remove(ref_tmp_s)
                             else:
                                 return None
                         except:
                             return None  # 设置正常退出
                     else:
-                        return None
+                        try:
+                            if os.path.exists(ref_tmp_s):
+                                os.remove(ref_tmp_s)
+                            else:
+                                return None
+                        except:
+                            return None  # 设置正常退出
                 except:
                     return None  # 设置正常退出
             else:
