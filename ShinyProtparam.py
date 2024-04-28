@@ -43,8 +43,11 @@ class winTest(QtWidgets.QWidget):
 
             if len(result) != 0:
                 for task in result:
-                    pid = task['pid']
-                    os.popen('taskkill -pid %s -f' % (pid))
+                    if task['address'] == '127.0.0.1:50326':
+                        pid = task['pid']
+                        os.popen('taskkill -pid %s -f' % (pid))
+                    else:
+                        print(task['address'])
 
         except:
             return None  # 设置正常退出
