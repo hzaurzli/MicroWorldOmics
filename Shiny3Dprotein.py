@@ -171,7 +171,7 @@ class Shiny3Dprotein_Form(QWidget):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "Shiny3Dprotein"))
         self.label.setText(_translate("Form", "Shiny3Dprotein"))
         self.label_4.setText(_translate("Form", "Status"))
         self.label_3.setText(_translate("Form", "Please close this window before starting another Shiny Apps!!!"))
