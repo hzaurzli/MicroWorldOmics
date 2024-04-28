@@ -64,7 +64,7 @@ class WorkThread(QThread):
             path = path.strip().split('\\')
             path = '/'.join(path)
 
-        os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
+        os.popen(path + '/Shiny/R-4.3.2/bin/Rscript.exe ' +
                  path + '/Shiny/ShinyScript/ShinyMCA/ShinyMCA.R')
 
         while True:

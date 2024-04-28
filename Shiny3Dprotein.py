@@ -33,7 +33,7 @@ class winTest(QtWidgets.QWidget):
         :return: None
         """
         try:
-            with os.popen('netstat -aon|findstr "51733"') as res:
+            with os.popen('netstat -aon|findstr "50330"') as res:
                 res = res.read().split('\n')
             result = []
             for line in res:
@@ -64,13 +64,13 @@ class WorkThread(QThread):
             path = path.strip().split('\\')
             path = '/'.join(path)
 
-        os.popen(path + '/Shiny/R-4.3.2/bin/Rscript ' +
+        os.popen(path + '/Shiny/R-4.3.2/bin/Rscript.exe ' +
                  path + '/Shiny/ShinyScript/Shiny3Dprotein/Shiny3Dprotein.R')
 
         while True:
             try:
                 http = urllib3.PoolManager()
-                http.request('GET', 'http://127.0.0.1:51733')
+                http.request('GET', 'http://127.0.0.1:50330')
 
                 self.trigger.emit('ShinyApp has been started!!!')
             except:
@@ -193,7 +193,7 @@ class Shiny3Dprotein_Form(QWidget):
         textbrowser = self.textBrowser.toPlainText()
         print(textbrowser)
         if textbrowser == 'ShinyApp has been started!!!':
-            self.winTable = ShinyWeb_Form(port=51733)
+            self.winTable = ShinyWeb_Form(port=50330)
             self.winTable.show()
         else:
             w = QWidget()
