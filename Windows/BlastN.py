@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'test.ui'
+# Form implementation generated from reading ui file 'BlastN.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -47,7 +47,6 @@ class WorkThread(QThread):
         except Exception as ex:
             self.trigger.emit('Some errors have occurred, %s!' % ex)
 
-
 class BlastN_Form(QWidget):
     def __init__(self,parent=None):
         super().__init__(parent)
@@ -55,7 +54,7 @@ class BlastN_Form(QWidget):
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(710, 479)
+        Form.resize(767, 643)
         Form.setWindowIcon(QIcon("./logo/logo.ico"))
         Form.setStyleSheet("background-image: url(./logo/green_back.png);")
         self.gridLayout_6 = QtWidgets.QGridLayout(Form)
@@ -98,12 +97,12 @@ class BlastN_Form(QWidget):
         self.label_6.setObjectName("label_6")
         self.gridLayout.addWidget(self.label_6, 6, 0, 1, 1)
         self.textBrowser_2 = QtWidgets.QTextBrowser(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.textBrowser_2.sizePolicy().hasHeightForWidth())
         self.textBrowser_2.setSizePolicy(sizePolicy)
-        self.textBrowser_2.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.textBrowser_2.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.textBrowser_2.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_2.setObjectName("textBrowser_2")
         self.gridLayout.addWidget(self.textBrowser_2, 1, 0, 1, 1)
@@ -116,22 +115,22 @@ class BlastN_Form(QWidget):
         self.label_5.setObjectName("label_5")
         self.gridLayout.addWidget(self.label_5, 9, 0, 1, 1)
         self.textBrowser_5 = QtWidgets.QTextBrowser(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.textBrowser_5.sizePolicy().hasHeightForWidth())
         self.textBrowser_5.setSizePolicy(sizePolicy)
-        self.textBrowser_5.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.textBrowser_5.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.textBrowser_5.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_5.setObjectName("textBrowser_5")
         self.gridLayout.addWidget(self.textBrowser_5, 10, 0, 1, 1)
         self.textBrowser_3 = QtWidgets.QTextBrowser(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.textBrowser_3.sizePolicy().hasHeightForWidth())
         self.textBrowser_3.setSizePolicy(sizePolicy)
-        self.textBrowser_3.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.textBrowser_3.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.textBrowser_3.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_3.setObjectName("textBrowser_3")
         self.gridLayout.addWidget(self.textBrowser_3, 4, 0, 1, 1)
@@ -157,12 +156,12 @@ class BlastN_Form(QWidget):
         self.pushButton_2.setObjectName("pushButton_2")
         self.gridLayout.addWidget(self.pushButton_2, 2, 0, 1, 1)
         self.textBrowser_4 = QtWidgets.QTextBrowser(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.textBrowser_4.sizePolicy().hasHeightForWidth())
         self.textBrowser_4.setSizePolicy(sizePolicy)
-        self.textBrowser_4.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.textBrowser_4.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.textBrowser_4.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_4.setObjectName("textBrowser_4")
         self.gridLayout.addWidget(self.textBrowser_4, 7, 0, 1, 1)
@@ -177,12 +176,12 @@ class BlastN_Form(QWidget):
         self.gridLayout_3 = QtWidgets.QGridLayout()
         self.gridLayout_3.setObjectName("gridLayout_3")
         self.textEdit = QtWidgets.QTextEdit(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.textEdit.sizePolicy().hasHeightForWidth())
         self.textEdit.setSizePolicy(sizePolicy)
-        self.textEdit.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.textEdit.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.textEdit.setStyleSheet("background-image: url(./logo/white.png)")
         self.textEdit.setObjectName("textEdit")
         self.gridLayout_3.addWidget(self.textEdit, 3, 0, 1, 1)
@@ -226,12 +225,12 @@ class BlastN_Form(QWidget):
         self.label_9.setObjectName("label_9")
         self.gridLayout_3.addWidget(self.label_9, 4, 0, 1, 1)
         self.textEdit_2 = QtWidgets.QTextEdit(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.textEdit_2.sizePolicy().hasHeightForWidth())
         self.textEdit_2.setSizePolicy(sizePolicy)
-        self.textEdit_2.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.textEdit_2.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.textEdit_2.setStyleSheet("background-image: url(./logo/white.png)")
         self.textEdit_2.setObjectName("textEdit_2")
         self.gridLayout_3.addWidget(self.textEdit_2, 5, 0, 1, 1)
@@ -366,4 +365,5 @@ if __name__ == "__main__":
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
+
 
