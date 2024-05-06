@@ -101,7 +101,7 @@ class WorkThread(QThread):
 
             def run_diamond(diamond_db, outpth, infile, tool, threads, path):
                 # running alignment
-                diamond_cmd = path + f'/tools/diamond/diamond blastp --outfmt 5 --threads {threads} --sensitive -d {diamond_db} -q {outpth}/{infile} -o {outpth}/{tool}_results.xml -k 5'
+                diamond_cmd = path + f'/tools/diamond/diamond_0_9_14 blastp --outfmt 5 --threads {threads} --sensitive -d {diamond_db} -q {outpth}/{infile} -o {outpth}/{tool}_results.xml -k 5'
                 print("Running Diamond...")
                 _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
                                           stderr=subprocess.DEVNULL)
@@ -395,7 +395,7 @@ class WorkThread(QThread):
             pkl.dump(test_virus, open(f'{cherrypth}/test_virus.F', 'wb'))
 
             try:
-                make_diamond_cmd = path + f'/tools/diamond/diamond makedb --threads {threads} --in {midfolder}/cherry_renamed_protein.fa -d {cherrypth}/test_database.dmnd'
+                make_diamond_cmd = path + f'/tools/diamond/diamond_0_9_14 makedb --threads {threads} --in {midfolder}/cherry_renamed_protein.fa -d {cherrypth}/test_database.dmnd'
                 print("Creating Diamond database...")
                 _ = subprocess.check_call(make_diamond_cmd, shell=True)
             except:
