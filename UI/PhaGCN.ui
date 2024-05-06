@@ -238,11 +238,6 @@
          <string>Score</string>
         </property>
        </column>
-       <column>
-        <property name="text">
-         <string>Type</string>
-        </property>
-       </column>
       </widget>
      </item>
      <item row="1" column="1">

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>683</width>
-    <height>542</height>
+    <height>540</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -220,12 +220,7 @@
        </property>
        <column>
         <property name="text">
-         <string>Accession</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Length</string>
+         <string>Contig</string>
         </property>
        </column>
        <column>
@@ -236,11 +231,6 @@
        <column>
         <property name="text">
          <string>Score</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Type</string>
         </property>
        </column>
       </widget>
