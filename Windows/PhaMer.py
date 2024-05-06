@@ -213,7 +213,7 @@ class WorkThread(QThread):
             pcs2idx = pkl.load(open(f'{transformer_fn}/pc2wordsid.dict', 'rb'))
             num_pcs = len(set(pcs2idx.keys()))
 
-            reject = 0.3
+            reject_v = reject
             threads = 1
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             if device.type == 'cpu':
@@ -240,7 +240,7 @@ class WorkThread(QThread):
 
             def reject_prophage(all_pred, weight):
                 all_pred = np.array(all_pred.detach().cpu())
-                all_pred[weight < reject] = 0
+                all_pred[weight < reject_v] = 0
                 return all_pred
 
             # training with short contigs
@@ -301,8 +301,7 @@ class PhaMer_Form(QWidget):
         self.gridLayout_2 = QtWidgets.QGridLayout(Form)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.gridLayout = QtWidgets.QGridLayout()
-        self.gridLayout.setHorizontalSpacing(6)
-        self.gridLayout.setVerticalSpacing(0)
+        self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName("gridLayout")
         self.label_2 = QtWidgets.QLabel(Form)
         font = QtGui.QFont()
@@ -398,19 +397,6 @@ class PhaMer_Form(QWidget):
         self.pushButton_4.setFont(font)
         self.pushButton_4.setObjectName("pushButton_4")
         self.gridLayout.addWidget(self.pushButton_4, 10, 1, 1, 1)
-        self.pushButton = QtWidgets.QPushButton(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(22)
-        self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet("background-image: url(./logo/white.png)")
-        self.pushButton.setObjectName("pushButton")
-        self.gridLayout.addWidget(self.pushButton, 12, 1, 1, 1)
         self.label = QtWidgets.QLabel(Form)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
@@ -430,7 +416,7 @@ class PhaMer_Form(QWidget):
         self.tableWidget = QtWidgets.QTableWidget(Form)
         self.tableWidget.setStyleSheet("background-image: url(./logo/white.png)")
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(3)
         self.tableWidget.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
@@ -438,11 +424,20 @@ class PhaMer_Form(QWidget):
         self.tableWidget.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(4, item)
         self.gridLayout.addWidget(self.tableWidget, 2, 1, 7, 1)
+        self.pushButton = QtWidgets.QPushButton(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
+        self.pushButton.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(22)
+        self.pushButton.setFont(font)
+        self.pushButton.setStyleSheet("background-image: url(./logo/white.png)")
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayout.addWidget(self.pushButton, 11, 1, 2, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
@@ -472,19 +467,15 @@ class PhaMer_Form(QWidget):
         self.label_4.setText(_translate("Form", "Status"))
         self.label_6.setText(_translate("Form", "If the program is finished, click \'Table\' to display the result"))
         self.pushButton_4.setText(_translate("Form", "Table"))
-        self.pushButton.setText(_translate("Form", "Run"))
         self.label.setText(_translate("Form", "PhaMer"))
         self.label_8.setText(_translate("Form", "Result table"))
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("Form", "Accession"))
+        item.setText(_translate("Form", "Contig"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("Form", "Length"))
-        item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("Form", "Pred"))
-        item = self.tableWidget.horizontalHeaderItem(3)
+        item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("Form", "Score"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("Form", "Type"))
+        self.pushButton.setText(_translate("Form", "Run"))
 
 
     def read_file1(self):
