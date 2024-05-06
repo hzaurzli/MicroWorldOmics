@@ -41,7 +41,7 @@ from Bio.Blast.Applications import NcbiblastnCommandline
 #from models.PhaGCN.Models.PhaGCN import GCN
 #from models.PhaGCN.Models import Cherry
 from scipy.special import softmax
-#from models.PhaGCN.scripts.data import load_data, preprocess_features, preprocess_adj, sample_mask
+from models.PhaGCN.scripts.data import load_data, preprocess_features, preprocess_adj, sample_mask
 from torch import nn
 from torch import optim
 from torch.nn import functional as F
@@ -88,7 +88,7 @@ class WorkThread(QThread):
             out_pred = f"{out_dir}/phagcn_prediction.csv"
 
             def translation(inpth, outpth, infile, outfile):
-                prodigal = path + "/tools/prodigal/prodigal.exe"
+                prodigal = path + "/tools/prodigal/prodigal"
 
                 prodigal_cmd = f'{prodigal} -i {inpth}/{infile} -a {outpth}/{outfile} -f gff -p meta'
                 print("Running prodigal...")
@@ -142,7 +142,7 @@ class WorkThread(QThread):
 
             def run_diamond(diamond_db, outpth, infile, tool, threads, path):
                 # running alignment
-                diamond_cmd = path + f'/tools/diamond/diamond_0_9_14.exe blastp --outfmt 5 --threads {threads} --sensitive -d {diamond_db} -q {outpth}/{infile} -o {outpth}/{tool}_results.xml -k 5'
+                diamond_cmd = path + f'/tools/diamond/diamond blastp --outfmt 5 --threads {threads} --sensitive -d {diamond_db} -q {outpth}/{infile} -o {outpth}/{tool}_results.xml -k 5'
                 print("Running Diamond...")
                 _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
                                           stderr=subprocess.DEVNULL)
@@ -164,7 +164,7 @@ class WorkThread(QThread):
                     w.close()
 
                 # running alignment
-                diamond_cmd = 'python.exe ' + f'{scripts}/blastxml_to_tabular.py -o {outpth}/{tool}_results.tab -c qseqid,sseqid,pident,length,mismatch,gapopen,qstart,qend,sstart,send,evalue {outpth}/{tool}_results.xml'
+                diamond_cmd = 'python ' + f'{scripts}/blastxml_to_tabular.py -o {outpth}/{tool}_results.tab -c qseqid,sseqid,pident,length,mismatch,gapopen,qstart,qend,sstart,send,evalue {outpth}/{tool}_results.xml'
                 _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
                                           stderr=subprocess.DEVNULL)
                 diamond_out_fp = f"{outpth}/{tool}_results.tab"
@@ -376,7 +376,7 @@ class WorkThread(QThread):
             db_virus_prefix = f"{db_dir}/unknown_db/db"
             output_file = f"{midfolder}/unknown_out.tab"
             virus_call = NcbiblastnCommandline(
-                path + "/blast-BLAST_VERSION+/bin/blastn.exe",
+                path + "/blast-BLAST_VERSION+/bin/blastn",
                 query=query_file,
                 db=db_virus_prefix,
                 out=output_file,
@@ -961,14 +961,14 @@ class PhaGCN_Form(QWidget):
         Form.setObjectName("Form")
         Form.resize(683, 542)
         Form.setWindowIcon(QIcon("./logo/logo.ico"))
-        Form.setStyleSheet("background-image: url(./logo/green_back.png);")
+        Form.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/green_back.png);")
         self.gridLayout_6 = QtWidgets.QGridLayout(Form)
         self.gridLayout_6.setObjectName("gridLayout_6")
         self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName("gridLayout")
         self.textBrowser_2 = QtWidgets.QTextBrowser(Form)
-        self.textBrowser_2.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textBrowser_2.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.textBrowser_2.setObjectName("textBrowser_2")
         self.gridLayout.addWidget(self.textBrowser_2, 2, 0, 1, 1)
         self.label_2 = QtWidgets.QLabel(Form)
@@ -1009,7 +1009,7 @@ class PhaGCN_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(22)
         self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet("background-image: url(./logo/white.png)")
+        self.pushButton.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.pushButton.setObjectName("pushButton")
         self.gridLayout.addWidget(self.pushButton, 9, 1, 2, 1)
         self.label = QtWidgets.QLabel(Form)
@@ -1029,7 +1029,7 @@ class PhaGCN_Form(QWidget):
         self.label_3.setObjectName("label_3")
         self.gridLayout.addWidget(self.label_3, 4, 0, 1, 1)
         self.textBrowser_3 = QtWidgets.QTextBrowser(Form)
-        self.textBrowser_3.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textBrowser_3.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.textBrowser_3.setObjectName("textBrowser_3")
         self.gridLayout.addWidget(self.textBrowser_3, 5, 0, 1, 1)
         self.pushButton_2 = QtWidgets.QPushButton(Form)
@@ -1055,7 +1055,7 @@ class PhaGCN_Form(QWidget):
         self.pushButton_3.setObjectName("pushButton_3")
         self.gridLayout.addWidget(self.pushButton_3, 6, 0, 1, 1)
         self.textEdit = QtWidgets.QTextEdit(Form)
-        self.textEdit.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textEdit.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.textEdit.setObjectName("textEdit")
         self.gridLayout.addWidget(self.textEdit, 8, 0, 1, 1)
         self.label_4 = QtWidgets.QLabel(Form)
@@ -1067,13 +1067,13 @@ class PhaGCN_Form(QWidget):
         self.label_4.setObjectName("label_4")
         self.gridLayout.addWidget(self.label_4, 9, 0, 1, 1)
         self.textBrowser = QtWidgets.QTextBrowser(Form)
-        self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textBrowser.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.textBrowser.setObjectName("textBrowser")
         self.gridLayout.addWidget(self.textBrowser, 10, 0, 1, 1)
         self.tableWidget = QtWidgets.QTableWidget(Form)
-        self.tableWidget.setStyleSheet("background-image: url(./logo/white.png)")
+        self.tableWidget.setStyleSheet("background-image: url(D:/Documents/Desktop/white.png)")
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(4)
         self.tableWidget.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
@@ -1083,8 +1083,6 @@ class PhaGCN_Form(QWidget):
         self.tableWidget.setHorizontalHeaderItem(2, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(4, item)
         self.gridLayout.addWidget(self.tableWidget, 2, 1, 5, 1)
         self.label_7 = QtWidgets.QLabel(Form)
         font = QtGui.QFont()
@@ -1131,8 +1129,6 @@ class PhaGCN_Form(QWidget):
         item.setText(_translate("Form", "Pred"))
         item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("Form", "Score"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("Form", "Type"))
         self.label_7.setText(_translate("Form", "Result table"))
 
 

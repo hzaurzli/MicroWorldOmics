@@ -113,7 +113,7 @@ class WorkThread(QThread):
 
             try:
                 p = sub.Popen(
-                    r'.\tools\prodigal\prodigal.exe -i ' + out_fn + '/filtered_contigs.fa -a ' + out_fn + '/test_protein.fa -f gff -p meta')
+                    r'.\tools\prodigal\prodigal -i ' + out_fn + '/filtered_contigs.fa -a ' + out_fn + '/test_protein.fa -f gff -p meta')
                 p.wait()
             except:
                 QMessageBox.critical(self, "error", "check fasta file format!")
@@ -121,12 +121,12 @@ class WorkThread(QThread):
             try:
                 # create database
                 p = sub.Popen(
-                    r'.\tools\diamond\diamond.exe makedb --threads 2 --in ./models/PhaTYP/database/database.fa -d ' + out_fn + '/database.dmnd',
+                    r'.\tools\diamond\diamond makedb --threads 2 --in ./models/PhaTYP/database/database.fa -d ' + out_fn + '/database.dmnd',
                     shell=False)
                 p.wait()
                 # running alignment
                 p = sub.Popen(
-                    r'.\tools\diamond\diamond.exe blastp --threads 2 --sensitive -d ' + out_fn + '/database.dmnd -q ' + out_fn + '/test_protein.fa -o ' + out_fn + '/results.tab -k 1',
+                    r'.\tools\diamond\diamond blastp --threads 2 --sensitive -d ' + out_fn + '/database.dmnd -q ' + out_fn + '/test_protein.fa -o ' + out_fn + '/results.tab -k 1',
                     shell=False)
                 p.wait()
 
@@ -294,9 +294,9 @@ class WorkThread(QThread):
             pred_csv = pd.DataFrame({"Contig": id2contig.values(), "Pred": all_pred, "Score": all_score})
             pred_csv.to_csv(out, index=False)
 
-            process_name = 'diamond.exe'
+            process_name = 'diamond'
             time.sleep(3)
-            while True:  # 判断 iqtree.exe 是否运行完成
+            while True:  # 判断 iqtree 是否运行完成
                 if check_process_running(process_name):
                     print(f"The process {process_name} is running.")
                     time.sleep(10)
@@ -317,7 +317,7 @@ class PhaTYP_Form(QWidget):
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(683, 542)
+        Form.resize(683, 540)
         Form.setWindowIcon(QIcon("./logo/logo.ico"))
         Form.setStyleSheet("background-image: url(./logo/green_back.png);")
         self.gridLayout_6 = QtWidgets.QGridLayout(Form)
@@ -431,7 +431,7 @@ class PhaTYP_Form(QWidget):
         self.tableWidget = QtWidgets.QTableWidget(Form)
         self.tableWidget.setStyleSheet("background-image: url(./logo/white.png)")
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(3)
         self.tableWidget.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
@@ -439,10 +439,6 @@ class PhaTYP_Form(QWidget):
         self.tableWidget.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(4, item)
         self.gridLayout.addWidget(self.tableWidget, 2, 1, 5, 1)
         self.label_7 = QtWidgets.QLabel(Form)
         font = QtGui.QFont()
@@ -482,15 +478,11 @@ class PhaTYP_Form(QWidget):
         self.pushButton_3.setText(_translate("Form", "Choose"))
         self.label_4.setText(_translate("Form", "Status"))
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("Form", "Accession"))
+        item.setText(_translate("Form", "Contig"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("Form", "Length"))
-        item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("Form", "Pred"))
-        item = self.tableWidget.horizontalHeaderItem(3)
+        item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("Form", "Score"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("Form", "Type"))
         self.label_7.setText(_translate("Form", "Result table"))
 
 
@@ -612,4 +604,3 @@ if __name__ == "__main__":
     ui.setupUi(WT)
     WT.show()
     sys.exit(app.exec_())
-

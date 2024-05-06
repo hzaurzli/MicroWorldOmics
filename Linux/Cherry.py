@@ -88,7 +88,7 @@ class WorkThread(QThread):
             topk = 1
 
             def translation(inpth, outpth, infile, outfile):
-                prodigal = path + "/tools/prodigal/prodigal.exe"
+                prodigal = path + "/tools/prodigal/prodigal"
 
                 prodigal_cmd = f'{prodigal} -i {inpth}/{infile} -a {outpth}/{outfile} -f gff -p meta'
                 print("Running prodigal...")
@@ -101,7 +101,7 @@ class WorkThread(QThread):
 
             def run_diamond(diamond_db, outpth, infile, tool, threads, path):
                 # running alignment
-                diamond_cmd = path + f'/tools/diamond/diamond_0_9_14.exe blastp --outfmt 5 --threads {threads} --sensitive -d {diamond_db} -q {outpth}/{infile} -o {outpth}/{tool}_results.xml -k 5'
+                diamond_cmd = path + f'/tools/diamond/diamond blastp --outfmt 5 --threads {threads} --sensitive -d {diamond_db} -q {outpth}/{infile} -o {outpth}/{tool}_results.xml -k 5'
                 print("Running Diamond...")
                 _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
                                           stderr=subprocess.DEVNULL)
@@ -123,7 +123,7 @@ class WorkThread(QThread):
                     w.close()
 
                 # running alignment
-                diamond_cmd = 'python.exe ' + f'{scripts}/blastxml_to_tabular.py -o {outpth}/{tool}_results.tab -c qseqid,sseqid,pident,length,mismatch,gapopen,qstart,qend,sstart,send,evalue {outpth}/{tool}_results.xml'
+                diamond_cmd = 'python ' + f'{scripts}/blastxml_to_tabular.py -o {outpth}/{tool}_results.tab -c qseqid,sseqid,pident,length,mismatch,gapopen,qstart,qend,sstart,send,evalue {outpth}/{tool}_results.xml'
                 _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
                                           stderr=subprocess.DEVNULL)
                 diamond_out_fp = f"{outpth}/{tool}_results.tab"
@@ -395,7 +395,7 @@ class WorkThread(QThread):
             pkl.dump(test_virus, open(f'{cherrypth}/test_virus.F', 'wb'))
 
             try:
-                make_diamond_cmd = path + f'/tools/diamond/diamond_0_9_14.exe makedb --threads {threads} --in {midfolder}/cherry_renamed_protein.fa -d {cherrypth}/test_database.dmnd'
+                make_diamond_cmd = path + f'/tools/diamond/diamond makedb --threads {threads} --in {midfolder}/cherry_renamed_protein.fa -d {cherrypth}/test_database.dmnd'
                 print("Creating Diamond database...")
                 _ = subprocess.check_call(make_diamond_cmd, shell=True)
             except:
@@ -510,7 +510,7 @@ class WorkThread(QThread):
             query_file = f"{cherrypth}/test.fa"
             db_virus_prefix = f"{db_dir}/virus_db/allVIRUS"
             output_file = f"{cherrypth}/virus_out.tab"
-            virus_call = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
+            virus_call = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn",
                                                query=query_file,
                                                db=db_virus_prefix,
                                                out=output_file,
@@ -555,7 +555,7 @@ class WorkThread(QThread):
             query_file = f"{cherrypth}/test.fa"
             db_host_crispr_prefix = f"{db_dir}/crispr_db/allCRISPRs"
             output_file = f"{cherrypth}/crispr_out.tab"
-            crispr_call = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
+            crispr_call = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn",
                                                 query=query_file,
                                                 db=db_host_crispr_prefix,
                                                 out=output_file,
@@ -593,7 +593,7 @@ class WorkThread(QThread):
             genome_list = os.listdir(f'{db_dir}/prokaryote')
             for genome in genome_list:
                 accession = genome.split(".")[0]
-                blast_cmd = path + f'/blast-BLAST_VERSION+/bin/blastn.exe -query {cherrypth}/test.fa -db {blast_database_out}/{accession} -outfmt 6 -out {blast_tab_out}/{accession}.tab -num_threads {threads}'
+                blast_cmd = path + f'/blast-BLAST_VERSION+/bin/blastn -query {cherrypth}/test.fa -db {blast_database_out}/{accession} -outfmt 6 -out {blast_tab_out}/{accession}.tab -num_threads {threads}'
                 print(f"Running {accession} blastn...")
                 _ = subprocess.check_call(blast_cmd, shell=True)
 
