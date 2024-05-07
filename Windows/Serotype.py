@@ -1065,23 +1065,18 @@ class Serotype_Form(QWidget):
         self.tableWidget = QtWidgets.QTableWidget(Form)
         self.tableWidget.setStyleSheet("background-image: url(./logo/white.png)")
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(2)
         self.tableWidget.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(4, item)
         self.gridLayout.addWidget(self.tableWidget, 7, 2, 4, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+
 
         # button action
         self.pushButton.clicked.connect(self.calculation)
@@ -1099,7 +1094,6 @@ class Serotype_Form(QWidget):
         self.radioButton.setChecked(True)
         self.textBrowser_5.setPlaceholderText(" Default: NULL")
         self.textBrowser_6.setPlaceholderText(" Default: NULL")
-
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -1124,15 +1118,9 @@ class Serotype_Form(QWidget):
         self.pushButton.setText(_translate("Form", "Run"))
         self.radioButton_2.setText(_translate("Form", "Precise mode"))
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("Form", "Accession"))
+        item.setText(_translate("Form", "ID"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("Form", "Length"))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("Form", "Pred"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("Form", "Score"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("Form", "Type"))
+        item.setText(_translate("Form", "Serotype"))
 
 
     def read_file1(self):
@@ -1284,4 +1272,3 @@ if __name__ == "__main__":
     ui.setupUi(WT)
     WT.show()
     sys.exit(app.exec_())
-

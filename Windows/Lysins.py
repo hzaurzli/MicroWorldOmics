@@ -242,7 +242,7 @@ class Lysins_Form(QWidget):
         self.tableWidget = QtWidgets.QTableWidget(Form)
         self.tableWidget.setStyleSheet("background-image: url(./logo/white.png)")
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(3)
         self.tableWidget.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
@@ -250,10 +250,6 @@ class Lysins_Form(QWidget):
         self.tableWidget.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(4, item)
         self.gridLayout.addWidget(self.tableWidget, 2, 1, 4, 1)
         self.label_6 = QtWidgets.QLabel(Form)
         font = QtGui.QFont()
@@ -314,18 +310,15 @@ class Lysins_Form(QWidget):
         self.label_7.setText(_translate("Form", "Result table"))
         self.label_4.setText(_translate("Form", "Status"))
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("Form", "Accession"))
+        item.setText(_translate("Form", "ID"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("Form", "Length"))
+        item.setText(_translate("Form", "Seq"))
         item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("Form", "Pred"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("Form", "Score"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("Form", "Type"))
         self.label_6.setText(_translate("Form", "If the program is finished, click \'Table\' to display the result"))
         self.pushButton_4.setText(_translate("Form", "Table"))
         self.pushButton.setText(_translate("Form", "Run"))
+
 
     def read_file1(self):
         openfile_name = QtWidgets.QFileDialog.getOpenFileName(self, 'choose file', '')[0]
@@ -419,4 +412,5 @@ if __name__ == "__main__":
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
+
 
