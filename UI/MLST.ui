@@ -233,27 +233,17 @@
        </property>
        <column>
         <property name="text">
-         <string>Accession</string>
+         <string>ID</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Length</string>
+         <string>MLST</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Pred</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Score</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Type</string>
+         <string>ST_result</string>
         </property>
        </column>
       </widget>
