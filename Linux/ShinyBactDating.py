@@ -15,6 +15,7 @@ from PyQt5.QtCore import *
 import os, sys, re, math, time
 import urllib3
 from ShinyWeb import ShinyWeb_Form
+import psutil
 
 
 # QtWidgets.QWidget 要与 ui 窗口一致 QWidget 对应 QWidget; QMainWindow 对应 QMainWindow
@@ -33,22 +34,11 @@ class winTest(QtWidgets.QWidget):
         :return: None
         """
         try:
-            with os.popen('netstat -aon|findstr "51733"') as res:
-                res = res.read().split('\n')
-            result = []
-            for line in res:
-                temp = [i for i in line.split(' ') if i != '']
-                if len(temp) > 4:
-                    result.append({'pid': temp[4], 'address': temp[1], 'state': temp[3]})
-
-            if len(result) != 0:
-                for task in result:
-                    if task['address'] == '127.0.0.1:51733':
-                        pid = task['pid']
-                        os.popen('taskkill -pid %s -f' % (pid))
-                    else:
-                        print(task['address'])
-
+        
+            for conn in psutil.net_connections():
+              if conn.laddr.port == 51733 and conn.status == 'LISTEN':
+                proc = psutil.Process(conn.pid)
+                proc.terminate()
         except:
             return None  # 设置正常退出
 
@@ -67,7 +57,7 @@ class WorkThread(QThread):
             path = path.strip().split('\\')
             path = '/'.join(path)
 
-        os.popen(path + '/Shiny/R-4.3.2/bin/Rscript.exe ' +
+        os.popen(path + '/Shiny/R/bin/Rscript ' +
                  path + '/Shiny/ShinyScript/ShinyBactDating/ShinyBactDating.R')
 
         while True:

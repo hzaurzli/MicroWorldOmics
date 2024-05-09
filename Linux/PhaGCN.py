@@ -41,7 +41,7 @@ from Bio.Blast.Applications import NcbiblastnCommandline
 #from models.PhaGCN.Models.PhaGCN import GCN
 #from models.PhaGCN.Models import Cherry
 from scipy.special import softmax
-from models.PhaGCN.scripts.data import load_data, preprocess_features, preprocess_adj, sample_mask
+#from models.PhaGCN.scripts.data import load_data, preprocess_features, preprocess_adj, sample_mask
 from torch import nn
 from torch import optim
 from torch.nn import functional as F
