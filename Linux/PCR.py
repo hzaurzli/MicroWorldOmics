@@ -316,7 +316,7 @@ class PCR_Form(QWidget):
 
                         self.textBrowser.setText('Running! please wait')
                         QApplication.processEvents()  # 逐条打印状态
-                        os.popen("perl ./perl/in_silico_PCR.pl -s %s -a %s -b %s -l %s -m %s -i %s > %s 2> %s" % (fasta, forward, reverse, length, mismatch, indel, path + "/position-" + file, out))
+                        os.popen("./perl/bin/perl ./perl/in_silico_PCR.pl -s %s -a %s -b %s -l %s -m %s -i %s > %s 2> %s" % (fasta, forward, reverse, length, mismatch, indel, path + "/position-" + file, out))
 
                         self.textBrowser.setText('Finished!!!')
 

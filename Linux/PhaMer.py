@@ -23,7 +23,7 @@ from shutil import which
 from collections import Counter
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
-#from models.PhaMer.model import Transformer
+from models.PhaMer.model import Transformer
 import torch
 from torch import nn
 from torch.nn import functional as F

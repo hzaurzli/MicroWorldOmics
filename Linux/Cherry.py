@@ -27,21 +27,21 @@ import scipy.stats as stats
 import scipy.sparse as sparse
 import markov_clustering as mc
 import math
-#from models.PhaGCN.scripts.ulity import *
-#from models.PhaGCN.scripts.preprocessing import *
-#from models.PhaGCN.scripts.cnnscript import *
+from models.PhaGCN.scripts.ulity import *
+from models.PhaGCN.scripts.preprocessing import *
+from models.PhaGCN.scripts.cnnscript import *
 from shutil import which
 import shutil
 from collections import Counter
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
 from Bio.Blast.Applications import NcbiblastnCommandline
-#from models.PhaGCN.Models.phamer import Transformer
-#from models.PhaGCN.Models.CAPCNN import WCNN
-#from models.PhaGCN.Models.PhaGCN import GCN
-#from models.PhaGCN.Models import Cherry
+from models.PhaGCN.Models.phamer import Transformer
+from models.PhaGCN.Models.CAPCNN import WCNN
+from models.PhaGCN.Models.PhaGCN import GCN
+from models.PhaGCN.Models import Cherry
 from scipy.special import softmax
-#from models.PhaGCN.scripts.data import load_data, preprocess_features, preprocess_adj, sample_mask
+from models.PhaGCN.scripts.data import load_data, preprocess_features, preprocess_adj, sample_mask
 from torch import nn
 from torch import optim
 from torch.nn import functional as F
@@ -405,7 +405,7 @@ class WorkThread(QThread):
                         'cherry_renamed_protein.fa',
                         'cherry', threads, path)
 
-            os.chdir(path + '/python')
+            os.chdir(path + '/python/bin')
             convert_xml(midfolder, 'cherry', path + '/models/Cherry/scripts')
             os.chdir(path)
 
