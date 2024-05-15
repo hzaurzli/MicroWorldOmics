@@ -88,7 +88,7 @@ class WorkThread(QThread):
             out_pred = f"{out_dir}/phagcn_prediction.csv"
 
             def translation(inpth, outpth, infile, outfile):
-                prodigal = path + "/tools/prodigal/prodigal"
+                prodigal = "prodigal"
 
                 prodigal_cmd = f'{prodigal} -i {inpth}/{infile} -a {outpth}/{outfile} -f gff -p meta'
                 print("Running prodigal...")
@@ -142,7 +142,7 @@ class WorkThread(QThread):
 
             def run_diamond(diamond_db, outpth, infile, tool, threads, path):
                 # running alignment
-                diamond_cmd = path + f'/tools/diamond/diamond blastp --outfmt 5 --threads {threads} --sensitive -d {diamond_db} -q {outpth}/{infile} -o {outpth}/{tool}_results.xml -k 5'
+                diamond_cmd = f'diamond blastp --outfmt 5 --threads {threads} --sensitive -d {diamond_db} -q {outpth}/{infile} -o {outpth}/{tool}_results.xml -k 5'
                 print("Running Diamond...")
                 _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
                                           stderr=subprocess.DEVNULL)
@@ -164,7 +164,7 @@ class WorkThread(QThread):
                     w.close()
 
                 # running alignment
-                diamond_cmd = 'python3.8 ' + f'{scripts}/blastxml_to_tabular.py -o {outpth}/{tool}_results.tab -c qseqid,sseqid,pident,length,mismatch,gapopen,qstart,qend,sstart,send,evalue {outpth}/{tool}_results.xml'
+                diamond_cmd = 'python ' + f'{scripts}/blastxml_to_tabular.py -o {outpth}/{tool}_results.tab -c qseqid,sseqid,pident,length,mismatch,gapopen,qstart,qend,sstart,send,evalue {outpth}/{tool}_results.xml'
                 _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
                                           stderr=subprocess.DEVNULL)
                 diamond_out_fp = f"{outpth}/{tool}_results.tab"
@@ -500,9 +500,7 @@ class WorkThread(QThread):
                             threads,
                             path)
 
-                os.chdir(path + '/python/bin')
                 convert_xml(midfolder, 'phagcn', path + '/models/PhaGCN/scripts')
-                os.chdir(path)
 
                 abc_fp = f"{midfolder}/merged.abc"
                 cat_fun(f"{db_dir}/phagcn_database.self-diamond.tab.abc", f"{midfolder}/phagcn_results.abc", abc_fp)

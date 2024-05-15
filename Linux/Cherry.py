@@ -88,7 +88,7 @@ class WorkThread(QThread):
             topk = 1
 
             def translation(inpth, outpth, infile, outfile):
-                prodigal = path + "/tools/prodigal/prodigal"
+                prodigal = "prodigal"
 
                 prodigal_cmd = f'{prodigal} -i {inpth}/{infile} -a {outpth}/{outfile} -f gff -p meta'
                 print("Running prodigal...")
@@ -101,7 +101,7 @@ class WorkThread(QThread):
 
             def run_diamond(diamond_db, outpth, infile, tool, threads, path):
                 # running alignment
-                diamond_cmd = path + f'/tools/diamond/diamond_0_9_14 blastp --outfmt 5 --threads {threads} --sensitive -d {diamond_db} -q {outpth}/{infile} -o {outpth}/{tool}_results.xml -k 5'
+                diamond_cmd = f'diamond blastp --outfmt 5 --threads {threads} --sensitive -d {diamond_db} -q {outpth}/{infile} -o {outpth}/{tool}_results.xml -k 5'
                 print("Running Diamond...")
                 _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
                                           stderr=subprocess.DEVNULL)
@@ -395,7 +395,7 @@ class WorkThread(QThread):
             pkl.dump(test_virus, open(f'{cherrypth}/test_virus.F', 'wb'))
 
             try:
-                make_diamond_cmd = path + f'/tools/diamond/diamond_0_9_14 makedb --threads {threads} --in {midfolder}/cherry_renamed_protein.fa -d {cherrypth}/test_database.dmnd'
+                make_diamond_cmd = f'diamond makedb --threads {threads} --in {midfolder}/cherry_renamed_protein.fa -d {cherrypth}/test_database.dmnd'
                 print("Creating Diamond database...")
                 _ = subprocess.check_call(make_diamond_cmd, shell=True)
             except:
@@ -405,9 +405,7 @@ class WorkThread(QThread):
                         'cherry_renamed_protein.fa',
                         'cherry', threads, path)
 
-            os.chdir(path + '/python/bin')
             convert_xml(midfolder, 'cherry', path + '/models/Cherry/scripts')
-            os.chdir(path)
 
             if os.path.getsize(f'{midfolder}/cherry_results.abc') == 0:
                 Accession = []
@@ -426,9 +424,7 @@ class WorkThread(QThread):
                         'cherry_renamed_protein.fa',
                         'cherry_test', threads, path)
 
-            os.chdir(path + '/python')
             convert_xml(midfolder, 'cherry_test', path + '/models/Cherry/scripts')
-            os.chdir(path)
 
             database_abc_fp = f"{midfolder}/cherry_merged.abc"
             cat_fun1(f"{db_dir}/cherry_database.self-diamond.tab.abc", f"{midfolder}/cherry_results.abc",

@@ -110,29 +110,28 @@ class WorkThread(QThread):
                 if len(record.seq) > int(length_len):
                     rec.append(record)
             SeqIO.write(rec, out_fn + '/filtered_contigs.fa', 'fasta')
+            
+            prodigal = "prodigal"
+            prodigal_cmd = f'{prodigal} -i {out_fn}/filtered_contigs.fa -a {out_fn}/test_protein.fa -f gff -p meta'
+            print("Running prodigal...")
+            _ = subprocess.check_call(prodigal_cmd, shell=True, stdout=subprocess.DEVNULL,
+                                      stderr=subprocess.DEVNULL)
+              
 
-            try:
-                p = sub.Popen(
-                    r'.\tools\prodigal\prodigal -i ' + out_fn + '/filtered_contigs.fa -a ' + out_fn + '/test_protein.fa -f gff -p meta')
-                p.wait()
-            except:
-                QMessageBox.critical(self, "error", "check fasta file format!")
+            # create database
+            diamond = 'diamond'
+            make_diamond_cmd = f'{diamond} makedb --threads 2 --in ./models/PhaTYP/database/database.fa -d {out_fn}/database.dmnd'
+            print("Creating Diamond database...")
+            _ = subprocess.check_call(make_diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
+                                      stderr=subprocess.DEVNULL)
+            # running alignment            
+            diamond = 'diamond'
+            diamond_cmd = f'{diamond} blastp --threads 2 --sensitive -d {out_fn}/database.dmnd -q {out_fn}/test_protein.fa -o {out_fn}/results.tab -k 1'
+            print("Running Diamond...")
+            _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
+                                      stderr=subprocess.DEVNULL)
 
-            try:
-                # create database
-                p = sub.Popen(
-                    r'.\tools\diamond\diamond makedb --threads 2 --in ./models/PhaTYP/database/database.fa -d ' + out_fn + '/database.dmnd',
-                    shell=False)
-                p.wait()
-                # running alignment
-                p = sub.Popen(
-                    r'.\tools\diamond\diamond blastp --threads 2 --sensitive -d ' + out_fn + '/database.dmnd -q ' + out_fn + '/test_protein.fa -o ' + out_fn + '/results.tab -k 1',
-                    shell=False)
-                p.wait()
-
-                read_abc(out_fn + '/results.tab', out_fn + '/results.abc')
-            except:
-                QMessageBox.critical(self, "error", "check fasta file format!")
+            read_abc(out_fn + '/results.tab', out_fn + '/results.abc')
 
             # Load dictonary and BLAST results D:\tools\Pycharm\pyqt\models\PhaTYP\database
             proteins_df = pd.read_csv('./models/PhaTYP/database/proteins.csv')
@@ -511,7 +510,7 @@ class PhaTYP_Form(QWidget):
             contigs = self.textBrowser_2.toPlainText()
             out_dir = self.textBrowser_3.toPlainText()
 
-            out_pred = f"{out_dir}/cherry_prediction.csv"
+            out_pred = f"{out_dir}/lysogen_prediction.csv"
 
             path = os.path.abspath('.')
             if '\\' in path:
@@ -552,7 +551,7 @@ class PhaTYP_Form(QWidget):
         try:
             global out_tmp
             out_p = os.path.dirname(out_pred)
-            out_tmp = out_p + '/cherry_prediction_tmp.csv'
+            out_tmp = out_p + '/lysogen_prediction_tmp.csv'
 
             with open(out_tmp, 'w') as w:
                 f = open(out_pred)
@@ -573,7 +572,7 @@ class PhaTYP_Form(QWidget):
 
             nrows = int(count)
             print(nrows)
-            ncols = 5
+            ncols = 3
             self.tableWidget.setRowCount(nrows)  # 设置行数
             self.tableWidget.setColumnCount(ncols)
 

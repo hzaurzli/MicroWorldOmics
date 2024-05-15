@@ -96,7 +96,7 @@ class WorkThread(QThread):
             SeqIO.write(rec, f'{out_fn}/filtered_contigs.fa', 'fasta')
 
             if proteins is None:
-                prodigal = path + "/tools/prodigal/prodigal"
+                prodigal = "prodigal"
                 prodigal_cmd = f'{prodigal} -i {out_fn}/filtered_contigs.fa -a {out_fn}/test_protein.fa -f gff -p meta'
                 print("Running prodigal...")
                 _ = subprocess.check_call(prodigal_cmd, shell=True, stdout=subprocess.DEVNULL,
@@ -109,7 +109,7 @@ class WorkThread(QThread):
                     print(f'Using preformatted DIAMOND database ({diamond_db}) ...')
                 else:
                     # create database
-                    diamond = path + '/tools/diamond/diamond'
+                    diamond = 'diamond'
                     make_diamond_cmd = f'{diamond} makedb --threads {threads} --in {db_dir}/database.fa -d {out_fn}/database.dmnd'
                     print("Creating Diamond database...")
                     _ = subprocess.check_call(make_diamond_cmd, shell=True, stdout=subprocess.DEVNULL,
@@ -131,7 +131,7 @@ class WorkThread(QThread):
 
             try:
                 # running alignment
-                diamond = path + '/tools/diamond/diamond'
+                diamond = 'diamond'
                 diamond_cmd = f'{diamond} blastp --threads {threads} --sensitive -d {diamond_db} -q {out_fn}/test_protein.fa -o {out_fn}/results.tab -k 1'
                 print("Running Diamond...")
                 _ = subprocess.check_call(diamond_cmd, shell=True, stdout=subprocess.DEVNULL,

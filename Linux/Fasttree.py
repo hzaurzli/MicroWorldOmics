@@ -35,13 +35,13 @@ class WorkThread(QThread):
 
         try:
             if type == 'A':
-                os.popen(r"./tools/fastTree/FastTree -nt -gtr %s > %s"
+                os.popen(r"FastTree -nt -gtr %s > %s"
                          % (fasta, out))
             elif type == 'B':
-                os.popen(r"./tools/fastTree/FastTree -lg %s > %s"
+                os.popen(r"FastTree -lg %s > %s"
                          % (fasta, out))
             elif type == 'C':
-                os.popen(r"./tools/fastTree/FastTree -wag %s > %s"
+                os.popen(r"FastTree -wag %s > %s"
                          % (fasta, out))
 
             process_name = 'FastTree'

@@ -38,7 +38,7 @@ class WorkThread(QThread):
                 path = path.strip().split('\\')
                 path = '/'.join(path)
 
-            os.popen("aragorn -v -e -s -d -c -l -j -a -q -t -mt -o %s %s"
+            os.popen(r"aragorn -v -e -s -d -c -l -j -a -q -t -mt -o %s %s"
                      % (out, fasta))
             time.sleep(3)
             process_name = 'aragorn'

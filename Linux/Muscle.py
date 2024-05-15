@@ -39,10 +39,10 @@ class WorkThread(QThread):
                 path = path.strip().split('\\')
                 path = '/'.join(path)
 
-            os.popen(path + r"/tools/muscle/muscle5 -align %s -output %s"
+            os.popen(r"muscle -align %s -output %s"
                      % (fasta, out))
 
-            process_name = 'muscle5'
+            process_name = 'muscle'
             time.sleep(3)
             while True:  # 判断 iqtree 是否运行完成
                 if check_process_running(process_name):

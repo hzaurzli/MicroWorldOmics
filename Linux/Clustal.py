@@ -39,7 +39,7 @@ class WorkThread(QThread):
                 path = path.strip().split('\\')
                 path = '/'.join(path)
 
-            os.popen(path + r"/tools/clustalo/clustal_omega/clustalo -i %s > %s"
+            os.popen(r"clustalo -i %s > %s"
                      % (fasta, out))
             time.sleep(3)
             process_name = 'clustalo'

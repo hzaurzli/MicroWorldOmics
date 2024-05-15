@@ -39,7 +39,7 @@ class WorkThread(QThread):
                 path = path.strip().split('\\')
                 path = '/'.join(path)
 
-            os.popen(path + r"/tools/cd-hit/cd-hit -i %s -o %s -c %s -aL %s -aS %s"
+            os.popen(r"cd-hit -i %s -o %s -c %s -aL %s -aS %s"
                      % (fasta, out, sequence_identity, aL, aS))
             time.sleep(3)
             process_name = 'cd-hit'

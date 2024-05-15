@@ -35,27 +35,27 @@ class WorkThread(QThread):
                 return False
 
             if type == 'A':
-                os.popen(r"./tools/prodigal/prodigal -f gff -g %s -o %s -p single -i %s"
+                os.popen("prodigal -f gff -g %s -o %s -p single -i %s"
                          % (coden, out, fasta))
 
             elif type == 'B':
-                os.popen(r"./tools/prodigal/prodigal -f gbk -g %s -o %s -p single -i %s"
+                os.popen("prodigal -f gbk -g %s -o %s -p single -i %s"
                          % (coden, out, fasta))
 
             elif type == 'C':
-                os.popen(r"./tools/prodigal/prodigal -f sco -g %s -o %s -p single -i %s"
+                os.popen("prodigal -f sco -g %s -o %s -p single -i %s"
                          % (coden, out, fasta))
 
             elif type == 'D':
-                os.popen(r"./tools/prodigal/prodigal -f gff -g %s -o %s -p meta -i %s"
+                os.popen("prodigal -f gff -g %s -o %s -p meta -i %s"
                          % (coden, out, fasta))
 
             elif type == 'E':
-                os.popen(r"./tools/prodigal/prodigal -f gbk -g %s -o %s -p meta -i %s"
+                os.popen("prodigal -f gbk -g %s -o %s -p meta -i %s"
                          % (coden, out, fasta))
 
             elif type == 'F':
-                os.popen(r"./tools/prodigal/prodigal -f sco -g %s -o %s -p meta -i %s"
+                os.popen("prodigal -f sco -g %s -o %s -p meta -i %s"
                          % (coden, out, fasta))
 
             process_name = 'prodigal'

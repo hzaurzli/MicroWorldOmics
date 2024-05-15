@@ -32,7 +32,7 @@ class WorkThread(QThread):
 
     def run(self):
         try:
-            myobj = subprocess.Popen(r"./tools/clinker/clinker %s -o %s -p %s" %
+            myobj = subprocess.Popen(r"clinker %s -o %s -p %s" %
                                      (gbk_path,
                                       out,
                                       html))

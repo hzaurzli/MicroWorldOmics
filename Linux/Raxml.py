@@ -29,6 +29,11 @@ class WorkThread(QThread):
 
     def run(self):
         try:
+            path = os.path.abspath('.')
+            if '\\' in path:
+                path = path.strip().split('\\')
+                path = '/'.join(path)
+                
             def check_process_running(process_name):  # 检查进程是否运行
                 for process in psutil.process_iter(['name']):
                     if process.info['name'] == process_name:

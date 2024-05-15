@@ -35,16 +35,16 @@ class WorkThread(QThread):
 
         try:
             if type == 'A':
-                os.popen(r"./tools/iqtree/bin/iqtree -s %s -pre %s -redo -m MFP -b %s"
+                os.popen(r"iqtree -s %s -pre %s -redo -m MFP -b %s"
                          % (fasta, out, bootstrap))
             elif type == 'B':
-                os.popen(r"./tools/iqtree/bin/iqtree -s %s -pre %s -redo -m MF -b %s"
+                os.popen(r"iqtree -s %s -pre %s -redo -m MF -b %s"
                          % (fasta, out, bootstrap))
             elif type == 'C':
-                os.popen(r"./tools/iqtree/bin/iqtree -s %s -pre %s -redo -m TIM2+I+G -b %s"
+                os.popen(r"iqtree -s %s -pre %s -redo -m TIM2+I+G -b %s"
                          % (fasta, out, bootstrap))
             elif type == 'D':
-                os.popen(r"./tools/iqtree/bin/iqtree -s %s -pre %s -redo"
+                os.popen(r"iqtree -s %s -pre %s -redo"
                          % (fasta, out))
 
             process_name = 'iqtree'
