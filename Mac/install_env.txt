@@ -56,4 +56,4 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencv_python==4.1.2.30 
 
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple packaging==20.9 --trusted-host pypi.tuna.tsinghua.edu.cn
 
-## 报错提示可以进入虚拟环境手动删相应的包,再安装
+## If an error message is displayed, enter the virtual environment and manually delete the corresponding package and then install it
