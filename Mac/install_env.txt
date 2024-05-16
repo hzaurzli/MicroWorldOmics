@@ -22,7 +22,8 @@ conda install pytorch torchvision torchaudio cpuonly -c pytorch
 
 # pip install
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5 --trusted-host pypi.tuna.tsinghua.edu.cn
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5-tools --trusted-host pypi.tuna.tsinghua.edu.cn
+
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5-tools --trusted-host pypi.tuna.tsinghua.edu.cn
 
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQtWebEngine --trusted-host pypi.tuna.tsinghua.edu.cn
 
@@ -48,7 +49,7 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple datasets --trusted-host 
 
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple transformers==4.11.3 --trusted-host pypi.tuna.tsinghua.edu.cn
 
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple keras ==2.6.0 --trusted-host pypi.tuna.tsinghua.edu.cn
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple keras==2.6.0 --trusted-host pypi.tuna.tsinghua.edu.cn
 
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple tensorflow==2.6.0 --trusted-host pypi.tuna.tsinghua.edu.cn
 
