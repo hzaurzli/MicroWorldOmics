@@ -12,3 +12,5 @@ cd MicroWorldOmics
 
 python ./MicroWorldOmics.py
 ```
+
+***If an error occurs, refer to install_env.txt to manually install the environment***
