@@ -8,3 +8,6 @@ MicroWorldOmics abstract:
 
 MicroWorldOmics architecture:
 ![Architecture](https://github.com/hzaurzli/MicroWorldOmics/assets/47686371/daab177b-ff11-4b6f-bcc5-673d73c86a99)
+
+## How to download
+Download from links:https://caiyun.139.com/m/i?1G5C1h8CUoxBx; password:y3NR
