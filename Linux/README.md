@@ -3,9 +3,11 @@ Download from links:https://caiyun.139.com/m/i?1G5C1h8CUoxBx; password:y3NR
 
 ## Install MicroWorldOmics_Linux.zip and run
 ```
-# Setup R env
+# Unzip packages
 unzip Rpackages
+unzip MicroWorldOmics_Linux.zip
 
+# Setup R env
 ~/miniconda3/bin/conda create -n R
 source ~/miniconda3/bin/activate R
 conda install r-base=4.3.2
@@ -35,8 +37,7 @@ conda install bioconda::muscle
 conda install bioconda::prodigal
 
 
-# Unzip MicroWorldOmics_Linux.zip and run
-unzip MicroWorldOmics_Linux.zip
+# run
 cd MicroWorldOmics
 
 source activate microworldomics
