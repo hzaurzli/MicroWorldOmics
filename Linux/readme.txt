@@ -108,7 +108,7 @@ export QTWEBENGINE_DISABLE_SANDBOX=1
 # 安装 R
 ~/miniconda3/bin/conda create -n R
 source ~/miniconda3/bin/activate R
-conda install -c conda-forge r-base=4.3.2
+conda install r-base=4.3.2
 
 ## 安装 R 包
 ### 利用conda安装的包
