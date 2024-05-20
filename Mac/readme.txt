@@ -83,6 +83,7 @@ conda install bioconda::bioconductor-ggtree
 conda install conda-forge::r-nloptr
 conda install bioconda::bioconductor-rsamtools
 conda install conda-forge::r-phytools
+conda install conda-forge::r-lsa
 
 
 ### 利用 R base 安装的包
