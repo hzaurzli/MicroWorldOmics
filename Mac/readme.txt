@@ -170,7 +170,9 @@ install.packages('ape')
 install.packages('remotes')
 install.packages('shinyFiles')
 install.packages('colourpicker')
-
+install.packages('devtools')
+require(devtools)
+install_version("tidyfst", version = "1.6.5", repos = "http://cran.us.r-project.org")
 
 ## 安装 ggClusterNet 及其依赖包
 conda install bioconda::bioconductor-phyloseq
