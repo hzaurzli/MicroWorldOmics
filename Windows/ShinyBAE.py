@@ -68,7 +68,7 @@ class WorkThread(QThread):
             path = '/'.join(path)
 
         os.popen(path + '/Shiny/R-4.3.2/bin/Rscript.exe ' +
-                 path + '/Shiny/ShinyScript/ShinyBAE/ShinyBAE.R')
+                 path + '/Shiny/ShinyScript/ShinyBactericidalActivity/ShinyBactericidal_activity.R')
 
         while True:
             try:
