@@ -64,10 +64,6 @@ pip install protobuf==3.20.0
 ## 安装 opencv
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencv_python==4.1.2.30 --trusted-host pypi.tuna.tsinghua.edu.cn
 
-# 启动前运行
-export QTWEBENGINE_DISABLE_SANDBOX=1
-
-
 # 安装 R
 ~/miniconda3/bin/conda create -n R
 source ~/miniconda3/bin/activate R
