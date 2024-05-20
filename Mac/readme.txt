@@ -122,6 +122,7 @@ install.packages('shinythemes')
 install.packages('tidyfst')
 install.packages('sna')
 install.packages('vegan')
+install.packages('shinyFiles')
 remotes::install_github("MPBA/r-sparcc")
 install.packages('rhierbaps')
 devtools::install_github('zdk123/SpiecEasi')
@@ -167,11 +168,10 @@ install.packages('shinythemes')
 install.packages('ape')
 install.packages('remotes')
 install.packages('shinyFiles')
+install.packages('colourpicker')
 
 
 ## 安装 ggClusterNet 及其依赖包
 conda install bioconda::bioconductor-phyloseq
 conda install conda-forge::r-ggpubr
 remotes::install_github("taowenmicro/ggClusterNet")
-
-
