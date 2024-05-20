@@ -134,9 +134,10 @@ conda install conda-forge::r-ggpubr
 devtools::install_github("https://github.com/EvaYiwenWang/PLSDAbatch")
 
 
-##### 安装 WGCNA 包及其依赖
+##### 安装 WGCNA 包和 NetMoss2 包及其依赖
 BiocManager::install("systemfonts")
 BiocManager::install("WGCNA")
+remotes::install_github("xiaolw95/NetMoss2")
 
 
 ##### 安装 sf 包及其依赖
