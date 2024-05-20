@@ -5,7 +5,8 @@ source ~/miniconda3/bin/activate mwo
 
 # Mac 电脑安装pyqt5及其插件 (若报错,卸载再次安装)
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5 --trusted-host pypi.tuna.tsinghua.edu.cn
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5-tools --trusted-host pypi.tuna.tsinghua.edu.cn
+
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5-tools --trusted-host pypi.tuna.tsinghua.edu.cn
 
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQtWebEngine --trusted-host pypi.tuna.tsinghua.edu.cn
 
@@ -15,7 +16,8 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQtWebEngine --trusted-
 python test.py
 
 
-# 安装python依赖模块pip install -i https://pypi.tuna.tsinghua.edu.cn/simple biopython --trusted-host pypi.tuna.tsinghua.edu.cn
+# 安装python依赖模块
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple biopython --trusted-host pypi.tuna.tsinghua.edu.cn
 
 conda install bioconda::aragorn
 
@@ -27,7 +29,8 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas --trusted-host py
 
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5-stubs --trusted-host pypi.tuna.tsinghua.edu.cn
 
-conda install anaconda::paramiko
+
+conda install anaconda::paramiko
 
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple psutil --trusted-host pypi.tuna.tsinghua.edu.cn
 
@@ -79,6 +82,7 @@ conda install bioconda::bioconductor-phyloseq
 conda install bioconda::bioconductor-ggtree
 conda install conda-forge::r-nloptr
 conda install bioconda::bioconductor-rsamtools
+conda install conda-forge::r-phytools
 
 
 ### 利用 R base 安装的包
@@ -98,7 +102,8 @@ install.packages('gridExtra')
 install.packages('robustbase')
 install.packages('biglm')
 install.packages('pcaPP')
-install.packages('optparse')install.packages("lme4")
+install.packages('optparse')
+install.packages("lme4")
 BiocManager::install("Maaslin2")
 install.packages('flashClust')
 install.packages('igraph')
@@ -165,7 +170,8 @@ install.packages('shinyFiles')
 
 
 ## 安装 ggClusterNet 及其依赖包
-conda install bioconda::bioconductor-phyloseqconda install conda-forge::r-ggpubr
+conda install bioconda::bioconductor-phyloseq
+conda install conda-forge::r-ggpubr
 remotes::install_github("taowenmicro/ggClusterNet")
 
 
