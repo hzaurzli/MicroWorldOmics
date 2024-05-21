@@ -164,12 +164,12 @@ remotes::install_github("taowenmicro/ggClusterNet")
 
 
 # Unzip MicroWorldOmics_Linux.zip and run
-source ~/miniconda3/bin/activate mwo
 cp -r ~/miniconda3/envs/R/lib/R/* /.../MicroWorldOmics/Shiny/R/
 cp -r ~/miniconda3/envs/R_opt/lib/R/* /.../MicroWorldOmics/Shiny/R_opt/
 unzip MicroWorldOmics_Linux.zip
 cd MicroWorldOmics
 
+source ~/miniconda3/bin/activate mwo
 export QTWEBENGINE_DISABLE_SANDBOX=1
 python ./MicroWorldOmics.py
 ```
