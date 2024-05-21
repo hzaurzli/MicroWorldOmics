@@ -169,5 +169,6 @@ cp -r ~/miniconda3/envs/R_opt/lib/R/* /.../MicroWorldOmics/Shiny/R_opt/
 unzip MicroWorldOmics_Mac.zip
 cd MicroWorldOmics
 
+source ~/miniconda3/bin/activate mwo
 python ./MicroWorldOmics.py
 ```
