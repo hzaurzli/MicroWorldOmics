@@ -36,6 +36,7 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencv_python==4.1.2.30 
 
 ## Install tools
 conda install numpy
+conda install anaconda::perl
 conda install bioconda::aragorn
 conda install -c bioconda clinker-py
 conda install bioconda::raxml
