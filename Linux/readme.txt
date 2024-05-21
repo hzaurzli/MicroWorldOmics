@@ -192,7 +192,7 @@ remotes::install_github("xiaolw95/NetMoss2")
 ##### 此时 sf 包和其他包可能会产生冲突,因此重新配置环境
 ~/miniconda3/bin/conda create -n R_opt
 source ~/miniconda3/bin/activate R_opt
-conda install r-base=4.0.3
+conda install r-base=4.1.3
 
 conda install conda-forge::r-sf
 conda install conda-forge::r-tidyverse
