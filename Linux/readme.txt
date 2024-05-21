@@ -212,6 +212,7 @@ install.packages('fastmap')
 install.packages('shinycssloaders')
 install.packages('shinythemes')
 install.packages('ape')
+install.packages('vegan')
 install.packages('BiocManager')
 install.packages('shinyFiles')
 
