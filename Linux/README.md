@@ -3,6 +3,53 @@ Download from links:https://caiyun.139.com/m/i?1G5C1h8CUoxBx; password:y3NR
 
 ## Install MicroWorldOmics_Linux.zip and run
 ```
+# Setup Python env
+~/miniconda3/bin/conda create -n mwo python==3.6
+source ~/miniconda3/bin/activate mwo
+
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5-tools
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQtWebEngine --trusted-host pypi.tuna.tsinghua.edu.cn
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple biopython --trusted-host pypi.tuna.tsinghua.edu.cn
+conda install bioconda::aragorn
+conda install numpy
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple matplotlib --trusted-host pypi.tuna.tsinghua.edu.cn
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas --trusted-host pypi.tuna.tsinghua.edu.cn
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5-stubs --trusted-host pypi.tuna.tsinghua.edu.cn
+conda install anaconda::paramiko
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple psutil --trusted-host pypi.tuna.tsinghua.edu.cn
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests --trusted-host pypi.tuna.tsinghua.edu.cn
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple scikit-learn --trusted-host pypi.tuna.tsinghua.edu.cn
+conda install -c bioconda fastani
+conda install raxml
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple networkx --trusted-host pypi.tuna.tsinghua.edu.cn
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple markov_clustering --trusted-host pypi.tuna.tsinghua.edu.cn
+conda install pytorch torchvision torchaudio cpuonly -c pytorch
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple datasets --trusted-host pypi.tuna.tsinghua.edu.cn
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple transformers==4.11.3 --trusted-host pypi.tuna.tsinghua.edu.cn
+conda install -c anaconda keras==2.6.0
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple tensorflow==2.6.0 --trusted-host pypi.tuna.tsinghua.edu.cn
+pip uninstall protobuf
+pip install protobuf==3.20.0
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencv_python==4.1.2.30 --trusted-host pypi.tuna.tsinghua.edu.cn
+
+
+## Install tools
+conda install numpy
+conda install bioconda::aragorn
+conda install -c bioconda clinker-py
+conda install bioconda::raxml
+conda install bioconda::clustalo
+conda install bioconda::diamond==0.9.14
+conda install bioconda::fastani
+conda install bioconda::fasttree
+conda install bioconda::iqtree
+conda install bioconda::mafft
+conda install bioconda::muscle
+conda install bioconda::prodigal
+conda install anaconda::paramiko
+
+
 # Setup R env
 ~/miniconda3/bin/conda create -n R
 source ~/miniconda3/bin/activate R
@@ -117,10 +164,12 @@ remotes::install_github("taowenmicro/ggClusterNet")
 
 
 # Unzip MicroWorldOmics_Linux.zip and run
+source ~/miniconda3/bin/activate mwo
 cp -r ~/miniconda3/envs/R/lib/R/* /.../MicroWorldOmics/Shiny/R/
 cp -r ~/miniconda3/envs/R_opt/lib/R/* /.../MicroWorldOmics/Shiny/R_opt/
 unzip MicroWorldOmics_Linux.zip
 cd MicroWorldOmics
 
+export QTWEBENGINE_DISABLE_SANDBOX=1
 python ./MicroWorldOmics.py
 ```
