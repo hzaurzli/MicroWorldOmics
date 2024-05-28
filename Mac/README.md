@@ -165,8 +165,6 @@ remotes::install_github("taowenmicro/ggClusterNet")
 
 
 # Unzip MicroWorldOmics_Mac.zip and run
-cp -r ~/miniconda3/envs/R/lib/R/* /.../MicroWorldOmics/Shiny/R/
-cp -r ~/miniconda3/envs/R_opt/lib/R/* /.../MicroWorldOmics/Shiny/R_opt/
 unzip MicroWorldOmics_Mac.zip
 cd MicroWorldOmics
 
