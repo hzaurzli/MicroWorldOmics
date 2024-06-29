@@ -23,6 +23,7 @@ MicroWorldOmics has the following functional modules:
 4. Epidemiological analysis:
    (1). MLST analysis; (2). Serotype analysis; (3). Virulence gene, drug resistance gene identification and analysis.
 
+
 **MicroWorldOmics architecture:**
 
 
