@@ -7,9 +7,23 @@ The production of a large number of high-throughput sequencing data in the field
 MicroWorldOmics abstract:
 ![Abstract](https://github.com/hzaurzli/MicroWorldOmics/assets/47686371/ee168d58-963c-4681-b89f-a094308c3d34)
 
+MicroWorldOmics has the following functional modules:
+1. Microbiome analysis:
+   (1). Metagenome: diversity analysis, abundance difference analysis, microbial marker identification, dimensionality reduction analysis, etc; (2). Network construction: Bayesian network construction, cosine similarity network construction, differential network analysis, etc.
+
+2. Virome analysis:
+   (1). Phage identification; (2). Phage lysogenic determination; (3). Identification of phage species; (4). Phage host prediction.
+
+3. Exploring Dark matter:
+   (1). Endolysin activity analysis; (2). Analysis of antimicrobial peptide activity.
+
+4. Epidemiological analysis:
+   (1). MLST analysis; (2). Serotype analysis; (3). Virulence gene, drug resistance gene identification and analysis.
 
 MicroWorldOmics architecture:
 ![Architecture](https://github.com/hzaurzli/MicroWorldOmics/assets/47686371/daab177b-ff11-4b6f-bcc5-673d73c86a99)
+
+The MicroWorldOmics innovative design concept, framework architecture and main functions. The arrows show the logical steps of execution, data set input, and result output. When the software does not support the Windows system, users can use the interface of MicroWorldOmics to upload the file to the remote server, and automatically download files to the local server after the tasks are complete.
 
 ## How to download
 For Chinese main land:
