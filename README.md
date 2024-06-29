@@ -5,7 +5,10 @@ The production of a large number of high-throughput sequencing data in the field
 
 ## Overview
 **MicroWorldOmics abstract:**
+
+
 ![Abstract](https://github.com/hzaurzli/MicroWorldOmics/assets/47686371/ee168d58-963c-4681-b89f-a094308c3d34)
+
 
 MicroWorldOmics has the following functional modules:
 1. Microbiome analysis:
@@ -21,7 +24,10 @@ MicroWorldOmics has the following functional modules:
    (1). MLST analysis; (2). Serotype analysis; (3). Virulence gene, drug resistance gene identification and analysis.
 
 **MicroWorldOmics architecture:**
+
+
 ![Architecture](https://github.com/hzaurzli/MicroWorldOmics/assets/47686371/daab177b-ff11-4b6f-bcc5-673d73c86a99)
+
 
 The MicroWorldOmics innovative design concept, framework architecture and main functions. The arrows show the logical steps of execution, data set input, and result output. When the software does not support the Windows system, users can use the interface of MicroWorldOmics to upload the file to the remote server, and automatically download files to the local server after the tasks are complete.
 
