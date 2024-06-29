@@ -42,19 +42,19 @@ class WorkThread(QThread):
 
             elif type == 'B':
                 p = subprocess.Popen(
-                    path + r'/tools/fastani/fastANI.exe -q %s -rl %s -o %s' %
+                    path + r'/tools/fastani/fastANI.exe -q %s --rl %s -o %s' %
                     (query, ref, out))
                 p.wait()
 
             elif type == 'C':
                 p = subprocess.Popen(
-                    path + r'/tools/fastani/fastANI.exe -ql %s -r %s -o %s' %
+                    path + r'/tools/fastani/fastANI.exe --ql %s -r %s -o %s' %
                     (query, ref, out))
                 p.wait()
 
             elif type == 'D':
                 p = subprocess.Popen(
-                    path + r'/tools/fastani/fastANI.exe -ql %s -rl %s -o %s' %
+                    path + r'/tools/fastani/fastANI.exe --ql %s --rl %s -o %s' %
                     (query, ref, out))
                 p.wait()
 
