@@ -39,15 +39,15 @@ class WorkThread(QThread):
                 p.wait()
 
             elif type == 'B':
-                p = subprocess.Popen('fastANI -q %s -rl %s -o %s' % (query, ref, out))
+                p = subprocess.Popen('fastANI -q %s --rl %s -o %s' % (query, ref, out))
                 p.wait()
 
             elif type == 'C':
-                p = subprocess.Popen('fastANI -ql %s -r %s -o %s' % (query, ref, out))
+                p = subprocess.Popen('fastANI --ql %s -r %s -o %s' % (query, ref, out))
                 p.wait()
 
             elif type == 'D':
-                p = subprocess.Popen('fastANI -ql %s -rl %s -o %s' % (query, ref, out))
+                p = subprocess.Popen('fastANI --ql %s --rl %s -o %s' % (query, ref, out))
                 p.wait()
 
             process_name = 'fastANI'
