@@ -353,7 +353,6 @@ class GeneIdentification_Form(QWidget):
         super().__init__(parent)
         self.work = WorkThread()
 
-
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(790, 584)
@@ -671,7 +670,7 @@ class GeneIdentification_Form(QWidget):
         self.label_4.setText(_translate("Form", "Status"))
 
 
-     def read_file1(self):
+    def read_file1(self):
         openfile_name = QtWidgets.QFileDialog.getExistingDirectory(self, "choose file", "./")
         print(openfile_name)
         self.textBrowser_2.setText(openfile_name)
@@ -795,6 +794,7 @@ class GeneIdentification_Form(QWidget):
 
         except:
             QMessageBox.critical(self, "error", "Please run program first!!!")
+            
 
 if __name__ == "__main__":
     import sys
