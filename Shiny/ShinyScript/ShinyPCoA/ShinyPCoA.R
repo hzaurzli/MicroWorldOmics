@@ -92,7 +92,7 @@ server <- function(input, output, session) {
     else{
       if (input$Type == 'y') {
         df=t(df)
-        df.dist = vegdist(df,method='euclidean')    #基于euclidean距离
+        df.dist = vegdist(df,method='bray')    #基于bray-curtis距离
         pcoa =  dudi.pco(df.dist,
                          scannf = F,   # 一种逻辑值，指示是否应该显示特征值条形图
                          nf=2)         # 保留几个维度的坐标信息
@@ -139,7 +139,7 @@ server <- function(input, output, session) {
         
       } else if (input$Type == 'n') {
         df=t(df)
-        df.dist = vegdist(df,method='euclidean')    #基于euclidean距离
+        df.dist = vegdist(df,method='bray')    #基于bray-curtis距离
         pcoa =  dudi.pco(df.dist,
                          scannf = F,   # 一种逻辑值，指示是否应该显示特征值条形图
                          nf=2)         # 保留几个维度的坐标信息
