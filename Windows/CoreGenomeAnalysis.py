@@ -57,7 +57,7 @@ class WorkThread(QThread):
         super(WorkThread, self).__init__()
 
     def run(self):
-        def blast_filter(out_folder, align_percent, identical_percent):
+        def blast_filter(out_folder):
             ARG_location_dict = {}
             rootdir1 = out_folder + "/out"
             for filename in os.listdir(rootdir1):
@@ -129,7 +129,8 @@ class WorkThread(QThread):
                 ARG_list = kk[1]
                 Isolates_use = ID_filter[0]
                 for i in ARG_list:
-                    ARG_location_use_dict.setdefault(Isolates_use, []).append(i)
+                    if float(i[1]) >= ident and float(i[2]) >= coverage:
+                        ARG_location_use_dict.setdefault(Isolates_use, []).append(i)
             return ARG_location_use_dict
 
         def Core_genome_cal(ARG_location_use_dict):
@@ -179,10 +180,10 @@ class WorkThread(QThread):
             out_file.close()
             return core_gene_list
 
-        def Gene_abstract_determine(ARG_location_use_dict, core_gene_list, out_folder, align_percent,
+        def Gene_abstract_determine(ARG_location_use_dict, core_gene_list, out_folder, coverage,
                                     identical_percent):
             ARG_abstract_dict = {}
-            ARG_location_dict = blast_filter(out_folder, align_percent, identical_percent)
+            ARG_location_dict = blast_filter(out_folder)
             for item in ARG_location_use_dict.items():
                 Gene_filter_dict = {}
                 Gene_list_filter = []
@@ -265,7 +266,7 @@ class WorkThread(QThread):
                 file = filename.split(".")[-1]
                 if file == "corefa":
                     self.trigger.emit('Running: ' + filename + '\n' + 'The time cost for this step depends on the number of genomes')
-                    p = subprocess.Popen(path + "/tools/clustalo/clustal_omega/clustalo -i "
+                    p = subprocess.Popen(path + "/tools/clustalo/clustal_omega/clustalo.exe -i "
                                          + out_folder + "/corefa/" + filename + " -o "
                                          + out_folder + "/corefa/" + filename + ".aln -v")
                     p.wait()
@@ -349,7 +350,7 @@ class WorkThread(QThread):
                     w.write(line)
             w.close()
 
-            makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb",
+            makedb = NcbimakeblastdbCommandline(path + "/blast-BLAST_VERSION+/bin/makeblastdb.exe",
                                                 dbtype='nucl',
                                                 input_file=out_folder + '/ref_tmp.fasta',
                                                 out=blastdb + '/target')
@@ -364,7 +365,7 @@ class WorkThread(QThread):
                 if is_fasta(query) == False:
                     QMessageBox.critical(self, "error", "Check fasta file format!")
                 else:
-                    blastn = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn",
+                    blastn = NcbiblastnCommandline(path + "/blast-BLAST_VERSION+/bin/blastn.exe",
                                                    query=query,
                                                    db=blastdb + '/target',
                                                    outfmt=format,
@@ -374,12 +375,12 @@ class WorkThread(QThread):
 
                     blastn()
 
-            ARG_location_dict = blast_filter(out_folder, align_percent, identical_percent)
+            ARG_location_dict = blast_filter(out_folder)
             ARG_location_use_dict = ARG_filter(ARG_location_dict)
             core_gene_list = Core_genome_cal(ARG_location_use_dict)
             ARG_abstract_dict = Gene_abstract_determine(ARG_location_use_dict,
                                                         core_gene_list, out_folder,
-                                                        align_percent, identical_percent)
+                                                        coverage, ident)
 
             records_use = blast_seq_abstract(ARG_abstract_dict, fasta, out_folder)
             creat_aln_file(records_use, core_gene_list)
@@ -593,7 +594,7 @@ class Core_genome_Form(QWidget):
         try:
             global fasta, out_folder, ref
             global blastdb, ref_tmp, evalue, format
-            global path, align_percent, identical_percent
+            global path, coverage, ident
 
             fasta = self.textBrowser_2.toPlainText()
             out_folder = self.textBrowser_3.toPlainText()
@@ -618,17 +619,17 @@ class Core_genome_Form(QWidget):
                 QApplication.processEvents()  # 逐条打印状态
 
                 try:
-                    align_percent = str(self.textEdit.toPlainText())
-                    if align_percent == '':
-                        align_percent = 80
+                    ident = str(self.textEdit.toPlainText())
+                    if ident == '':
+                        ident = 80
                     else:
-                        align_percent = float(align_percent)
+                        ident = float(ident)
 
-                    identical_percent = str(self.textEdit_2.toPlainText())
-                    if identical_percent == '':
-                        identical_percent = 80
+                    coverage = str(self.textEdit_2.toPlainText())
+                    if coverage == '':
+                        coverage = 80
                     else:
-                        identical_percent = float(identical_percent)
+                        coverage = float(coverage)
 
                     # 启动线程, 运行 run 函数
                     self.work.start()
