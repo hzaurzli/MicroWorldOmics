@@ -180,8 +180,7 @@ class WorkThread(QThread):
             out_file.close()
             return core_gene_list
 
-        def Gene_abstract_determine(ARG_location_use_dict, core_gene_list, out_folder, coverage,
-                                    identical_percent):
+        def Gene_abstract_determine(ARG_location_use_dict, core_gene_list, out_folder):
             ARG_abstract_dict = {}
             ARG_location_dict = blast_filter(out_folder)
             for item in ARG_location_use_dict.items():
@@ -379,8 +378,7 @@ class WorkThread(QThread):
             ARG_location_use_dict = ARG_filter(ARG_location_dict)
             core_gene_list = Core_genome_cal(ARG_location_use_dict)
             ARG_abstract_dict = Gene_abstract_determine(ARG_location_use_dict,
-                                                        core_gene_list, out_folder,
-                                                        coverage, ident)
+                                                        core_gene_list, out_folder)
 
             records_use = blast_seq_abstract(ARG_abstract_dict, fasta, out_folder)
             creat_aln_file(records_use, core_gene_list)
