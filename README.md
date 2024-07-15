@@ -42,8 +42,7 @@ For World users:
 
 Download from links: https://drive.google.com/drive/folders/1VtY_tvZ0TiXAMxBEqXq_qAM4vnCwm5so?usp=sharing
 
-***Notice:***
-The installation path must be in English and cannot contain Spaces.
+***Notice:*** **The installation path must be in English and cannot contain Spaces.**
 
 ## References
 If you find MicroWorldOmics useful to you, please cite:
