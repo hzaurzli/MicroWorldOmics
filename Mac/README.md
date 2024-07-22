@@ -16,7 +16,7 @@ conda install numpy
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple matplotlib --trusted-host pypi.tuna.tsinghua.edu.cn
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas --trusted-host pypi.tuna.tsinghua.edu.cn
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5-stubs --trusted-host pypi.tuna.tsinghua.edu.cn
-conda install anaconda::paramiko
+conda install paramiko
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple psutil --trusted-host pypi.tuna.tsinghua.edu.cn
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests --trusted-host pypi.tuna.tsinghua.edu.cn
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple scikit-learn --trusted-host pypi.tuna.tsinghua.edu.cn
@@ -36,7 +36,7 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencv_python==4.1.2.30 
 
 ## Install tools
 conda install numpy
-conda install anaconda::perl
+conda install perl
 conda install bioconda::aragorn
 conda install -c bioconda clinker-py
 conda install bioconda::raxml
