@@ -950,6 +950,11 @@ QComboBox {
           <string>GetFaPosition</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Crispr spacer</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
@@ -1517,6 +1522,7 @@ background-color: rgb(255, 255, 255);</string>
     <addaction name="actionShinyBactDating"/>
     <addaction name="actionDefensefinder"/>
     <addaction name="actionGetFaPosition"/>
+    <addaction name="actionCrispr_spacer"/>
    </widget>
    <widget class="QMenu" name="menuHelps">
     <property name="title">
@@ -1916,6 +1922,11 @@ background-color: rgb(255, 255, 255);</string>
   <action name="actionGetFaPosition">
    <property name="text">
     <string>GetFaPosition</string>
+   </property>
+  </action>
+  <action name="actionCrispr_spacer">
+   <property name="text">
+    <string>Crispr spacer</string>
    </property>
   </action>
  </widget>
