@@ -76,6 +76,7 @@ from ShinyNetMoss import ShinyNetMoss_Form
 from ShinyIGV import ShinyIGV_Form
 from Defense import Defense_system_Form
 from FaPosition import FaPosition_Form
+from Crispr_spacers import Crispr_spacers_Form
 from Help import Help_Form
 
 
@@ -103,7 +104,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         MainWindow.setFont(font)
-        MainWindow.setStyleSheet("background-image: url(./logo/green.png)")
+        MainWindow.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/green.png)")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -602,6 +603,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
+        self.comboBox_12.addItem("")
         self.verticalLayout.addWidget(self.comboBox_12)
         self.label_15 = QtWidgets.QLabel(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
@@ -702,10 +704,10 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.label_17.sizePolicy().hasHeightForWidth())
         self.label_17.setSizePolicy(sizePolicy)
         self.label_17.setMaximumSize(QtCore.QSize(860, 16777215))
-        self.label_17.setStyleSheet("background-image: url(./logo/green_back.png);")
+        self.label_17.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/green_back.png);")
         self.label_17.setText("")
         self.label_17.setTextFormat(QtCore.Qt.AutoText)
-        self.label_17.setPixmap(QtGui.QPixmap("./logo/background.png"))
+        self.label_17.setPixmap(QtGui.QPixmap("logo/background.png"))
         self.label_17.setScaledContents(False)
         self.label_17.setAlignment(QtCore.Qt.AlignCenter)
         self.label_17.setWordWrap(False)
@@ -730,7 +732,7 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.textBrowser_2.setFont(font)
         self.textBrowser_2.setAutoFillBackground(False)
-        self.textBrowser_2.setStyleSheet("background-image: url(./logo/color1.png);\n"
+        self.textBrowser_2.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.textBrowser_2.setObjectName("textBrowser_2")
@@ -749,7 +751,7 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.textBrowser.setFont(font)
         self.textBrowser.setAutoFillBackground(False)
-        self.textBrowser.setStyleSheet("background-image: url(./logo/color1.png);\n"
+        self.textBrowser.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.textBrowser.setObjectName("textBrowser")
@@ -761,11 +763,11 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.label_13.sizePolicy().hasHeightForWidth())
         self.label_13.setSizePolicy(sizePolicy)
         self.label_13.setMaximumSize(QtCore.QSize(120, 120))
-        self.label_13.setStyleSheet("background-image: url(./logo/color1.png);\n"
+        self.label_13.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.label_13.setText("")
-        self.label_13.setPixmap(QtGui.QPixmap("./logo/lrz.png"))
+        self.label_13.setPixmap(QtGui.QPixmap("../../../Documents/Desktop/lrz.png"))
         self.label_13.setScaledContents(True)
         self.label_13.setObjectName("label_13")
         self.gridLayout.addWidget(self.label_13, 0, 0, 1, 1)
@@ -775,7 +777,7 @@ class Ui_MainWindow(object):
         font.setFamily("Times New Roman")
         font.setPointSize(10)
         self.label_14.setFont(font)
-        self.label_14.setStyleSheet("background-image: url(./logo/color1.png);\n"
+        self.label_14.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.label_14.setObjectName("label_14")
@@ -974,6 +976,8 @@ class Ui_MainWindow(object):
         self.actionDefensefinder.setObjectName("actionDefensefinder")
         self.actionGetFaPosition = QtWidgets.QAction(MainWindow)
         self.actionGetFaPosition.setObjectName("actionGetFaPosition")
+        self.actionCrispr_spacer = QtWidgets.QAction(MainWindow)
+        self.actionCrispr_spacer.setObjectName("actionCrispr_spacer")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -1049,6 +1053,7 @@ class Ui_MainWindow(object):
         self.menuTools.addAction(self.actionShinyBactDating)
         self.menuTools.addAction(self.actionDefensefinder)
         self.menuTools.addAction(self.actionGetFaPosition)
+        self.menuTools.addAction(self.actionCrispr_spacer)
         self.menuHelps.addAction(self.actionReadme)
         self.menubar.addAction(self.menuBlast.menuAction())
         self.menubar.addAction(self.menuAlignment.menuAction())
@@ -1150,6 +1155,7 @@ class Ui_MainWindow(object):
         self.actionReadme.triggered.connect(self.readme_show)
         self.actionDefensefinder.triggered.connect(self.defensefinder_show)
         self.actionGetFaPosition.triggered.connect(self.getfaposition_show)
+        self.actionCrispr_spacer.triggered.connect(self.crispr_spacer_show)
 
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
@@ -1251,6 +1257,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.setItemText(20, _translate("MainWindow", "ShinyBactDating"))
         self.comboBox_12.setItemText(21, _translate("MainWindow", "DefenseFinder"))
         self.comboBox_12.setItemText(22, _translate("MainWindow", "GetFaPosition"))
+        self.comboBox_12.setItemText(23, _translate("MainWindow", "Crispr spacer"))
         self.label_15.setText(_translate("MainWindow", "Metagenomics/Amplicons"))
         self.comboBox_13.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_13.setItemText(1, _translate("MainWindow", "ShinyMultifun"))
@@ -1402,6 +1409,7 @@ class Ui_MainWindow(object):
         self.actionShinyNetMoss.setText(_translate("MainWindow", "ShinyNetMoss"))
         self.actionDefensefinder.setText(_translate("MainWindow", "DefenseFinder"))
         self.actionGetFaPosition.setText(_translate("MainWindow", "GetFaPosition"))
+        self.actionCrispr_spacer.setText(_translate("MainWindow", "Crispr spacer"))
 
 
     def selectionchange_comboBox(self):
@@ -1583,6 +1591,8 @@ class Ui_MainWindow(object):
             self.defensefinder_show()
         elif label_item == 'GetFaPosition':
             self.getfaposition_show()
+        elif label_item == 'Crispr spacer':
+            self.crispr_spacer_show()
 
 
     def selectionchange_comboBox_13(self):
@@ -2266,6 +2276,24 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.form)
         self.form.show()
 
+
+    def crispr_spacer_show(self):
+        try:
+            http = urllib3.PoolManager()
+            http.request('GET', 'https://cn.bing.com/')
+
+            # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+            self.form = QtWidgets.QWidget()
+            self.ui = Crispr_spacers_Form()
+            self.ui.setupUi(self.form)
+            self.form.show()
+
+        except:
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Check your network connection!")
+
+
     def readme_show(self):
         try:
             http = urllib3.PoolManager()
@@ -2313,4 +2341,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
