@@ -29,7 +29,8 @@ MicroWorldOmics has the following functional modules:
 **MicroWorldOmics architecture:**
 
 
-![Architecture](https://github.com/hzaurzli/MicroWorldOmics/assets/47686371/daab177b-ff11-4b6f-bcc5-673d73c86a99)
+![Architecture](https://github.com/user-attachments/assets/ceee45c6-7a3a-48ed-baf1-a490ed8b46bb)
+
 
 
 The MicroWorldOmics innovative design concept, framework architecture and main functions. The arrows show the logical steps of execution, data set input, and result output. When the software does not support the Windows system, users can use the interface of MicroWorldOmics to upload the file to the remote server, and automatically download files to the local server after the tasks are complete.
