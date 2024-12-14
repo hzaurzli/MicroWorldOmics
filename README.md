@@ -43,7 +43,8 @@ Download from links: https://caiyun.139.com/m/i?1G5C1h8CUoxBx; password:y3NR
 
 For World users:
 
-Download from links: https://drive.google.com/drive/folders/1VtY_tvZ0TiXAMxBEqXq_qAM4vnCwm5so?usp=sharing
+Download from links: 
+https://drive.google.com/drive/folders/1dggfsdfXisMwy0_Xoo8LoGUqAmmOClax?usp=sharing
 
 ***Notice:*** **The installation path must be in English and cannot contain Spaces.**
 
