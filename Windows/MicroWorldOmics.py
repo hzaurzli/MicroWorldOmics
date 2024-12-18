@@ -104,7 +104,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         MainWindow.setFont(font)
-        MainWindow.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/green.png)")
+        MainWindow.setStyleSheet("background-image: url(./logo/green.png)")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -704,10 +704,10 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.label_17.sizePolicy().hasHeightForWidth())
         self.label_17.setSizePolicy(sizePolicy)
         self.label_17.setMaximumSize(QtCore.QSize(860, 16777215))
-        self.label_17.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/green_back.png);")
+        self.label_17.setStyleSheet("background-image: url(./logo/green_back.png);")
         self.label_17.setText("")
         self.label_17.setTextFormat(QtCore.Qt.AutoText)
-        self.label_17.setPixmap(QtGui.QPixmap("logo/background.png"))
+        self.label_17.setPixmap(QtGui.QPixmap("./logo/background.png"))
         self.label_17.setScaledContents(False)
         self.label_17.setAlignment(QtCore.Qt.AlignCenter)
         self.label_17.setWordWrap(False)
@@ -732,7 +732,7 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.textBrowser_2.setFont(font)
         self.textBrowser_2.setAutoFillBackground(False)
-        self.textBrowser_2.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/color1.png);\n"
+        self.textBrowser_2.setStyleSheet("background-image: url(./logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.textBrowser_2.setObjectName("textBrowser_2")
@@ -751,7 +751,7 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.textBrowser.setFont(font)
         self.textBrowser.setAutoFillBackground(False)
-        self.textBrowser.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/color1.png);\n"
+        self.textBrowser.setStyleSheet("background-image: url(./logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.textBrowser.setObjectName("textBrowser")
@@ -763,11 +763,11 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.label_13.sizePolicy().hasHeightForWidth())
         self.label_13.setSizePolicy(sizePolicy)
         self.label_13.setMaximumSize(QtCore.QSize(120, 120))
-        self.label_13.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/color1.png);\n"
+        self.label_13.setStyleSheet("background-image: url(./logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.label_13.setText("")
-        self.label_13.setPixmap(QtGui.QPixmap("../../../Documents/Desktop/lrz.png"))
+        self.label_13.setPixmap(QtGui.QPixmap("./logo/lrz.png"))
         self.label_13.setScaledContents(True)
         self.label_13.setObjectName("label_13")
         self.gridLayout.addWidget(self.label_13, 0, 0, 1, 1)
@@ -777,7 +777,7 @@ class Ui_MainWindow(object):
         font.setFamily("Times New Roman")
         font.setPointSize(10)
         self.label_14.setFont(font)
-        self.label_14.setStyleSheet("background-image: url(D:/tools/Pycharm/pyqt/logo/color1.png);\n"
+        self.label_14.setStyleSheet("background-image: url(./logo/color1.png);\n"
 "background-color: rgb(85, 255, 0);\n"
 "background-color: rgb(255, 255, 255);")
         self.label_14.setObjectName("label_14")
