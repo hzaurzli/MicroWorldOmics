@@ -76,6 +76,7 @@ from ShinyNetMoss import ShinyNetMoss_Form
 from ShinyIGV import ShinyIGV_Form
 from Defense import Defense_system_Form
 from FaPosition import FaPosition_Form
+from Crispr_spacers import Crispr_spacers_Form
 from Help import Help_Form
 
 
@@ -602,6 +603,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
         self.comboBox_12.addItem("")
+        self.comboBox_12.addItem("")
         self.verticalLayout.addWidget(self.comboBox_12)
         self.label_15 = QtWidgets.QLabel(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
@@ -974,6 +976,8 @@ class Ui_MainWindow(object):
         self.actionDefensefinder.setObjectName("actionDefensefinder")
         self.actionGetFaPosition = QtWidgets.QAction(MainWindow)
         self.actionGetFaPosition.setObjectName("actionGetFaPosition")
+        self.actionCrispr_spacer = QtWidgets.QAction(MainWindow)
+        self.actionCrispr_spacer.setObjectName("actionCrispr_spacer")
         self.menuBlast.addAction(self.actionBlastN)
         self.menuBlast.addAction(self.actionBlastP)
         self.menuBlast.addAction(self.actionBlastX)
@@ -1049,6 +1053,7 @@ class Ui_MainWindow(object):
         self.menuTools.addAction(self.actionShinyBactDating)
         self.menuTools.addAction(self.actionDefensefinder)
         self.menuTools.addAction(self.actionGetFaPosition)
+        self.menuTools.addAction(self.actionCrispr_spacer)
         self.menuHelps.addAction(self.actionReadme)
         self.menubar.addAction(self.menuBlast.menuAction())
         self.menubar.addAction(self.menuAlignment.menuAction())
@@ -1150,6 +1155,7 @@ class Ui_MainWindow(object):
         self.actionReadme.triggered.connect(self.readme_show)
         self.actionDefensefinder.triggered.connect(self.defensefinder_show)
         self.actionGetFaPosition.triggered.connect(self.getfaposition_show)
+        self.actionCrispr_spacer.triggered.connect(self.crispr_spacer_show)
 
         # pages action combobox
         self.comboBox.currentIndexChanged.connect(self.selectionchange_comboBox)
@@ -1251,6 +1257,7 @@ class Ui_MainWindow(object):
         self.comboBox_12.setItemText(20, _translate("MainWindow", "ShinyBactDating"))
         self.comboBox_12.setItemText(21, _translate("MainWindow", "DefenseFinder"))
         self.comboBox_12.setItemText(22, _translate("MainWindow", "GetFaPosition"))
+        self.comboBox_12.setItemText(23, _translate("MainWindow", "Crispr spacer"))
         self.label_15.setText(_translate("MainWindow", "Metagenomics/Amplicons"))
         self.comboBox_13.setItemText(0, _translate("MainWindow", "<Default>"))
         self.comboBox_13.setItemText(1, _translate("MainWindow", "ShinyMultifun"))
@@ -1402,6 +1409,7 @@ class Ui_MainWindow(object):
         self.actionShinyNetMoss.setText(_translate("MainWindow", "ShinyNetMoss"))
         self.actionDefensefinder.setText(_translate("MainWindow", "DefenseFinder"))
         self.actionGetFaPosition.setText(_translate("MainWindow", "GetFaPosition"))
+        self.actionCrispr_spacer.setText(_translate("MainWindow", "Crispr spacer"))
 
 
     def selectionchange_comboBox(self):
@@ -1583,6 +1591,8 @@ class Ui_MainWindow(object):
             self.defensefinder_show()
         elif label_item == 'GetFaPosition':
             self.getfaposition_show()
+        elif label_item == 'Crispr spacer':
+            self.crispr_spacer_show()
 
 
     def selectionchange_comboBox_13(self):
@@ -2266,6 +2276,24 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.form)
         self.form.show()
 
+
+    def crispr_spacer_show(self):
+        try:
+            http = urllib3.PoolManager()
+            http.request('GET', 'https://cn.bing.com/')
+
+            # 如果插件UI是MainWindow则用QtWidgets.QMainWindow,若为Widgets则用QtWidgets.QWidget
+            self.form = QtWidgets.QWidget()
+            self.ui = Crispr_spacers_Form()
+            self.ui.setupUi(self.form)
+            self.form.show()
+
+        except:
+            w = QWidget()
+            QMessageBox.critical(w, "error",
+                                 "Check your network connection!")
+
+
     def readme_show(self):
         try:
             http = urllib3.PoolManager()
@@ -2313,4 +2341,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
