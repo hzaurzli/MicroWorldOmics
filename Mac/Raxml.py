@@ -29,11 +29,6 @@ class WorkThread(QThread):
 
     def run(self):
         try:
-            path = os.path.abspath('.')
-            if '\\' in path:
-                path = path.strip().split('\\')
-                path = '/'.join(path)
-                
             def check_process_running(process_name):  # 检查进程是否运行
                 for process in psutil.process_iter(['name']):
                     if process.info['name'] == process_name:
@@ -41,52 +36,52 @@ class WorkThread(QThread):
                 return False
 
             if type == 'A':
-                os.popen("raxmlHPC -f a -s %s -n ex -x 12345 -p 12345 -# %s -m ASC_GTRCAT"
+                os.popen("raxmlHPC -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m ASC_GTRCAT"
                          % (fasta, bootstrap))
 
             elif type == 'B':
-                os.popen("raxmlHPC -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRGAMMAI"
+                os.popen("raxmlHPC -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m GTRGAMMAI"
                          % (fasta, bootstrap))
 
             elif type == 'C':
-                os.popen("raxmlHPC -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRGAMMA"
+                os.popen("raxmlHPC -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m GTRGAMMA"
                          % (fasta, bootstrap))
 
             elif type == 'D':
-                os.popen("raxmlHPC -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRCAT"
+                os.popen("raxmlHPC -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m GTRCAT"
                          % (fasta, bootstrap))
 
             elif type == 'E':
-                os.popen("raxmlHPC -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRCATI"
+                os.popen("raxmlHPC -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m GTRCATI"
                          % (fasta, bootstrap))
 
             elif type == 'F':
-                os.popen("raxmlHPC -f a -s %s -n ex -x 12345 -p 12345 -# %s -m ASC_GTRGAMMA"
+                os.popen("raxmlHPC -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m ASC_GTRGAMMA"
                          % (fasta, bootstrap))
 
             elif type == 'G':
-                os.popen("raxmlHPC -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGAMMALGF"
+                os.popen("raxmlHPC -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m PROTGAMMALGF"
                          % (fasta, bootstrap))
 
             elif type == 'H':
-                os.popen("raxmlHPC -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGAMMAILGX"
+                os.popen("raxmlHPC -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m PROTGAMMAILGX"
                          % (fasta, bootstrap))
 
             elif type == 'I':
-                os.popen("raxmlHPC -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGTRGAMMA"
+                os.popen("raxmlHPC -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m PROTGTRGAMMA"
                          % (fasta, bootstrap))
 
             elif type == 'J':
-                os.popen("raxmlHPC -f a -s %s -n ex -x 12345 -p 12345 -# %s -m  PROTGAMMAAUTO"
+                os.popen("raxmlHPC -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m  PROTGAMMAAUTO"
                          % (fasta, bootstrap))
 
             elif type == 'K':
-                os.popen("raxmlHPC -f a -s %s -n ex -x 12345 -p 12345 -# %s -m  PROTGAMMAWAG"
+                os.popen("raxmlHPC -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m  PROTGAMMAWAG"
                          % (fasta, bootstrap))
 
-            process_name = 'raxmlHPC'
+            process_name = 'raxmlHPC.exe'
             time.sleep(5)
-            while True:  # 判断 iqtree 是否运行完成
+            while True:  # 判断 iqtree.exe 是否运行完成
                 if check_process_running(process_name):
                     print(f"The process {process_name} is running.")
                     time.sleep(30)
@@ -94,11 +89,11 @@ class WorkThread(QThread):
                 else:
                     print(f"The process {process_name} is not running.")
                     relevant_path = "."
-                    included_extensions = ['ex']
+                    included_extensions = ['nwk']
                     file_names = [fn for fn in os.listdir(relevant_path)
                                   if any(fn.endswith(ext) for ext in included_extensions)]
                     for i in file_names:
-                        shutil.move(i, path)
+                        shutil.move(i, out_path)
                     break
 
             self.trigger.emit('Finished!!!')
@@ -116,12 +111,14 @@ class Raxml_Form(QWidget):
         Form.setObjectName("Form")
         Form.resize(687, 493)
         Form.setWindowIcon(QIcon("./logo/logo.ico"))
+        Form.setStyleSheet("background-image: url(./logo/green_back.png);")
         self.gridLayout_6 = QtWidgets.QGridLayout(Form)
         self.gridLayout_6.setObjectName("gridLayout_6")
         self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName("gridLayout")
         self.label_6 = QtWidgets.QLabel(Form)
+        self.label_6.setStyleSheet("background-image: url(./logo/white.png);")
         self.label_6.setText("")
         self.label_6.setObjectName("label_6")
         self.gridLayout.addWidget(self.label_6, 12, 3, 1, 1)
@@ -132,6 +129,7 @@ class Raxml_Form(QWidget):
         sizePolicy.setHeightForWidth(self.textBrowser_2.sizePolicy().hasHeightForWidth())
         self.textBrowser_2.setSizePolicy(sizePolicy)
         self.textBrowser_2.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.textBrowser_2.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_2.setObjectName("textBrowser_2")
         self.gridLayout.addWidget(self.textBrowser_2, 2, 0, 1, 1)
         self.radioButton_2 = QtWidgets.QRadioButton(Form)
@@ -144,6 +142,7 @@ class Raxml_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.radioButton_2.setFont(font)
+        self.radioButton_2.setStyleSheet("background-image: url(./logo/white.png);")
         self.radioButton_2.setObjectName("radioButton_2")
         self.gridLayout.addWidget(self.radioButton_2, 6, 2, 1, 1)
         self.label_8 = QtWidgets.QLabel(Form)
@@ -161,6 +160,7 @@ class Raxml_Form(QWidget):
         sizePolicy.setHeightForWidth(self.textBrowser_3.sizePolicy().hasHeightForWidth())
         self.textBrowser_3.setSizePolicy(sizePolicy)
         self.textBrowser_3.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.textBrowser_3.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser_3.setObjectName("textBrowser_3")
         self.gridLayout.addWidget(self.textBrowser_3, 2, 2, 1, 1)
         self.radioButton_3 = QtWidgets.QRadioButton(Form)
@@ -173,6 +173,7 @@ class Raxml_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.radioButton_3.setFont(font)
+        self.radioButton_3.setStyleSheet("background-image: url(./logo/white.png);")
         self.radioButton_3.setObjectName("radioButton_3")
         self.gridLayout.addWidget(self.radioButton_3, 6, 3, 1, 1)
         self.pushButton_3 = QtWidgets.QPushButton(Form)
@@ -256,6 +257,7 @@ class Raxml_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.radioButton_11.setFont(font)
+        self.radioButton_11.setStyleSheet("background-image: url(./logo/white.png);")
         self.radioButton_11.setObjectName("radioButton_11")
         self.gridLayout.addWidget(self.radioButton_11, 12, 2, 1, 1)
         self.radioButton = QtWidgets.QRadioButton(Form)
@@ -268,6 +270,7 @@ class Raxml_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.radioButton.setFont(font)
+        self.radioButton.setStyleSheet("background-image: url(./logo/white.png);")
         self.radioButton.setObjectName("radioButton")
         self.gridLayout.addWidget(self.radioButton, 6, 0, 1, 1)
         self.textEdit = QtWidgets.QTextEdit(Form)
@@ -277,6 +280,7 @@ class Raxml_Form(QWidget):
         sizePolicy.setHeightForWidth(self.textEdit.sizePolicy().hasHeightForWidth())
         self.textEdit.setSizePolicy(sizePolicy)
         self.textEdit.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.textEdit.setStyleSheet("background-image: url(./logo/white.png)")
         self.textEdit.setObjectName("textEdit")
         self.gridLayout.addWidget(self.textEdit, 2, 3, 1, 1)
         self.radioButton_9 = QtWidgets.QRadioButton(Form)
@@ -289,6 +293,7 @@ class Raxml_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.radioButton_9.setFont(font)
+        self.radioButton_9.setStyleSheet("background-image: url(./logo/white.png);")
         self.radioButton_9.setObjectName("radioButton_9")
         self.gridLayout.addWidget(self.radioButton_9, 11, 3, 1, 1)
         self.label_4 = QtWidgets.QLabel(Form)
@@ -309,6 +314,7 @@ class Raxml_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.radioButton_10.setFont(font)
+        self.radioButton_10.setStyleSheet("background-image: url(./logo/white.png);")
         self.radioButton_10.setObjectName("radioButton_10")
         self.gridLayout.addWidget(self.radioButton_10, 12, 0, 1, 1)
         self.radioButton_6 = QtWidgets.QRadioButton(Form)
@@ -321,6 +327,7 @@ class Raxml_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.radioButton_6.setFont(font)
+        self.radioButton_6.setStyleSheet("background-image: url(./logo/white.png);")
         self.radioButton_6.setObjectName("radioButton_6")
         self.gridLayout.addWidget(self.radioButton_6, 8, 3, 1, 1)
         self.radioButton_4 = QtWidgets.QRadioButton(Form)
@@ -333,6 +340,7 @@ class Raxml_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.radioButton_4.setFont(font)
+        self.radioButton_4.setStyleSheet("background-image: url(./logo/white.png);")
         self.radioButton_4.setObjectName("radioButton_4")
         self.gridLayout.addWidget(self.radioButton_4, 8, 0, 1, 1)
         self.pushButton = QtWidgets.QPushButton(Form)
@@ -340,6 +348,7 @@ class Raxml_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(22)
         self.pushButton.setFont(font)
+        self.pushButton.setStyleSheet("background-image: url(./logo/white.png)")
         self.pushButton.setObjectName("pushButton")
         self.gridLayout.addWidget(self.pushButton, 14, 3, 3, 1)
         self.radioButton_5 = QtWidgets.QRadioButton(Form)
@@ -352,6 +361,7 @@ class Raxml_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.radioButton_5.setFont(font)
+        self.radioButton_5.setStyleSheet("background-image: url(./logo/white.png);")
         self.radioButton_5.setObjectName("radioButton_5")
         self.gridLayout.addWidget(self.radioButton_5, 8, 2, 1, 1)
         self.label_9 = QtWidgets.QLabel(Form)
@@ -365,6 +375,7 @@ class Raxml_Form(QWidget):
         sizePolicy.setHeightForWidth(self.textBrowser.sizePolicy().hasHeightForWidth())
         self.textBrowser.setSizePolicy(sizePolicy)
         self.textBrowser.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
         self.textBrowser.setObjectName("textBrowser")
         self.gridLayout.addWidget(self.textBrowser, 14, 0, 3, 3)
         self.radioButton_8 = QtWidgets.QRadioButton(Form)
@@ -377,6 +388,7 @@ class Raxml_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.radioButton_8.setFont(font)
+        self.radioButton_8.setStyleSheet("background-image: url(./logo/white.png);")
         self.radioButton_8.setObjectName("radioButton_8")
         self.gridLayout.addWidget(self.radioButton_8, 11, 2, 1, 1)
         self.pushButton_2 = QtWidgets.QPushButton(Form)
@@ -396,6 +408,7 @@ class Raxml_Form(QWidget):
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         self.radioButton_7.setFont(font)
+        self.radioButton_7.setStyleSheet("background-image: url(./logo/white.png);")
         self.radioButton_7.setObjectName("radioButton_7")
         self.gridLayout.addWidget(self.radioButton_7, 11, 0, 1, 1)
         self.label_10 = QtWidgets.QLabel(Form)
@@ -414,7 +427,7 @@ class Raxml_Form(QWidget):
 
         ## default
         self.textBrowser_2.setPlaceholderText("D:/input/test.fa")
-        self.textBrowser_3.setPlaceholderText("D:/output/test.nwk")
+        self.textBrowser_3.setPlaceholderText("D:/output/")
         self.textEdit.setPlaceholderText(" Bootstap: 100")
         self.radioButton.setChecked(True)
 
@@ -425,7 +438,7 @@ class Raxml_Form(QWidget):
         self.label_8.setText(_translate("Form", "Models of amino acids substitution"))
         self.radioButton_3.setText(_translate("Form", "GTRGAMMA"))
         self.pushButton_3.setText(_translate("Form", "Choose"))
-        self.label_3.setText(_translate("Form", "Output tree file"))
+        self.label_3.setText(_translate("Form", "Output tree file path"))
         self.label_7.setText(_translate("Form", "Models of nucleotide substitution"))
         self.label_2.setText(_translate("Form", "Input fasta file"))
         self.label_5.setText(_translate("Form", "Bootstroop value"))
@@ -449,7 +462,7 @@ class Raxml_Form(QWidget):
         self.textBrowser_2.setText(openfile_name)
 
     def read_file2(self):
-        openfile_name = QtWidgets.QFileDialog.getSaveFileName(self, "choose file", "./")[0]
+        openfile_name = QtWidgets.QFileDialog.getExistingDirectory(self, "choose file", "./")
         print(openfile_name)
         self.textBrowser_3.setText(openfile_name)
 
@@ -458,12 +471,11 @@ class Raxml_Form(QWidget):
 
     def build_tree(self):
         try:
-            global fasta, out, path, type, bootstrap
+            global fasta, out_path, type, bootstrap
             fasta = self.textBrowser_2.toPlainText()
-            out = self.textBrowser_3.toPlainText()
-            path = os.path.dirname(out)
+            out_path = self.textBrowser_3.toPlainText()
 
-            if any([len(fasta), len(out)]) == False:
+            if any([len(fasta), len(out_path)]) == False:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
                 try:
@@ -570,5 +582,4 @@ if __name__ == "__main__":
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
-
 
