@@ -164,7 +164,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Output tree file</string>
+        <string>Output tree file path</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
