@@ -36,47 +36,47 @@ class WorkThread(QThread):
                 return False
 
             if type == 'A':
-                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m ASC_GTRCAT"
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m ASC_GTRCAT"
                          % (fasta, bootstrap))
 
             elif type == 'B':
-                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRGAMMAI"
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m GTRGAMMAI"
                          % (fasta, bootstrap))
 
             elif type == 'C':
-                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRGAMMA"
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m GTRGAMMA"
                          % (fasta, bootstrap))
 
             elif type == 'D':
-                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRCAT"
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m GTRCAT"
                          % (fasta, bootstrap))
 
             elif type == 'E':
-                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m GTRCATI"
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m GTRCATI"
                          % (fasta, bootstrap))
 
             elif type == 'F':
-                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m ASC_GTRGAMMA"
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m ASC_GTRGAMMA"
                          % (fasta, bootstrap))
 
             elif type == 'G':
-                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGAMMALGF"
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m PROTGAMMALGF"
                          % (fasta, bootstrap))
 
             elif type == 'H':
-                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGAMMAILGX"
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m PROTGAMMAILGX"
                          % (fasta, bootstrap))
 
             elif type == 'I':
-                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m PROTGTRGAMMA"
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m PROTGTRGAMMA"
                          % (fasta, bootstrap))
 
             elif type == 'J':
-                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m  PROTGAMMAAUTO"
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m  PROTGAMMAAUTO"
                          % (fasta, bootstrap))
 
             elif type == 'K':
-                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n ex -x 12345 -p 12345 -# %s -m  PROTGAMMAWAG"
+                os.popen(r".\tools\raxml\raxmlHPC.exe -f a -s %s -n nwk -x 12345 -p 12345 -# %s -m  PROTGAMMAWAG"
                          % (fasta, bootstrap))
 
             process_name = 'raxmlHPC.exe'
@@ -89,11 +89,11 @@ class WorkThread(QThread):
                 else:
                     print(f"The process {process_name} is not running.")
                     relevant_path = "."
-                    included_extensions = ['ex']
+                    included_extensions = ['nwk']
                     file_names = [fn for fn in os.listdir(relevant_path)
                                   if any(fn.endswith(ext) for ext in included_extensions)]
                     for i in file_names:
-                        shutil.move(i, path)
+                        shutil.move(i, out_path)
                     break
 
             self.trigger.emit('Finished!!!')
@@ -427,7 +427,7 @@ class Raxml_Form(QWidget):
 
         ## default
         self.textBrowser_2.setPlaceholderText("D:/input/test.fa")
-        self.textBrowser_3.setPlaceholderText("D:/output/test.nwk")
+        self.textBrowser_3.setPlaceholderText("D:/output/")
         self.textEdit.setPlaceholderText(" Bootstap: 100")
         self.radioButton.setChecked(True)
 
@@ -438,7 +438,7 @@ class Raxml_Form(QWidget):
         self.label_8.setText(_translate("Form", "Models of amino acids substitution"))
         self.radioButton_3.setText(_translate("Form", "GTRGAMMA"))
         self.pushButton_3.setText(_translate("Form", "Choose"))
-        self.label_3.setText(_translate("Form", "Output tree file"))
+        self.label_3.setText(_translate("Form", "Output tree file path"))
         self.label_7.setText(_translate("Form", "Models of nucleotide substitution"))
         self.label_2.setText(_translate("Form", "Input fasta file"))
         self.label_5.setText(_translate("Form", "Bootstroop value"))
@@ -462,7 +462,7 @@ class Raxml_Form(QWidget):
         self.textBrowser_2.setText(openfile_name)
 
     def read_file2(self):
-        openfile_name = QtWidgets.QFileDialog.getSaveFileName(self, "choose file", "./")[0]
+        openfile_name = QtWidgets.QFileDialog.getExistingDirectory(self, "choose file", "./")
         print(openfile_name)
         self.textBrowser_3.setText(openfile_name)
 
@@ -471,12 +471,11 @@ class Raxml_Form(QWidget):
 
     def build_tree(self):
         try:
-            global fasta, out, path, type, bootstrap
+            global fasta, out_path, type, bootstrap
             fasta = self.textBrowser_2.toPlainText()
-            out = self.textBrowser_3.toPlainText()
-            path = os.path.dirname(out)
+            out_path = self.textBrowser_3.toPlainText()
 
-            if any([len(fasta), len(out)]) == False:
+            if any([len(fasta), len(out_path)]) == False:
                 QMessageBox.warning(self, "warning", "Please add correct file path!", QMessageBox.Cancel)
             else:
                 try:
@@ -564,6 +563,7 @@ class Raxml_Form(QWidget):
                         # 启动线程, 运行 run 函数
                         self.work.start()
                         # 传送信号, 接受 run 函数执行完毕后的信号
+
                         self.work.trigger.connect(self.finished)
 
                     else:
