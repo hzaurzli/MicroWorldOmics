@@ -563,7 +563,6 @@ class Raxml_Form(QWidget):
                         # 启动线程, 运行 run 函数
                         self.work.start()
                         # 传送信号, 接受 run 函数执行完毕后的信号
-
                         self.work.trigger.connect(self.finished)
 
                     else:
