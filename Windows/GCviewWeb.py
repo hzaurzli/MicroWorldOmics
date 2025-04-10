@@ -70,24 +70,9 @@ class GCviewWeb_Form(QMainWindow):
 
     def run_js(self, content):
         js_string_1 = '''
-        cgv = new CGV.Viewer('#my-viewer', {
-        height: 650,
-        width: 1200,
-        });
+       createViewerAndLoadJSON("'''
 
-        var request = new XMLHttpRequest();
-        request.open('GET', "'''
-
-        js_string_2 = '''",true);
-            request.onload = function() {
-              var response = request.response;
-              const json = JSON.parse(response);
-              cgv.io.loadJSON(json);
-              cgv.draw()
-            };
-            request.send();
-
-            cgv.draw();
+        js_string_2 = '''");
         '''
 
         js_string = js_string_1 + content + js_string_2
