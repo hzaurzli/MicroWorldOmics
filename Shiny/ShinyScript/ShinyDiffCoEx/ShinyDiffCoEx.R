@@ -44,7 +44,7 @@ ui <- tagList(
           dataTableOutput("table")
         ),
         br(),
-        h5(strong("Larger T values represent that the weights (regulatory relationships) of gene pairs are less different between the two treatments!!!")),
+        h5(strong("Larger T values represent that the weights (regulatory relationships) of ASV/OTU pairs are less different between the two treatments!!!")),
         hr(),
         plotOutput(outputId = "detectfig", width = "90%")
       )
