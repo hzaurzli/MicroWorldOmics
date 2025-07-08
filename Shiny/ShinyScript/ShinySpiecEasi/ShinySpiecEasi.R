@@ -92,7 +92,7 @@ server <- function(input, output, session) {
     if(input$method == 'Normal'){
       output$file2 <- renderUI({
         sliderInput("num", "Corrlation cutoff in Normal pattern",
-                     value = 0.3, min = 0, max = 1)
+                    value = 0.3, min = 0, max = 1)
       })
     }
     else{
@@ -101,20 +101,20 @@ server <- function(input, output, session) {
       })
     }
   }, ignoreNULL = F)
-
+  
   
   observeEvent(input$start, {
     
     input_method <<- input$method
     
     otu_dat = otu_dat()
-   
+    
     if(is.null(otu_dat)){
       warning("Please upload files!")
     }
     else{
       output$table <- renderDataTable({
-		amgut1.filt <<- as.matrix(otu_dat)
+        amgut1.filt <<- as.matrix(otu_dat)
         depths <- rowSums(amgut1.filt)
         amgut1.filt.n  <- t(apply(amgut1.filt, 1, norm_to_total))
         amgut1.filt.cs <- round(amgut1.filt.n * min(depths))
@@ -155,7 +155,7 @@ server <- function(input, output, session) {
           
           ig.sparcc <<- adj2igraph(sparcc.graph)
           
-          df = get.data.frame(ig.gl)
+          df = get.data.frame(ig.sparcc)
           
         }
         
@@ -267,7 +267,7 @@ server <- function(input, output, session) {
       dev.off()
     }
   )
-
+  
 }
 
 

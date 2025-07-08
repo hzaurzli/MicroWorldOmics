@@ -595,6 +595,7 @@ server <- function(input, output, session) {
         require(glmnet)
         require(parallel)
         
+        x = as.matrix(otu_dat)
         x.rslt = rebacca(x, nbootstrap=100, N.cores=1)
         
         # estimate correlation
@@ -605,7 +606,7 @@ server <- function(input, output, session) {
         myAdjacencyMatrix = x.est$corr
         
         g  <- graph.adjacency(myAdjacencyMatrix,weighted=TRUE)
-        df <<- get.data.frame(g)
+        dat <<- get.data.frame(g)
       },options = list(pageLength = 10))
     }
   })
@@ -616,7 +617,7 @@ server <- function(input, output, session) {
       paste(input$dataset, ".csv", sep = "")
     },
     content = function(file) {
-      write.csv(df,file,row.names = T,quote = F)
+      write.csv(dat,file,row.names = T,quote = F)
     }
   )
 }
