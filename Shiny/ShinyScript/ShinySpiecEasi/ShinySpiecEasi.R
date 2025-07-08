@@ -267,7 +267,6 @@ server <- function(input, output, session) {
       dev.off()
     }
   )
-  
 }
 
 
