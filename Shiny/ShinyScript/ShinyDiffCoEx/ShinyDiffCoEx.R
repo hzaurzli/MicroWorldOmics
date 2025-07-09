@@ -26,6 +26,9 @@ ui <- tagList(
         downloadButton("downloadData1", "Download correlation matrix"),
         br(),
         br(),
+        downloadButton("downloadData2", "Download ASV/OTU modules"),
+        br(),
+        br(),
         downloadButton("plotDown", "Download figure"),
         br(),
         br(),
@@ -45,6 +48,11 @@ ui <- tagList(
         ),
         br(),
         h5(strong("Larger T values represent that the weights (regulatory relationships) of ASV/OTU pairs are less different between the two treatments!!!")),
+        hr(),
+        h4("The correlation matrix divides modules according to the degree of difference"),
+        shinycssloaders::withSpinner(
+          dataTableOutput("table_module"),
+        ),
         hr(),
         plotOutput(outputId = "detectfig", width = "90%")
       )
@@ -104,6 +112,11 @@ server <- function(input, output, session) {
   }, ignoreNULL = F)
   
   output$table <- renderDataTable({
+    data = data.frame(Item = c('No data'))
+  }, options = list(pageLength = 1, searching = FALSE, paging = FALSE))
+  
+  
+  output$table_module <- renderDataTable({
     data = data.frame(Item = c('No data'))
   }, options = list(pageLength = 1, searching = FALSE, paging = FALSE))
   
@@ -205,10 +218,14 @@ server <- function(input, output, session) {
           df <- get.data.frame(g)
           colnames(df) = c('from','to','T value')
           df_dat <<- df
-          
         },options = list(pageLength = 10))
       }
       
+      
+      output$table_module <- renderDataTable({
+          ann_row_final
+      },options = list(pageLength = 10))
+    
       
       output$detectfig <- renderPlot({
         pheatmap::pheatmap(cor_final,cluster_cols = F,
@@ -238,6 +255,15 @@ server <- function(input, output, session) {
     },
     content = function(file) {
       write.csv(cor_final,file,row.names = T,quote = F)
+    }
+  )
+  
+  output$downloadData2 <- downloadHandler(
+    filename = function() {
+      paste(input$dataset, ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(ann_row_final,file,row.names = T,quote = F)
     }
   )
   
