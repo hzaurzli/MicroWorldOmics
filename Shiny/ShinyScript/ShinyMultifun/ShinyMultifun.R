@@ -31,571 +31,571 @@ ui <- fluidPage(
   #Navbar structure for UI
   navbarPage("Microbiome comprehensive analysis", 
              theme = shinytheme("lumen"),
-   # tabPanel 是导航栏换页
-   tabPanel("Microbial diversity", fluid = TRUE,
-            tags$style(button_color_css),
-            # Sidebar layout with a input and output definitions
-            sidebarLayout(
-              sidebarPanel(
-                h3(strong('Microbial diversity')),
-                hr(),
-                fluidRow(uiOutput('file1'),
-                         uiOutput('file2'),
-                         uiOutput('file3'),
-                                         
-                         actionButton('reset', 'RESET'),
-                         actionButton('start', 'START'),
-                         hr(),
-                         h4('Download all results'),
-                         downloadButton("downloadTable", "Download table"),
-                         br(),
-                         br(),
-                         radioButtons('extPlot', 'Plot output format',
-                                      choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                         downloadButton("downloadGraph", "Download graph"),
-                         ),
-                ),
-              mainPanel(
-                titlePanel("Microbial diversity table and graph"),
-                withSpinner(dataTableOutput(outputId = "table")),
-                hr(),
-                plotOutput(outputId = "detectfig")
-                )
-            )
-        ),
-       ##################
-     navbarMenu("High-dimensional analysis",
-        tabPanel("DCA analysis", fluid = TRUE,
-           tags$style(button_color_css),
-           # Sidebar layout with a input and output definitions
-           sidebarLayout(
-             sidebarPanel(
-               h3(strong('DCA analysis')),
-               hr(),
-               fluidRow(uiOutput('file4'),
-                        uiOutput('file5'),
-                        uiOutput('file6'),
-                    
-                        actionButton('reset1', 'RESET'),
-                        actionButton('start1', 'START'),
-                        hr(),
-                        h4('Download all results'),
-                        downloadButton("downloadTable1", "Download table"),
-                        br(),
-                        br(),
-                        radioButtons('extPlot1', 'Plot output format',
-                                     choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                        downloadButton("downloadGraph1", "Download graph"),
-                        
-                     ),
-             ),
-             mainPanel(
-               titlePanel("DCA analysis table and graph"),
-               withSpinner(dataTableOutput(outputId = "table1")),
-               hr(),
-               plotOutput(outputId = "detectfig1")
-             )
-           )
-        ),
-        
-        tabPanel("CCA analysis", fluid = TRUE, 
-           tags$style(button_color_css),
-           # Sidebar layout with a input and output definitions
-           sidebarLayout(
-             sidebarPanel(
-               h3(strong('CCA analysis')),
-               hr(),
-               fluidRow(uiOutput('file7'),
-                        uiOutput('file8'),
-                        uiOutput('file9'),
-                        
-                        actionButton('reset2', 'RESET'),
-                        actionButton('start2', 'START'),
-                        hr(),
-                        h4('Download all results'),
-                        downloadButton("downloadTable2", "Download table"),
-                        br(),
-                        br(),
-                        radioButtons('extPlot2', 'Plot output format',
-                                     choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                        downloadButton("downloadGraph2", "Download graph"),
-               ),
-             ),
-             mainPanel(
-               titlePanel("CCA analysis table and graph"),
-               withSpinner(dataTableOutput(outputId = "table2")),
-               hr(),
-               plotOutput(outputId = "detectfig2")
-             )
-           )
-        ),
-        tabPanel("RDA analysis", fluid = TRUE, 
-           tags$style(button_color_css),
-           # Sidebar layout with a input and output definitions
-           sidebarLayout(
-             sidebarPanel(
-               h3(strong('RDA analysis')),
-               hr(),
-               fluidRow(uiOutput('file10'),
-                        uiOutput('file11'),
-                        uiOutput('file12'),
-                        
-                        
-                        actionButton('reset3', 'RESET'),
-                        actionButton('start3', 'START'),
-                        hr(),
-                        h4('Download all results'),
-                        downloadButton("downloadTable3", "Download table"),
-                        br(),
-                        br(),
-                        radioButtons('extPlot3', 'Plot output format',
-                                     choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                        downloadButton("downloadGraph3", "Download graph"),
-               ),
-             ),
-             mainPanel(
-               titlePanel("RDA analysis table and graph"),
-               withSpinner(dataTableOutput(outputId = "table3")),
-               hr(),
-               plotOutput(outputId = "detectfig3")
-             )
-           )
-        ),
-        tabPanel("MDS analysis", fluid = TRUE, 
-                 tags$style(button_color_css),
-                 # Sidebar layout with a input and output definitions
-                 sidebarLayout(
-                   sidebarPanel(
-                     h3(strong('MDS analysis')),
-                     hr(),
-                     fluidRow(uiOutput('file13'),
-                              uiOutput('file14'),
-                              uiOutput('file15'),
-                              
-                              
-                              actionButton('reset4', 'RESET'),
-                              actionButton('start4', 'START'),
-                              hr(),
-                              h4('Download all results'),
-                              downloadButton("downloadTable4", "Download table"),
-                              br(),
-                              br(),
-                              radioButtons('extPlot4', 'Plot output format',
-                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                              downloadButton("downloadGraph4", "Download graph"),),
-                   ),
-                   mainPanel(
-                     titlePanel("MDS analysis table and graph"),
-                     withSpinner(dataTableOutput(outputId = "table4")),
-                     hr(),
-                     plotOutput(outputId = "detectfig4")
-                   )
-                 )
-        ),
-        tabPanel("PCoA analysis", fluid = TRUE, 
-                 tags$style(button_color_css),
-                 # Sidebar layout with a input and output definitions
-                 sidebarLayout(
-                   sidebarPanel(
-                     h3(strong('PCoA analysis')),
-                     hr(),
-                     fluidRow(uiOutput('file16'),
-                              uiOutput('file17'),
-                              uiOutput('file18'),
-                              
-                              
-                              actionButton('reset5', 'RESET'),
-                              actionButton('start5', 'START'),
-                              hr(),
-                              h4('Download all results'),
-                              downloadButton("downloadTable5", "Download table"),
-                              br(),
-                              br(),
-                              radioButtons('extPlot5', 'Plot output format',
-                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                              downloadButton("downloadGraph5", "Download graph"),),
-                   ),
-                   mainPanel(
-                     titlePanel("PCoA analysis table and graph"),
-                     withSpinner(dataTableOutput(outputId = "table5")),
-                     hr(),
-                     plotOutput(outputId = "detectfig5")
-                   )
-                 )
-        ),
-        tabPanel("PCA analysis", fluid = TRUE, 
-                 tags$style(button_color_css),
-                 # Sidebar layout with a input and output definitions
-                 sidebarLayout(
-                   sidebarPanel(
-                     h3(strong('PCA analysis')),
-                     hr(),
-                     fluidRow(uiOutput('file19'),
-                              uiOutput('file20'),
-                              uiOutput('file21'),
-                              
-                              
-                              actionButton('reset6', 'RESET'),
-                              actionButton('start6', 'START'),
-                              hr(),
-                              h4('Download all results'),
-                              downloadButton("downloadTable6", "Download table"),
-                              br(),
-                              br(),
-                              radioButtons('extPlot6', 'Plot output format',
-                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                              downloadButton("downloadGraph6", "Download graph"),),
-                   ),
-                   mainPanel(
-                     titlePanel("PCA analysis table and graph"),
-                     withSpinner(dataTableOutput(outputId = "table6")),
-                     hr(),
-                     plotOutput(outputId = "detectfig6")
-                   )
-                 )
-        ),
-        tabPanel("LDA analysis", fluid = TRUE, 
-                 tags$style(button_color_css),
-                 # Sidebar layout with a input and output definitions
-                 sidebarLayout(
-                   sidebarPanel(
-                     h3(strong('LDA analysis')),
-                     hr(),
-                     fluidRow(uiOutput('file22'),
-                              uiOutput('file23'),
-                              uiOutput('file24'),
-                              
-                              
-                              actionButton('reset7', 'RESET'),
-                              actionButton('start7', 'START'),
-                              hr(),
-                              h4('Download all results'),
-                              downloadButton("downloadTable7", "Download table"),
-                              br(),
-                              br(),
-                              radioButtons('extPlot7', 'Plot output format',
-                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                              downloadButton("downloadGraph7", "Download graph"),),
-                   ),
-                   mainPanel(
-                     titlePanel("LDA analysis table and graph"),
-                     withSpinner(dataTableOutput(outputId = "table7")),
-                     hr(),
-                     plotOutput(outputId = "detectfig7")
-                   )
-                 )
-        ),
-        
-        tabPanel("NMDS analysis", fluid = TRUE, 
-                 tags$style(button_color_css),
-                 # Sidebar layout with a input and output definitions
-                 sidebarLayout(
-                   sidebarPanel(
-                     h3(strong('NMDS analysis')),
-                     hr(),
-                     fluidRow(uiOutput('file25'),
-                              uiOutput('file26'),
-                              uiOutput('file27'),
-                              
-                              
-                              actionButton('reset8', 'RESET'),
-                              actionButton('start8', 'START'),
-                              hr(),
-                              h4('Download all results'),
-                              downloadButton("downloadTable8", "Download table"),
-                              br(),
-                              br(),
-                              radioButtons('extPlot8', 'Plot output format',
-                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                              downloadButton("downloadGraph8", "Download graph"),),
-                   ),
-                   mainPanel(
-                     titlePanel("NMDS analysis table and graph"),
-                     withSpinner(dataTableOutput(outputId = "table8")),
-                     hr(),
-                     plotOutput(outputId = "detectfig8")
-                   )
-                 )
-              ),
-        ),
-   
-      ##################
-      navbarMenu("Relative abundance analysis",
-           tabPanel("Relative abundance bar plot", fluid = TRUE,
-                    tags$style(button_color_css),
-                    # Sidebar layout with a input and output definitions
-                    sidebarLayout(
-                      sidebarPanel(
-                        h3(strong('Relative abundance bar plot')),
-                        hr(),
-                        fluidRow(
-                          uiOutput('file28'),
-                          uiOutput('file29'),
-                          uiOutput('file30'),
-                          
-                          selectInput("class_levels", "Levels:", 
-                                      choices = c("Kingdom","Phylum",
-                                                  "Class","Order","Family",
-                                                  "Genus","Species"),
-                                      selected = 'Genus' 
-                          ),
-                          
-                          actionButton('reset9', 'RESET'),
-                          actionButton('start9', 'START'),
+             # tabPanel 是导航栏换页
+             tabPanel("Microbial diversity", fluid = TRUE,
+                      tags$style(button_color_css),
+                      # Sidebar layout with a input and output definitions
+                      sidebarLayout(
+                        sidebarPanel(
+                          h3(strong('Microbial diversity')),
                           hr(),
-                          h4('Download all results'),
-                          downloadButton("downloadTable9", "Download table"),
-                          br(),
-                          br(),
-                          radioButtons('extPlot9', 'Plot output format',
-                                       choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                          downloadButton("downloadGraph9", "Download graph")
-                        
-                          
-                        ),
-                      ),
-                      mainPanel(
-                        titlePanel("Relative abundance table and graph"),
-                        withSpinner(dataTableOutput(outputId = "table9")),
-                        hr(),
-                        plotOutput(outputId = "detectfig9")
-                      )
-                    )
-                ),
-           
-           tabPanel("Relative abundance ternary diagrams", fluid = TRUE,
-                    tags$style(button_color_css),
-                    # Sidebar layout with a input and output definitions
-                    sidebarLayout(
-                      sidebarPanel(
-                        h3(strong('Relative abundance ternary diagrams')),
-                        hr(),
-                        fluidRow(
-                          uiOutput('file31'),
-                          uiOutput('file32'),
-                          uiOutput('file33'),
-                          
-                          selectInput("class_levels1", "Levels:", 
-                                      choices = c("Kingdom","Phylum",
-                                                  "Class","Order","Family",
-                                                  "Genus","Species"),
-                                      selected = 'Phylum' 
-                          ),
-                          
-                          actionButton('reset10', 'RESET'),
-                          actionButton('start10', 'START'),
-                          hr(),
-                          h4('Download all results'),
-                          radioButtons('extPlot10', 'Plot output format',
-                                       choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                          downloadButton("downloadGraph10", "Download graph")
-                          
-                          
-                        ),
-                      ),
-                      mainPanel(
-                        titlePanel("Relative abundance ternary diagrams"),
-                        hr(),
-                        textOutput(outputId = "error_text"),
-                        plotOutput(outputId = "detectfig10"),
-                      )
-                    )
-           ),
-           
-           tabPanel("Relative abundance circlize", fluid = TRUE,
-                tags$style(button_color_css),
-                # Sidebar layout with a input and output definitions
-                sidebarLayout(
-                  sidebarPanel(
-                    h3(strong('Relative abundance circlize')),
-                    hr(),
-                    fluidRow(
-                      uiOutput('file34'),
-                      uiOutput('file35'),
-                      uiOutput('file36'),
-                      
-                      selectInput("class_levels2", "Levels:", 
-                                  choices = c("Kingdom","Phylum",
-                                              "Class","Order","Family",
-                                              "Genus","Species"),
-                                  selected = 'Phylum' 
-                      ),
-                      sliderInput("size", label = "Label text size:",
-                                  min = 0, max = 1.5, value = 0.8),
-                      br(),
-                      actionButton('reset11', 'RESET'),
-                      actionButton('start11', 'START'),
-                      hr(),
-                      h4('Download all results'),
-                      radioButtons('extPlot11', 'Plot output format',
-                                   choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                      downloadButton("downloadGraph11", "Download graph")
-                      
-                      
-                    ),
-                  ),
-                  mainPanel(
-                    titlePanel("Relative abundance circlize"),
-                    hr(),
-                    plotOutput(outputId = "detectfig11"),
-                  )
-                )
-       ),
-    ),
-
-     ##################
-     navbarMenu("Microbial differential analysis",
-            tabPanel("Wilcox.test", fluid = TRUE,
-                     tags$style(button_color_css),
-                     # Sidebar layout with a input and output definitions
-                     sidebarLayout(
-                       sidebarPanel(
-                         h3(strong('Wilcox.test')),
-                         hr(),
-                         fluidRow(
-                           uiOutput('file37'),
-                           uiOutput('file38'),
-                           uiOutput('file39'),
-                           
-                           tags$h5("Step4: Choose comparative group"),
-                           uiOutput('file40'),
-                           uiOutput('file41'),
-                           br(),
-                           sliderInput("Pval", "P value cut-off",
-                                       min = 0, max = 0.1,
-                                       value = 0.05),
-                           br(),
-                           actionButton('reset12', 'RESET'),
-                           actionButton('start12', 'START'),
-                           hr(),
-                           h4('Download all results'),
-                           downloadButton("downloadTable12", "Download table"),
-                    
-                         ),
-                       ),
-                       mainPanel(
-                         titlePanel("Wilcox.test result table"),
-                         withSpinner(dataTableOutput(outputId = "table12")),
-                       )
-                     )
-                  ),
-              
-                    
-                    tabPanel("DESeq2", fluid = TRUE,
-                             tags$style(button_color_css),
-                             # Sidebar layout with a input and output definitions
-                             sidebarLayout(
-                               sidebarPanel(
-                                 h3(strong('DESeq2')),
-                                 hr(),
-                                 fluidRow(
-                                   uiOutput('file42'),
-                                   uiOutput('file43'),
-                                   uiOutput('file44'),
+                          fluidRow(uiOutput('file1'),
+                                   uiOutput('file2'),
+                                   uiOutput('file3'),
                                    
-                                   tags$h5("Step4: Choose comparative group"),
-                                   uiOutput('file45'),
-                                   uiOutput('file46'),
-                                   br(),
-                                   sliderInput("Pval1", "P value cut-off",
-                                               min = 0, max = 0.1,
-                                               value = 0.05),
-                                   br(),
-                                   actionButton('reset13', 'RESET'),
-                                   actionButton('start13', 'START'),
+                                   actionButton('reset', 'RESET'),
+                                   actionButton('start', 'START'),
                                    hr(),
                                    h4('Download all results'),
-                                   downloadButton("downloadTable13", 
-                                                  "Download table"),
-                                   
-                                 ),
-                               ),
-                               mainPanel(
-                                 titlePanel("DESeq2 result table"),
-                                 withSpinner(dataTableOutput(outputId = "table13")),
-                               )
-                             )
-                    ),
-                    
-                    tabPanel("edgeR", fluid = TRUE,
-                             tags$style(button_color_css),
-                             # Sidebar layout with a input and output definitions
-                             sidebarLayout(
-                               sidebarPanel(
-                                 h3(strong('edgeR')),
-                                 hr(),
-                                 fluidRow(
-                                   uiOutput('file47'),
-                                   uiOutput('file48'),
-                                   uiOutput('file49'),
-                                   
-                                   tags$h5("Step4: Choose comparative group"),
-                                   uiOutput('file50'),
-                                   uiOutput('file51'),
+                                   downloadButton("downloadTable", "Download table"),
                                    br(),
-                                   sliderInput("Pval2", "P value cut-off",
-                                               min = 0, max = 0.1,
-                                               value = 0.05),
                                    br(),
-                                   actionButton('reset14', 'RESET'),
-                                   actionButton('start14', 'START'),
+                                   radioButtons('extPlot', 'Plot output format',
+                                                choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                   downloadButton("downloadGraph", "Download graph"),
+                          ),
+                        ),
+                        mainPanel(
+                          titlePanel("Microbial diversity table and graph"),
+                          withSpinner(dataTableOutput(outputId = "table")),
+                          hr(),
+                          plotOutput(outputId = "detectfig")
+                        )
+                      )
+             ),
+             ##################
+             navbarMenu("High-dimensional analysis",
+                        tabPanel("DCA analysis", fluid = TRUE,
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('DCA analysis')),
+                                     hr(),
+                                     fluidRow(uiOutput('file4'),
+                                              uiOutput('file5'),
+                                              uiOutput('file6'),
+                                              
+                                              actionButton('reset1', 'RESET'),
+                                              actionButton('start1', 'START'),
+                                              hr(),
+                                              h4('Download all results'),
+                                              downloadButton("downloadTable1", "Download table"),
+                                              br(),
+                                              br(),
+                                              radioButtons('extPlot1', 'Plot output format',
+                                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                              downloadButton("downloadGraph1", "Download graph"),
+                                              
+                                     ),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("DCA analysis table and graph"),
+                                     withSpinner(dataTableOutput(outputId = "table1")),
+                                     hr(),
+                                     plotOutput(outputId = "detectfig1")
+                                   )
+                                 )
+                        ),
+                        
+                        tabPanel("CCA analysis", fluid = TRUE, 
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('CCA analysis')),
+                                     hr(),
+                                     fluidRow(uiOutput('file7'),
+                                              uiOutput('file8'),
+                                              uiOutput('file9'),
+                                              
+                                              actionButton('reset2', 'RESET'),
+                                              actionButton('start2', 'START'),
+                                              hr(),
+                                              h4('Download all results'),
+                                              downloadButton("downloadTable2", "Download table"),
+                                              br(),
+                                              br(),
+                                              radioButtons('extPlot2', 'Plot output format',
+                                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                              downloadButton("downloadGraph2", "Download graph"),
+                                     ),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("CCA analysis table and graph"),
+                                     withSpinner(dataTableOutput(outputId = "table2")),
+                                     hr(),
+                                     plotOutput(outputId = "detectfig2")
+                                   )
+                                 )
+                        ),
+                        tabPanel("RDA analysis", fluid = TRUE, 
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('RDA analysis')),
+                                     hr(),
+                                     fluidRow(uiOutput('file10'),
+                                              uiOutput('file11'),
+                                              uiOutput('file12'),
+                                              
+                                              
+                                              actionButton('reset3', 'RESET'),
+                                              actionButton('start3', 'START'),
+                                              hr(),
+                                              h4('Download all results'),
+                                              downloadButton("downloadTable3", "Download table"),
+                                              br(),
+                                              br(),
+                                              radioButtons('extPlot3', 'Plot output format',
+                                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                              downloadButton("downloadGraph3", "Download graph"),
+                                     ),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("RDA analysis table and graph"),
+                                     withSpinner(dataTableOutput(outputId = "table3")),
+                                     hr(),
+                                     plotOutput(outputId = "detectfig3")
+                                   )
+                                 )
+                        ),
+                        tabPanel("MDS analysis", fluid = TRUE, 
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('MDS analysis')),
+                                     hr(),
+                                     fluidRow(uiOutput('file13'),
+                                              uiOutput('file14'),
+                                              uiOutput('file15'),
+                                              
+                                              
+                                              actionButton('reset4', 'RESET'),
+                                              actionButton('start4', 'START'),
+                                              hr(),
+                                              h4('Download all results'),
+                                              downloadButton("downloadTable4", "Download table"),
+                                              br(),
+                                              br(),
+                                              radioButtons('extPlot4', 'Plot output format',
+                                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                              downloadButton("downloadGraph4", "Download graph"),),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("MDS analysis table and graph"),
+                                     withSpinner(dataTableOutput(outputId = "table4")),
+                                     hr(),
+                                     plotOutput(outputId = "detectfig4")
+                                   )
+                                 )
+                        ),
+                        tabPanel("PCoA analysis", fluid = TRUE, 
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('PCoA analysis')),
+                                     hr(),
+                                     fluidRow(uiOutput('file16'),
+                                              uiOutput('file17'),
+                                              uiOutput('file18'),
+                                              
+                                              
+                                              actionButton('reset5', 'RESET'),
+                                              actionButton('start5', 'START'),
+                                              hr(),
+                                              h4('Download all results'),
+                                              downloadButton("downloadTable5", "Download table"),
+                                              br(),
+                                              br(),
+                                              radioButtons('extPlot5', 'Plot output format',
+                                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                              downloadButton("downloadGraph5", "Download graph"),),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("PCoA analysis table and graph"),
+                                     withSpinner(dataTableOutput(outputId = "table5")),
+                                     hr(),
+                                     plotOutput(outputId = "detectfig5")
+                                   )
+                                 )
+                        ),
+                        tabPanel("PCA analysis", fluid = TRUE, 
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('PCA analysis')),
+                                     hr(),
+                                     fluidRow(uiOutput('file19'),
+                                              uiOutput('file20'),
+                                              uiOutput('file21'),
+                                              
+                                              
+                                              actionButton('reset6', 'RESET'),
+                                              actionButton('start6', 'START'),
+                                              hr(),
+                                              h4('Download all results'),
+                                              downloadButton("downloadTable6", "Download table"),
+                                              br(),
+                                              br(),
+                                              radioButtons('extPlot6', 'Plot output format',
+                                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                              downloadButton("downloadGraph6", "Download graph"),),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("PCA analysis table and graph"),
+                                     withSpinner(dataTableOutput(outputId = "table6")),
+                                     hr(),
+                                     plotOutput(outputId = "detectfig6")
+                                   )
+                                 )
+                        ),
+                        tabPanel("LDA analysis", fluid = TRUE, 
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('LDA analysis')),
+                                     hr(),
+                                     fluidRow(uiOutput('file22'),
+                                              uiOutput('file23'),
+                                              uiOutput('file24'),
+                                              
+                                              
+                                              actionButton('reset7', 'RESET'),
+                                              actionButton('start7', 'START'),
+                                              hr(),
+                                              h4('Download all results'),
+                                              downloadButton("downloadTable7", "Download table"),
+                                              br(),
+                                              br(),
+                                              radioButtons('extPlot7', 'Plot output format',
+                                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                              downloadButton("downloadGraph7", "Download graph"),),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("LDA analysis table and graph"),
+                                     withSpinner(dataTableOutput(outputId = "table7")),
+                                     hr(),
+                                     plotOutput(outputId = "detectfig7")
+                                   )
+                                 )
+                        ),
+                        
+                        tabPanel("NMDS analysis", fluid = TRUE, 
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('NMDS analysis')),
+                                     hr(),
+                                     fluidRow(uiOutput('file25'),
+                                              uiOutput('file26'),
+                                              uiOutput('file27'),
+                                              
+                                              
+                                              actionButton('reset8', 'RESET'),
+                                              actionButton('start8', 'START'),
+                                              hr(),
+                                              h4('Download all results'),
+                                              downloadButton("downloadTable8", "Download table"),
+                                              br(),
+                                              br(),
+                                              radioButtons('extPlot8', 'Plot output format',
+                                                           choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                              downloadButton("downloadGraph8", "Download graph"),),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("NMDS analysis table and graph"),
+                                     withSpinner(dataTableOutput(outputId = "table8")),
+                                     hr(),
+                                     plotOutput(outputId = "detectfig8")
+                                   )
+                                 )
+                        ),
+             ),
+             
+             ##################
+             navbarMenu("Relative abundance analysis",
+                        tabPanel("Relative abundance bar plot", fluid = TRUE,
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('Relative abundance bar plot')),
+                                     hr(),
+                                     fluidRow(
+                                       uiOutput('file28'),
+                                       uiOutput('file29'),
+                                       uiOutput('file30'),
+                                       
+                                       selectInput("class_levels", "Levels:", 
+                                                   choices = c("Kingdom","Phylum",
+                                                               "Class","Order","Family",
+                                                               "Genus","Species"),
+                                                   selected = 'Genus' 
+                                       ),
+                                       
+                                       actionButton('reset9', 'RESET'),
+                                       actionButton('start9', 'START'),
+                                       hr(),
+                                       h4('Download all results'),
+                                       downloadButton("downloadTable9", "Download table"),
+                                       br(),
+                                       br(),
+                                       radioButtons('extPlot9', 'Plot output format',
+                                                    choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                       downloadButton("downloadGraph9", "Download graph")
+                                       
+                                       
+                                     ),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("Relative abundance table and graph"),
+                                     withSpinner(dataTableOutput(outputId = "table9")),
+                                     hr(),
+                                     plotOutput(outputId = "detectfig9")
+                                   )
+                                 )
+                        ),
+                        
+                        tabPanel("Relative abundance ternary diagrams", fluid = TRUE,
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('Relative abundance ternary diagrams')),
+                                     hr(),
+                                     fluidRow(
+                                       uiOutput('file31'),
+                                       uiOutput('file32'),
+                                       uiOutput('file33'),
+                                       
+                                       selectInput("class_levels1", "Levels:", 
+                                                   choices = c("Kingdom","Phylum",
+                                                               "Class","Order","Family",
+                                                               "Genus","Species"),
+                                                   selected = 'Phylum' 
+                                       ),
+                                       
+                                       actionButton('reset10', 'RESET'),
+                                       actionButton('start10', 'START'),
+                                       hr(),
+                                       h4('Download all results'),
+                                       radioButtons('extPlot10', 'Plot output format',
+                                                    choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                       downloadButton("downloadGraph10", "Download graph")
+                                       
+                                       
+                                     ),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("Relative abundance ternary diagrams"),
+                                     hr(),
+                                     textOutput(outputId = "error_text"),
+                                     plotOutput(outputId = "detectfig10"),
+                                   )
+                                 )
+                        ),
+                        
+                        tabPanel("Relative abundance circlize", fluid = TRUE,
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('Relative abundance circlize')),
+                                     hr(),
+                                     fluidRow(
+                                       uiOutput('file34'),
+                                       uiOutput('file35'),
+                                       uiOutput('file36'),
+                                       
+                                       selectInput("class_levels2", "Levels:", 
+                                                   choices = c("Kingdom","Phylum",
+                                                               "Class","Order","Family",
+                                                               "Genus","Species"),
+                                                   selected = 'Phylum' 
+                                       ),
+                                       sliderInput("size", label = "Label text size:",
+                                                   min = 0, max = 1.5, value = 0.8),
+                                       br(),
+                                       actionButton('reset11', 'RESET'),
+                                       actionButton('start11', 'START'),
+                                       hr(),
+                                       h4('Download all results'),
+                                       radioButtons('extPlot11', 'Plot output format',
+                                                    choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                       downloadButton("downloadGraph11", "Download graph")
+                                       
+                                       
+                                     ),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("Relative abundance circlize"),
+                                     hr(),
+                                     plotOutput(outputId = "detectfig11"),
+                                   )
+                                 )
+                        ),
+             ),
+             
+             ##################
+             navbarMenu("Microbial differential analysis",
+                        tabPanel("Wilcox.test", fluid = TRUE,
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('Wilcox.test')),
+                                     hr(),
+                                     fluidRow(
+                                       uiOutput('file37'),
+                                       uiOutput('file38'),
+                                       uiOutput('file39'),
+                                       
+                                       tags$h5("Step4: Choose comparative group"),
+                                       uiOutput('file40'),
+                                       uiOutput('file41'),
+                                       br(),
+                                       sliderInput("Pval", "P value cut-off",
+                                                   min = 0, max = 0.1,
+                                                   value = 0.05),
+                                       br(),
+                                       actionButton('reset12', 'RESET'),
+                                       actionButton('start12', 'START'),
+                                       hr(),
+                                       h4('Download all results'),
+                                       downloadButton("downloadTable12", "Download table"),
+                                       
+                                     ),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("Wilcox.test result table"),
+                                     withSpinner(dataTableOutput(outputId = "table12")),
+                                   )
+                                 )
+                        ),
+                        
+                        
+                        tabPanel("DESeq2", fluid = TRUE,
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('DESeq2')),
+                                     hr(),
+                                     fluidRow(
+                                       uiOutput('file42'),
+                                       uiOutput('file43'),
+                                       uiOutput('file44'),
+                                       
+                                       tags$h5("Step4: Choose comparative group"),
+                                       uiOutput('file45'),
+                                       uiOutput('file46'),
+                                       br(),
+                                       sliderInput("Pval1", "P value cut-off",
+                                                   min = 0, max = 0.1,
+                                                   value = 0.05),
+                                       br(),
+                                       actionButton('reset13', 'RESET'),
+                                       actionButton('start13', 'START'),
+                                       hr(),
+                                       h4('Download all results'),
+                                       downloadButton("downloadTable13", 
+                                                      "Download table"),
+                                       
+                                     ),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("DESeq2 result table"),
+                                     withSpinner(dataTableOutput(outputId = "table13")),
+                                   )
+                                 )
+                        ),
+                        
+                        tabPanel("edgeR", fluid = TRUE,
+                                 tags$style(button_color_css),
+                                 # Sidebar layout with a input and output definitions
+                                 sidebarLayout(
+                                   sidebarPanel(
+                                     h3(strong('edgeR')),
+                                     hr(),
+                                     fluidRow(
+                                       uiOutput('file47'),
+                                       uiOutput('file48'),
+                                       uiOutput('file49'),
+                                       
+                                       tags$h5("Step4: Choose comparative group"),
+                                       uiOutput('file50'),
+                                       uiOutput('file51'),
+                                       br(),
+                                       sliderInput("Pval2", "P value cut-off",
+                                                   min = 0, max = 0.1,
+                                                   value = 0.05),
+                                       br(),
+                                       actionButton('reset14', 'RESET'),
+                                       actionButton('start14', 'START'),
+                                       hr(),
+                                       h4('Download all results'),
+                                       downloadButton("downloadTable14", 
+                                                      "Download table"),
+                                       
+                                     ),
+                                   ),
+                                   mainPanel(
+                                     titlePanel("edgeR result table"),
+                                     withSpinner(dataTableOutput(outputId = "table14")),
+                                   )
+                                 )
+                        ),
+                        
+             ),
+             
+             # tabPanel 是导航栏换页
+             tabPanel("Microbial community network", fluid = TRUE,
+                      tags$style(button_color_css),
+                      # Sidebar layout with a input and output definitions
+                      sidebarLayout(
+                        sidebarPanel(
+                          h3(strong('Microbial community network')),
+                          hr(),
+                          fluidRow(uiOutput('file52'),
+                                   uiOutput('file53'),
+                                   uiOutput('file54'),
+                                   
+                                   selectInput("class_levels4", "Levels:", 
+                                               choices = c("Kingdom","Phylum",
+                                                           "Class","Order","Family",
+                                                           "Genus","Species"),
+                                               selected = 'Phylum' 
+                                   ),
+                                   
+                                   actionButton('reset15', 'RESET'),
+                                   actionButton('start15', 'START'),
                                    hr(),
                                    h4('Download all results'),
-                                   downloadButton("downloadTable14", 
-                                                  "Download table"),
-                                   
-                                 ),
-                               ),
-                               mainPanel(
-                                 titlePanel("edgeR result table"),
-                                 withSpinner(dataTableOutput(outputId = "table14")),
-                               )
-                             )
-                    ),
-   
-          ),
-           
-          # tabPanel 是导航栏换页
-          tabPanel("Microbial community network", fluid = TRUE,
-            tags$style(button_color_css),
-            # Sidebar layout with a input and output definitions
-            sidebarLayout(
-              sidebarPanel(
-                h3(strong('Microbial community network')),
-                hr(),
-                fluidRow(uiOutput('file52'),
-                         uiOutput('file53'),
-                         uiOutput('file54'),
-                         
-                         selectInput("class_levels4", "Levels:", 
-                                     choices = c("Kingdom","Phylum",
-                                                 "Class","Order","Family",
-                                                 "Genus","Species"),
-                                     selected = 'Phylum' 
-                         ),
-                         
-                         actionButton('reset15', 'RESET'),
-                         actionButton('start15', 'START'),
-                         hr(),
-                         h4('Download all results'),
-                         downloadButton("downloadTable15", "Download table"),
-                         br(),
-                         br(),
-                         radioButtons('extPlot15', 'Plot output format',
-                                      choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
-                         downloadButton("downloadGraph15", "Download graph"),
-                ),
-              ),
-              mainPanel(
-                titlePanel("Microbial community network table and graph"),
-                withSpinner(dataTableOutput(outputId = "table15")),
-                hr(),
-                plotOutput(outputId = "detectfig15",width = "80%")
-              )
-            )
-          ),
-   
-    ),
+                                   downloadButton("downloadTable15", "Download table"),
+                                   br(),
+                                   br(),
+                                   radioButtons('extPlot15', 'Plot output format',
+                                                choices = c("PNG"='png', 'PDF'='pdf','JPEG'='jpeg'), inline = T),
+                                   downloadButton("downloadGraph15", "Download graph"),
+                          ),
+                        ),
+                        mainPanel(
+                          titlePanel("Microbial community network table and graph"),
+                          withSpinner(dataTableOutput(outputId = "table15")),
+                          hr(),
+                          plotOutput(outputId = "detectfig15",width = "80%")
+                        )
+                      )
+             ),
+             
+  ),
 )
 
 # Define server
@@ -880,7 +880,7 @@ server <- function(input, output, session) {
   
   
   observeEvent(input$start1, {
-
+    
     otu = as.matrix(otudata1())
     sample = sampledata1()
     tax = as.matrix(taxdata1())
@@ -928,7 +928,7 @@ server <- function(input, output, session) {
     
     points = cbind(points, map[match(rownames(points), rownames(map)), ])
     points$ID = row.names(points)
-
+    
     output$table1 <- renderDataTable({
       final1 <<- table
     })
@@ -1287,7 +1287,7 @@ server <- function(input, output, session) {
     
     points = cbind(points, map[match(rownames(points), rownames(map)), ])
     points$ID = row.names(points)
-   
+    
     output$table3 <- renderDataTable({
       final3 <<- table
     })
@@ -1425,7 +1425,7 @@ server <- function(input, output, session) {
     sample = sampledata4()
     tax = as.matrix(taxdata4())
     
-  
+    
     OTU = otu_table(otu, taxa_are_rows = TRUE)
     TAX = tax_table(tax)
     physeq_p = phyloseq(OTU, TAX)
@@ -1650,7 +1650,7 @@ server <- function(input, output, session) {
     
     points = cbind(points, map[match(rownames(points), rownames(map)), ])
     points$ID = row.names(points)
-
+    
     output$table5 <- renderDataTable({   
       final5 <<- table
     })
@@ -1787,7 +1787,7 @@ server <- function(input, output, session) {
     sample = sampledata6()
     tax = as.matrix(taxdata6())
     
-
+    
     OTU = otu_table(otu, taxa_are_rows = TRUE)
     TAX = tax_table(tax)
     physeq_p = phyloseq(OTU, TAX)
@@ -1832,7 +1832,7 @@ server <- function(input, output, session) {
     
     points = cbind(points, map[match(rownames(points), rownames(map)), ])
     points$ID = row.names(points)
-
+    
     output$table6 <- renderDataTable({
       final6 <<- table
     })
@@ -1968,7 +1968,7 @@ server <- function(input, output, session) {
     sample = sampledata7()
     tax = as.matrix(taxdata7())
     
- 
+    
     OTU = otu_table(otu, taxa_are_rows = TRUE)
     TAX = tax_table(tax)
     physeq_p = phyloseq(OTU, TAX)
@@ -2021,7 +2021,7 @@ server <- function(input, output, session) {
     
     points = cbind(points, map[match(rownames(points), rownames(map)), ])
     points$ID = row.names(points)
-
+    
     output$table7 <- renderDataTable({
       final7 <<- table
     })
@@ -2158,7 +2158,7 @@ server <- function(input, output, session) {
     sample = sampledata8()
     tax = as.matrix(taxdata8())
     
-
+    
     OTU = otu_table(otu, taxa_are_rows = TRUE)
     TAX = tax_table(tax)
     physeq_p = phyloseq(OTU, TAX)
@@ -2201,7 +2201,7 @@ server <- function(input, output, session) {
     
     points = cbind(points, map[match(rownames(points), rownames(map)), ])
     points$ID = row.names(points)
-  
+    
     output$table8 <- renderDataTable({
       final8 <<- table
     })
@@ -2337,10 +2337,10 @@ server <- function(input, output, session) {
     otu = as.matrix(otudata9())
     sample = sampledata9()
     tax = as.matrix(taxdata9())
-
+    
     output$table9 <- renderDataTable({
       colnames(tax) = c("Kingdom","Phylum","Class","Order","Family","Genus","Species")
-  
+      
       OTU = otu_table(otu, taxa_are_rows = TRUE)
       TAX = tax_table(tax)
       physeq_p = phyloseq(OTU, TAX)
@@ -2351,7 +2351,7 @@ server <- function(input, output, session) {
       sampledata = sample_data(sample)
       ps = phyloseq(OTU, TAX, sampledata, random_tree)
       
-      j= as.character(input$class_levels)
+      j <<- as.character(input$class_levels)
       psdata <- ggClusterNet::tax_glom_wt(ps = ps,ranks = j)
       psdata = psdata%>% phyloseq::transform_sample_counts(function(x) {x/sum(x)})
       otu = phyloseq::otu_table(psdata)
@@ -2399,7 +2399,7 @@ server <- function(input, output, session) {
       Taxonomies_x = cbind(as.data.frame(zhnagxu3),as.data.frame(Taxonomies_x)[,-1])
       Taxonomies_x$label = Taxonomies_x$aa
       Taxonomies_x$aa = factor(Taxonomies_x$aa,order = TRUE,levels = c(as.character(cc$aa)))
-
+      
       Taxonomies_x <<- Taxonomies_x[,c(1,2,3,4)]
       colnames(Taxonomies_x)[1] = 'Item'
       final9 <<- Taxonomies_x
@@ -2789,7 +2789,7 @@ server <- function(input, output, session) {
         bg.border = NA)# here set bg.border to NA is important
       circlize::circos.clear()
     })
-      
+    
   })
   
   
@@ -2931,7 +2931,7 @@ server <- function(input, output, session) {
   
   # 填充复选框内容, 即先读取metadata的表头,当触发input_metadata()信号后执行下面
   observeEvent(sampledata12(), {
-
+    
     sample = sampledata12()
     id.g = sample[,1] %>% unique() %>% as.character() %>% combn(2)
     
@@ -3014,7 +3014,7 @@ server <- function(input, output, session) {
         vegan_otu() %>% 
         t() %>%
         as.data.frame()
-     
+      
       groupings <- sample[which(sample[,1] %in% id.g[,i]),]
       groupings$ID = row.names(groupings)
       
@@ -3030,8 +3030,8 @@ server <- function(input, output, session) {
           OTU = id
         )  %>%
         dplyr::mutate(group = " wilcox.test.rare")
-
-    
+      
+      
       final12 <<- data.frame(tab.d12)
     })
     
