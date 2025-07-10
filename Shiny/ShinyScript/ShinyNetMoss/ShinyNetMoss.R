@@ -34,7 +34,8 @@ ui <- fluidPage(
                           hr(),
                           fluidRow(
                             column(12,
-                                   uiOutput('meta')
+                                   uiOutput('meta'),
+                                   uiOutput('text1')
                             ),
                             column(6,
                                    h5('Step2: Case input directory'),
@@ -43,7 +44,7 @@ ui <- fluidPage(
                                                   FALSE),
                                    br(),
                                    br(),
-                                   uiOutput('text1'),
+                                   uiOutput('text2'),
                                    br(),
                                    sliderInput("NetMoss_Score", "NetMoss score",
                                                value = 0.3, min = 0, max = 1),
@@ -56,7 +57,7 @@ ui <- fluidPage(
                                                   FALSE),
                                    br(),
                                    br(),
-                                   uiOutput('text2'),
+                                   uiOutput('text3'),
                                    br(),
                                    sliderInput("p_adj", "Markers padj cutoff",
                                                value = 0.05, min = 0, max = 1),
@@ -172,7 +173,8 @@ server <- function(input, output, session) {
     file = NULL
   )
   
-  path_get <- getwd()
+  path_get <- path.expand('~')
+  print(path_get)
   
   # 选择文件夹
   shinyDirChoose(input, 'folder1', roots=c(path = path_get))
@@ -206,7 +208,7 @@ server <- function(input, output, session) {
   observeEvent(input$reset, {
     values$text1 <- NULL
     output$text1 <- renderUI({
-      textInput("text1", "Directory path",value = "")
+      textInput("text1", "Data root path (put your data in this path)",value = path_get)
     })
   }, ignoreNULL = F)
   
@@ -215,6 +217,14 @@ server <- function(input, output, session) {
     values$text2 <- NULL
     output$text2 <- renderUI({
       textInput("text2", "Directory path",value = "")
+    })
+  }, ignoreNULL = F)
+  
+  
+  observeEvent(input$reset, {
+    values$text3 <- NULL
+    output$text3 <- renderUI({
+      textInput("text3", "Directory path",value = "")
     })
   }, ignoreNULL = F)
   
@@ -233,11 +243,11 @@ server <- function(input, output, session) {
       for (i in 2:length(path_vec)) {
         path_path = paste(path_path, path_vec[i],sep = '/')
       }
-      path_get <- getwd()
+      path_get <- path.expand('~')
       path_all <- paste(path_get,path_path,sep = '')
       
-      output$text1 <- renderUI({
-        textInput("text1", "Directory path",value = path_all)
+      output$text2 <- renderUI({
+        textInput("text2", "Directory path",value = path_all)
       })
     }
   }, ignoreNULL = F)
@@ -257,11 +267,11 @@ server <- function(input, output, session) {
       for (i in 2:length(path_vec)) {
         path_path = paste(path_path, path_vec[i],sep = '/')
       }
-      path_get <- getwd()
+      path_get <- path.expand('~')
       path_all <- paste(path_get,path_path,sep = '')
       
-      output$text2 <- renderUI({
-        textInput("text2", "Directory path",value = path_all)
+      output$text3 <- renderUI({
+        textInput("text3", "Directory path",value = path_all)
       })
     }
   }, ignoreNULL = F)
@@ -309,8 +319,8 @@ server <- function(input, output, session) {
         warning("Please upload files!")
       }
       else{
-        case_dir = input$text1
-        control_dir = input$text2
+        case_dir = input$text2
+        control_dir = input$text3
         
         case_dir_final <<- case_dir
         control_dir_final <<- control_dir
