@@ -1,5 +1,5 @@
 # Install MicroWorldOmics in Linux
-Download from links:https://caiyun.139.com/m/i?1G5C1h8CUoxBx; password:y3NR
+Download from links:https://caiyun.139.com/m/i?1G5C1h8CUoxBx; password:d3p9
 
 ## Install MicroWorldOmics_Linux.zip and run
 ```
@@ -16,7 +16,7 @@ conda install numpy
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple matplotlib --trusted-host pypi.tuna.tsinghua.edu.cn
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas --trusted-host pypi.tuna.tsinghua.edu.cn
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5-stubs --trusted-host pypi.tuna.tsinghua.edu.cn
-conda install paramiko
+conda install anaconda::paramiko
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple psutil --trusted-host pypi.tuna.tsinghua.edu.cn
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests --trusted-host pypi.tuna.tsinghua.edu.cn
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple scikit-learn --trusted-host pypi.tuna.tsinghua.edu.cn
@@ -30,7 +30,7 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple transformers==4.11.3 --t
 conda install -c anaconda keras==2.6.0
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple tensorflow==2.6.0 --trusted-host pypi.tuna.tsinghua.edu.cn
 pip uninstall protobuf
-pip install protobuf==3.20.0
+pip install protobuf==3.20.0 (vision <= 3.20.0)
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencv_python==4.1.2.30 --trusted-host pypi.tuna.tsinghua.edu.cn
 
 
