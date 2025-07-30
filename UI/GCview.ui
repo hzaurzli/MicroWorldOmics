@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>551</width>
-    <height>407</height>
+    <width>633</width>
+    <height>412</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,22 +16,53 @@
   <property name="styleSheet">
    <string notr="true">background-image: url(D:/tools/Pycharm/pyqt/logo/green_back.png);</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
+  <layout class="QGridLayout" name="gridLayout_4">
+   <property name="verticalSpacing">
+    <number>0</number>
+   </property>
    <item row="0" column="0">
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="2" column="0">
-      <widget class="QTextBrowser" name="textBrowser_2">
+    <layout class="QGridLayout" name="gridLayout_5">
+     <property name="verticalSpacing">
+      <number>0</number>
+     </property>
+     <item row="5" column="0" rowspan="2" colspan="2">
+      <widget class="QTextBrowser" name="textBrowser">
        <property name="styleSheet">
         <string notr="true">background-image: url(D:/Documents/Desktop/white.png)</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
+     <item row="8" column="0" colspan="2">
+      <widget class="QPushButton" name="pushButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="font">
         <font>
          <family>Times New Roman</family>
-         <pointsize>19</pointsize>
+         <pointsize>25</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Run</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <family>Times New Roman</family>
+         <pointsize>20</pointsize>
         </font>
        </property>
        <property name="text">
@@ -42,25 +73,18 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="font">
-        <font>
-         <family>Times New Roman</family>
-         <pointsize>13</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Choose</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
+     <item row="3" column="0" colspan="2">
       <widget class="QLabel" name="label_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="font">
         <font>
          <family>Times New Roman</family>
-         <pointsize>15</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -71,16 +95,22 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
-      <widget class="QPushButton" name="pushButton">
+     <item row="7" column="0" colspan="2">
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="font">
         <font>
          <family>Times New Roman</family>
-         <pointsize>13</pointsize>
+         <pointsize>25</pointsize>
         </font>
        </property>
        <property name="text">
-        <string>Run</string>
+        <string>Choose</string>
        </property>
       </widget>
      </item>
