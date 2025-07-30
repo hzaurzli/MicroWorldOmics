@@ -16,7 +16,6 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtWebEngineWidgets import QWebEngineView
-from ProtVistaWeb import ProtVistaWeb_Form
 
 
 class winTest(QtWidgets.QWidget):
@@ -45,49 +44,70 @@ class winTest(QtWidgets.QWidget):
 class Protvista_Form(QWidget):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(551, 407)
+        Form.resize(633, 412)
         Form.setWindowIcon(QIcon("./logo/logo.ico"))
         Form.setStyleSheet("background-image: url(./logo/green_back.png);")
-        self.gridLayout_2 = QtWidgets.QGridLayout(Form)
-        self.gridLayout_2.setObjectName("gridLayout_2")
-        self.gridLayout = QtWidgets.QGridLayout()
-        self.gridLayout.setVerticalSpacing(0)
-        self.gridLayout.setObjectName("gridLayout")
-        self.textBrowser_2 = QtWidgets.QTextBrowser(Form)
-        self.textBrowser_2.setStyleSheet("background-image: url(./logo/white.png)")
-        self.textBrowser_2.setObjectName("textBrowser_2")
-        self.gridLayout.addWidget(self.textBrowser_2, 2, 0, 1, 1)
-        self.label = QtWidgets.QLabel(Form)
+        self.gridLayout_4 = QtWidgets.QGridLayout(Form)
+        self.gridLayout_4.setVerticalSpacing(0)
+        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.gridLayout_5 = QtWidgets.QGridLayout()
+        self.gridLayout_5.setVerticalSpacing(0)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.textBrowser = QtWidgets.QTextBrowser(Form)
+        self.textBrowser.setStyleSheet("background-image: url(./logo/white.png)")
+        self.textBrowser.setObjectName("textBrowser")
+        self.gridLayout_5.addWidget(self.textBrowser, 5, 0, 2, 2)
+        self.pushButton = QtWidgets.QPushButton(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
+        self.pushButton.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
-        font.setPointSize(19)
+        font.setPointSize(25)
+        self.pushButton.setFont(font)
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayout_5.addWidget(self.pushButton, 8, 0, 1, 2)
+        self.label = QtWidgets.QLabel(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(20)
         self.label.setFont(font)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
-        self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
-        self.pushButton_2 = QtWidgets.QPushButton(Form)
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(13)
-        self.pushButton_2.setFont(font)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.gridLayout.addWidget(self.pushButton_2, 3, 0, 1, 1)
+        self.gridLayout_5.addWidget(self.label, 0, 0, 1, 2)
         self.label_2 = QtWidgets.QLabel(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
-        font.setPointSize(15)
+        font.setPointSize(16)
         self.label_2.setFont(font)
         self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
-        self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
-        self.pushButton = QtWidgets.QPushButton(Form)
+        self.gridLayout_5.addWidget(self.label_2, 3, 0, 1, 2)
+        self.pushButton_2 = QtWidgets.QPushButton(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
+        self.pushButton_2.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
-        font.setPointSize(13)
-        self.pushButton.setFont(font)
-        self.pushButton.setObjectName("pushButton")
-        self.gridLayout.addWidget(self.pushButton, 4, 0, 1, 1)
-        self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
+        font.setPointSize(25)
+        self.pushButton_2.setFont(font)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.gridLayout_5.addWidget(self.pushButton_2, 7, 0, 1, 2)
+        self.gridLayout_4.addLayout(self.gridLayout_5, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -97,25 +117,26 @@ class Protvista_Form(QWidget):
         self.pushButton_2.clicked.connect(self.read_file1)
 
         ## default
-        self.textBrowser_2.setPlaceholderText("D:/input/ex.json")
+        self.textBrowser.setPlaceholderText("D:/input/ex.json")
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "ProtVista"))
-        self.label.setText(_translate("Form", "ProtVista"))
-        self.pushButton_2.setText(_translate("Form", "Choose"))
-        self.label_2.setText(_translate("Form", "Input JSON file"))
         self.pushButton.setText(_translate("Form", "Run"))
+        self.label.setText(_translate("Form", "ProtVista"))
+        self.label_2.setText(_translate("Form", "Input JSON file"))
+        self.pushButton_2.setText(_translate("Form", "Choose"))
+
 
     def read_file1(self):
         openfile_name = QtWidgets.QFileDialog.getOpenFileName(self, 'choose file', '')[0]
         print(openfile_name)
-        self.textBrowser_2.setText(openfile_name)
+        self.textBrowser.setText(openfile_name)
 
 
     def web_open(self):
         # 绑定按钮点击事件，发射信号
-        content = self.textBrowser_2.toPlainText()
+        content = self.textBrowser.toPlainText()
         content = content.strip()
         content_file = os.path.basename(content)
 
@@ -145,11 +166,67 @@ class Protvista_Form(QWidget):
                 QMessageBox.critical(w, "error",
                                      "Please add correct path!")
             else:
-                self.winTable = ProtVistaWeb_Form(content_final)
+                self.winTable = MainWindow(content_final)
                 self.winTable.show()
         else:
             QMessageBox.critical(self, "error", "Please check format(suffix: json or JSON)!")
 
+
+class MainWindow(QMainWindow):
+    def __init__(self, content):
+        super().__init__()
+        self.setWindowTitle('ProtVista')
+        self.setWindowIcon(QIcon("./logo/logo.ico"))
+        self.showMaximized()
+
+        self.path_1 = os.path.abspath('.')
+        self.path_1 = self.path_1.strip().split('\\')
+        self.path = '/'.join(self.path_1)
+
+        #####放入WebEngineView
+        self.webview = WebEngineView()
+        self.webview.load(QUrl(self.path + "/html/protvista/ProtVista.html"))
+        self.setCentralWidget(self.webview)
+
+        #####web页面加载完毕，调用函数
+        self.webview.page().loadFinished.connect(lambda: self.run_js(content)) # 信号函数传参
+
+    def run_js(self, content):
+        js_string_1 = '''
+            var yourDiv = document.getElementById('yourDiv');
+            var ProtVista = require('ProtVista');
+            var instance = new ProtVista({
+            el: yourDiv,
+            uniprotacc: "P05067", 
+            defaultSources: true,
+            customDataSource: {
+                 url: "'''
+
+        js_string_2 = '''",
+                source: 'myLab',
+                useExtension: true
+                }
+            });
+        '''
+        content_path = os.path.dirname(content)
+        content = content_path + '/external_'
+
+        js_string = js_string_1 + content + js_string_2
+        print(js_string)
+        self.webview.page().runJavaScript(js_string)
+
+
+class WebEngineView(QWebEngineView):
+    windowList = []
+
+    # 重写createwindow()
+    def createWindow(self, QWebEnginePage_WebWindowType):
+        new_webview = WebEngineView()
+        new_window = MainWindow()
+        new_window.setCentralWidget(new_webview)
+        # new_window.show()
+        self.windowList.append(new_window)  # 注：没有这句会崩溃
+        return new_webview
 
 
 if __name__ == "__main__":
