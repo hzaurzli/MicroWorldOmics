@@ -45,10 +45,10 @@ Download from links 2: https://www.alipan.com/s/qZ7DFgDJx8i
 Download from links 3: https://pan.baidu.com/s/1nGFqxZOJWSmlM_EqgHz7SA; password: smrz
 
 <br>
-<br>
 For World users:
 
 Download from links: 
+
 https://drive.google.com/drive/folders/1dggfsdfXisMwy0_Xoo8LoGUqAmmOClax?usp=sharing
 
 ***Notice:*** **The installation path must be in English and cannot contain Spaces.**
