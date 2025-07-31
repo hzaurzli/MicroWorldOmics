@@ -36,19 +36,14 @@ MicroWorldOmics has the following functional modules:
 The MicroWorldOmics innovative design concept, framework architecture and main functions. The arrows show the logical steps of execution, data set input, and result output. When the software does not support the Windows system, users can use the interface of MicroWorldOmics to upload the file to the remote server, and automatically download files to the local server after the tasks are complete.
 
 ## How to download
-For Chinese main land:
+For Chinese main land: <br>
+Download from links 1: https://caiyun.139.com/w/i/2oRhbAZRe2g7e; password: 9pm8 <br>
+Download from links 2: https://www.alipan.com/s/qZ7DFgDJx8i <br>
+Download from links 3: https://pan.baidu.com/s/1nGFqxZOJWSmlM_EqgHz7SA; password: smrz <br>
 
-Download from links 1: https://caiyun.139.com/w/i/2oRhbAZRe2g7e; password: 9pm8
-
-Download from links 2: https://www.alipan.com/s/qZ7DFgDJx8i
-
-Download from links 3: https://pan.baidu.com/s/1nGFqxZOJWSmlM_EqgHz7SA; password: smrz
-
-<br>
-For World users:
-
-Download from links: 
-
+<tr>
+For World users:<br>
+Download from links:
 https://drive.google.com/drive/folders/1dggfsdfXisMwy0_Xoo8LoGUqAmmOClax?usp=sharing
 
 ***Notice:*** **The installation path must be in English and cannot contain Spaces.**
