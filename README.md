@@ -37,14 +37,17 @@ The MicroWorldOmics innovative design concept, framework architecture and main f
 
 ## How to download
 For Chinese main land: <br>
-Download from links 1: https://caiyun.139.com/w/i/2oRhbAZRe2g7e; password: 9pm8 <br>
-Download from links 2: https://www.alipan.com/s/qZ7DFgDJx8i <br>
-Download from links 3: https://pan.baidu.com/s/1nGFqxZOJWSmlM_EqgHz7SA; password: smrz <br>
+Download from links 1: 
+   https://caiyun.139.com/w/i/2oRhbAZRe2g7e; password: 9pm8 <br>
+Download from links 2: 
+   https://www.alipan.com/s/qZ7DFgDJx8i <br>
+Download from links 3: 
+   https://pan.baidu.com/s/1nGFqxZOJWSmlM_EqgHz7SA; password: smrz <br>
 
 <tr>
 For World users:<br>
 Download from links:
-https://drive.google.com/drive/folders/1dggfsdfXisMwy0_Xoo8LoGUqAmmOClax?usp=sharing
+   https://drive.google.com/drive/folders/1DXQ9gOUdg4zVWxAa2w3wKoV7rT-4UJAc?usp=sharing
 
 ***Notice:*** **The installation path must be in English and cannot contain Spaces.**
 
