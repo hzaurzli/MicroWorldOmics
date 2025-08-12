@@ -9,7 +9,7 @@ The production of a large number of high-throughput sequencing data in the field
 **MicroWorldOmics abstract:**
 
 
-![Abstract](https://github.com/hzaurzli/MicroWorldOmics/assets/47686371/ee168d58-963c-4681-b89f-a094308c3d34)
+![Abstract](https://github.com/user-attachments/assets/2dae0d3f-891b-42a2-85ed-d486f8f71461)
 
 
 MicroWorldOmics has the following functional modules:
