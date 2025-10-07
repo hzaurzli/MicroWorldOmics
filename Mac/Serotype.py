@@ -146,8 +146,8 @@ class WorkThread(QThread):
                             ii_keep = ii
                         else:
                             if ARG_list[ii][3] > ARG_list[ii_keep][3]:
-                                sss = (ARG_list[ii_keep][0], ARG_list[ii_keep][4], ARG_list[ii_keep][5], ARG_list[ii][1],
-                                       ARG_list[ii][2], ARG_list[ii][6], ARG_list[ii][7])
+                                sss = (ARG_list[ii_keep][0], ARG_list[ii_keep][4], ARG_list[ii_keep][5], ARG_list[ii_keep][1],
+                                       ARG_list[ii_keep][2], ARG_list[ii_keep][6], ARG_list[ii_keep][7])
                                 if sss in ARG_filter_list:
                                     ARG_filter_list.remove(sss)
                                 ARG_filter_list.append((ARG_list[ii][0], ARG_list[ii][4], ARG_list[ii][5], ARG_list[ii][1],
