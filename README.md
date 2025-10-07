@@ -41,7 +41,7 @@ Download from links 1:
 Download from links 2: 
    https://www.alipan.com/s/qZ7DFgDJx8i <br>
 Download from links 3: 
-   https://pan.baidu.com/s/1nGFqxZOJWSmlM_EqgHz7SA; password: smrz <br>
+   https://pan.baidu.com/s/1vu_npfK9qtByT2MKUymu7AA; password: smrz <br>
 
 <tr>
 For World users:<br>
